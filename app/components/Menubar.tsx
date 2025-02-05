@@ -5,9 +5,7 @@ import { useState } from 'react';
 import user from '@/assets/user.png';
 import Link from 'next/link';
 
-type Props = {};
-
-const Menubar = (props: Props) => {
+const Menubar = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (

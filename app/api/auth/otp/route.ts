@@ -1,5 +1,3 @@
-import Student from '@/models/Student';
-import Teacher from '@/models/Teacher';
 import User from '@/models/User';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
@@ -44,7 +42,7 @@ export async function POST(req: NextRequest) {
         let user = await findById(id);
 
         async function findById(id: string) {
-            const collections = [User, Student, Teacher];
+            const collections = [User];
 
             const promises = collections.map((collection) =>
                 collection.findById(id).exec().then((result) => ({ model: collection.modelName, data: result }))

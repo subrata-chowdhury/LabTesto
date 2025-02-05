@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 const Slide = ({ slides }: { slides: ReactNode[] }) => {
     return (

@@ -3,9 +3,10 @@ import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import information from '@/assets/information.svg'
 import Image from 'next/image'
+import fetcher from '@/lib/fetcher'
 
 function Test() {
-    const [testDetails, setTestDetails] = useState({
+    const [testDetails, setTestDetails] = useState<TestDetails>({
         name: 'Test',
         type: 'Blood Test',
         description: 'It is a test',
@@ -18,13 +19,22 @@ function Test() {
     const { id } = useParams<{ id: string }>();
 
     useEffect(() => {
-
+        getTestDetails(id);
     }, [id])
 
     async function getTestDetails(id: string) {
-        const res = await fetch(`/api/tests/${id}`);
-        const data = await res.json();
-        setTestDetails(data);
+        const res = await fetcher.get<TestDetails>(`/api/tests/${id}`);
+        if (res.body && res.status === 200)
+            setTestDetails({
+                name: res.body.name || '',
+                type: res.body.type || '',
+                description: res.body.description || '',
+                price: res.body.price || 0,
+                duration: res.body.duration || '',
+                preparation: res.body.preparation || '',
+                sampleType: res.body.sampleType || '',
+                resultTime: res.body.resultTime || ''
+            });
     }
 
     return (
@@ -91,4 +101,15 @@ function TickIcon() {
             </svg>
         </div>
     )
+}
+
+type TestDetails = {
+    name: string,
+    type: string,
+    description: string,
+    price: number,
+    duration: string,
+    preparation: string,
+    sampleType: string,
+    resultTime: string
 }

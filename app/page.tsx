@@ -1,5 +1,3 @@
-import Image from "next/image";
-import Slide from "./components/Slide";
 import Menubar from "./components/Menubar";
 import Footer from "./components/Footer";
 
