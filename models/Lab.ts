@@ -4,6 +4,7 @@ interface ILab extends Document {
     name: string;
     location: {
         address: string;
+        pin: number,
         location: {
             lat: number;
             lang: number;
@@ -34,6 +35,7 @@ const LabSchema: Schema = new Schema({
     location: {
         type: {
             address: { type: String, require: true },
+            pin: { type: Number, require: true },
             location: { type: { lat: { type: Number, require: true }, lang: { type: Number, require: true } }, require: true }
         }, required: true
     },
@@ -48,6 +50,7 @@ const LabSchema: Schema = new Schema({
             test: { type: Schema.Types.ObjectId, ref: 'Test', required: true },
             price: { type: Number, require: true },
             offer: { type: Number, require: false, default: 0 },
+            expenses: { type: Number, require: false, default: 0 }
         }],
         required: true,
         default: []

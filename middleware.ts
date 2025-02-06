@@ -4,8 +4,9 @@ import verifyToken from './lib/tokenVerify';
 import { cookies } from 'next/headers';
 
 export async function middleware(request: NextRequest) {
-    const excludeTokenVerification = ['/api/auth/login', '/api/auth/signup'];
-    if (excludeTokenVerification.includes(request.nextUrl.pathname)) {
+    const excludeTokenVerification = ['/api/auth/login', '/api/auth/signup', '/api/tests', '/api/labs'];
+    const excludeTokenVerificationPatterns = [/^\/api\/tests\/.*/];
+    if (excludeTokenVerification.includes(request.nextUrl.pathname) || excludeTokenVerificationPatterns.some(pattern => pattern.test(request.nextUrl.pathname)) ) {
         return NextResponse.next();
     }
 

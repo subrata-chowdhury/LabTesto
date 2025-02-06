@@ -15,9 +15,19 @@ const Page = () => {
     const { id } = useParams();
 
     useEffect(() => {
-        fetcher.get<LabDetails>(`/labs/${id}`).then((res) => {
+        fetcher.get<FetchedLabDetails>(`/labs/${id}`).then((res) => {
             if (res.status === 200 && res.body) {
-                setLabDetails(res.body);
+                const labDetails: LabDetails = {
+                    name: res.body.name,
+                    description: res.body.description,
+                    location: res.body.location,
+                    certification: res.body.certification,
+                    prices: [],
+                };
+                labDetails.prices = res.body.prices.map(e => ({ test: e.test._id, name: e.test.name, offer: e.offer, price: e.price, expenses: e.expenses }))
+                labDetails.packagesInclude = res.body.packagesInclude?.map(e => ({ test: e.test._id, name: e.test.name, packages: e.packages }))
+                labDetails.ranges = res.body.ranges?.map(e => ({ test: e.test._id, name: e.test.name, ranges: e.ranges }))
+                setLabDetails(labDetails);
             }
         })
     }, [id])
@@ -41,6 +51,45 @@ const Page = () => {
             />
         </>
     )
+}
+
+type FetchedLabDetails = {
+    name: string,
+    description?: string,
+    location: {
+        address: string,
+        location: {
+            lat: number,
+            lang: number
+        }
+    },
+    certification?: {
+        organization?: string,
+        imageUrl?: string
+    },
+    prices: Price[],
+    packagesInclude?: PackageInclude[],
+    ranges?: Range[]
+}
+
+type Price = {
+    name?: string,
+    test: { _id: string, name: string },
+    price: number,
+    offer: number, 
+    expenses: number
+}
+
+type PackageInclude = {
+    name?: string,
+    test: { _id: string, name: string },
+    packages: string[]
+}
+
+type Range = {
+    name?: string,
+    test: { _id: string, name: string },
+    ranges: { [key: string]: string }[]
 }
 
 export default Page

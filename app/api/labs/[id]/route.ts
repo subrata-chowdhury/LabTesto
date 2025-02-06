@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     await dbConnect();
 
     try {
-        const lab = await Lab.findById(id);
+        const lab = await Lab.findById(id).populate('prices.test').populate('packagesInclude.test').populate('ranges.test');
 
         if (!lab) {
             return new NextResponse('Lab not found', { status: 404 });

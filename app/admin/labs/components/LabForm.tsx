@@ -206,7 +206,8 @@ export type Price = {
     name?: string,
     test: string,
     price: number,
-    offer: number
+    offer: number,
+    expenses: number
 }
 
 export type PackageInclude = {

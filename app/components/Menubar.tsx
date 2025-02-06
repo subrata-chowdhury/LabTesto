@@ -46,7 +46,7 @@ const Menubar = () => {
                         <div className="text-white">Profile</div>
                     </div>
                     <div className='py-1 pb-2'>
-                        <SearchBar active={true} />
+                        <SearchBar active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
                     </div>
                     <a href="#" className="block text-white py-2">Book a Test</a>
                     {/* <a href="#" className="block text-white py-2">Home</a> */}
