@@ -24,7 +24,7 @@ const Menubar = () => {
                 <div className='hidden md:block mr-8'>
                     <SearchBar />
                 </div>
-                <div className="hidden md:flex items-center space-x-4">
+                <div className="hidden md:flex items-center space-x-4 cursor-pointer">
                     <div className="text-white">Profile</div>
                     <Image src={user} alt="avatar" width={40} height={40} className="rounded-full p-2 bg-gray-100" />
                 </div>
