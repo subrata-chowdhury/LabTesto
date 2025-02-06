@@ -185,6 +185,7 @@ export default LabForm;
 
 export type LabDetails = {
     name: string,
+    description?: string,
     location: {
         address: string,
         location: {

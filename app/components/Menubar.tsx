@@ -4,9 +4,12 @@ import React from 'react';
 import { useState } from 'react';
 import user from '@/assets/user.png';
 import Link from 'next/link';
+import SelectTest from './SelectTest';
+import { useRouter } from 'next/navigation';
 
 const Menubar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const navigate = useRouter();
 
     return (
         <nav className="bg-[#0e0e52] p-4 px-6">
@@ -22,7 +25,7 @@ const Menubar = () => {
                     <a href="#" className="text-white">Contact</a>
                 </div>
                 <div className='hidden md:block mr-8'>
-                    <SearchBar />
+                    <SearchBar onSelect={(test) => navigate.push('/tests/' + test._id)} />
                 </div>
                 <div className="hidden md:flex items-center space-x-4 cursor-pointer">
                     <div className="text-white">Profile</div>
@@ -58,20 +61,12 @@ const Menubar = () => {
 
 export default Menubar;
 
-function SearchBar({ active = false }: { active?: boolean }) {
-    const [search, setSearch] = useState('');
+function SearchBar({ active = false, onSelect = () => { } }: { active?: boolean, onSelect?: (value: { name: string, _id: string }) => void }) {
     const [showSearchBar, setShowSearchBar] = useState(active);
 
     return (
         <div className="relative text-gray-600">
-            {showSearchBar && <input
-                type="search"
-                // name="search"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search"
-                className="bg-white h-10 px-5 pr-10 rounded-full w-full text-sm focus:outline-none"
-            />}
+            {showSearchBar && <SelectTest onSelect={onSelect} className='text-sm rounded-full px-4' placeholder='Search Test' />}
             <button type="submit" className={(showSearchBar ? "absolute right-0 top-0 mt-3 mr-4" : "bg-white p-3 rounded-full")} onClick={() => setShowSearchBar(true)}>
                 <svg className="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" version="1.1" id="Capa_1" x="0px" y="0px"
                     viewBox="0 0 56.966 56.966" xmlSpace="preserve" width="512px" height="512px">
@@ -81,11 +76,6 @@ function SearchBar({ active = false }: { active?: boolean }) {
                                 c-10.214,0-18.482-8.268-18.482-18.482S13.268,5,23.482,5s18.482,8.268,18.482,18.482S33.696,41.965,23.482,41.965z"/>
                 </svg>
             </button>
-            {
-                search.length > 0 && <div className='flex flex-col rounded-lg bg-white w-full mt-1 shadow-md absolute overflow-hidden'>
-                    {['a', 'b', 'c'].map(e => <div key={e} onClick={() => { setSearch(e) }} className='py-1 px-3 hover:bg-gray-200 cursor-pointer'>{e}</div>)}
-                </div>
-            }
         </div>
     )
 }

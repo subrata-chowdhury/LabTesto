@@ -2,13 +2,11 @@ import SelectTest from "@/app/components/SelectTest";
 import TagInput from "@/components/Inputs/TagInput";
 import Model from "@/components/Model";
 import { MainTable } from "@/components/Table";
-import fetcher from "@/lib/fetcher";
 import plusIcon from '@/assets/blue-plus.svg'
 import Image from "next/image";
 import { useState } from "react";
 
 export default function RangePopup({ rangeDetails, onClose = () => { }, onSave = () => { } }: { rangeDetails: { test: string, ranges: { [key: string]: string }[] }, onClose?: () => void, onSave?: (rangeDetails: { name?: string, test: string, ranges: { [key: string]: string }[] }) => void }) {
-    const [tests, setTests] = useState<{ name: string, _id: string }[]>([]);
     const [testSearch, setTestSearch] = useState<string>('');
     const [rangeData, setRangeData] = useState<{ test: string, ranges: { [key: string]: string }[] }>(rangeDetails || {
         test: '',
@@ -24,15 +22,6 @@ export default function RangePopup({ rangeDetails, onClose = () => { }, onSave =
                     <label className="flex flex-col gap-1">
                         Test *
                         <SelectTest
-                            options={tests || []}
-                            value={testSearch}
-                            onChange={async val => {
-                                setTestSearch(val)
-                                const res = await fetcher.get<{ tests: { name: string, _id: string }[], pagination: { currentPage: number, pageSize: number, totalPages: number } }>(`/tests?filter=${JSON.stringify({ name: val })}&limit=5&page=1`);
-                                if (res.status === 200 && res.body) {
-                                    setTests(res.body.tests)
-                                }
-                            }}
                             onSelect={val => {
                                 setRangeData(prevVal => ({ ...prevVal, test: val._id }))
                                 setTestSearch(val.name)

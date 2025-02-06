@@ -1,11 +1,10 @@
+import fetcher from "@/lib/fetcher";
 import { useState } from "react";
 
 interface SelectInstituteProps {
-    options: Test[];
-    onChange: (value: string) => void;
     onSelect: (value: Test) => void;
     placeholder?: string;
-    value: string
+    className?: string;
 }
 
 type Test = {
@@ -14,32 +13,35 @@ type Test = {
 }
 
 const SelectTest: React.FC<SelectInstituteProps> = ({
-    options = [],
-    onChange = () => { },
     onSelect = () => { },
-    placeholder = 'Select Institute',
-    value = ''
+    placeholder = 'Select Test',
+    className = ''
 }) => {
     const [open, setOpen] = useState(false);
+    const [tests, setTests] = useState<{ name: string, _id: string }[]>([]);
+    const [testSearch, setTestSearch] = useState<string>('');
 
     return (
         <div className="relative">
             <input
-                className={"px-3 py-2 border-2 rounded outline-none w-full"}
+                className={"px-3 py-2 border-2 rounded outline-none w-full " + className}
                 type="text"
-                value={value}
+                value={testSearch}
                 placeholder={placeholder}
-                onChange={e => {
-                    onChange(e.target.value)
-                    if (e.target.value !== '') setOpen(true)
-                    else setOpen(false)
+                onChange={async e => {
+                    setTestSearch(e.target.value)
+                    const res = await fetcher.get<{ tests: { name: string, _id: string }[], pagination: { currentPage: number, pageSize: number, totalPages: number } }>(`/tests?filter=${JSON.stringify({ name: e.target.value })}&limit=5&page=1`);
+                    if (res.status === 200 && res.body) {
+                        setTests(res.body.tests)
+                        if (res.body.tests.length > 0) setOpen(true)
+                    }
                 }} />
             {
                 open && <div className="absolute top-12 left-0 w-full bg-white border-2 rounded-md cursor-pointer drop-shadow-lg">
                     <div className=" max-h-[150px] overflow-y-auto">
-                        {options.map(e => <div key={e.name} className="px-3 py-2 border-b-2 hover:bg-gray-100" onClick={() => {
+                        {tests.map(e => <div key={e.name} className="px-3 py-2 border-b-2 hover:bg-gray-100" onClick={() => {
                             onSelect(e)
-                            onChange(e.name)
+                            setTestSearch(e.name)
                             setOpen(false)
                         }}>
                             <div className="turncate">

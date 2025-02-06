@@ -8,13 +8,14 @@ type Props = {
     width?: string | number,
     height?: number,
     showPopupAtTop?: boolean,
+    containerClassName?: string
 }
 
-function Dropdown({ options = [], value = "", onChange = () => { }, width, height, showPopupAtTop = false }: Props) {
+function Dropdown({ options = [], value = "", onChange = () => { }, containerClassName = '', width, height, showPopupAtTop = false }: Props) {
     const [isOpen, setIsOpen] = useState(false)
 
     return (
-        <div className='relative'>
+        <div className={'relative ' + containerClassName} style={{ width: width || 'fit-content' }}>
             <div className='flex justify-between items-center border-2 p-2 rounded cursor-pointer gap-1' onClick={() => setIsOpen(!isOpen)} style={{ height: height || 40, width: width || 'fit-content' }}>
                 <div>{value}</div>
                 <Image src={dropdownArrow} alt='Search Icon' width={16} height={16} className={`transition-all w-4 h-4 ${isOpen ? 'rotate-180' : 'rotate-0'}`} />

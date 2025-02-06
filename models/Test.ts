@@ -28,7 +28,7 @@ const TestSchema: Schema = new Schema({
         required: true
     },
     description: { type: String, required: true },
-    fastingRequired: { type: String, required: true },
+    fastingRequired: { type: String, required: false },
     overview: { type: String, required: true },
     testResultInterpretation: { type: String, required: true },
     riskAssesment: { type: String, required: true },

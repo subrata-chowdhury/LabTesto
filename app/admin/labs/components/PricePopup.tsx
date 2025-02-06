@@ -1,11 +1,9 @@
 import SelectTest from "@/app/components/SelectTest";
 import Input from "@/components/Inputs/Input";
 import Model from "@/components/Model";
-import fetcher from "@/lib/fetcher";
 import { useState } from "react";
 
 export default function PricePopup({ priceDetails, onClose = () => { }, onSave = () => { } }: { priceDetails: { test: string, price: number, offer: number }, onClose?: () => void, onSave?: (priceDetails: { test: string, price: number, offer: number, name?: string }) => void }) {
-    const [tests, setTests] = useState<{ name: string, _id: string }[]>([]);
     const [testSearch, setTestSearch] = useState<string>('');
     const [priceData, setPriceData] = useState<{ test: string, price: number, offer: number }>(priceDetails || {
         test: '',
@@ -20,15 +18,6 @@ export default function PricePopup({ priceDetails, onClose = () => { }, onSave =
                     <label className="flex flex-col gap-1">
                         Test *
                         <SelectTest
-                            options={tests || []}
-                            value={testSearch}
-                            onChange={async val => {
-                                setTestSearch(val)
-                                const res = await fetcher.get<{ tests: { name: string, _id: string }[], pagination: { currentPage: number, pageSize: number, totalPages: number } }>(`/tests?filter=${JSON.stringify({ name: val })}&limit=5&page=1`);
-                                if (res.status === 200 && res.body) {
-                                    setTests(res.body.tests)
-                                }
-                            }}
                             onSelect={val => {
                                 setPriceData(prevVal => ({ ...prevVal, test: val._id }))
                                 setTestSearch(val.name)
