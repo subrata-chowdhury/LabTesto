@@ -63,8 +63,8 @@ const LabForm = ({ labDetails, error, onChange, onSave = () => { } }: Props) => 
                             heading: 'Actions',
                             component: ({ index }) => (<div className='flex items-center gap-1'>
                                 <button onClick={() => setShowPricePopup({ index })}>
-                                    <Image src={plusIcon} alt="" width={20} height={20} />
-                                </button>
+                                    Edit
+                                </button>|
                                 <button
                                     onClick={() => {
                                         const newPrices = [...labDetails.prices];
@@ -105,8 +105,8 @@ const LabForm = ({ labDetails, error, onChange, onSave = () => { } }: Props) => 
                             component: ({ index }) => (<div className='flex items-center gap-1'>
                                 <button
                                     onClick={() => setShowPackageIncludePopup({ index })}>
-                                    <Image src={plusIcon} alt="" width={20} height={20} />
-                                </button>
+                                    Edit
+                                </button>|
                                 <button
                                     onClick={() => {
                                         const newPackagesInclude = [...(labDetails.packagesInclude || [])];
@@ -147,8 +147,8 @@ const LabForm = ({ labDetails, error, onChange, onSave = () => { } }: Props) => 
                             component: ({ index }) => (<div className='flex items-center gap-1'>
                                 <button
                                     onClick={() => setShowRangePopup({ index })}>
-                                    <Image src={plusIcon} alt="" width={20} height={20} />
-                                </button>
+                                    Edit
+                                </button>|
                                 <button
                                     onClick={() => {
                                         const newRanges = [...(labDetails.ranges || [])];
