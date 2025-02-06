@@ -1,6 +1,6 @@
 import dbConnect from '@/config/db';
 import Test from '@/models/Test';
-import { cookies } from 'next/headers';
+// import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {

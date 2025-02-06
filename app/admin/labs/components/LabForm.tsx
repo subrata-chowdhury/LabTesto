@@ -19,15 +19,10 @@ type Props = {
     onSave: () => void
 }
 
-type Test = {
-    _id: string;
-}
-
 const LabForm = ({ labDetails, error, onChange, onSave = () => { } }: Props) => {
     const [showPricePopup, setShowPricePopup] = useState<{ index: number } | null>(null);
     const [showPackageIncludePopup, setShowPackageIncludePopup] = useState<{ index: number } | null>(null);
     const [showRangePopup, setShowRangePopup] = useState<{ index: number } | null>(null);
-    const [tests, setTests] = useState<Test[]>([]);
 
     return (
         <div className='bg-white mt-4 p-8 px-10'>
@@ -67,6 +62,9 @@ const LabForm = ({ labDetails, error, onChange, onSave = () => { } }: Props) => 
                         {
                             heading: 'Actions',
                             component: ({ index }) => (<div className='flex items-center gap-1'>
+                                <button onClick={() => setShowPricePopup({ index })}>
+                                    <Image src={plusIcon} alt="" width={20} height={20} />
+                                </button>
                                 <button
                                     onClick={() => {
                                         const newPrices = [...labDetails.prices];
@@ -106,6 +104,10 @@ const LabForm = ({ labDetails, error, onChange, onSave = () => { } }: Props) => 
                             heading: 'Actions',
                             component: ({ index }) => (<div className='flex items-center gap-1'>
                                 <button
+                                    onClick={() => setShowPackageIncludePopup({ index })}>
+                                    <Image src={plusIcon} alt="" width={20} height={20} />
+                                </button>
+                                <button
                                     onClick={() => {
                                         const newPackagesInclude = [...(labDetails.packagesInclude || [])];
                                         newPackagesInclude.splice(index, 1);
@@ -138,11 +140,15 @@ const LabForm = ({ labDetails, error, onChange, onSave = () => { } }: Props) => 
             <div className='border-2 border-t-0 rounded'>
                 <MainTable<Range>
                     config={[
-                        { heading: 'Test', selector: 'name' },
-                        { heading: 'Ranges', selector: 'ranges' },
+                        { heading: 'Test', selector: 'test' },
+                        { heading: 'Name', selector: 'name' },
                         {
                             heading: 'Actions',
                             component: ({ index }) => (<div className='flex items-center gap-1'>
+                                <button
+                                    onClick={() => setShowRangePopup({ index })}>
+                                    <Image src={plusIcon} alt="" width={20} height={20} />
+                                </button>
                                 <button
                                     onClick={() => {
                                         const newRanges = [...(labDetails.ranges || [])];

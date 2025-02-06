@@ -1,9 +1,9 @@
 "use client"
 import Dropdown from '@/components/Dropdown'
 import Input from '@/components/Inputs/Input'
-import React, { useState } from 'react'
+import React from 'react'
 import Image from 'next/image'
-import CheckBox from '@/components/Inputs/CheckBox'
+// import CheckBox from '@/components/Inputs/CheckBox'
 import Title from '@/components/Title'
 import informationIcon from '@/assets/information.svg'
 

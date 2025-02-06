@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import Image, { StaticImageData } from 'next/image';
 
 import logout from '@/assets/Menubar/logout.svg'
-import teachers from '@/assets/Menubar/teachers.svg'
+// import teachers from '@/assets/Menubar/teachers.svg'
 import dashboard from '@/assets/Menubar/dashboard.svg'
 import students from '@/assets/Menubar/students.svg'
 import form from '@/assets/Menubar/form.svg'
@@ -19,9 +19,9 @@ function Menubar() {
         <div className='absolute sm:relative bg-white flex flex-col gap-2 px-4 py-6 shadow h-full transition-all' onMouseEnter={() => setMenubarHovered(true)} onMouseLeave={() => setMenubarHovered(false)}>
             <div className='flex flex-col gap-2 flex-1 transition-all'>
                 <Menu name='Dashboard' image={dashboard} link='/admin' active={currentPath === '/admin'} menubarHovered={menubarHovered} />
-                <Menu name='Tests' image={teachers} link='/admin/tests' active={currentPath === '/admin/tests'} menubarHovered={menubarHovered} />
-                <Menu name='Labs' image={teachers} link='/admin/labs' active={currentPath === '/admin/labs'} menubarHovered={menubarHovered} />
-                <Menu name='Collectors' image={teachers} link='/admin/collectors' active={currentPath === '/admin/collectors'} menubarHovered={menubarHovered} />
+                <Menu name='Tests' image={form} link='/admin/tests' active={currentPath === '/admin/tests'} menubarHovered={menubarHovered} />
+                <Menu name='Labs' image={sheet} link='/admin/labs' active={currentPath === '/admin/labs'} menubarHovered={menubarHovered} />
+                <Menu name='Collectors' image={students} link='/admin/collectors' active={currentPath === '/admin/collectors'} menubarHovered={menubarHovered} />
             </div>
             <div className=''>
                 <div
