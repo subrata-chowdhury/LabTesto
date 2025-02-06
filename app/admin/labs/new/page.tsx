@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import LabForm, { LabDetails } from '../components/LabForm'
+import fetcher from '@/lib/fetcher'
 
 const Page = () => {
     const [labDetails, setLabDetails] = React.useState<LabDetails>({
@@ -10,15 +11,24 @@ const Page = () => {
         ranges: [],
     })
 
+    async function saveLab() {
+        const res = await fetcher.post<LabDetails, { messege: string }>('/labs', labDetails);
+        if (res.status === 200) {
+            alert('Lab saved successfully');
+        } else {
+            alert('Error saving lab');
+        }
+    }
+
     return (
-        <div>
+        <>
             <LabForm
                 labDetails={labDetails}
                 error={null}
                 onChange={{ labDetails: setLabDetails }}
-                onSave={() => { }}
+                onSave={() => saveLab()}
             />
-        </div>
+        </>
     )
 }
 

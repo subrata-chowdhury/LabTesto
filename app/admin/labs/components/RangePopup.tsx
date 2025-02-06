@@ -14,7 +14,7 @@ export default function RangePopup({ rangeDetails, onClose = () => { }, onSave =
         test: '',
         ranges: []
     });
-    const [headers, setHeaders] = useState<string[]>(Object.keys(rangeDetails.ranges[0]) || []);
+    const [headers, setHeaders] = useState<string[]>(Object.keys(rangeDetails.ranges[0] || {}) || []);
     const [showRangePopup, setShowRangePopup] = useState<{ index: number } | null>(null);
 
     return (

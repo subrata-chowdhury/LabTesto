@@ -1,17 +1,9 @@
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import Test from '@/models/Test';
 
 export async function GET() {
-    const cookieStore = await cookies();
-    const institution = cookieStore.get('institution')?.value;
-
-    if (!institution) {
-        return new NextResponse('Institution not found in cookies', { status: 400 });
-    }
     try {
         const tests = await Test.aggregate([
-            { $match: { institution } },
             { $group: { _id: { $toLower: "$sampleType" }, count: { $sum: 1 } } }
         ]);
 
