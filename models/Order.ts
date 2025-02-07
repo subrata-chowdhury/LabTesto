@@ -2,43 +2,57 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 interface IOrder extends Document {
     name: string;
-    // email: string;
-    // password: string;
+    tests: string[];
+    user: string;
+    status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered';
     phone: string;
     address: {
-        pin: number,
-        city: string,
-        district: string,
-        other: string // road details
-    }
-    date: string,
-    time: string
+        pin: number;
+        city: string;
+        district: string;
+        other?: string; // road details
+    };
+    sampleTakenDateTime: {
+        date: {
+            start?: Date;
+            end?: Date;
+        };
+    };
+    reportDeliverTime: {
+        date: {
+            start?: Date;
+            end?: Date;
+        };
+    };
 
-    // verified: boolean;
-    // otp?: string;
-    // otpExpiry?: Date;
-    
     createdAt: Date;
     updatedAt: Date;
 }
 
 const OrderSchema: Schema = new Schema({
     name: { type: String, default: '' },
-    // email: { type: String, required: true, unique: true },
-    // password: { type: String, required: true },
+    tests: { type: [mongoose.Schema.Types.ObjectId], required: true, ref: 'Test' },
+    user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
+    status: { type: String, enum: ['Ordered', 'Sample Collected', 'Report Generated', 'Report Delivered'], default: 'Ordered' },
     phone: { type: String, required: true },
     address: {
-        pin: { type: String, required: false },
-        city: { type: String, required: false },
-        district: { type: String, required: false },
-        other: { type: String, required: false }, // road details
+        pin: { type: Number, required: true },
+        city: { type: String, required: true },
+        district: { type: String, required: true },
+        other: { type: String, required: false } // road details
     },
-    date: { type: String, required: false },
-    time: { type: String, required: false }
-    
-    // verified: { type: Boolean, default: false },
-    // otp: { type: String, required: false },
-    // otpExpiry: { type: Date, required: false },
+    sampleTakenDateTime: {
+        date: {
+            start: { type: Date, required: false, default: Date.now },
+            end: { type: Date, required: false, default: Date.now }
+        }
+    },
+    reportDeliverTime: {
+        date: {
+            start: { type: Date, required: false, default: Date.now },
+            end: { type: Date, required: false, default: Date.now }
+        }
+    }
 }, { collection: 'orders', timestamps: true });
 
 const Order = mongoose.models.Order || mongoose.model<IOrder>('Order', OrderSchema);

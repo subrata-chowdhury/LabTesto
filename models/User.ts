@@ -5,11 +5,20 @@ interface IUser extends Document {
     email: string;
     password: string;
     phone?: string;
+    addresses?: {
+        phone: string;
+        address: {
+            pin: number;
+            city: string;
+            district: string;
+            other?: string;
+        };
+    }[];
 
     verified: boolean;
     otp?: string;
     otpExpiry?: Date;
-    
+
     createdAt: Date;
     updatedAt: Date;
 }
@@ -19,7 +28,18 @@ const UserSchema: Schema = new Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     phone: { type: String, required: false },
-    
+
+    addresses: {
+        type: [{
+            phone: { type: String, required: true },
+            address: {
+                pin: { type: Number, required: true },
+                city: { type: String, required: true },
+                district: { type: String, required: true },
+                other: { type: String, required: false } // road details
+            }
+        }]
+    },
     verified: { type: Boolean, default: false },
     otp: { type: String, required: false },
     otpExpiry: { type: Date, required: false },
