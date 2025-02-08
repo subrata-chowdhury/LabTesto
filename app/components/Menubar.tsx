@@ -6,6 +6,8 @@ import user from '@/assets/user.png';
 import Link from 'next/link';
 import SelectTest from './SelectTest';
 import { useRouter } from 'next/navigation';
+import CartIcon from '@/assets/cart.svg'
+import { getCookie } from '@/lib/cookieGetter';
 
 const Menubar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +16,13 @@ const Menubar = () => {
     return (
         <nav className="bg-[#0e0e52] p-4 px-6">
             <div className="mx-auto flex justify-between items-center">
+                <div className="md:hidden">
+                    <button onClick={() => setIsOpen(!isOpen)} className="text-white focus:outline-none">
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"}></path>
+                        </svg>
+                    </button>
+                </div>
                 <div className="text-white text-lg font-bold mr-16">
                     <Link href={'/'}>Logo</Link>
                 </div>
@@ -24,30 +33,35 @@ const Menubar = () => {
                     <a href="#" className="text-white">Services</a>
                     <a href="#" className="text-white">Contact</a>
                 </div>
-                <div className='hidden md:block mr-8'>
+                <div className='hidden ms-6 md:block mr-5'>
                     <SearchBar onSelect={(test) => navigate.push('/tests/' + test._id)} />
                 </div>
-                <div className="hidden md:flex items-center space-x-4 cursor-pointer">
-                    <div className="text-white">Profile</div>
-                    <Image src={user} alt="avatar" width={40} height={40} className="rounded-full p-2 bg-gray-100" />
+                <div
+                    className='relative mr-4 cursor-pointer'
+                    onClick={() => {
+                        if (getCookie('token')) navigate.push('/cart')
+                        else navigate.push('/login')
+                    }} >
+                    <Image
+                        src={CartIcon}
+                        alt=""
+                        width={28}
+                        height={28} />
                 </div>
-                <div className="md:hidden">
-                    <button onClick={() => setIsOpen(!isOpen)} className="text-white focus:outline-none">
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"}></path>
-                        </svg>
-                    </button>
+                <div className="hidden md:flex items-center space-x-4 cursor-pointer">
+                    {/* <div className="text-white">Profile</div> */}
+                    <Image src={user} alt="avatar" width={40} height={40} className="rounded-full p-2 bg-gray-100" />
                 </div>
             </div>
             {isOpen && (
                 <div className="md:hidden">
-                    <div className="flex flex-col gap-2 justify-center items-center py-5">
+                    <div className="flex flex-col gap-2 justify-center items-center cursor-pointer py-5">
                         <Image src={user} alt="avatar" width={40} height={40} className="rounded-full p-2 bg-gray-100" />
                         <div className="text-white">Profile</div>
                     </div>
-                    <div className='py-1 pb-2'>
+                    {/* <div className='py-1 pb-2'>
                         <SearchBar active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
-                    </div>
+                    </div> */}
                     <a href="#" className="block text-white py-2">Book a Test</a>
                     {/* <a href="#" className="block text-white py-2">Home</a> */}
                     <a href="#" className="block text-white py-2">About</a>
@@ -61,12 +75,12 @@ const Menubar = () => {
 
 export default Menubar;
 
-function SearchBar({ active = false, onSelect = () => { } }: { active?: boolean, onSelect?: (value: { name: string, _id: string }) => void }) {
+export function SearchBar({ active = false, className = '', onSelect = () => { } }: { active?: boolean, className?: string, onSelect?: (value: { name: string, _id: string }) => void }) {
     const [showSearchBar, setShowSearchBar] = useState(active);
 
     return (
-        <div className="relative text-gray-600">
-            {showSearchBar && <SelectTest onSelect={onSelect} className='text-sm rounded-full px-4' placeholder='Search Test' />}
+        <div className={"relative text-sm text-gray-600 " + className}>
+            {showSearchBar && <SelectTest onSelect={onSelect} className='rounded-full px-4' placeholder='Search Test' />}
             <button type="submit" className={(showSearchBar ? "absolute right-0 top-0 mt-3 mr-4" : "bg-white p-3 rounded-full")} onClick={() => setShowSearchBar(true)}>
                 <svg className="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" version="1.1" id="Capa_1" x="0px" y="0px"
                     viewBox="0 0 56.966 56.966" xmlSpace="preserve" width="512px" height="512px">

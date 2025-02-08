@@ -77,7 +77,7 @@ function Test() {
     }
 
     return (
-        <div className='bg-blue-50 py-9 px-10'>
+        <div className='bg-blue-50 p-1 md:py-9 md:px-10'>
             <div className='bg-white border-2 p-7 px-8 flex flex-col rounded-lg'>
                 <div className='text-2xl font-bold pb-6'>{testDetails.name}</div>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-5'>
@@ -139,7 +139,7 @@ function Test() {
                     <button className='px-5 py-2 rounded-md bg-blue-500 text-white font-medium'>Book</button>
                 </div>
             </div>
-            <div className='mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 bg-white'>
+            <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 bg-white'>
                 <div className='flex gap-2'>
                     <DescriptionIcon />
                     <div className='flex flex-col gap-1'>
@@ -169,7 +169,7 @@ function Test() {
                     </div>
                 </div>
             </div>
-            {(labBaseDetails.packagesInclude.length > 0 && labBaseDetails.ranges.length > 0) && <div className='mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 bg-white'>
+            {(labBaseDetails.packagesInclude.length > 0 && labBaseDetails.ranges.length > 0) && <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 bg-white'>
                 {labBaseDetails.packagesInclude.length > 0 && <div className='flex items-start gap-2'>
                     <PackageIcon />
                     <div className='flex flex-col gap-1'>

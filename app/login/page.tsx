@@ -38,7 +38,9 @@ export default function Login() {
             if (res.body) {
                 // Store token securely
                 document.cookie = `token=${res.body.token}; path=/; secure; samesite=strict`;
-                navigate.replace('/')
+                const urlParams = new URLSearchParams(window.location.search);
+                const redirectUrl = urlParams.get('redirect') || '/';
+                navigate.replace(redirectUrl);
             }
         });
         setLoading(false);

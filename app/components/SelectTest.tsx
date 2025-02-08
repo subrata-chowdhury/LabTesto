@@ -37,7 +37,7 @@ const SelectTest: React.FC<SelectInstituteProps> = ({
                     }
                 }} />
             {
-                open && <div className="absolute top-12 left-0 w-full bg-white border-2 rounded-md cursor-pointer drop-shadow-lg">
+                open && tests.length > 0 && <div className="absolute top-12 left-0 w-full bg-white border-2 rounded-md cursor-pointer drop-shadow-lg">
                     <div className=" max-h-[150px] overflow-y-auto">
                         {tests.map(e => <div key={e.name} className="px-3 py-2 border-b-2 hover:bg-gray-100" onClick={() => {
                             onSelect(e)
