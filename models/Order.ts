@@ -31,8 +31,15 @@ interface IOrder extends Document {
 
 const OrderSchema: Schema = new Schema({
     name: { type: String, default: '' },
-    tests: { type: [mongoose.Schema.Types.ObjectId], required: true, ref: 'Test' },
+    tests: {
+        type: [{
+            test: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Test' },
+            lab: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Lab' },
+            price: { type: Number, required: true }
+        }], required: true
+    },
     user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
+    collector: { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'Collector' },
     status: { type: String, enum: ['Ordered', 'Sample Collected', 'Report Generated', 'Report Delivered'], default: 'Ordered' },
     phone: { type: String, required: true },
     address: {

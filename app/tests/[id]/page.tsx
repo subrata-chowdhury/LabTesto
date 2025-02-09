@@ -32,6 +32,7 @@ function Test() {
     })
     const [lab, setLab] = useState<{ _id: string, name: string, prices: { test: string, price: number, offer: number }[] }>({ name: '', _id: '', prices: [] })
     const [labs, setLabs] = useState<LabDetails[]>([])
+    const [loading, setLoading] = useState(false);
     const { id } = useParams<{ id: string }>();
 
     useEffect(() => {
@@ -136,7 +137,25 @@ function Test() {
                         <div className='text-base line-through text-gray-500'>₹{labBaseDetails.price}</div>
                         <div className='text-sm font-semibold text-red-400'>{labBaseDetails.offer}% OFF</div>
                     </div>
-                    <button className='px-5 py-2 rounded-md bg-blue-500 text-white font-medium'>Book</button>
+                    <button disabled={loading} className='px-5 py-2 rounded-md bg-blue-500 text-white font-medium' onClick={() => {
+                        const cartItem = {
+                            product: {
+                                test: id,
+                                lab: lab._id,
+                                price: (labBaseDetails.price - (labBaseDetails.price * (labBaseDetails.offer / 100))).toFixed(2)
+                            },
+                            quantity: 1
+                        };
+                        setLoading(true);
+                        fetcher.post('/cart', cartItem).then(res => {
+                            if (res.status === 200) {
+                                alert('Test added to cart successfully');
+                            } else {
+                                alert('Failed to add test to cart');
+                            }
+                            setLoading(false);
+                        });
+                    }}>{loading ? 'Booking..' : 'Book'}</button>
                 </div>
             </div>
             <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 bg-white'>

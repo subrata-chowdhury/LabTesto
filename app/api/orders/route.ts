@@ -14,26 +14,27 @@ export async function GET(req: NextRequest) {
 
         if (filter.name) filter.name = { $regex: `^${filter.name}`, $options: 'i' };
 
-        const labs = await Order.find(filter)
+        const orders = await Order.find(filter)
             .limit(limit)
             .skip((page - 1) * limit);
 
-        const totalLabs = await Order.countDocuments(filter);
-        const totalPages = Math.ceil(totalLabs / limit);
+        const totalOrders = await Order.countDocuments(filter);
+        const totalPages = Math.ceil(totalOrders / limit);
 
         return NextResponse.json({
-            labs,
+            orders,
             pagination: {
-                totalLabs,
+                totalOrders,
                 totalPages,
                 currentPage: page,
                 pageSize: limit,
             },
         });
     } catch {
-        return new NextResponse('Error fetching labs', { status: 500 });
+        return new NextResponse('Error fetching orders', { status: 500 });
     }
 }
+
 export async function POST(req: NextRequest) {
     const body = await req.json();
 
@@ -80,7 +81,6 @@ export async function POST(req: NextRequest) {
     }
     return NextResponse.json({ message: 'Order saved successfully' }, { status: 200 });
 }
-
 
 export async function PUT() {
     return NextResponse.json({ message: 'PUT request received' });

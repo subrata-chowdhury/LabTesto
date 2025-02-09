@@ -29,8 +29,9 @@ const UserSchema: Schema = new Schema({
     password: { type: String, required: true },
     phone: { type: String, required: false },
 
-    addresses: {
+    patientDetails: {
         type: [{
+            name: { type: String, required: true },
             phone: { type: String, required: true },
             address: {
                 pin: { type: Number, required: true },
@@ -38,7 +39,7 @@ const UserSchema: Schema = new Schema({
                 district: { type: String, required: true },
                 other: { type: String, required: false } // road details
             }
-        }]
+        }], required: false, default: []
     },
     verified: { type: Boolean, default: false },
     otp: { type: String, required: false },

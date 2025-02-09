@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     await dbConnect();
 
     try {
-        const order = await Order.findById(id).populate('tests').populate('user');
+        const order = await Order.findById(id).populate('tests.test').populate('tests.lab').populate('user');
 
         if (!order) {
             return new NextResponse('Order not found', { status: 404 });
