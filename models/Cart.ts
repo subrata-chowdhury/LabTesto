@@ -1,8 +1,28 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
+interface ICartItem {
+    product: {
+        test: mongoose.Types.ObjectId;
+        lab: mongoose.Types.ObjectId;
+        price: number;
+    };
+    patientDetails: {
+        name?: string;
+        phone?: string;
+        address?: {
+            pin?: number;
+            city?: string;
+            district?: string;
+            other?: string;
+        };
+    }[];
+    quantity: number;
+    date?: Date;
+}
+
 interface ICart extends Document {
-    items: { product: string, quantity: number }[];
-    user: string;
+    items: ICartItem[];
+    user: mongoose.Types.ObjectId;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -13,22 +33,22 @@ const CartSchema: Schema = new Schema({
             product: {
                 test: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Test' },
                 lab: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Lab' },
-                price: { type: Number, required: true }
+                price: { type: Number, required: true },
             },
             patientDetails: {
                 type: [{
-                    name: { type: String, required: true },
-                    phone: { type: String, required: true },
+                    name: { type: String, required: false },
+                    phone: { type: String, required: false },
                     address: {
-                        pin: { type: Number, required: true },
-                        city: { type: String, required: true },
-                        district: { type: String, required: true },
+                        pin: { type: Number, required: false },
+                        city: { type: String, required: false },
+                        district: { type: String, required: false },
                         other: { type: String, required: false } // road details
                     }
                 }], required: false, default: []
             },
             quantity: { type: Number, required: true },
-            date: { type: Date, require: false, default: Date.now }
+            date: { type: Date, required: false, default: Date.now }
         }], required: true
     },
     user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },

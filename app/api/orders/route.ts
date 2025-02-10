@@ -2,6 +2,7 @@
 import dbConnect from '@/config/db';
 import Order from '@/models/Order';
 import { NextRequest, NextResponse } from 'next/server';
+import Cart from '@/models/Cart';
 
 export async function GET(req: NextRequest) {
     try {
@@ -11,8 +12,6 @@ export async function GET(req: NextRequest) {
         const page = parseInt(searchParams.get('page') || '1', 10);
 
         await dbConnect();
-
-        if (filter.name) filter.name = { $regex: `^${filter.name}`, $options: 'i' };
 
         const orders = await Order.find(filter)
             .limit(limit)
@@ -36,39 +35,59 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+    const userId = await req.cookies.get('userId')?.value;
     const body = await req.json();
 
     await dbConnect();
 
     // validation logic
-    if (!body) {
-        return new NextResponse('Request body is missing', { status: 400 });
-    }
-    if (!body.name) {
-        return new NextResponse('Name is required', { status: 400 });
-    }
-    if (!body.tests || !Array.isArray(body.tests) || body.tests.length === 0) {
-        return new NextResponse('Tests are required', { status: 400 });
-    }
-    if (!body.user) {
-        return new NextResponse('User is required', { status: 400 });
-    }
-    if (!body.phone) {
-        return new NextResponse('Phone number is required', { status: 400 });
-    }
-    if (!body.address || !body.address.pin || !body.address.city || !body.address.district) {
-        return new NextResponse('Complete address information is required', { status: 400 });
+    if (!body || !Array.isArray(body) || body.length === 0) {
+        return new NextResponse('Request body is missing or invalid', { status: 400 });
     }
 
+    for (const item of body) {
+        if (!item.product || !item.product.test || !item.product.lab) {
+            return new NextResponse('Product test and lab are required', { status: 400 });
+        }
+        if (typeof item.quantity !== 'number' || item.quantity <= 0) {
+            return new NextResponse('Quantity must be a positive number', { status: 400 });
+        }
+    }
+
+    const cart = await Cart.findOne({ user: userId });
+
+    if (!cart) {
+        return new NextResponse('Cart not found for user', { status: 404 });
+    }
+
+    const orderItems = body.map(item => {
+        const cartItem = cart.items.find((cartItem: { product: { test: string, lab: string } }) =>
+            cartItem.product.test.toString() === item.product.test &&
+            cartItem.product.lab.toString() === item.product.lab
+        );
+
+        if (!cartItem) {
+            throw new Error('Cart item not found');
+        }
+
+        return {
+            product: {
+                test: cartItem.product.test,
+                lab: cartItem.product.lab,
+                price: cartItem.product.price,
+            },
+            patientDetails: cartItem.patientDetails,
+            quantity: item.quantity,
+            date: new Date()
+        };
+    });
+
     const orderData = {
-        name: body.name,
-        tests: body.tests,
-        user: body.user,
-        status: body.status || 'Ordered',
-        phone: body.phone,
-        address: body.address,
-        sampleTakenDateTime: body.sampleTakenDateTime || { date: { start: new Date(), end: new Date() } },
-        reportDeliverTime: body.reportDeliverTime || { date: { start: new Date(), end: new Date() } }
+        items: orderItems,
+        user: userId,
+        status: 'Ordered',
+        sampleTakenDateTime: { date: { start: new Date(), end: new Date() } },
+        reportDeliverTime: { date: { start: new Date(), end: new Date() } }
     };
 
     const order = new Order(orderData);
@@ -80,12 +99,4 @@ export async function POST(req: NextRequest) {
         return new NextResponse('Error saving order', { status: 500 });
     }
     return NextResponse.json({ message: 'Order saved successfully' }, { status: 200 });
-}
-
-export async function PUT() {
-    return NextResponse.json({ message: 'PUT request received' });
-}
-
-export async function DELETE() {
-    return NextResponse.json({ message: 'DELETE request received' });
 }

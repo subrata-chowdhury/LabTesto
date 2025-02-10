@@ -1,5 +1,5 @@
 import fetcher from "@/lib/fetcher";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
 interface SelectInstituteProps {
     onSelect: (value: Test) => void;
@@ -17,7 +17,7 @@ const SelectTest: React.FC<SelectInstituteProps> = ({
     onSelect = () => { },
     placeholder = 'Select Test',
     className = '',
-    inputRef = useRef<HTMLInputElement>(null)
+    inputRef
 }) => {
     const [open, setOpen] = useState(false);
     const [tests, setTests] = useState<{ name: string, _id: string }[]>([]);

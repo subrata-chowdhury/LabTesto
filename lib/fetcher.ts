@@ -48,7 +48,7 @@ class Fetcher {
         return this.handleResponse(response);
     }
 
-    async delete<T>(endpoint: string, headers: HeadersInit = {}): Promise<{ body: T | null, status: number, error: string | null }> {
+    async delete<P, T>(endpoint: string, body?: P, headers: HeadersInit = {}): Promise<{ body: T | null, status: number, error: string | null }> {
         // const token = getCookie('token') || '';
         // console.log('Token', token)
         const response = await fetch(`${this.baseUrl}${endpoint}`, {
@@ -57,6 +57,7 @@ class Fetcher {
                 ...headers,
                 // 'Authorization': token,
             },
+            body: body ? JSON.stringify(body) : '',
         });
         return this.handleResponse<T>(response);
     }

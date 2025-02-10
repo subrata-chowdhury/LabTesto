@@ -19,7 +19,20 @@ export async function GET(req: NextRequest) {
         const cart = await Cart.findOne({ user: id }).populate({ path: 'items.product.test', model: Test }).populate('items.product.lab').populate({ path: 'user', model: User });
 
         if (!cart) {
-            return new NextResponse('Cart not found', { status: 404 });
+            const cartData = {
+                user: id,
+                items: []
+            };
+
+            const cart = new Cart(cartData);
+
+            try {
+                await cart.save();
+                return NextResponse.json([], { status: 200 });
+            } catch (e) {
+                console.log(e);
+                return new NextResponse('Error creating cart', { status: 500 });
+            }
         }
 
         return NextResponse.json(cart, { status: 200 });
@@ -52,26 +65,12 @@ export async function POST(req: NextRequest) {
     const labId = body.product.lab;
     if (existingCart) {
         try {
-
-            const existingItemIndex = existingCart.items.findIndex((item: { product: { test: string } }) => item.product.test.toString() === testId);
-            const existingItem = existingItemIndex === -1 ? null : existingCart.items[existingItemIndex];
-
-            if (existingItem.product.lab.toString() === labId) {
-                existingItem.quantity += 1;
-                existingCart.items[existingItemIndex] = existingItem;
-                existingCart.items[existingItemIndex].date = new Date();
-                await existingCart.save();
-                return NextResponse.json({ message: 'Cart updated successfully' }, { status: 200 });
-            }
-
+            // if not same then save the new product details
             const lab = await Lab.findById(labId);
             const priceDetails: { test: string, price: number, offer: number } = lab.prices.filter((price: { test: string, price: string }) => price.test.toString() === testId)[0];
             const price = (priceDetails.price - (priceDetails.price * (priceDetails.offer / 100))).toFixed(2);
 
-            if (existingCart.items[existingItemIndex].product.lab.toString() === labId) {
-                existingCart.items[existingItemIndex] = { product: { test: testId, lab: labId, price }, quantity: body.quantity || 1, date: new Date() };
-            }
-            else existingCart.items.push({ product: { test: testId, lab: labId, price }, quantity: 1, date: new Date() });
+            existingCart.items.push({ product: { test: testId, lab: labId, price }, quantity: 1, date: new Date() });
 
             await existingCart.save();
             return NextResponse.json({ message: 'Cart updated successfully' }, { status: 200 });
@@ -101,16 +100,59 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'Cart saved successfully' }, { status: 200 });
 }
 
-export async function DELETE(req: NextRequest) {
+export async function PUT(req: NextRequest) {
     const userId = await req.cookies.get('userId')?.value;
-    const { productId } = await req.json();
+    const body = await req.json();
 
     if (!userId) {
         return new NextResponse('User ID is required', { status: 400 });
     }
 
-    if (!productId) {
-        return new NextResponse('Product ID is required', { status: 400 });
+    if (!body || !body.product || !body.quantity) {
+        return new NextResponse('Product and quantity are required', { status: 400 });
+    }
+
+    await dbConnect();
+
+    try {
+        const existingCart = await Cart.findOne({ user: userId });
+
+        if (!existingCart) {
+            return new NextResponse('Cart not found', { status: 404 });
+        }
+
+        const { test: testId, lab: labId } = body.product;
+        const existingItemIndex = existingCart.items.findIndex((item: { product: { test: string, lab: string } }) => item.product.test.toString() === testId && item.product.lab.toString() === labId);
+
+        if (existingItemIndex === -1) {
+            return new NextResponse('Item not found in cart', { status: 404 });
+        }
+
+        const existingItem = existingCart.items[existingItemIndex];
+        existingItem.quantity = body.quantity;
+        existingItem.date = new Date();
+        existingItem.patientDetails = body.patientDetails || existingItem.patientDetails || [];
+
+        existingCart.items[existingItemIndex] = existingItem;
+        await existingCart.save();
+
+        return NextResponse.json({ message: 'Cart updated successfully' }, { status: 200 });
+    } catch (e) {
+        console.log(e);
+        return new NextResponse('Error updating cart', { status: 500 });
+    }
+}
+
+export async function DELETE(req: NextRequest) {
+    const userId = await req.cookies.get('userId')?.value;
+    const productDetails = await req.json();
+
+    if (!userId) {
+        return new NextResponse('User ID is required', { status: 400 });
+    }
+
+    if (!productDetails) {
+        return new NextResponse('Product Details is required', { status: 400 });
     }
 
     await dbConnect();
@@ -122,7 +164,7 @@ export async function DELETE(req: NextRequest) {
             return new NextResponse('Cart not found', { status: 404 });
         }
 
-        const itemIndex = cart.items.findIndex((item: { product: { test: string } }) => item.product.test.toString() === productId);
+        const itemIndex = cart.items.findIndex((item: { product: { test: string, lab: string } }) => (item.product.test.toString() === productDetails.test && item.product.lab.toString() === productDetails.lab));
 
         if (itemIndex === -1) {
             return new NextResponse('Item not found in cart', { status: 404 });

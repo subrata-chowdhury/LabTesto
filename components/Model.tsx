@@ -2,7 +2,7 @@ import Image from "next/image";
 import cross from "@/assets/cross.svg"
 
 interface ModelProps {
-    children: React.ReactNode;
+    children?: React.ReactNode;
     onClose: () => void;
     className?: string;
     heading?: string;
