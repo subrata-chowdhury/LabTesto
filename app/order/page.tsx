@@ -35,20 +35,6 @@ const OrderPage = () => {
         }
     };
 
-    async function updateOrder(item: { product: { test: string, lab: string }, patientDetails?: PatientDetails[], quantity: number }, onSuccess: () => void) {
-        try {
-            const response = await fetcher.put<{ product: { test: string, lab: string }, patientDetails?: PatientDetails[], quantity: number }, { message: string }>('/order', item);
-            if (response.status === 200 && response.body) onSuccess();
-        } catch (err) {
-            console.log(err)
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError('An unknown error occurred');
-            }
-        }
-    }
-
     if (loading) {
         return <div className="flex justify-center items-center h-screen">Loading...</div>;
     }
@@ -85,7 +71,7 @@ const OrderPage = () => {
                                     {(order.status === 'Ordered') && <button
                                         className="bg-red-500 text-white px-3 py-1 rounded"
                                         onClick={async () => {
-                                            const res = await fetcher.put<{ product: { test: string, lab: string }, status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' }, { message: string } | string>("/orders/"+order._id, {
+                                            const res = await fetcher.put<{ product: { test: string, lab: string }, status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' }, { message: string } | string>("/orders/" + order._id, {
                                                 product: {
                                                     test: item.product.test._id,
                                                     lab: item.product.lab._id
@@ -124,32 +110,21 @@ const OrderPage = () => {
 
 export default OrderPage;
 
-function PatientDetailsPopup({ patientDetails, onSave, onClose }: { patientDetails?: PatientDetails, onSave?: (patientDetails: PatientDetails) => void, onClose: () => void }) {
-    const [values, setValues] = useState<PatientDetails>(patientDetails || {
-        name: '',
-        phone: '',
-        address: {
-            pin: 0,
-            city: '',
-            district: '',
-            other: ''
-        }
-    });
-
+function PatientDetailsPopup({ patientDetails, onClose }: { patientDetails?: PatientDetails, onSave?: (patientDetails: PatientDetails) => void, onClose: () => void }) {
     return (
         <Model heading='Patient Details' onClose={onClose}>
             <div className='px-7 pb-6 py-4'>
                 <div className='pb-2 font-semibold'>Basic Information</div>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm pb-4'>
-                    <Input label='Name' value={values.name} onChange={() => { }} />
-                    <Input label='Phone' value={values.phone} onChange={() => { }} />
+                    <Input label='Name' value={patientDetails?.name || ''} onChange={() => { }} />
+                    <Input label='Phone' value={patientDetails?.phone || ''} onChange={() => { }} />
                 </div>
                 <div className='pb-2 font-semibold'>Address Information</div>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm pb-2'>
-                    <Input label='Pin' value={String(values.address.pin)} onChange={() => { }} />
-                    <Input label='City' value={values.address.city} onChange={() => { }} />
-                    <Input label='District' value={values.address.district} onChange={() => { }} />
-                    <Input label='Other' value={values.address.other || ''} onChange={() => { }} />
+                    <Input label='Pin' value={String(patientDetails?.address.pin)} onChange={() => { }} />
+                    <Input label='City' value={patientDetails?.address.city || ''} onChange={() => { }} />
+                    <Input label='District' value={patientDetails?.address.district || ''} onChange={() => { }} />
+                    <Input label='Other' value={patientDetails?.address.other || ''} onChange={() => { }} />
                 </div>
             </div>
         </Model>
