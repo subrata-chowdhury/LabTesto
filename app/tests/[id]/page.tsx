@@ -80,7 +80,7 @@ function Test() {
     return (
         <div className='bg-blue-50 p-1 md:py-9 md:px-10'>
             <div className='bg-white border-2 p-7 px-8 flex flex-col rounded-lg'>
-                <div className='text-2xl font-bold pb-6'>{testDetails.name}</div>
+                <div className='text-2xl font-bold pb-6 text-orange-600'>{testDetails.name}</div>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-5'>
                     <div className='flex gap-4'>
                         <p className='font-medium flex gap-2'>
@@ -137,7 +137,7 @@ function Test() {
                         <div className='text-base line-through text-gray-500'>₹{labBaseDetails.price}</div>
                         <div className='text-sm font-semibold text-red-400'>{labBaseDetails.offer}% OFF</div>
                     </div>
-                    <button disabled={loading} className='px-5 py-2 rounded-md bg-blue-500 text-white font-medium' onClick={() => {
+                    <button disabled={loading} className='px-5 py-2 rounded-md bg-orange-500 text-white font-medium' onClick={() => {
                         const cartItem = {
                             product: {
                                 test: id,

@@ -22,7 +22,7 @@ interface IOrder extends Document {
     }[];
     user: mongoose.Schema.Types.ObjectId;
     collector?: mongoose.Schema.Types.ObjectId;
-    status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered';
+    status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
     sampleTakenDateTime: {
         date: {
             start?: Date;
@@ -65,7 +65,7 @@ const OrderSchema: Schema = new Schema({
     },
     user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
     collector: { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'Collector' },
-    status: { type: String, enum: ['Ordered', 'Sample Collected', 'Report Generated', 'Report Delivered'], default: 'Ordered' },
+    status: { type: String, enum: ['Ordered', 'Sample Collected', 'Report Generated', 'Report Delivered', 'Canceled'], default: 'Ordered' },
     sampleTakenDateTime: {
         date: {
             start: { type: Date, required: false, default: Date.now },

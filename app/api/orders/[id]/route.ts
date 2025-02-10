@@ -1,99 +1,45 @@
-import { NextRequest, NextResponse } from 'next/server';
-import dbConnect from '@/config/db';
-import Order from '@/models/Order';
+import dbConnect from "@/config/db";
+import Order from "@/models/Order";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
-    const id = req.url.split('/').pop();
-
-    if (!id) {
-        return new NextResponse('Order ID is required', { status: 400 });
-    }
-
-    await dbConnect();
-
-    try {
-        const order = await Order.findById(id).populate('tests.test').populate('tests.lab').populate('user');
-
-        if (!order) {
-            return new NextResponse('Order not found', { status: 404 });
-        }
-
-        return NextResponse.json(order, { status: 200 });
-    } catch {
-        return new NextResponse('Error fetching order', { status: 500 });
-    }
-}
-
-export async function POST(req: NextRequest) {
+export async function PUT(req: NextRequest) {
+    const userId = await req.cookies.get('userId')?.value;
     const body = await req.json();
-    const id = req.url.split('/').pop();
+
+    if (!userId) {
+        return new NextResponse('User ID is required', { status: 400 });
+    }
 
     await dbConnect();
 
-    // validation logic
-    if (!body) {
-        return new NextResponse('Request body is missing', { status: 400 });
-    }
-    if (!body.name) {
-        return new NextResponse('Name is required', { status: 400 });
-    }
-    if (!body.tests || !Array.isArray(body.tests) || body.tests.length === 0) {
-        return new NextResponse('Tests are required', { status: 400 });
-    }
-    if (!body.user) {
-        return new NextResponse('User is required', { status: 400 });
-    }
-    if (!body.phone) {
-        return new NextResponse('Phone is required', { status: 400 });
-    }
-    if (!body.address || !body.address.pin || !body.address.city || !body.address.district) {
-        return new NextResponse('Complete address details are required', { status: 400 });
-    }
-
-    const orderData = {
-        name: body.name,
-        tests: body.tests,
-        user: body.user,
-        status: body.status || 'Ordered',
-        phone: body.phone,
-        address: body.address,
-        sampleTakenDateTime: body.sampleTakenDateTime,
-        reportDeliverTime: body.reportDeliverTime,
-    }
-
     try {
-        const updatedOrder = await Order.findByIdAndUpdate(id, orderData, { new: true, runValidators: true });
+        const existingOrder = await Order.findById(req.url.split('/').pop());
 
-        if (!updatedOrder) {
+        if (!existingOrder) {
             return new NextResponse('Order not found', { status: 404 });
         }
+
+        // const { test: testId, lab: labId } = body.product;
+        // const existingItemIndex = existingOrder.items.findIndex((item: { product: { test: string, lab: string } }) => item.product.test.toString() === testId && item.product.lab.toString() === labId);
+        // if (existingItemIndex === -1) {
+        //     return new NextResponse('Item not found in order', { status: 404 });
+        // }
+
+        // const existingItem = existingOrder.items[existingItemIndex];
+        // existingItem.quantity = body.quantity || existingItem.quantity;
+        existingOrder.status = body.status || existingOrder.status;
+        // existingItem.date = new Date();
+        // existingItem.patientDetails = body.patientDetails || existingItem.patientDetails || [];
+        // if (existingItem.patientDetails.length > body.quantity) {
+        //     existingItem.patientDetails = existingItem.patientDetails.slice(0, body.quantity);
+        // }
+
+        // existingOrder.items[existingItemIndex] = existingItem;
+        await existingOrder.save();
 
         return NextResponse.json({ message: 'Order updated successfully' }, { status: 200 });
-    } catch(e) {
+    } catch (e) {
         console.log(e);
-
         return new NextResponse('Error updating order', { status: 500 });
-    }
-}
-
-export async function DELETE(req: NextRequest) {
-    const id = req.url.split('/').pop();
-
-    if (!id) {
-        return new NextResponse('Order ID is required', { status: 400 });
-    }
-
-    await dbConnect();
-
-    try {
-        const deletedOrder = await Order.findByIdAndDelete(id);
-
-        if (!deletedOrder) {
-            return new NextResponse('Order not found', { status: 404 });
-        }
-
-        return NextResponse.json({ message: 'Order deleted successfully' }, { status: 200 });
-    } catch {
-        return new NextResponse('Error deleting order', { status: 500 });
     }
 }

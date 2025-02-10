@@ -2,7 +2,7 @@ import React from 'react'
 
 const Footer = () => {
     return (
-        <footer className="bg-gray-800 text-white py-6 pt-5">
+        <footer className="bg-orange-50 text-orange-500 py-6 pt-5">
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-evenly">
                     <div className='inline-flex flex-col'>
@@ -42,7 +42,7 @@ const Footer = () => {
                         </ul>
                     </div>
                 </div>
-                <div className="border-t border-gray-500 mt-5 pt-4 text-center flex justify-between text-xs">
+                <div className="border-t border-orange-500 mt-5 pt-4 text-center flex justify-between text-xs">
                     <p>Privacy Policy | Terms of Service</p>
                     <p>&copy; 2023 Your Company. All rights reserved.</p>
                 </div>

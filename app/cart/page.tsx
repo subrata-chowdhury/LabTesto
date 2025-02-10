@@ -52,9 +52,9 @@ const CartPage: React.FC = () => {
         }
     };
 
-    async function updateCart(item: { product: { test: string, lab: string }, patientDetails?: PatientDetails, quantity: number }, onSuccess: () => void) {
+    async function updateCart(item: { product: { test: string, lab: string }, patientDetails?: PatientDetails[], quantity: number }, onSuccess: () => void) {
         try {
-            const response = await fetcher.put<{ product: { test: string, lab: string }, patientDetails?: PatientDetails, quantity: number }, { message: string }>('/cart', item);
+            const response = await fetcher.put<{ product: { test: string, lab: string }, patientDetails?: PatientDetails[], quantity: number }, { message: string }>('/cart', item);
             if (response.status === 200 && response.body) onSuccess();
         } catch (err) {
             console.log(err)
@@ -109,7 +109,7 @@ const CartPage: React.FC = () => {
                                         await updateCart(updatedItem, fetchCart)
                                     }} />
                                 <button
-                                    className="bg-red-500 text-white px-2 py-1 rounded"
+                                    className="border-orange-500 border-2 text-orange-500 px-2 py-1 rounded"
                                     onClick={async () => {
                                         const res = await fetcher.delete<{ test: string, lab: string }, { message: string } | string>("/cart", {
                                             test: item.product.test._id,
@@ -118,7 +118,7 @@ const CartPage: React.FC = () => {
                                         if (res.status === 200) fetchCart()
                                     }}>Remove</button>
                                 <button
-                                    className="bg-blue-500 text-white px-2 py-1 rounded"
+                                    className="bg-orange-500 text-white px-2 py-1 rounded"
                                     onClick={async () => {
                                         const res = await fetcher.post<{ product: { test: string, lab: string }, quantity: number }[], { message: string }>(`/orders`, [{
                                             product: {
@@ -128,10 +128,10 @@ const CartPage: React.FC = () => {
                                             quantity: item.quantity
                                         }]);
                                         if (res.status === 200) {
-                                            await fetcher.delete<{ test: string, lab: string }, { message: string } | string>("/cart", {
-                                                test: item.product.test._id,
-                                                lab: item.product.lab._id
-                                            });
+                                            // await fetcher.delete<{ test: string, lab: string }, { message: string } | string>("/cart", {
+                                            //     test: item.product.test._id,
+                                            //     lab: item.product.lab._id
+                                            // });
                                             fetchCart();
                                         }
                                     }}>Order</button>
@@ -154,8 +154,18 @@ const CartPage: React.FC = () => {
                 ))}
             </ul>
             <div className='p-4 flex bg-white'>
-                <button className="bg-blue-500 text-white px-5 py-2 ms-auto rounded-sm" onClick={() => {
-
+                <button className="bg-blue-500 text-white px-5 py-2 ms-auto rounded-sm" onClick={async () => {
+                    const res = await fetcher.post<{ product: { test: string, lab: string }, quantity: number }[], { message: string }>(`/orders`, cart.items.map(item => ({
+                        product: {
+                            test: item.product.test._id,
+                            lab: item.product.lab._id
+                        },
+                        quantity: item.quantity
+                    })));
+                    if (res.status === 200) {
+                        // await fetcher.delete('/cart');
+                        fetchCart();
+                    }
                 }}>Order All</button>
             </div>
             {(showPatientPopup?.cartIndex != null) &&
@@ -169,7 +179,7 @@ const CartPage: React.FC = () => {
                                 test: cart.items[showPatientPopup?.cartIndex || 0].product.test._id,
                                 lab: cart.items[showPatientPopup?.cartIndex || 0].product.lab._id
                             },
-                            patientDetails: values,
+                            patientDetails: cart.items[showPatientPopup?.cartIndex || 0].patientDetails,
                             quantity: cart.items[showPatientPopup?.cartIndex || 0].quantity
                         }, () => {
                             fetchCart()

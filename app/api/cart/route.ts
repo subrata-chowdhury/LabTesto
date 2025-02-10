@@ -132,6 +132,9 @@ export async function PUT(req: NextRequest) {
         existingItem.quantity = body.quantity;
         existingItem.date = new Date();
         existingItem.patientDetails = body.patientDetails || existingItem.patientDetails || [];
+        if (existingItem.patientDetails.length > body.quantity) {
+            existingItem.patientDetails = existingItem.patientDetails.slice(0, body.quantity);
+        }
 
         existingCart.items[existingItemIndex] = existingItem;
         await existingCart.save();
