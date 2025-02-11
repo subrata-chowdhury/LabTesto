@@ -8,10 +8,11 @@ type Props = {
     width?: string | number,
     height?: number,
     showPopupAtTop?: boolean,
-    containerClassName?: string
+    containerClassName?: string,
+    optionElement?: (option: string | number, index: number) => React.JSX.Element
 }
 
-function Dropdown({ options = [], value = "", onChange = () => { }, containerClassName = '', width, height, showPopupAtTop = false }: Props) {
+function Dropdown({ options = [], value = "", onChange = () => { }, containerClassName = '', width, height, showPopupAtTop = false, optionElement }: Props) {
     const [isOpen, setIsOpen] = useState(false)
 
     return (
@@ -21,7 +22,7 @@ function Dropdown({ options = [], value = "", onChange = () => { }, containerCla
                 <Image src={dropdownArrow} alt='Search Icon' width={16} height={16} className={`transition-all w-4 h-4 ${isOpen ? 'rotate-180' : 'rotate-0'}`} />
             </div>
             {isOpen && <div className='border-2 absolute w-full bg-white z-10 my-1 rounded max-h-60 overflow-y-auto' style={{ top: showPopupAtTop ? 'auto' : '100%', bottom: showPopupAtTop ? '100%' : 'auto' }}>
-                {options.map((option, index) => (
+                {!optionElement && options.map((option, index) => (
                     <div
                         key={index}
                         className='p-2 hover:bg-gray-200 cursor-pointer'
@@ -31,6 +32,7 @@ function Dropdown({ options = [], value = "", onChange = () => { }, containerCla
                         }}>
                         {option}
                     </div>))}
+                {optionElement && options.map((option, index) => optionElement(option, index))}
             </div>}
         </div>
     )

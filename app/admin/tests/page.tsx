@@ -71,9 +71,9 @@ const Tests = () => {
             <div className='flex flex-col'>
                 <div className='mb-4 justify-start'>
                     <Card label='Total Tests' value={(analytics.applied + analytics.graduated + analytics.pursuing)} className='mr-3 mt-3' />
-                    <Card label='Total Pursuing' value={analytics.pursuing} colors={{ lineColor: '#A72854', iconBgColor: '#FEE0EA' }} className='mr-3 mt-3' />
-                    <Card label='Total Graduated' value={analytics.graduated} colors={{ lineColor: '#A74726', iconBgColor: '#FEE1D7' }} className='mr-3 mt-3' />
-                    <Card label='Total Applied' value={analytics.applied} colors={{ lineColor: '#A74726', iconBgColor: '#FEF3DD' }} className='mr-3 mt-3' />
+                    <Card label='Total Blood' value={analytics.pursuing} colors={{ lineColor: '#A72854', iconBgColor: '#FEE0EA' }} className='mr-3 mt-3' />
+                    <Card label='Total Urine' value={analytics.graduated} colors={{ lineColor: '#A74726', iconBgColor: '#FEE1D7' }} className='mr-3 mt-3' />
+                    <Card label='Total Stool' value={analytics.applied} colors={{ lineColor: '#A74726', iconBgColor: '#FEF3DD' }} className='mr-3 mt-3' />
                 </div>
                 <div className='ms-auto mb-4 flex gap-2 bg-blue-500 text-white px-4 py-2 rounded cursor-pointer' onClick={() => navigate.push('/admin/tests/new')}>
                     <div>New Test</div>

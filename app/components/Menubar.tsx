@@ -80,7 +80,16 @@ export function SearchBar({ active = false, className = '', onSelect = () => { }
 
     return (
         <div className={"relative text-sm text-orange-500 " + className}>
-            {showSearchBar && <SelectTest onSelect={onSelect} className='rounded-full px-4' placeholder='Search Test' />}
+            {showSearchBar && <SelectTest
+                onSelect={onSelect}
+                optionElement={(option, index) => (
+                    <div key={index} className='px-3 py-2 border-b-2 hover:bg-gray-100' onClick={() => onSelect(option)}>
+                        <div className='text-base font-medium'>{option.name}</div>
+                        <div className='text-xs'>{option.sampleType}</div>
+                    </div>
+                )}
+                className='rounded-full px-4'
+                placeholder='Search Test' />}
             <button type="submit" className={(showSearchBar ? "absolute right-0 top-0 mt-3 mr-4" : "bg-white p-3 rounded-full")} onClick={() => setShowSearchBar(true)}>
                 <svg className="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" version="1.1" id="Capa_1" x="0px" y="0px"
                     viewBox="0 0 56.966 56.966" xmlSpace="preserve" width="512px" height="512px">

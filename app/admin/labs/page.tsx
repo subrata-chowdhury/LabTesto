@@ -91,8 +91,8 @@ const Labs = () => {
                     pagination={{ currentPage, totalPages: totalPages, onPageChange: setCurrentPage }}
                     limit={{ limit, options: [5, 10, 15], onLimitChange: (val) => setLimit(val as number) }}
                     onSearch={(val) => setName(val)}
-                    tag={{ tags: ['All', 'Today'], onTagChange: (tag) => { setLocation(tag) } }}
-                    dropdown={{ options: ['All', 'Location1', 'Location2', 'Location3'], value: location || 'All', onChange: (value) => { setLocation(value as string) }, width: 100 }} />
+                    tag={{ tags: ['All', 'Today'], onTagChange: (tag) => { setLocation(tag) } }} />
+                    {/* dropdown={{ options: ['All', 'Location1', 'Location2', 'Location3'], value: location || 'All', onChange: (value) => { setLocation(value as string) }, width: 100 }} /> */}
             </div>
         </>
     )

@@ -10,6 +10,7 @@ import dashboard from '@/assets/Menubar/dashboard.svg'
 import students from '@/assets/Menubar/students.svg'
 import form from '@/assets/Menubar/form.svg'
 import sheet from '@/assets/Menubar/attendance.svg'
+import cart from '@/assets/cart.svg'
 
 function Menubar() {
     const [menubarHovered, setMenubarHovered] = useState(false);
@@ -22,7 +23,9 @@ function Menubar() {
                 <Menu name='Tests' image={form} link='/admin/tests' active={currentPath === '/admin/tests'} menubarHovered={menubarHovered} />
                 <Menu name='Labs' image={sheet} link='/admin/labs' active={currentPath === '/admin/labs'} menubarHovered={menubarHovered} />
                 <Menu name='Collectors' image={students} link='/admin/collectors' active={currentPath === '/admin/collectors'} menubarHovered={menubarHovered} />
-            </div>
+                <Menu name='Carts' image={cart} link='/admin/carts' active={currentPath === '/admin/carts'} menubarHovered={menubarHovered} />
+                <Menu name='Orders' image={form} link='/admin/orders' active={currentPath === '/admin/orders'} menubarHovered={menubarHovered} />
+                </div>
             <div className=''>
                 <div
                     className={`cursor-pointer flex justify-start gap-3 p-3 items-center rounded-lg`}

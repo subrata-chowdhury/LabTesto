@@ -237,6 +237,7 @@ type TestDetails = {
 type LabDetails = {
     _id: string,
     name: string,
+    sampleType: string,
     prices: { test: string, price: number, offer: number }[],
     packagesInclude: { test: string, packages: string[] }[],
     ranges: { test: string, ranges: { [key: string]: string }[] }[]

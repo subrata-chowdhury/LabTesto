@@ -108,8 +108,8 @@ export async function PUT(req: NextRequest) {
         return new NextResponse('User ID is required', { status: 400 });
     }
 
-    if (!body || !body.product || !body.quantity) {
-        return new NextResponse('Product and quantity are required', { status: 400 });
+    if (!body || !body.product) {
+        return new NextResponse('Product is required', { status: 400 });
     }
 
     await dbConnect();

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import fetcher from '@/lib/fetcher';
 import Input from '@/components/Inputs/Input';
 import Model from '@/components/Model';
+import Link from 'next/link';
 
 type CartItem = {
     product: {
@@ -86,10 +87,10 @@ const CartPage: React.FC = () => {
                     <li key={index} className="bg-white rounded drop-shadow-md flex flex-col">
                         <div className='p-4 flex justify-between items-center'>
                             <div className='flex flex-col gap-4 justify-between h-full'>
-                                <div>
+                                <Link href={'/tests/' + item.product.test._id}>
                                     <div className="text-2xl font-semibold">{item.product.test.name}</div>
                                     <div className='text-sm'>{item.product.lab.name}, {item.product.lab.location.address}</div>
-                                </div>
+                                </Link>
                                 <div className='mt-auto font-medium text-xl'>₹{(item.product.price || 0) * item.quantity}</div>
                             </div>
                             <div className='flex flex-col gap-2 text-sm'>
@@ -137,12 +138,12 @@ const CartPage: React.FC = () => {
                                     }}>Order</button>
                             </div>
                         </div>
-                        <div className='bg-gray-100 flex gap-2 p-2 text-xs'>
+                        <div className='bg-orange-50 flex gap-2 p-2 text-xs'>
                             {
                                 Array(item.quantity).fill(0).map((_, i) => (
                                     <div
                                         key={i}
-                                        className='bg-gray-300 px-3 py-1 rounded-full cursor-pointer'
+                                        className='bg-orange-200 px-3 py-1 rounded-full cursor-pointer'
                                         onClick={() =>
                                             setShowPatientPopup({ cartIndex: index, patientIndex: i })}>
                                         {cart.items[index]?.patientDetails[i]?.name?.split(' ').map(e => e.charAt(0)).join('') || 'Add +'}
@@ -153,8 +154,9 @@ const CartPage: React.FC = () => {
                     </li>
                 ))}
             </ul>
-            <div className='p-4 flex bg-white'>
-                <button className="bg-blue-500 text-white px-5 py-2 ms-auto rounded-sm" onClick={async () => {
+            <div className='p-4 flex justify-between items-center bg-white'>
+                <div>Total: <div className="text-2xl font-semibold">₹{cart.items.reduce((total, item) => total + (item.product.price || 0) * item.quantity, 0)}</div> <div className='text-gray-500'>+ ₹0 Delivery Charges</div></div>
+                <button className="bg-orange-500 text-white px-5 py-2 rounded-sm" onClick={async () => {
                     const res = await fetcher.post<{ product: { test: string, lab: string }, quantity: number }[], { message: string }>(`/orders`, cart.items.map(item => ({
                         product: {
                             test: item.product.test._id,
@@ -221,8 +223,8 @@ function PatientDetailsPopup({ patientDetails, onSave, onClose }: { patientDetai
                     <Input label='Other' value={values.address.other || ''} onChange={val => setValues({ ...values, address: { ...values.address, other: val } })} />
                 </div>
                 <div className='p-5 pb-2 px-0 ms-auto justify-end items-end flex gap-4'>
-                    <div className='font-medium text-blue-500 h-10 flex justify-center items-center px-4 border-2 border-blue-400 rounded cursor-pointer' onClick={onClose}>Cancel</div>
-                    <div className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => {
+                    <div className='font-medium text-orange-500 h-10 flex justify-center items-center px-4 border-2 border-orange-500 rounded cursor-pointer' onClick={onClose}>Cancel</div>
+                    <div className='bg-orange-500 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => {
                         await onSave(values);
                     }}>Save</div>
                 </div>
