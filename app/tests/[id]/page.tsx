@@ -8,9 +8,10 @@ import SampleTypeIcon from '@/assets/reactIcon/test/SampleType'
 import TubeIcon from '@/assets/reactIcon/test/Tube'
 import FoodIcon from '@/assets/reactIcon/test/Food'
 import DescriptionIcon from '@/assets/reactIcon/test/Description'
-import Dropdown from '@/components/Dropdown'
+// import Dropdown from '@/components/Dropdown'
 import PackageIcon from '@/assets/reactIcon/test/Package'
 import { MainTable } from '@/components/Table'
+import CheckBox from '@/components/Inputs/CheckBox'
 
 function Test() {
     const [testDetails, setTestDetails] = useState<TestDetails>({
@@ -33,6 +34,7 @@ function Test() {
     const [lab, setLab] = useState<{ _id: string, name: string, prices: { test: string, price: number, offer: number }[] }>({ name: '', _id: '', prices: [] })
     const [labs, setLabs] = useState<LabDetails[]>([])
     const [loading, setLoading] = useState(false);
+    const [limit, setLimit] = useState<number>(10)
     const { id } = useParams<{ id: string }>();
 
     useEffect(() => {
@@ -41,25 +43,14 @@ function Test() {
 
     useEffect(() => {
         const filter = { 'prices.test': id };
-        fetcher.get<{ labs: LabDetails[] }>(`/labs?filter=${JSON.stringify(filter)}&limit=40`).then(res => {
+        fetcher.get<{ labs: LabDetails[] }>(`/labs?filter=${JSON.stringify(filter)}&limit=${limit}`).then(res => {
             if (res.body && res.status === 200) {
                 setLabs(res.body.labs);
                 setLab(res.body.labs[0]);
-                const selectedLab = res.body.labs[0];
-                if (selectedLab) {
-                    const testPrice = selectedLab.prices.find(p => p.test === id);
-                    const packagesInclude = selectedLab.packagesInclude.find(p => p.test === id);
-                    const ranges = selectedLab.ranges.find(p => p.test === id);
-                    setLabBaseDetails({
-                        price: testPrice?.price || 0,
-                        offer: testPrice?.offer || 0,
-                        packagesInclude: packagesInclude?.packages || [],
-                        ranges: ranges?.ranges || []
-                    });
-                }
+                onLabSelect(res.body.labs[0]);
             }
         })
-    }, [id])
+    }, [id, limit])
 
     async function getTestDetails(id: string) {
         const res = await fetcher.get<TestDetails>(`/tests/${id}`);
@@ -75,6 +66,23 @@ function Test() {
                 riskAssesment: res.body.riskAssesment || '',
                 resultTime: res.body.resultTime || ''
             });
+    }
+
+    async function onLabSelect(lab: LabDetails) {
+        const selectedLab = lab;
+        if (selectedLab) {
+            // console.log(selectedLab);
+            setLab(selectedLab);
+            const testPrice = selectedLab.prices.find(p => p.test === id);
+            const packagesInclude = selectedLab.packagesInclude.find(p => p.test === id);
+            const ranges = selectedLab.ranges.find(p => p.test === id);
+            setLabBaseDetails({
+                price: testPrice?.price || 0,
+                offer: testPrice?.offer || 0,
+                packagesInclude: packagesInclude?.packages || [],
+                ranges: ranges?.ranges || []
+            });
+        }
     }
 
     return (
@@ -108,27 +116,23 @@ function Test() {
                             <Image src={labIcon} alt='' width={24} height={24} />
                             Lab
                         </p>
-                        <Dropdown
+                        <p className='text-gray-500'>{lab.name}</p>
+                        {/* <Dropdown
                             options={labs.map(e => e.name)}
                             value={lab?.name || ''}
                             containerClassName='flex-1'
-                            onChange={(val) => {
-                                const selectedLab = labs.find(l => l.name === val);
-                                if (selectedLab) {
-                                    console.log(selectedLab);
-                                    setLab(selectedLab);
-                                    const testPrice = selectedLab.prices.find(p => p.test === id);
-                                    const packagesInclude = selectedLab.packagesInclude.find(p => p.test === id);
-                                    const ranges = selectedLab.ranges.find(p => p.test === id);
-                                    setLabBaseDetails({
-                                        price: testPrice?.price || 0,
-                                        offer: testPrice?.offer || 0,
-                                        packagesInclude: packagesInclude?.packages || [],
-                                        ranges: ranges?.ranges || []
-                                    });
-                                }
-                            }}
-                            width={'100%'} />
+                            optionElement={({ index, onClick }) => (
+                                <div key={index} onClick={() => { onLabSelect(index); onClick() }} className='p-2 border-b-2 hover:bg-gray-200 cursor-pointer'>
+                                    <div className='font-semibold text-orange-500'>{labs[index].name}</div>
+                                    <div className='flex items-center gap-2'>
+                                        <div className='text-lg font-semibold'>₹{(labs[index].prices[0].price - (labs[index].prices[0].price * (labs[index].prices[0].offer / 100))).toFixed(2)}</div>
+                                        <div className='text-base line-through text-gray-500'>₹{labs[index].prices[0].price}</div>
+                                        <div className='text-sm font-semibold text-red-400'>{labs[index].prices[0].offer}% OFF</div>
+                                    </div>
+                                </div>
+                            )}
+                            onChange={({ index }) => onLabSelect(index)}
+                            width={'100%'} /> */}
                     </div>}
                 </div>
                 <div className='flex items-center justify-between mt-3'>
@@ -158,6 +162,35 @@ function Test() {
                     }}>{loading ? 'Booking..' : 'Book'}</button>
                 </div>
             </div>
+            <div className='mt-1 md:mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 md:gap-5 rounded-lg'>
+                {labs.length > 0 && labs.map((labObj, i) => (
+                    <div key={i} className='border-2 p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white' onClick={() => onLabSelect(labs[i])}>
+                        <div>
+                            <div className='font-semibold text-orange-500'>{labObj.name}</div>
+                            <div className='flex items-center gap-2'>
+                                <div className='text-lg font-semibold'>₹{(labObj.prices[0].price - (labObj.prices[0].price * (labObj.prices[0].offer / 100))).toFixed(2)}</div>
+                                <div className='text-base line-through text-gray-500'>₹{labObj.prices[0].price}</div>
+                                <div className='text-sm font-semibold text-red-400'>{labObj.prices[0].offer}% OFF</div>
+                            </div>
+                        </div>
+                        <CheckBox
+                            value={lab._id === labObj._id}
+                            label=""
+                            onChange={() => onLabSelect(labs[i])}
+                        />
+                    </div>
+                ))}
+            </div>
+            {labs.length >= limit && (
+                <div className='w-full flex justify-center'>
+                    <button
+                        className='mt-2 px-5 py-2 rounded-md bg-orange-500 text-white font-medium'
+                        onClick={() => setLimit(prevLimit => prevLimit + 10)}
+                    >
+                        Load More
+                    </button>
+                </div>
+            )}
             <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 bg-white'>
                 <div className='flex gap-2'>
                     <DescriptionIcon />

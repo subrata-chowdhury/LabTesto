@@ -48,7 +48,7 @@ const Menubar = () => {
                         width={28}
                         height={28} />
                 </div>
-                <div className="hidden md:flex items-center space-x-4 cursor-pointer">
+                <div className="hidden md:flex items-center space-x-4 cursor-pointer" onClick={() => navigate.push('/profile')}>
                     {/* <div className="text-white">Profile</div> */}
                     <Image src={user} alt="avatar" width={40} height={40} className="rounded-full p-2 bg-orange-100" />
                 </div>

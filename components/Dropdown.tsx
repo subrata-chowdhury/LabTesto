@@ -4,12 +4,12 @@ import Image from 'next/image'
 type Props = {
     options: string[] | number[],
     value: string | number,
-    onChange?: (value: string | number) => void,
+    onChange?: (opt: { value: string | number, index: number }) => void,
     width?: string | number,
     height?: number,
     showPopupAtTop?: boolean,
     containerClassName?: string,
-    optionElement?: (option: string | number, index: number) => React.JSX.Element
+    optionElement?: (props: { option: string | number, index: number, onClick: () => void }) => React.JSX.Element
 }
 
 function Dropdown({ options = [], value = "", onChange = () => { }, containerClassName = '', width, height, showPopupAtTop = false, optionElement }: Props) {
@@ -27,12 +27,12 @@ function Dropdown({ options = [], value = "", onChange = () => { }, containerCla
                         key={index}
                         className='p-2 hover:bg-gray-200 cursor-pointer'
                         onClick={() => {
-                            onChange(option);
+                            onChange({ value: option, index });
                             setIsOpen(false)
                         }}>
                         {option}
                     </div>))}
-                {optionElement && options.map((option, index) => optionElement(option, index))}
+                {optionElement && options.map((option, index) => optionElement({ option, index, onClick: () => setIsOpen(false) }))}
             </div>}
         </div>
     )

@@ -25,7 +25,7 @@ function Menubar() {
                 <Menu name='Collectors' image={students} link='/admin/collectors' active={currentPath === '/admin/collectors'} menubarHovered={menubarHovered} />
                 <Menu name='Carts' image={cart} link='/admin/carts' active={currentPath === '/admin/carts'} menubarHovered={menubarHovered} />
                 <Menu name='Orders' image={form} link='/admin/orders' active={currentPath === '/admin/orders'} menubarHovered={menubarHovered} />
-                </div>
+            </div>
             <div className=''>
                 <div
                     className={`cursor-pointer flex justify-start gap-3 p-3 items-center rounded-lg`}

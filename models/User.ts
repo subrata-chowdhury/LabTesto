@@ -5,7 +5,8 @@ interface IUser extends Document {
     email: string;
     password: string;
     phone?: string;
-    addresses?: {
+    patientDetails?: {
+        name: string;
         phone: string;
         address: {
             pin: number;
