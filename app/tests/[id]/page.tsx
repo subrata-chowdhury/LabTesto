@@ -1,6 +1,6 @@
 'use client'
 import { useParams } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import labIcon from '@/assets/lab.png'
 import Image from 'next/image'
 import fetcher from '@/lib/fetcher'
@@ -41,16 +41,33 @@ function Test() {
         getTestDetails(id);
     }, [id])
 
+    const onLabSelect = useCallback(async (lab: LabDetails, testId: string) => {
+        const selectedLab = lab;
+        if (selectedLab) {
+            // console.log(selectedLab);
+            setLab(selectedLab);
+            const testPrice = selectedLab.prices.find(p => p.test === testId);
+            const packagesInclude = selectedLab.packagesInclude.find(p => p.test === testId);
+            const ranges = selectedLab.ranges.find(p => p.test === testId);
+            setLabBaseDetails({
+                price: testPrice?.price || 0,
+                offer: testPrice?.offer || 0,
+                packagesInclude: packagesInclude?.packages || [],
+                ranges: ranges?.ranges || []
+            });
+        }
+    }, [])
+    
     useEffect(() => {
         const filter = { 'prices.test': id };
         fetcher.get<{ labs: LabDetails[] }>(`/labs?filter=${JSON.stringify(filter)}&limit=${limit}`).then(res => {
             if (res.body && res.status === 200) {
                 setLabs(res.body.labs);
                 setLab(res.body.labs[0]);
-                onLabSelect(res.body.labs[0]);
+                onLabSelect(res.body.labs[0], id);
             }
         })
-    }, [id, limit])
+    }, [id, limit, onLabSelect])
 
     async function getTestDetails(id: string) {
         const res = await fetcher.get<TestDetails>(`/tests/${id}`);
@@ -66,23 +83,6 @@ function Test() {
                 riskAssesment: res.body.riskAssesment || '',
                 resultTime: res.body.resultTime || ''
             });
-    }
-
-    async function onLabSelect(lab: LabDetails) {
-        const selectedLab = lab;
-        if (selectedLab) {
-            // console.log(selectedLab);
-            setLab(selectedLab);
-            const testPrice = selectedLab.prices.find(p => p.test === id);
-            const packagesInclude = selectedLab.packagesInclude.find(p => p.test === id);
-            const ranges = selectedLab.ranges.find(p => p.test === id);
-            setLabBaseDetails({
-                price: testPrice?.price || 0,
-                offer: testPrice?.offer || 0,
-                packagesInclude: packagesInclude?.packages || [],
-                ranges: ranges?.ranges || []
-            });
-        }
     }
 
     return (
@@ -164,7 +164,7 @@ function Test() {
             </div>
             <div className='mt-1 md:mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 md:gap-5 rounded-lg'>
                 {labs.length > 0 && labs.map((labObj, i) => (
-                    <div key={i} className='border-2 p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white' onClick={() => onLabSelect(labs[i])}>
+                    <div key={i} className='border-2 p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white' onClick={() => onLabSelect(labs[i], id)}>
                         <div>
                             <div className='font-semibold text-orange-500'>{labObj.name}</div>
                             <div className='flex items-center gap-2'>
@@ -176,7 +176,7 @@ function Test() {
                         <CheckBox
                             value={lab._id === labObj._id}
                             label=""
-                            onChange={() => onLabSelect(labs[i])}
+                            onChange={() => onLabSelect(labs[i], id)}
                         />
                     </div>
                 ))}

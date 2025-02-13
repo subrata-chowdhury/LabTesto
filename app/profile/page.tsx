@@ -3,6 +3,7 @@ import Input from '@/components/Inputs/Input'
 import React, { useEffect, useState } from 'react'
 import PatientDetailsPopup from '../components/popups/PatientDetailsPopup'
 import fetcher from '@/lib/fetcher'
+import Image from 'next/image'
 
 const ProfilePage = () => {
     const [user, setUser] = useState<User>({
@@ -39,7 +40,7 @@ const ProfilePage = () => {
         <div className='flex-1'>
             <div className='h-40 bg-orange-100'>
                 <div className='w-32 h-32 flex justify-center items-center top-full translate-x-1/2 -translate-y-1/2 bg-white rounded-full relative'>
-                    <img src={'./user.png'} className='w-[118px] h-[118px] p-2 border-4 border-orange-300 shadow-lg shadow-orange-200 rounded-full bg-white' />
+                    <Image src={'./user.png'} alt="profile picture" width={118} height={118} className='w-[118px] h-[118px] p-2 border-4 border-orange-300 shadow-lg shadow-orange-200 rounded-full bg-white' />
                 </div>
             </div>
             <div className='p-20 pb-2 px-10 md:px-20 '>

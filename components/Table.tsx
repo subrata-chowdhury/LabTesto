@@ -47,7 +47,7 @@ function Table<T>({ name, table, pagination, limit, onSearch, tag, dropdown }: P
                     {dropdown && <Dropdown
                         options={dropdown?.options || []}
                         value={dropdown?.value || ''}
-                        onChange={dropdown?.onChange}
+                        onChange={val => dropdown?.onChange(val.value)}
                         width={dropdown?.width}
                         height={dropdown?.height} />}
                 </div>
@@ -56,7 +56,7 @@ function Table<T>({ name, table, pagination, limit, onSearch, tag, dropdown }: P
             <div className='flex flex-col gap-2 md:flex-row md:gap-0 justify-between items-center p-4'>
                 <div className='flex gap-2 items-center'>
                     <p className='text-sm text-gray-600'>Showing</p>
-                    <Dropdown options={limit.options || [5, 10, 15]} value={limit.limit} onChange={(val) => limit.onLimitChange(val)} showPopupAtTop={true} height={38} />
+                    <Dropdown options={limit.options || [5, 10, 15]} value={limit.limit} onChange={(val) => limit.onLimitChange(val.value)} showPopupAtTop={true} height={38} />
                     <p className='text-sm text-gray-600 text-nowrap'>Out of {pagination.totalPages}</p>
                 </div>
                 <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} onChange={pagination.onPageChange} />
