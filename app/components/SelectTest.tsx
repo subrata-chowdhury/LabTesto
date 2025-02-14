@@ -58,7 +58,8 @@ const SelectTest: React.FC<SelectInstituteProps> = ({
                             <div
                                 key={e.name}
                                 className="px-3 py-2 border-b-2 hover:bg-gray-100"
-                                onClick={() => {
+                                onClick={(event) => {
+                                    event.stopPropagation()
                                     onSelect(e)
                                     setTestSearch(e.name)
                                     setOpen(false)

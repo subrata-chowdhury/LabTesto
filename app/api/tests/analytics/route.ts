@@ -12,7 +12,14 @@ export async function GET() {
             return acc;
         }, {});
 
-        return NextResponse.json(groupedData, { status: 200 });
+        const response = {
+            totalTests: tests.reduce((sum, test) => sum + test.count, 0),
+            blood: groupedData['blood'] || 0,
+            urine: groupedData['urine'] || 0,
+            stool: groupedData['stool'] || 0
+        };
+
+        return NextResponse.json(response, { status: 200 });
     } catch {
         return new NextResponse('Internal Server Error', { status: 500 });
     }

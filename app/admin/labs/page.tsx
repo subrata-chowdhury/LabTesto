@@ -22,22 +22,23 @@ const Labs = () => {
 
     const [totalPages, setTotalPages] = useState(0);
 
-    useEffect(() => {
-        getAnalytics();
-    }, [])
+    // useEffect(() => {
+    //     getAnalytics();
+    // }, [])
 
     const fetchLabs = useCallback(async () => {
         const filterData: { location?: string, name?: string } = { location: location, name: name };
         if (location === 'All') delete filterData.location;
         if (name === '') delete filterData.name;
 
-        const res = await fetcher.get<{ labs: Lab[], pagination: { currentPage: number, pageSize: number, totalPages: number } }>(`/labs?filter=${JSON.stringify(filterData)}&limit=${limit}&page=${currentPage}`);
+        const res = await fetcher.get<{ labs: Lab[], pagination: { totalLabs: number, currentPage: number, pageSize: number, totalPages: number } }>(`/labs?filter=${JSON.stringify(filterData)}&limit=${limit}&page=${currentPage}`);
         if (res.status !== 200) return;
         if (res.body) {
             setLabData(res.body.labs);
             setTotalPages(res.body.pagination.totalPages || 1);
             setCurrentPage(res.body.pagination.currentPage);
             setLimit(res.body.pagination.pageSize);
+            setAnalytics({ totalLabs: res.body.pagination.totalLabs });
         }
     }, [location, name, currentPage, limit])
 
@@ -45,15 +46,15 @@ const Labs = () => {
         fetchLabs();
     }, [location, name, currentPage, limit, fetchLabs]);
 
-    async function getAnalytics() {
-        const res = await fetcher.get<{ totalLabs: number }>('/labs/analytics');
-        if (res.status !== 200) return;
-        if (res.body) {
-            setAnalytics({
-                totalLabs: res.body.totalLabs || 0
-            });
-        };
-    }
+    // async function getAnalytics() {
+    //     const res = await fetcher.get<{ totalLabs: number }>('/labs/analytics');
+    //     if (res.status !== 200) return;
+    //     if (res.body) {
+    //         setAnalytics({
+    //             totalLabs: res.body.totalLabs || 0
+    //         });
+    //     };
+    // }
 
     async function deleteLab(id: string) {
         const res = await fetcher.delete(`/labs/${id}`);

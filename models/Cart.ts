@@ -1,27 +1,25 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-interface ICartItem {
-    product: {
-        test: mongoose.Types.ObjectId;
-        lab: mongoose.Types.ObjectId;
-        price: number;
-    };
-    patientDetails: {
-        name?: string;
-        phone?: string;
-        address?: {
-            pin?: number;
-            city?: string;
-            district?: string;
-            other?: string;
-        };
-    }[];
-    quantity: number;
-    date?: Date;
-}
-
 interface ICart extends Document {
-    items: ICartItem[];
+    items: {
+        product: {
+            test: mongoose.Types.ObjectId;
+            lab: mongoose.Types.ObjectId;
+            price: number;
+        };
+        patientDetails: {
+            name: string;
+            phone: string;
+            address: {
+                pin: number;
+                city: string;
+                district: string;
+                other: string;
+            };
+        }[];
+        quantity: number;
+        date: Date;
+    }[],
     user: mongoose.Types.ObjectId;
     createdAt: Date;
     updatedAt: Date;
