@@ -12,7 +12,7 @@ interface ICollector extends Document {
         degree?: string;
         college?: string;
         year?: number;
-    };
+    }[];
 
     verified: boolean;
     otp?: string;
@@ -31,11 +31,11 @@ const CollectorSchema: Schema = new Schema({
     adhaar: { type: String, required: false },
     experience: { type: Number, required: false },
     qualification: {
-        type: {
+        type: [{
             degree: { type: String, required: false },
             college: { type: String, required: false },
             year: { type: Number, required: false },
-        }, required: false
+        }], required: false, default: []
     },
 
     verified: { type: Boolean, default: false },

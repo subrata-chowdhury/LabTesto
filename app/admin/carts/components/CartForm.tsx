@@ -20,7 +20,7 @@ const TestForm = ({ testDetails, error, onChange, onSave = () => { } }: Props) =
     return (
         <div className='bg-white mt-4 p-8 px-10'>
             <div className='text-xl flex gap-3 items-center font-bold pb-6'>
-                Test Form
+                Cart Form
                 <Title title={<p className='text-nowrap font-medium'>Fill in the details for the test</p>}>
                     <Image src={informationIcon} alt="" width={20} height={20} />
                 </Title>

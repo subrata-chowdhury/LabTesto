@@ -2,9 +2,10 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 interface ILab extends Document {
     name: string;
+    description?: string;
     location: {
         address: string;
-        pin: number,
+        pin: number;
         location: {
             lat: number;
             lang: number;
@@ -15,9 +16,10 @@ interface ILab extends Document {
         imageUrl?: string;
     };
     prices: {
-        name: number;
+        test: mongoose.Schema.Types.ObjectId;
         price: number;
         offer?: number;
+        expenses?: number;
     }[];
     packagesInclude?: {
         test: mongoose.Schema.Types.ObjectId;

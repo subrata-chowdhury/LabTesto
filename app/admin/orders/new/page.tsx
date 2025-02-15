@@ -1,39 +1,46 @@
 "use client"
 import React, { useState } from 'react'
-import TestForm, { TestDetails } from '../components/OrderForm';
+import OrderForm, { OrderDetails } from '../components/OrderForm';
 import fetcher from '@/lib/fetcher';
 
 const Page = () => {
-    const [testDetails, setTestDetails] = useState<TestDetails>({
-        name: '',
-        sampleType: 'Blood',
-        tubeType: 'Clot/Plain tube (red color cap)',
-        description: '',
-        fastingRequired: '',
-        overview: '',
-        testResultInterpretation: '',
-        riskAssesment: '',
-        resultTime: ''
+    const [orderDetails, setOrderDetails] = useState<OrderDetails>({
+        items: [],
+        user: '',
+        collector: '',
+        status: 'Ordered',
+        sampleTakenDateTime: {
+            date: {
+                start: new Date(),
+                end: new Date()
+            }
+        },
+        reportDeliverTime: {
+            date: {
+                start: new Date(),
+                end: new Date()
+            }
+        }
     });
 
     const handleSave = async () => {
-        const res = await fetcher.post('/tests', testDetails);
-        if(res.status === 200) {
-            alert('Test saved successfully');
-            console.log('Test details saved:', testDetails);
+        const res = await fetcher.post('/orders', orderDetails);
+        if (res.status === 200) {
+            alert('Order saved successfully');
+            console.log('Order details saved:', orderDetails);
         } else {
-            alert('Error saving test');
-            console.error('Error saving test:', res.body);
+            alert('Error saving order');
+            console.error('Error saving order:', res.body);
         }
     };
 
     return (
-        <TestForm 
-            testDetails={testDetails} 
+        <OrderForm
+            orderDetails={orderDetails}
             onChange={{
-                testDetails: setTestDetails
-            }} 
-            onSave={handleSave} 
+                orderDetails: setOrderDetails
+            }}
+            onSave={handleSave}
         />
     )
 }

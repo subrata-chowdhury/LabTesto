@@ -78,7 +78,7 @@ const Carts = () => {
                     name='Carts'
                     table={{
                         config: [
-                            { heading: 'Name', selector: 'user' },
+                            { heading: 'User ID', selector: 'user' },
                             {
                                 heading: 'Type', selector: 'items', component: ({ data }) => {
                                     return <div>{data.items.length}</div>

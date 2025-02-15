@@ -1,39 +1,38 @@
 "use client"
 import React, { useState } from 'react'
-import TestForm, { TestDetails } from '../components/CollectorForm';
+import CollectorForm, { CollectorDetails } from '../components/CollectorForm';
 import fetcher from '@/lib/fetcher';
 
 const Page = () => {
-    const [testDetails, setTestDetails] = useState<TestDetails>({
+    const [collectorDetails, setCollectorDetails] = useState<CollectorDetails>({
         name: '',
-        sampleType: 'Blood',
-        tubeType: 'Clot/Plain tube (red color cap)',
-        description: '',
-        fastingRequired: '',
-        overview: '',
-        testResultInterpretation: '',
-        riskAssesment: '',
-        resultTime: ''
+        email: '',
+        password: '',
+        phone: '',
+
+        adhaar: '',
+        experience: 0,
+        qualification: [],
     });
 
     const handleSave = async () => {
-        const res = await fetcher.post('/tests', testDetails);
-        if(res.status === 200) {
-            alert('Test saved successfully');
-            console.log('Test details saved:', testDetails);
+        const res = await fetcher.post('/collectors', collectorDetails);
+        if (res.status === 200) {
+            alert('Collector saved successfully');
+            console.log('Collector details saved:', collectorDetails);
         } else {
-            alert('Error saving test');
-            console.error('Error saving test:', res.body);
+            alert('Error saving collector');
+            console.error('Error saving collector:', res.body);
         }
     };
 
     return (
-        <TestForm 
-            testDetails={testDetails} 
+        <CollectorForm
+            collectorDetails={collectorDetails}
             onChange={{
-                testDetails: setTestDetails
-            }} 
-            onSave={handleSave} 
+                collectorDetails: setCollectorDetails
+            }}
+            onSave={handleSave}
         />
     )
 }
