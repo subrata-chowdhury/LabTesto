@@ -29,6 +29,8 @@ interface ILab extends Document {
         test: mongoose.Schema.Types.ObjectId;
         ranges: object[];
     }[];
+    rating: number;
+    rated: number;
 }
 
 const LabSchema: Schema = new Schema({
@@ -72,7 +74,9 @@ const LabSchema: Schema = new Schema({
         }],
         required: false,
         default: []
-    }
+    },
+    rating: { type: Number, require: false, default: 0 },
+    rated: { type: Number, require: false, default: 0 },
 }, { collection: 'labs', timestamps: true });
 
 const Lab = mongoose.models.Lab || mongoose.model<ILab>('Lab', LabSchema);

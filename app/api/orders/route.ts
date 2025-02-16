@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Cart from '@/models/Cart';
 import Test from '@/models/Test';
 import Lab from '@/models/Lab';
+import Collector from '@/models/Collector';
 
 export async function GET(req: NextRequest) {
     try {
@@ -111,12 +112,19 @@ export async function POST(req: NextRequest) {
             };
         });
 
+        const collectors = await Collector.find({});
+        if (collectors.length === 0) {
+            return new NextResponse('No verified collectors available', { status: 500 });
+        }
+        const randomCollector = collectors[Math.floor(Math.random() * collectors.length)]._id;
+
         const orderData = {
             items: orderItems,
             user: userId,
             status: 'Ordered',
             sampleTakenDateTime: { date: { start: new Date(), end: new Date() } },
-            reportDeliverTime: { date: { start: new Date(), end: new Date() } }
+            reportDeliverTime: { date: { start: new Date(), end: new Date() } },
+            collector: randomCollector
         };
 
         const order = new Order(orderData);

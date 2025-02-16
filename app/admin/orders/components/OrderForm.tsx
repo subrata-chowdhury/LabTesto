@@ -36,7 +36,7 @@ const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props)
             </div>
             <div className='pb-4 font-semibold'>Order Information</div>
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
-                <Input label='User *' name='user' placeholder='Enter user' value={orderDetails.user} onChange={(val) => onChange.orderDetails({ ...orderDetails, user: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'user' ? error.msg : ""} />
+                <Input label='User *' name='user' placeholder='Enter user' value={orderDetails.user|| ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, user: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'user' ? error.msg : ""} />
                 <Input label='Collector' name='collector' placeholder='Enter collector' value={orderDetails.collector || ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, collector: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'collector' ? error.msg : ""} />
                 <div className='flex flex-col gap-1'>
                     <p className='font-medium'>Status</p>
@@ -47,10 +47,10 @@ const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props)
                 Time Information
             </div>
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
-                <Input label='Sample Taken Start Date' name='sampleTakenStartDate' placeholder='Enter sample taken start date' value={orderDetails.sampleTakenDateTime.date.start?.toISOString().split('T')[0] || ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { date: { ...orderDetails.sampleTakenDateTime.date, start: new Date(val) } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'sampleTakenStartDate' ? error.msg : ""} />
-                <Input label='Sample Taken End Date' name='sampleTakenEndDate' placeholder='Enter sample taken end date' value={orderDetails.sampleTakenDateTime.date.end?.toISOString().split('T')[0] || ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { date: { ...orderDetails.sampleTakenDateTime.date, end: new Date(val) } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'sampleTakenEndDate' ? error.msg : ""} />
-                <Input label='Report Deliver Start Date' name='reportDeliverStartDate' placeholder='Enter report deliver start date' value={orderDetails.reportDeliverTime.date.start?.toISOString().split('T')[0] || ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, reportDeliverTime: { date: { ...orderDetails.reportDeliverTime.date, start: new Date(val) } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'reportDeliverStartDate' ? error.msg : ""} />
-                <Input label='Report Deliver End Date' name='reportDeliverEndDate' placeholder='Enter report deliver end date' value={orderDetails.reportDeliverTime.date.end?.toISOString().split('T')[0] || ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, reportDeliverTime: { date: { ...orderDetails.reportDeliverTime.date, end: new Date(val) } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'reportDeliverEndDate' ? error.msg : ""} />
+                <Input label='Sample Taken Start Date' name='sampleTakenStartDate' placeholder='Enter sample taken start date' value={String(orderDetails.sampleTakenDateTime.date.start) || ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { date: { ...orderDetails.sampleTakenDateTime.date, start: new Date(val) } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'sampleTakenStartDate' ? error.msg : ""} />
+                <Input label='Sample Taken End Date' name='sampleTakenEndDate' placeholder='Enter sample taken end date' value={String(orderDetails.sampleTakenDateTime.date.end) || ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { date: { ...orderDetails.sampleTakenDateTime.date, end: new Date(val) } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'sampleTakenEndDate' ? error.msg : ""} />
+                <Input label='Report Deliver Start Date' name='reportDeliverStartDate' placeholder='Enter report deliver start date' value={String(orderDetails.reportDeliverTime.date.start) || ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, reportDeliverTime: { date: { ...orderDetails.reportDeliverTime.date, start: new Date(val) } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'reportDeliverStartDate' ? error.msg : ""} />
+                <Input label='Report Deliver End Date' name='reportDeliverEndDate' placeholder='Enter report deliver end date' value={String(orderDetails.reportDeliverTime.date.end) || ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, reportDeliverTime: { date: { ...orderDetails.reportDeliverTime.date, end: new Date(val) } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'reportDeliverEndDate' ? error.msg : ""} />
             </div>
             <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
                 Items Information
@@ -72,32 +72,17 @@ const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props)
                             }
                         },
                         {
-                            heading: 'Price', selector: 'quantity', component: ({ data }) => {
-                                return (
-                                    <div>{data.product.test}</div>
-                                )
-                            }
-                        },
-                        {
-                            heading: 'Offer', selector: 'product', component: ({ data }) => {
-                                return (
-                                    <div>{data.product.test}</div>
-                                )
-                            }
-                        },
-                        {
                             heading: 'Actions',
                             component: ({ index }) => (<div className='flex items-center gap-1'>
                                 <button onClick={() => setShowOrderPopup({ index })}>
                                     Edit
                                 </button>|
                                 <button
-                                // onClick={() => {
-                                //     const newPrices = [...labDetails.prices];
-                                //     newPrices.splice(index, 1);
-                                //     onChange.labDetails({ ...labDetails, prices: newPrices });
-                                // }}><Image src={trashBin} alt="" width={20} height={20} />
-                                >
+                                onClick={() => {
+                                    // const newPrices = [...labDetails.prices];
+                                    // newPrices.splice(index, 1);
+                                    // onChange.labDetails({ ...labDetails, prices: newPrices });
+                                }}><Image src={trashBin} alt="" width={20} height={20} />
                                 </button>
                             </div>)
                         }
@@ -110,6 +95,7 @@ const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props)
                         const newItems = [...orderDetails.items];
                         newItems[showOrderPopup.index] = item;
                         onChange.orderDetails({ ...orderDetails, items: newItems });
+                        setShowOrderPopup(null);
                     }}
                     onClose={() => setShowOrderPopup(null)} />}
             </div>

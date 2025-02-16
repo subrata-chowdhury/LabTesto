@@ -3,12 +3,14 @@ import Input from '@/components/Inputs/Input';
 import Model from '@/components/Model';
 import fetcher from '@/lib/fetcher';
 import React, { useEffect, useState } from 'react'
+import ReviewForm from '../components/ReviewForm';
 
 const OrderPage = () => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [showPatientPopup, setShowPatientPopup] = useState<{ orderIndex: number, cartIndex: number, patientIndex: number } | null>(null);
+    const [showReviewModel, setShowReviewModel] = useState<{ index: number } | null>(null)
 
     useEffect(() => {
         fetchOrder();
@@ -69,7 +71,7 @@ const OrderPage = () => {
                                         <div>{item.quantity}</div>
                                     </div>
                                     {(order.status === 'Ordered') && <button
-                                        className="bg-red-500 text-white px-3 py-1 rounded"
+                                        className="bg-orange-600 text-white px-3 py-1 rounded"
                                         onClick={async () => {
                                             const res = await fetcher.put<{ product: { test: string, lab: string }, status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' }, { message: string } | string>("/orders/" + order._id, {
                                                 product: {
@@ -80,14 +82,46 @@ const OrderPage = () => {
                                             })
                                             if (res.status === 200) fetchOrder()
                                         }}>Cancel</button>}
+                                    {(order.status === 'Report Generated') && <button
+                                        className="bg-orange-600 text-white px-3 py-1 rounded"
+                                        onClick={async () => {
+                                            const res = await fetcher.put<{ product: { test: string, lab: string }, status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' }, { message: string } | string>("/orders/" + order._id, {
+                                                product: {
+                                                    test: item.product.test._id,
+                                                    lab: item.product.lab._id
+                                                },
+                                                status: 'Report Delivered'
+                                            })
+                                            if (res.status === 200) fetchOrder()
+                                        }}>Delivered</button>}
+                                    {(order.status === 'Report Delivered') && <button
+                                        className="bg-orange-600 text-white px-3 py-1 rounded"
+                                        onClick={async () => {
+                                            // const res = await fetcher.put<{
+                                            //     product: { test: string, lab: string },
+                                            //     review?: {
+                                            //         labRating: number,
+                                            //         collectorRating: number,
+                                            //         platformRating: number,
+                                            //         reviewText: string
+                                            //     }
+                                            // }, { message: string } | string>("/orders/" + order._id, {
+                                            //     product: {
+                                            //         test: item.product.test._id,
+                                            //         lab: item.product.lab._id
+                                            //     }
+                                            // })
+                                            // if (res.status === 200) fetchOrder()
+                                            setShowReviewModel({ index })
+                                        }}>Review</button>}
                                 </div>
                             </div>
-                            <div className='bg-gray-100 flex gap-2 p-2 text-xs'>
+                            <div className='bg-orange-50 flex gap-2 p-2 text-xs'>
                                 {
                                     Array(item.quantity).fill(0).map((_, i) => (
                                         <div
                                             key={i}
-                                            className='bg-gray-300 px-3 py-1 rounded-full cursor-pointer'
+                                            className='bg-orange-200 px-3 py-1 rounded-full cursor-pointer'
                                             onClick={() =>
                                                 setShowPatientPopup({ orderIndex: outerIndex, cartIndex: index, patientIndex: i })}>
                                             {order.items[index]?.patientDetails[i]?.name?.split(' ').map(e => e.charAt(0)).join('') || 'Add +'}
@@ -104,6 +138,9 @@ const OrderPage = () => {
                     patientDetails={orders[showPatientPopup?.orderIndex || 0].items[showPatientPopup?.cartIndex || 0].patientDetails[showPatientPopup.patientIndex]}
                     onClose={() => setShowPatientPopup(null)}
                 />}
+            {
+                showReviewModel && <ReviewModel />
+            }
         </div>
     );
 }
@@ -179,4 +216,12 @@ type Order = {
         };
     };
     createdAt: string;
+}
+
+function ReviewModel() {
+    return (
+        <Model heading='Review' onClose={() => { }}>
+            <ReviewForm />
+        </Model>
+    )
 }

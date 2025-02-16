@@ -19,22 +19,11 @@ export async function PUT(req: NextRequest) {
             return new NextResponse('Order not found', { status: 404 });
         }
 
-        // const { test: testId, lab: labId } = body.product;
-        // const existingItemIndex = existingOrder.items.findIndex((item: { product: { test: string, lab: string } }) => item.product.test.toString() === testId && item.product.lab.toString() === labId);
-        // if (existingItemIndex === -1) {
-        //     return new NextResponse('Item not found in order', { status: 404 });
-        // }
-
-        // const existingItem = existingOrder.items[existingItemIndex];
-        // existingItem.quantity = body.quantity || existingItem.quantity;
         existingOrder.status = body.status || existingOrder.status;
-        // existingItem.date = new Date();
-        // existingItem.patientDetails = body.patientDetails || existingItem.patientDetails || [];
-        // if (existingItem.patientDetails.length > body.quantity) {
-        //     existingItem.patientDetails = existingItem.patientDetails.slice(0, body.quantity);
-        // }
 
-        // existingOrder.items[existingItemIndex] = existingItem;
+        if (body.review)
+            existingOrder.review = body.review
+
         await existingOrder.save();
 
         return NextResponse.json({ message: 'Order updated successfully' }, { status: 200 });

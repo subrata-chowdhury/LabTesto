@@ -35,6 +35,12 @@ interface IOrder extends Document {
             end?: Date;
         };
     };
+    review: {
+        labRating: number,
+        collectorRating: number,
+        platformRating: number,
+        reviewText: string
+    }
     createdAt: Date;
     updatedAt: Date;
 }
@@ -77,6 +83,14 @@ const OrderSchema: Schema = new Schema({
             start: { type: Date, required: false, default: Date.now },
             end: { type: Date, required: false, default: Date.now }
         }
+    },
+    review: {
+        type: {
+            labRating: { type: Number, require: false },
+            collectorRating: { type: Number, require: false },
+            platformRating: { type: Number, require: false },
+            reviewText: { type: String, require: false }
+        }, require: false
     }
 }, { collection: 'orders', timestamps: true });
 

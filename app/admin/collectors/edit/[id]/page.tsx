@@ -1,54 +1,51 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import TestForm, { TestDetails } from '../../components/CollectorForm';
+import CollectorForm, { CollectorDetails } from '../../components/CollectorForm';
 import { useParams } from 'next/navigation';
 import fetcher from '@/lib/fetcher';
 
 const Page = () => {
-    const [testDetails, setTestDetails] = useState<TestDetails>({
+    const [collectorDetails, setCollectorDetails] = useState<CollectorDetails>({
         name: '',
-        sampleType: 'Blood',
-        tubeType: 'Clot/Plain tube (red color cap)',
-        description: '',
-        fastingRequired: '',
-        overview: '',
-        testResultInterpretation: '',
-        riskAssesment: '',
-        resultTime: ''
+        email: '',
+        password: '',
+        phone: '',
+
+        adhaar: '',
+        experience: 0,
+        qualification: [],
     });
 
     const { id } = useParams<{ id: string }>();
 
     useEffect(() => {
-        getTestDetails(id);
+        getCollectorDetails(id);
     }, [id])
 
     const handleSave = () => {
         // Implement save logic here
-        console.log('Test details saved:', testDetails);
+        console.log('Collector details saved:', collectorDetails);
     };
 
-    async function getTestDetails(id: string) {
-        const res = await fetcher.get<TestDetails>(`/tests/${id}`);
+    async function getCollectorDetails(id: string) {
+        const res = await fetcher.get<CollectorDetails>(`/collectors/${id}`);
         if (res.body && res.status === 200)
-            setTestDetails({
-                name: res.body.name || '',
-                sampleType: res.body.sampleType || '',
-                tubeType: res.body.tubeType || '',
-                description: res.body.description || '',
-                fastingRequired: res.body.fastingRequired || '',
-                overview: res.body.overview || '',
-                testResultInterpretation: res.body.testResultInterpretation || '',
-                riskAssesment: res.body.riskAssesment || '',
-                resultTime: res.body.resultTime || ''
+            setCollectorDetails({
+                name: res.body.name,
+                email: res.body.email,
+                password: res.body.password,
+                phone: res.body.phone,
+                adhaar: res.body.adhaar,
+                experience: res.body.experience,
+                qualification: res.body.qualification
             });
     }
 
     return (
-        <TestForm
-            testDetails={testDetails}
+        <CollectorForm
+            collectorDetails={collectorDetails}
             onChange={{
-                testDetails: setTestDetails
+                collectorDetails: setCollectorDetails
             }}
             onSave={handleSave}
         />

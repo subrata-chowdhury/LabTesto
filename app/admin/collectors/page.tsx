@@ -15,7 +15,7 @@ const Collectors = () => {
     const [limit, setLimit] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
 
-    const [branch, setBranch] = useState('All');
+    // const [branch, setBranch] = useState('All');
     const [type, setType] = useState('All');
 
     const [name, setName] = useState('');
@@ -25,8 +25,8 @@ const Collectors = () => {
     const [totalPages, setTotalPages] = useState(0);
 
     const fetchCollectors = useCallback(async () => {
-        const filterData: { department?: string, sampleType?: string, name?: string } = { department: branch, sampleType: type, name: name };
-        if (branch === 'All') delete filterData.department;
+        const filterData: { sampleType?: string, name?: string } = {  sampleType: type, name: name };
+        // if (branch === 'All') delete filterData.department;
         if (type === 'All') delete filterData.sampleType;
         if (name === '') delete filterData.name;
 
@@ -39,11 +39,11 @@ const Collectors = () => {
             setLimit(res.body.pagination.pageSize);
             setAnalytics({ total: res.body.pagination.totalCollectors })
         }
-    }, [branch, type, name, currentPage, limit])
+    }, [type, name, currentPage, limit])
 
     useEffect(() => {
         fetchCollectors();
-    }, [branch, type, name, currentPage, limit, fetchCollectors]);
+    }, [type, name, currentPage, limit, fetchCollectors]);
 
     async function deleteCollector(id: string) {
         const res = await fetcher.delete(`/collectors/${id}`);
@@ -70,7 +70,8 @@ const Collectors = () => {
                         config: [
                             { heading: 'Name', selector: 'name' },
                             { heading: 'Experience', selector: 'experience' },
-                            { heading: 'Joined At', selector: 'createdAt' },
+                            { heading: 'Rating', selector: 'rating' },
+                            { heading: 'Rated', selector: 'rated' },
                             {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
                                     <button className='text-blue-500' onClick={() => navigate.push('/collectors/' + data._id)}>View</button>|
@@ -108,5 +109,7 @@ type Collector = {
         year?: number;
     }[];
     createdAt: Date;
+    rating: number;
+    rated: number;
     _id: string;
 }

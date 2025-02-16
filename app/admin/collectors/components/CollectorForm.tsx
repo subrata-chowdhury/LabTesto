@@ -1,5 +1,5 @@
 "use client"
-import Dropdown from '@/components/Dropdown'
+// import Dropdown from '@/components/Dropdown'
 import Input from '@/components/Inputs/Input'
 import React, { useState } from 'react'
 import Image from 'next/image'
@@ -38,9 +38,9 @@ const CollectorForm = ({ collectorDetails, error, onChange, onSave = () => { } }
                 <Input label='Password *' name='password' placeholder='Enter password' value={collectorDetails.password} onChange={(val) => onChange.collectorDetails({ ...collectorDetails, password: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'password' ? error.msg : ""} />
                 <Input label='Phone' name='phone' placeholder='Enter phone number' value={collectorDetails.phone || ''} onChange={(val) => onChange.collectorDetails({ ...collectorDetails, phone: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'phone' ? error.msg : ""} />
                 <Input label='Adhaar' name='adhaar' placeholder='Enter adhaar number' value={collectorDetails.adhaar || ''} onChange={(val) => onChange.collectorDetails({ ...collectorDetails, adhaar: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'adhaar' ? error.msg : ""} />
-                <Input label='Experience' name='experience' placeholder='Enter experience in years' value={collectorDetails.experience?.toString() || ''} onChange={(val) => onChange.collectorDetails({ ...collectorDetails, experience: parseInt(val) })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'experience' ? error.msg : ""} />
+                <Input label='Experience' name='experience' type='number' placeholder='Enter experience in years' value={collectorDetails.experience?.toString() || ''} onChange={(val) => onChange.collectorDetails({ ...collectorDetails, experience: parseInt(val || '0') })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'experience' ? error.msg : ""} />
             </div>
-            <p className='pb-4 flex justify-between font-semibold  pt-5 border-t-2'>
+            <div className='pb-4 flex justify-between font-semibold  pt-5 border-t-2'>
                 Qualification
                 <div
                     className='ms-auto flex gap-2 font-semibold text-sm text-blue-500 border-2 border-blue-500 px-4 py-2 rounded cursor-pointer'
@@ -48,7 +48,7 @@ const CollectorForm = ({ collectorDetails, error, onChange, onSave = () => { } }
                     <div>New Entry</div>
                     <Image src={plusIcon} alt='' width={20} height={20} />
                 </div>
-            </p>
+            </div>
             <div className='flex flex-col gap-1'>
                 <div className='border-2 border-t-0 rounded'>
                     <MainTable<Qualification>
@@ -132,7 +132,7 @@ const QualificationPopup = ({ qualification, onClose = () => { }, onSave = () =>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
                     <Input label='Degree *' name='degree' placeholder='Enter degree' value={qualificationData?.degree || ''} onChange={(val) => setQualificationData(prevVal => ({ ...prevVal, degree: val }))} labelClass='font-medium' containerClass='flex-1' />
                     <Input label='College *' name='college' placeholder='Enter college' value={qualificationData?.college || ''} onChange={(val) => setQualificationData(prevVal => ({ ...prevVal, college: val }))} labelClass='font-medium' containerClass='flex-1' />
-                    <Input label='Year *' name='year' placeholder='Enter year' value={qualificationData?.year?.toString() || ''} onChange={(val) => setQualificationData(prevVal => ({ ...prevVal, year: parseInt(val) }))} labelClass='font-medium' containerClass='flex-1' />
+                    <Input label='Year *' name='year' type='number' placeholder='Enter year' value={qualificationData?.year?.toString() || ''} onChange={(val) => setQualificationData(prevVal => ({ ...prevVal, year: parseInt(val) }))} labelClass='font-medium' containerClass='flex-1' />
                 </div>
                 <div className='p-5 px-0 ms-auto justify-end items-end flex gap-4'>
                     <div className='font-medium text-blue-500 h-10 flex justify-center items-center px-4 border-2 border-blue-400 rounded cursor-pointer' onClick={onClose}>Cancel</div>

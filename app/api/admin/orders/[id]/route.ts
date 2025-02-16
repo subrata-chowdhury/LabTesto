@@ -1,6 +1,30 @@
 import dbConnect from "@/config/db";
+// import Lab from "@/models/Lab";
 import Order from "@/models/Order";
+// import Test from "@/models/Test";
 import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(req: NextRequest) {
+    try {
+        const id = await req.url.split('/').pop();
+
+        if (!id) {
+            return new NextResponse('ID is required', { status: 400 });
+        }
+
+        await dbConnect();
+
+        try {
+            const order = await Order.findById(id)
+            return NextResponse.json(order, { status: 200 });
+        } catch (e) {
+            console.log(e)
+            return new NextResponse('Error fetching order', { status: 500 });
+        }
+    } catch {
+        return new NextResponse('Error fetching orders', { status: 500 });
+    }
+}
 
 export async function DELETE(req: NextRequest) {
     try {

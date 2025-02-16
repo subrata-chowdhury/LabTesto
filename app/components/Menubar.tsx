@@ -30,7 +30,7 @@ const Menubar = () => {
                     <a href="#" className="text-orange-600 menu">Book</a>
                     {/* <a href="#" className="text-white">Home</a> */}
                     <a href="#" className="text-orange-600 menu">About</a>
-                    <a href="#" className="text-orange-600 menu">Services</a>
+                    <a href="/order" className="text-orange-600 menu">Orders</a>
                     <a href="#" className="text-orange-600 menu">Contact</a>
                 </div>
                 <div className='hidden ms-6 md:block mr-5'>
@@ -65,7 +65,7 @@ const Menubar = () => {
                     <a href="#" className="block text-orange-600 menu py-2">Book a Test</a>
                     {/* <a href="#" className="block text-white py-2">Home</a> */}
                     <a href="#" className="block text-orange-600 menu py-2">About</a>
-                    <a href="#" className="block text-orange-600 menu py-2">Services</a>
+                    <a href="/order" className="block text-orange-600 menu py-2">Orders</a>
                     <a href="#" className="block text-orange-600 menu py-2">Contact</a>
                 </div>
             )}

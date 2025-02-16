@@ -78,7 +78,8 @@ const Labs = () => {
                         config: [
                             { heading: 'Name', selector: 'name' },
                             { heading: 'Location', selector: 'location', component: ({ data }) => <p>{data.location.address}</p> },
-                            { heading: 'Created At', selector: 'createdAt' },
+                            { heading: 'Rating', selector: 'rating' },
+                            { heading: 'Rated', selector: 'rated' },
                             {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
                                     <button className='text-blue-500' onClick={() => navigate.push('/admin/labs/view/' + data._id)}>View</button>|
@@ -128,5 +129,7 @@ type Lab = {
         ranges: object[]
     }[],
     createdAt: string,
+    rating: number;
+    rated: number;
     _id: string;
 }

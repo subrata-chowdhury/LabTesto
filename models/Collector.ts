@@ -18,6 +18,9 @@ interface ICollector extends Document {
     otp?: string;
     otpExpiry?: Date;
 
+    rating: number;
+    rated: number;
+
     createdAt: Date;
     updatedAt: Date;
 }
@@ -41,6 +44,9 @@ const CollectorSchema: Schema = new Schema({
     verified: { type: Boolean, default: false },
     otp: { type: String, required: false },
     otpExpiry: { type: Date, required: false },
+
+    rating: { type: Number, require: false, default: 0 },
+    rated: { type: Number, require: false, default: 0 },
 }, { collection: 'collectors', timestamps: true });
 
 const Collector = mongoose.models.Collector || mongoose.model<ICollector>('Collector', CollectorSchema);
