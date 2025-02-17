@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/config/db';
 import Collector from '@/models/Collector';
+import { hash } from 'bcryptjs';
 
 export async function GET(req: NextRequest) {
     const id = req.url.split('/').pop();
@@ -30,7 +31,6 @@ export async function POST(req: NextRequest) {
     const id = req.url.split('/').pop();
 
     await dbConnect();
-
     // validation logic
     if (!body) {
         return new NextResponse('Request body is missing', { status: 400 });
@@ -38,42 +38,27 @@ export async function POST(req: NextRequest) {
     if (!body.name) {
         return new NextResponse('Name is required', { status: 400 });
     }
-    if (!body.sampleType) {
-        return new NextResponse('Sample type is required', { status: 400 });
+    if (!body.email) {
+        return new NextResponse('Email is required', { status: 400 });
     }
-    if (!body.tubeType) {
-        return new NextResponse('Tube type is required', { status: 400 });
-    }
-    if (!body.description) {
-        return new NextResponse('Description is required', { status: 400 });
-    }
-    if (!body.fastingRequired) {
-        return new NextResponse('Fasting requirement is required', { status: 400 });
-    }
-    if (!body.overview) {
-        return new NextResponse('Overview is required', { status: 400 });
-    }
-    if (!body.collectorResultInterpretation) {
-        return new NextResponse('Collector result interpretation is required', { status: 400 });
-    }
-    if (!body.riskAssesment) {
-        return new NextResponse('Risk assessment is required', { status: 400 });
-    }
-    if (!body.resultTime) {
-        return new NextResponse('Result time is required', { status: 400 });
+    if (!body.password) {
+        return new NextResponse('Password is required', { status: 400 });
     }
 
     const collectorData = {
         name: body.name,
-        sampleType: body.sampleType,
-        tubeType: body.tubeType,
-        description: body.description,
-        fastingRequired: body.fastingRequired,
-        overview: body.overview,
-        collectorResultInterpretation: body.collectorResultInterpretation,
-        riskAssesment: body.riskAssesment,
-        resultTime: body.resultTime,
-    }
+        email: body.email,
+        password: body.password ? await hash(body.password, 10) : '',
+        phone: body.phone,
+        adhaar: body.adhaar,
+        experience: body.experience,
+        qualification: body.qualification,
+        // verified: body.verified,
+        // otp: body.otp,
+        // otpExpiry: body.otpExpiry,
+        // rating: body.rating,
+        // rated: body.rated,
+    };
 
     try {
         const updatedCollector = await Collector.findByIdAndUpdate(id, collectorData, { new: true, runValidators: true });

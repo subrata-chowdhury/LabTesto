@@ -1,4 +1,6 @@
 import dbConnect from "@/config/db";
+import Collector from "@/models/Collector";
+import Lab from "@/models/Lab";
 import Order from "@/models/Order";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -21,9 +23,29 @@ export async function PUT(req: NextRequest) {
 
         existingOrder.status = body.status || existingOrder.status;
 
-        if (body.review)
-            existingOrder.review = body.review
+        if (body.review) {
+            existingOrder.review = body.review;
 
+            const { labRating, collectorRating } = body.review;
+
+            if (collectorRating) {
+                const collector = await Collector.findById(existingOrder.collectorId);
+                if (collector) {
+                    collector.rating = ((collector.rating * collector.rated) + collectorRating) / (collector.rated + 1);
+                    collector.rated += 1;
+                    await collector.save();
+                }
+            }
+
+            if (labRating) {
+                const lab = await Lab.findById(existingOrder.labId);
+                if (lab) {
+                    lab.rating = ((lab.rating * lab.rated) + labRating) / (lab.rated + 1);
+                    lab.rated += 1;
+                    await lab.save();
+                }
+            }
+        }
         await existingOrder.save();
 
         return NextResponse.json({ message: 'Order updated successfully' }, { status: 200 });

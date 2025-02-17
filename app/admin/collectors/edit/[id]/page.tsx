@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import CollectorForm, { CollectorDetails } from '../../components/CollectorForm';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import fetcher from '@/lib/fetcher';
 
 const Page = () => {
@@ -17,18 +17,22 @@ const Page = () => {
     });
 
     const { id } = useParams<{ id: string }>();
+    const navigator = useRouter();
 
     useEffect(() => {
         getCollectorDetails(id);
     }, [id])
 
-    const handleSave = () => {
-        // Implement save logic here
-        console.log('Collector details saved:', collectorDetails);
+    const handleSave = async () => {
+        const res = await fetcher.post<CollectorDetails, { messege: string }>(`/admin/collectors/${id}`, collectorDetails);
+        if (res.body && res.status === 200) {
+            alert('Collector saved successfully');
+            navigator.replace('/admin/collectors');
+        }
     };
 
     async function getCollectorDetails(id: string) {
-        const res = await fetcher.get<CollectorDetails>(`/collectors/${id}`);
+        const res = await fetcher.get<CollectorDetails>(`/admin/collectors/${id}`);
         if (res.body && res.status === 200)
             setCollectorDetails({
                 name: res.body.name,

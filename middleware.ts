@@ -4,17 +4,18 @@ import verifyToken from './lib/tokenVerify';
 import { cookies } from 'next/headers';
 
 export async function middleware(request: NextRequest) {
-    const excludeTokenVerification = ['/api/auth/login', '/api/auth/signup', '/api/tests', '/api/labs'];
+    const excludeTokenVerification = ['/api/auth/login', '/api/auth/signup', '/api/tests', '/api/labs', '/api/admin/auth/login'];
     const excludeTokenVerificationPatterns = [/^\/api\/tests\/.*/];
-    if (excludeTokenVerification.includes(request.nextUrl.pathname) || excludeTokenVerificationPatterns.some(pattern => pattern.test(request.nextUrl.pathname)) ) {
+    if (excludeTokenVerification.includes(request.nextUrl.pathname) || excludeTokenVerificationPatterns.some(pattern => pattern.test(request.nextUrl.pathname))) {
         return NextResponse.next();
     }
 
-    const token = (await cookies()).get('token')?.value;
+    const isAdmin = request.nextUrl.pathname.includes('/admin');
+    const token = isAdmin ? (await cookies()).get('adminToken')?.value : (await cookies()).get('token')?.value;
 
     let user: { id: string, institution: string, type: string } | boolean = false;
     if (token) {
-        user = await verifyToken<{ id: string, institution: string, type: string }>(token);
+        user = await verifyToken<{ id: string, institution: string, type: string }>(token, isAdmin);
         if (!user) {
             return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
         }

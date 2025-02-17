@@ -40,7 +40,7 @@ const ProfilePage = () => {
         <div className='flex-1'>
             <div className='h-40 bg-orange-100'>
                 <div className='w-32 h-32 flex justify-center items-center top-full translate-x-1/2 -translate-y-1/2 bg-white rounded-full relative'>
-                    <Image src={'/user.png'} alt="profile picture" width={118} height={118} className='w-[118px] h-[118px] p-2 border-4 border-orange-300 shadow-lg shadow-orange-200 rounded-full bg-white' />
+                    <Image src={'/user.png'} alt="profile picture" width={118} height={118} className='w-[118px] h-[118px] p-2 border-4 border-orange-600 shadow-lg shadow-orange-200 rounded-full bg-white' />
                 </div>
             </div>
             <div className='p-20 pb-2 px-10 md:px-20 '>
@@ -72,11 +72,12 @@ const ProfilePage = () => {
                     </div>
                 </div>
             </div>
-            {
-                isDirty && <div className='px-20 pt-8 pb-10 flex'>
-                    <button className='bg-orange-500 text-white py-2 px-4 rounded ms-auto' onClick={async () => await updateUser()}>Save</button>
-                </div>
-            }
+            {isDirty && <div className='px-20 pt-8 pb-10 flex'>
+                <button className='bg-orange-500 text-white py-2 px-4 rounded ms-auto' onClick={async () => await updateUser()}>Save</button>
+            </div>}
+            <div className='px-20 pt-8 pb-10 flex'>
+                <button className='bg-orange-500 text-white py-2 px-4 rounded-md'>Delete Your Account</button>
+            </div>
             {showPatientPopup?.patientIndex != null &&
                 <PatientDetailsPopup
                     patientDetails={user.patientDetails?.[showPatientPopup.patientIndex]}

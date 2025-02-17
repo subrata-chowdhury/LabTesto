@@ -3,14 +3,14 @@ import Input from '@/components/Inputs/Input';
 import Model from '@/components/Model';
 import fetcher from '@/lib/fetcher';
 import React, { useEffect, useState } from 'react'
-import ReviewForm from '../components/ReviewForm';
+import ReviewForm, { ReviewType } from '../components/ReviewForm';
 
 const OrderPage = () => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [showPatientPopup, setShowPatientPopup] = useState<{ orderIndex: number, cartIndex: number, patientIndex: number } | null>(null);
-    const [showReviewModel, setShowReviewModel] = useState<{ index: number } | null>(null)
+    const [showReviewModel, setShowReviewModel] = useState<{ orderId: string, item: { test: string, lab: string } } | null>(null)
 
     useEffect(() => {
         fetchOrder();
@@ -54,83 +54,76 @@ const OrderPage = () => {
             <h1 className="text-2xl font-bold mb-4">Ordered Items</h1>
             <ul className="space-y-4 flex-1 overflow-y-scroll">
                 {orders.map((order, outerIndex) => (
-                    order.items.map((item, index) => (
-                        <li key={index} className="bg-white rounded drop-shadow-md flex flex-col">
-                            <div className='p-4 flex justify-between items-center'>
-                                <div className='flex flex-col gap-4 justify-between h-full'>
-                                    <div>
-                                        <div className="text-2xl font-semibold">{item.product.test.name}</div>
-                                        <div className='text-sm'>{item.product.lab.name}, {item.product.lab.location.address}</div>
-                                        <div className='text-sm font-semibold'>{order.status} | {order.createdAt}</div>
-                                    </div>
-                                    <div className='mt-auto font-medium text-xl'>₹{(item.product.price || 0) * item.quantity}</div>
-                                </div>
-                                <div className='flex flex-col gap-2 text-sm'>
-                                    <div className='flex gap-2'>
-                                        <div>Quantity:</div>
-                                        <div>{item.quantity}</div>
-                                    </div>
-                                    {(order.status === 'Ordered') && <button
-                                        className="bg-orange-600 text-white px-3 py-1 rounded"
-                                        onClick={async () => {
-                                            const res = await fetcher.put<{ product: { test: string, lab: string }, status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' }, { message: string } | string>("/orders/" + order._id, {
-                                                product: {
-                                                    test: item.product.test._id,
-                                                    lab: item.product.lab._id
-                                                },
-                                                status: 'Canceled'
-                                            })
-                                            if (res.status === 200) fetchOrder()
-                                        }}>Cancel</button>}
-                                    {(order.status === 'Report Generated') && <button
-                                        className="bg-orange-600 text-white px-3 py-1 rounded"
-                                        onClick={async () => {
-                                            const res = await fetcher.put<{ product: { test: string, lab: string }, status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' }, { message: string } | string>("/orders/" + order._id, {
-                                                product: {
-                                                    test: item.product.test._id,
-                                                    lab: item.product.lab._id
-                                                },
-                                                status: 'Report Delivered'
-                                            })
-                                            if (res.status === 200) fetchOrder()
-                                        }}>Delivered</button>}
-                                    {(order.status === 'Report Delivered') && <button
-                                        className="bg-orange-600 text-white px-3 py-1 rounded"
-                                        onClick={async () => {
-                                            // const res = await fetcher.put<{
-                                            //     product: { test: string, lab: string },
-                                            //     review?: {
-                                            //         labRating: number,
-                                            //         collectorRating: number,
-                                            //         platformRating: number,
-                                            //         reviewText: string
-                                            //     }
-                                            // }, { message: string } | string>("/orders/" + order._id, {
-                                            //     product: {
-                                            //         test: item.product.test._id,
-                                            //         lab: item.product.lab._id
-                                            //     }
-                                            // })
-                                            // if (res.status === 200) fetchOrder()
-                                            setShowReviewModel({ index })
-                                        }}>Review</button>}
-                                </div>
-                            </div>
-                            <div className='bg-orange-50 flex gap-2 p-2 text-xs'>
-                                {
-                                    Array(item.quantity).fill(0).map((_, i) => (
-                                        <div
-                                            key={i}
-                                            className='bg-orange-200 px-3 py-1 rounded-full cursor-pointer'
-                                            onClick={() =>
-                                                setShowPatientPopup({ orderIndex: outerIndex, cartIndex: index, patientIndex: i })}>
-                                            {order.items[index]?.patientDetails[i]?.name?.split(' ').map(e => e.charAt(0)).join('') || 'Add +'}
+                    <div key={outerIndex} className='p-2 border-2 border-orange-200 rounded-md flex flex-col gap-1'>
+                        <div className='text-sm font-semibold'>{order.status} | {order.createdAt}</div>
+                        {order.items.map((item, index) => (
+                            <li key={index} className="bg-white rounded drop-shadow-md flex flex-col">
+                                <div className='p-3 px-4 flex justify-between items-center'>
+                                    <div className='flex flex-col gap-2 justify-between h-full'>
+                                        <div>
+                                            <div className="text-2xl font-semibold">{item.product.test.name}</div>
+                                            <div className='text-sm'>{item.product.lab.name}, {item.product.lab.location.address}</div>
                                         </div>
-                                    ))
-                                }
-                            </div>
-                        </li>
-                    ))
+                                        <div className='mt-auto font-medium text-xl'>₹{(item.product.price || 0) * item.quantity}</div>
+                                    </div>
+                                    <div className='flex flex-col gap-2 text-sm'>
+                                        <div className='flex gap-2'>
+                                            <div>Quantity:</div>
+                                            <div>{item.quantity}</div>
+                                        </div>
+                                        {(order.status === 'Ordered') && <button
+                                            className="bg-orange-600 text-white px-3 py-1 rounded"
+                                            onClick={async () => {
+                                                const res = await fetcher.put<{ product: { test: string, lab: string }, status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' }, { message: string } | string>("/orders/" + order._id, {
+                                                    product: {
+                                                        test: item.product.test._id,
+                                                        lab: item.product.lab._id
+                                                    },
+                                                    status: 'Canceled'
+                                                })
+                                                if (res.status === 200) fetchOrder()
+                                            }}>Cancel</button>}
+                                        {(order.status === 'Report Generated') && <button
+                                            className="bg-orange-600 text-white px-3 py-1 rounded"
+                                            onClick={async () => {
+                                                const res = await fetcher.put<{ product: { test: string, lab: string }, status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' }, { message: string } | string>("/orders/" + order._id, {
+                                                    product: {
+                                                        test: item.product.test._id,
+                                                        lab: item.product.lab._id
+                                                    },
+                                                    status: 'Report Delivered'
+                                                })
+                                                if (res.status === 200) fetchOrder()
+                                            }}>Delivered</button>}
+                                        {(order.status === 'Report Delivered') && <button
+                                            className="bg-orange-600 text-white px-3 py-1 rounded"
+                                            onClick={async () => {
+                                                setShowReviewModel({
+                                                    orderId: order._id,
+                                                    item: {
+                                                        test: item.product.test._id,
+                                                        lab: item.product.lab._id
+                                                    }
+                                                })
+                                            }}>Review</button>}
+                                    </div>
+                                </div>
+                                <div className='bg-orange-50 flex gap-2 p-2 text-xs'>
+                                    {
+                                        Array(item.quantity).fill(0).map((_, i) => (
+                                            <div
+                                                key={i}
+                                                className='bg-orange-200 px-3 py-1 rounded-full cursor-pointer'
+                                                onClick={() =>
+                                                    setShowPatientPopup({ orderIndex: outerIndex, cartIndex: index, patientIndex: i })}>
+                                                {order.items[index]?.patientDetails[i]?.name?.split(' ').map(e => e.charAt(0)).join('') || 'Add +'}
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            </li>
+                        ))}
+                    </div>
                 ))}
             </ul>
             {(showPatientPopup?.cartIndex != null) &&
@@ -139,7 +132,15 @@ const OrderPage = () => {
                     onClose={() => setShowPatientPopup(null)}
                 />}
             {
-                showReviewModel && <ReviewModel />
+                showReviewModel && <ReviewModel
+                    onSave={async review => {
+                        const res = await fetcher.put<{ product: { test: string, lab: string }, review: ReviewType }, { message: string } | string>("/orders/" + showReviewModel.orderId, {
+                            product: showReviewModel.item,
+                            review: review
+                        })
+                        if (res.status === 200) fetchOrder()
+                    }}
+                    onClose={() => setShowReviewModel(null)} />
             }
         </div>
     );
@@ -218,10 +219,10 @@ type Order = {
     createdAt: string;
 }
 
-function ReviewModel() {
+function ReviewModel({ onClose = () => { }, onSave = () => { } }: { onClose: () => void, onSave: (review: ReviewType) => void }) {
     return (
-        <Model heading='Review' onClose={() => { }}>
-            <ReviewForm />
+        <Model heading='Review' className='w-[400px]' onClose={onClose}>
+            <ReviewForm onSave={onSave} />
         </Model>
     )
 }

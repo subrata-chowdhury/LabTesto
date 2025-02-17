@@ -30,7 +30,7 @@ const Carts = () => {
         if (type === 'All') delete filterData.sampleType;
         if (name === '') delete filterData.name;
 
-        const res = await fetcher.get<{ carts: Cart[], pagination: { totalCarts: number, currentPage: number, pageSize: number, totalPages: number } }>(`/carts?filter=${JSON.stringify(filterData)}&limit=${limit}&page=${currentPage}`);
+        const res = await fetcher.get<{ carts: Cart[], pagination: { totalCarts: number, currentPage: number, pageSize: number, totalPages: number } }>(`/admin/carts?filter=${JSON.stringify(filterData)}&limit=${limit}&page=${currentPage}`);
         if (res.status !== 200) return;
         if (res.body) {
             setCartData(res.body.carts);
@@ -56,7 +56,7 @@ const Carts = () => {
     // }
 
     async function deleteCart(id: string) {
-        const res = await fetcher.delete(`/carts/${id}`);
+        const res = await fetcher.delete(`/admin/carts/${id}`);
         if (res.status !== 200) return;
         await fetchCarts();
     }
@@ -80,7 +80,7 @@ const Carts = () => {
                         config: [
                             { heading: 'User ID', selector: 'user' },
                             {
-                                heading: 'Type', selector: 'items', component: ({ data }) => {
+                                heading: 'Items', selector: 'items', component: ({ data }) => {
                                     return <div>{data.items.length}</div>
                                 }
                             },

@@ -5,11 +5,11 @@ import { redirect } from 'next/navigation';
 import Menubar from './components/Menubar';
 
 const Layout = async ({ children }: { children: ReactNode }) => {
-    const token = (await cookies()).get('token')?.value;
-    const isValid = await verifyToken<{ id: string }>(token);
+    const token = (await cookies()).get('adminToken')?.value;
+    const isValid = await verifyToken<{ id: string }>(token, true);
 
     if (!isValid) {
-        redirect('/login?redirect=/admin'); // Redirect to login if the token is invalid
+        redirect('/login/admin'); // Redirect to login if the token is invalid
     }
 
     return isValid && (

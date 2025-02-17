@@ -30,8 +30,8 @@ function Menubar() {
                 <div
                     className={`cursor-pointer flex justify-start gap-3 p-3 items-center rounded-lg`}
                     onClick={() => {
-                        document.cookie = 'token=; Max-Age=0; path=/;';
-                        window.location.href = '/login';
+                        document.cookie = 'adminToken=; Max-Age=0; path=/;';
+                        window.location.href = '/';
                     }}>
                     <Image src={logout} alt='' width={20} height={20} style={{ width: 20, height: 20 }} />
                     {menubarHovered && <p>Log Out</p>}

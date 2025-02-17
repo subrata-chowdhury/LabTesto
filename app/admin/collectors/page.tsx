@@ -30,7 +30,7 @@ const Collectors = () => {
         if (type === 'All') delete filterData.sampleType;
         if (name === '') delete filterData.name;
 
-        const res = await fetcher.get<{ collectors: Collector[], pagination: { totalCollectors: number, currentPage: number, pageSize: number, totalPages: number } }>(`/collectors?filter=${JSON.stringify(filterData)}&limit=${limit}&page=${currentPage}`);
+        const res = await fetcher.get<{ collectors: Collector[], pagination: { totalCollectors: number, currentPage: number, pageSize: number, totalPages: number } }>(`/admin/collectors?filter=${JSON.stringify(filterData)}&limit=${limit}&page=${currentPage}`);
         if (res.status !== 200) return;
         if (res.body) {
             setCollectorData(res.body.collectors);
@@ -46,7 +46,7 @@ const Collectors = () => {
     }, [type, name, currentPage, limit, fetchCollectors]);
 
     async function deleteCollector(id: string) {
-        const res = await fetcher.delete(`/collectors/${id}`);
+        const res = await fetcher.delete(`/admin/collectors/${id}`);
         if (res.status !== 200) return;
         await fetchCollectors();
     }

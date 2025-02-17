@@ -82,7 +82,7 @@ const Labs = () => {
                             { heading: 'Rated', selector: 'rated' },
                             {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
-                                    <button className='text-blue-500' onClick={() => navigate.push('/admin/labs/view/' + data._id)}>View</button>|
+                                    {/* <button className='text-blue-500' onClick={() => navigate.push('/admin/labs/view/' + data._id)}>View</button>| */}
                                     <button className='text-blue-500' onClick={() => navigate.push(`/admin/labs/edit/${data._id}`)} >Edit</button>|
                                     <button className='text-red-500' onClick={() => deleteLab(data._id as string)} ><Image src={trashBin} alt="" width={20} height={20} /></button>
                                 </div>

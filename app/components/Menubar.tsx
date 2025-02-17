@@ -23,7 +23,7 @@ const Menubar = () => {
                         </svg>
                     </button>
                 </div>
-                <div className="text-white text-lg font-bold mr-16">
+                <div className="text-white text-lg font-bold mr-0 md:mr-16">
                     <Link href={'/'} className=''><span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></Link>
                 </div>
                 <div className="hidden md:flex space-x-6 mr-auto">
