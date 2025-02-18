@@ -7,7 +7,7 @@ type Props = {
     onChange: (val: string) => void;
     name?: string;
     placeholder?: string;
-    type?: 'text' | 'number';
+    type?: 'text' | 'number' | 'date';
     error?: string;
     inputStyle?: React.CSSProperties;
     containerClass?: string;

@@ -1,5 +1,5 @@
 'use client'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import React, { useCallback, useEffect, useState } from 'react'
 import labIcon from '@/assets/lab.png'
 import Image from 'next/image'
@@ -32,10 +32,12 @@ function Test() {
         ranges: [{}]
     })
     const [lab, setLab] = useState<{ _id: string, name: string, prices: { test: string, price: number, offer: number }[] }>({ name: '', _id: '', prices: [] })
-    const [labs, setLabs] = useState<LabDetails[]>([])
+    const [labs, setLabs] = useState<LabDetails[]>([]);
     const [loading, setLoading] = useState(false);
-    const [limit, setLimit] = useState<number>(10)
+    const [limit, setLimit] = useState<number>(10);
     const { id } = useParams<{ id: string }>();
+
+    const navigate = useRouter();
 
     useEffect(() => {
         getTestDetails(id);
@@ -154,6 +156,7 @@ function Test() {
                         fetcher.post('/cart', cartItem).then(res => {
                             if (res.status === 200) {
                                 alert('Test added to cart successfully');
+                                navigate.push('/cart');
                             } else {
                                 alert('Failed to add test to cart');
                             }

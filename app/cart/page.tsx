@@ -1,10 +1,13 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import fetcher from '@/lib/fetcher';
-import Input from '@/components/Inputs/Input';
+// import Input from '@/components/Inputs/Input';
 // import Model from '@/components/Model';
 import Link from 'next/link';
 import PatientDetailsPopup, { PatientDetails } from '../components/popups/PatientDetailsPopup';
+import { useRouter } from 'next/navigation';
+import Plus from '@/assets/reactIcon/Plus';
+import Minus from '@/assets/reactIcon/Minus';
 
 type CartItem = {
     product: {
@@ -28,6 +31,7 @@ const CartPage: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [showPatientPopup, setShowPatientPopup] = useState<{ cartIndex: number, patientIndex: number } | null>(null);
+    const navigate = useRouter();
 
     useEffect(() => {
         fetchCart();
@@ -68,6 +72,17 @@ const CartPage: React.FC = () => {
         }
     }
 
+    async function changeQuantity(test: string, lab: string, quantity: number) {
+        const updatedItem = {
+            product: {
+                test: test,
+                lab: lab
+            },
+            quantity: quantity
+        };
+        await updateCart(updatedItem, fetchCart)
+    }
+
     if (loading) {
         return <div className="flex justify-center items-center h-screen">Loading...</div>;
     }
@@ -93,10 +108,20 @@ const CartPage: React.FC = () => {
                                         <div className="text-2xl font-semibold">{item.product.test.name}</div>
                                         <div className='text-sm'>{item.product.lab.name}, {item.product.lab.location.address}</div>
                                     </Link>
+                                    {/* <Input label="" type='date' value='' onChange={() => {}} /> */}
                                     <div className='mt-auto font-medium text-xl'>₹{(item.product.price || 0) * item.quantity}</div>
                                 </div>
                                 <div className='flex flex-col gap-2 text-sm'>
-                                    <Input
+                                    <div className='flex gap-2 justify-center items-center'>
+                                        <button className='text-lg py-1 px-1 rounded-md cursor-pointer hover:bg-gray-100 border-2' disabled={item.quantity <= 1} onClick={async () => await changeQuantity(item.product.test._id, item.product.lab._id, item.quantity - 1)}>
+                                            <Minus size={18} fill='black' />
+                                        </button>
+                                        <div className='text-base font-semibold'>{item.quantity}</div>
+                                        <button className='text-lg py-1 px-1 rounded-md cursor-pointer hover:bg-gray-100 border-2' onClick={async () => await changeQuantity(item.product.test._id, item.product.lab._id, item.quantity + 1)}>
+                                            <Plus size={18} fill='black' />
+                                        </button>
+                                    </div>
+                                    {/* <Input
                                         type='number'
                                         label='Quantity'
                                         value={String(item.quantity)}
@@ -110,7 +135,7 @@ const CartPage: React.FC = () => {
                                                 quantity: Number(val)
                                             };
                                             await updateCart(updatedItem, fetchCart)
-                                        }} />
+                                        }} /> */}
                                     <button
                                         className="border-orange-500 border-2 text-orange-500 px-2 py-1 rounded"
                                         onClick={async () => {
@@ -123,6 +148,12 @@ const CartPage: React.FC = () => {
                                     <button
                                         className="bg-orange-500 text-white px-2 py-1 rounded"
                                         onClick={async () => {
+                                            // verify patient details
+                                            if (item.patientDetails.length < item.quantity) {
+                                                setShowPatientPopup({ cartIndex: index, patientIndex: item.patientDetails.length });
+                                                return;
+                                            }
+
                                             const res = await fetcher.post<{ product: { test: string, lab: string }, quantity: number }[], { message: string }>(`/orders`, [{
                                                 product: {
                                                     test: item.product.test._id,
@@ -135,7 +166,8 @@ const CartPage: React.FC = () => {
                                                 //     test: item.product.test._id,
                                                 //     lab: item.product.lab._id
                                                 // });
-                                                fetchCart();
+                                                // fetchCart();
+                                                navigate.push('/orders');
                                             }
                                         }}>Order</button>
                                 </div>
@@ -168,7 +200,8 @@ const CartPage: React.FC = () => {
                         })));
                         if (res.status === 200) {
                             // await fetcher.delete('/cart');
-                            fetchCart();
+                            // fetchCart();
+                            navigate.push('/orders');
                         }
                     }}>Order All</button>
                 </div>

@@ -1,16 +1,39 @@
 'use client'
-import React, { ReactNode } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
-const Slide = ({ slides }: { slides: ReactNode[] }) => {
+export default function Slide({ slides = 1, slideElement }: { slideElement?: React.FC<{ slide: number }>, slides?: number }) {
+    const [slideIndex, setSlideIndex] = useState(1);
+    const goingForward = useRef(true);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            goingForward.current = true;
+            setSlideIndex(val => val >= slides ? 1 : val + 1)
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, [slides])
+
     return (
-        <div className="h-64 overflow-x-hidden">
-            {slides.map((slide, index) => (
-                <div key={index} className="w-full h-full float-left">
-                    {slide}
+        <>
+            <div className="max-w-screen-lg overflow-x-hidden relative mx-auto mt-4">
+                <div className={goingForward.current ? 'slide' : 'slide-reverse'} key={slideIndex}>
+                    {!slideElement && <>
+                        <div className="text-[#f2f2f2] text-[12px] px-[12px] py-[8px] absolute top-[0]">{slideIndex} / 3</div>
+                        <div className="w-full h-72 flex justify-center items-center bg-orange-200">Slide {slideIndex}</div>
+                    </>}
+                    {slideElement && React.createElement(slideElement, { slide: slideIndex })}
                 </div>
-            ))}
-        </div>
-    );
-};
+                <a className="cursor-pointer absolute top-2/4 w-auto p-[16px] -mt-[32px] font-bold text-orange-500 text-lg [transition:0.6s_ease] rounded-tl-[0] rounded-br-[4px] rounded-tr-[4px] rounded-bl-[0] select-none hover:bg-orange-500 hover:text-white" onClick={() => { setSlideIndex(val => val <= 1 ? slides : val - 1); goingForward.current = false; }}>❮</a>
+                <a className="cursor-pointer absolute top-2/4 w-auto p-[16px] -mt-[32px] font-bold text-orange-500 text-lg [transition:0.6s_ease] rounded-tl-[4px] rounded-br-[0] rounded-tr-[0] rounded-bl-[4px] select-none right-[0] hover:bg-orange-500 hover:text-white" onClick={() => { setSlideIndex(val => val >= slides ? 1 : val + 1); goingForward.current = true; }}>❯</a>
+            </div>
+            <br />
 
-export default Slide;
+            <div className="text-center justify-center flex gap-2">
+                {Array(slides).fill(0).map((_, index) => (
+                    <span key={index} className={`cursor-pointer h-3 w-3 ${slideIndex === index + 1 ? 'bg-orange-400' : 'bg-orange-200'} rounded-full inline-block [transition:background-color_0.6s_ease]`} onClick={() => setSlideIndex(index + 1)}></span>
+                ))}
+            </div>
+        </>
+    )
+}

@@ -37,7 +37,7 @@ const Menubar = () => {
                     <SearchBar onSelect={(test) => navigate.push('/tests/' + test._id)} active={true} />
                 </div>
                 <div
-                    className='relative mr-4 cursor-pointer'
+                    className='relative mr-0 md:mr-4 cursor-pointer'
                     onClick={() => {
                         if (getCookie('token')) navigate.push('/cart')
                         else navigate.push('/login')
@@ -48,17 +48,17 @@ const Menubar = () => {
                         width={28}
                         height={28} />
                 </div>
-                <div className="hidden md:flex items-center space-x-4 cursor-pointer" onClick={() => navigate.push('/profile')}>
+                <Link className="hidden md:flex items-center space-x-4 cursor-pointer" href='/profile'>
                     {/* <div className="text-white">Profile</div> */}
                     <Image src={user} alt="avatar" width={40} height={40} className="rounded-full p-2 bg-orange-100" />
-                </div>
+                </Link>
             </div>
             {isOpen && (
-                <div className="md:hidden">
-                    <div className="flex flex-col gap-2 justify-center items-center cursor-pointer py-5">
+                <div className="md:hidden fixed left-0 top-14 w-full sm:w-2/5 px-10 z-20 bg-white h-screen">
+                    <Link className="flex flex-col gap-2 justify-center items-center cursor-pointer py-5 pb-7" href={'/profile'}>
                         <Image src={user} alt="avatar" width={40} height={40} className="rounded-full p-2 bg-gray-100" />
                         <div className="text-orange-600 menu">Profile</div>
-                    </div>
+                    </Link>
                     {/* <div className='py-1 pb-2'>
                         <SearchBar active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
                     </div> */}
@@ -79,7 +79,7 @@ export function SearchBar({ active = false, className = '', onSelect = () => { }
     const [showSearchBar, setShowSearchBar] = useState(active);
 
     return (
-        <div className={"relative text-sm text-orange-500 " + className}>
+        <div className={"relative text-sm text-orange-500 z-10 " + className}>
             {showSearchBar && <SelectTest
                 onSelect={onSelect}
                 optionElement={(option, index) => (
