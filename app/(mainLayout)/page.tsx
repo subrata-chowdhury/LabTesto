@@ -1,6 +1,5 @@
 'use client'
-import Menubar, { SearchBar } from "../components/Menubar";
-import Footer from "../components/Footer";
+import { SearchBar } from "../components/Menubar";
 import { useRouter } from "next/navigation";
 import React from "react";
 import Image, { StaticImageData } from "next/image";

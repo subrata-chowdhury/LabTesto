@@ -7,7 +7,6 @@ import Link from 'next/link';
 import SelectTest from './SelectTest';
 import { useRouter } from 'next/navigation';
 import CartIcon from '@/assets/cart.svg'
-import { getCookie } from '@/lib/cookieGetter';
 
 const Menubar = () => {
     const [isOpen, setIsOpen] = useState(false);
