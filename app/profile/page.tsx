@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react'
 import PatientDetailsPopup from '../components/popups/PatientDetailsPopup'
 import fetcher from '@/lib/fetcher'
 import Image from 'next/image'
+import { toast } from 'react-toastify'
+import Model from '@/components/Model'
 
 const ProfilePage = () => {
     const [user, setUser] = useState<User>({
@@ -11,11 +13,14 @@ const ProfilePage = () => {
         email: '',
         password: '',
         verified: false,
+        patientDetails: [],
+        address: [],
         createdAt: new Date(),
         updatedAt: new Date()
     })
     const [isDirty, setIsDirty] = useState(false);
     const [showPatientPopup, setShowPatientPopup] = useState<{ patientIndex: number } | null>(null);
+    const [showAddressPopup, setShowAddressPopup] = useState<{ addressIndex: number } | null>(null);
 
     useEffect(() => {
         fetchUser();
@@ -32,7 +37,7 @@ const ProfilePage = () => {
         if (res.status === 200 && res.body) {
             setUser(res.body)
             setIsDirty(false)
-            alert('User updated successfully')
+            toast.success('User updated successfully')
         }
     }
 
@@ -72,6 +77,26 @@ const ProfilePage = () => {
                     </div>
                 </div>
             </div>
+            <div className='px-20 pt-2 mt-2'>
+                <div className='font-semibold text-lg'>Address Details</div>
+                <div className='flex gap-2 mt-2 text-sm text-white'>
+                    {user?.address?.map((address, i) => (
+                        <div
+                            key={i}
+                            className='bg-orange-400 px-4 py-2 rounded-full cursor-pointer'
+                            onClick={() =>
+                                setShowAddressPopup({ addressIndex: i })}>
+                            {address.pin}
+                        </div>
+                    ))}
+                    <div
+                        className='bg-orange-400 px-4 py-2 rounded-full cursor-pointer'
+                        onClick={() =>
+                            setShowAddressPopup({ addressIndex: user.address?.length || 0 })}>
+                        Add +
+                    </div>
+                </div>
+            </div>
             {isDirty && <div className='px-20 pt-8 pb-10 flex'>
                 <button className='bg-orange-500 text-white py-2 px-4 rounded ms-auto' onClick={async () => await updateUser()}>Save</button>
             </div>}
@@ -85,35 +110,119 @@ const ProfilePage = () => {
                     onSave={async values => {
                         const updatedPatientDetails = [...(user.patientDetails || [])];
                         updatedPatientDetails[showPatientPopup.patientIndex] = values;
-                        await updateUser();
+                        // console.log(updatedPatientDetails)
+                        setUser({ ...user, patientDetails: updatedPatientDetails });
+                        setIsDirty(true);
+                        // await updateUser();
+                        setShowPatientPopup(null);
+                    }}
+                    onRemove={() => {
+                        const updatedPatientDetails = [...(user.patientDetails || [])];
+                        updatedPatientDetails.splice(showPatientPopup.patientIndex, 1);
+                        setUser({ ...user, patientDetails: updatedPatientDetails });
+                        setIsDirty(true);
+                        // await updateUser();
                         setShowPatientPopup(null);
                     }} />}
+            {
+                showAddressPopup?.addressIndex != null &&
+                <AddressDetailsPopup
+                    addressDetails={user.address?.[showAddressPopup.addressIndex]}
+                    onClose={() => setShowAddressPopup(null)}
+                    onSave={async values => {
+                        const updatedAddressDetails = [...(user.address || [])];
+                        updatedAddressDetails[showAddressPopup.addressIndex] = values;
+                        // console.log(updatedPatientDetails)
+                        setUser({ ...user, address: updatedAddressDetails });
+                        setIsDirty(true);
+                        // await updateUser();
+                        setShowAddressPopup(null);
+                    }} />
+            }
         </div>
     )
 }
 
 export default ProfilePage
 
-type User = {
+export type User = {
     name: string;
     email: string;
     password: string;
     phone?: string;
-    patientDetails?: {
+    patientDetails: {
         name: string;
-        phone: string;
-        address: {
-            pin: number;
-            city: string;
-            district: string;
-            other?: string;
-        };
+        gender: 'Male' | 'Female' | 'Other';
+        // phone: string;
+        age: number;
+        other?: string;
     }[];
-
+    address: {
+        pin: number;
+        city: string;
+        district: string;
+        other?: string;
+        phone: string;
+    }[];
     verified: boolean;
     otp?: string;
     otpExpiry?: Date;
 
     createdAt: Date;
     updatedAt: Date;
+}
+
+function AddressDetailsPopup({ addressDetails, onSave, onClose }: { addressDetails?: AddressDetails, onSave: (patientDetails: AddressDetails) => void, onClose: () => void }) {
+    const [values, setValues] = useState<AddressDetails>(addressDetails || {
+        pin: 0,
+        city: '',
+        district: '',
+        other: '',
+        phone: ''
+    });
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+    return (
+        <Model heading='Patient Details' onClose={onClose}>
+            <div className='px-7 py-4 min-w-80'>
+                <div className='pb-2 font-semibold'>Basic Information</div>
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-sm pb-4'>
+                    <Input label='City *' value={values.city} error={errors.city} onChange={val => setValues({ ...values, city: val })} />
+                    {/* <div className='text-sm flex flex-col gap-1'>
+                        <label className='font-medium'>Gender *</label>
+                        <Dropdown options={['Male', 'Female', 'Other']} width={'100%'} value={'Male'} onChange={({ value }) => setValues({ ...values, gender: value as 'Male' | 'Female' | 'Other' })} />
+                    </div> */}
+                    <Input label='District *' value={values.district} error={errors.district} onChange={val => setValues({ ...values, district: val })} />
+                    <Input label='Pin *' value={values.pin?.toString()} type="number" error={errors.pin} onChange={val => setValues({ ...values, pin: Number(val) })} />
+                    <Input label='Phone *' value={values.phone} error={errors.phone} onChange={val => setValues({ ...values, phone: val })} />
+                </div>
+                <div className='text-sm flex flex-col gap-1 pt-2'>
+                    <label className='font-medium'>Landmark / Any Other details</label>
+                    <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Other Details' value={values.other} onChange={(e) => setValues({ ...values, other: e.target.value })}></textarea>
+                </div>
+                <div className='p-5 pb-2 px-0 ms-auto justify-end items-end flex gap-4'>
+                    <div className='font-medium text-orange-500 h-10 flex justify-center items-center px-4 border-2 border-orange-500 rounded cursor-pointer' onClick={onClose}>Cancel</div>
+                    <div className='bg-orange-500 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => {
+                        // validate
+                        const errors: { [key: string]: string } = {};
+                        if (!values.city) errors.city = 'City is required';
+                        if (!values.district) errors.district = 'District is required';
+                        if (!values.phone) errors.phone = 'Phone is required';
+                        if (!values.pin) errors.pin = 'Pin is required';
+                        if (Object.keys(errors).length) return setErrors(errors);
+
+                        await onSave(values);
+                    }}>Save</div>
+                </div>
+            </div>
+        </Model>
+    )
+}
+
+type AddressDetails = {
+    pin: number;
+    city: string;
+    district: string;
+    other?: string;
+    phone: string;
 }

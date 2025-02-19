@@ -65,7 +65,7 @@ class Fetcher {
     private async handleResponse<T>(response: Response): Promise<{ body: T | null, status: number, error: string | null }> {
         if (response.status === 401) {
             localStorage.removeItem('token');
-            window.location.href = '/login';
+            // window.location.href = '/login';
         }
         if (response.status === 403) {
             window.location.href = '/verify';

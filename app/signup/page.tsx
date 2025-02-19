@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import PasswordInput from "@/components/Inputs/PasswordInput";
 import Input from "@/components/Inputs/Input";
+import { toast } from "react-toastify";
 
 export default function Signup() {
     const [loading, setLoading] = useState(false);
@@ -43,7 +44,7 @@ export default function Signup() {
         setLoading(true);
         await fetcher.post<{ email: string, password: string }, { token: string }>('/auth/signup', { email: email, password: password }).then((res) => {
             if (res.status !== 200) {
-                alert(res.error || 'Error signing up');
+                toast.error(res.error || 'Error signing up');
                 return
             }
             if (res.body) {

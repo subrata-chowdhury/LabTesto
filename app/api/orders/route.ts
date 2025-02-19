@@ -120,6 +120,7 @@ export async function POST(req: NextRequest) {
 
         const orderData = {
             items: orderItems,
+            address: cart.address,
             user: userId,
             status: 'Ordered',
             sampleTakenDateTime: { date: { start: new Date(), end: new Date() } },
@@ -129,6 +130,35 @@ export async function POST(req: NextRequest) {
 
         const order = new Order(orderData);
         await order.save();
+
+        await (await order.populate('items.product.test')).populate('items.product.lab')
+
+
+        type Item = {
+            product: { test: { name: string }, lab: { name: string } },
+            patientDetails: {
+                name: string;
+                phone: string;
+                address: {
+                    pin: number;
+                    other: string;
+                }
+            }[]
+        }
+
+        await fetch('https://api.telegram.org/bot7846622941:AAEjj6UdF2C42GG_S1RVvK2oPhmRxFUCukA/sendMessage', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                chat_id: -4659804693,
+                text: `
+                ${order.items.map((e: Item) => `Test: ${e.product.test.name}, \nLab: ${e.product.lab.name}, \nPatients: ${e.patientDetails.map(e2 => `\n    name: ${e2.name},\n    phNo: ${e2.phone},\n    address: ${e2.address.pin},\n    other: ${e2.address.other || 'none'}\n`)}`)}                
+                `
+            })
+        })
+
         await cart.save();
 
         return NextResponse.json({ message: 'Order saved successfully' }, { status: 200 });

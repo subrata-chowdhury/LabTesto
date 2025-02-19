@@ -12,6 +12,7 @@ import DescriptionIcon from '@/assets/reactIcon/test/Description'
 import PackageIcon from '@/assets/reactIcon/test/Package'
 import { MainTable } from '@/components/Table'
 import CheckBox from '@/components/Inputs/CheckBox'
+import { toast } from 'react-toastify'
 
 function Test() {
     const [testDetails, setTestDetails] = useState<TestDetails>({
@@ -59,7 +60,7 @@ function Test() {
             });
         }
     }, [])
-    
+
     useEffect(() => {
         const filter = { 'prices.test': id };
         fetcher.get<{ labs: LabDetails[] }>(`/labs?filter=${JSON.stringify(filter)}&limit=${limit}`).then(res => {
@@ -155,10 +156,13 @@ function Test() {
                         setLoading(true);
                         fetcher.post('/cart', cartItem).then(res => {
                             if (res.status === 200) {
-                                alert('Test added to cart successfully');
+                                toast.success('Test added to cart successfully');
                                 navigate.push('/cart');
+                            } else if (res.status === 401) {
+                                toast.error('Please login to add test to cart');
+                                navigate.push('/login?redirect=/tests/' + id);
                             } else {
-                                alert('Failed to add test to cart');
+                                toast.error('Failed to add test to cart please try again');
                             }
                             setLoading(false);
                         });

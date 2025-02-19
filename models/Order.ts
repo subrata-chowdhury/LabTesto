@@ -9,17 +9,22 @@ interface IOrder extends Document {
         };
         patientDetails: {
             name: string;
-            phone: string;
-            address: {
-                pin: number;
-                city: string;
-                district: string;
-                other?: string; // road details
-            };
+            // phone: string;
+            gender: 'Male' | 'Female' | 'Other';
+            age: number;
+            other?: string;
         }[];
         quantity: number;
         date?: Date;
     }[];
+    address: {
+        pin: number;
+        city: string;
+        district: string;
+        other?: string; // road details
+        phone: string;
+    };
+
     user: mongoose.Schema.Types.ObjectId;
     collector?: mongoose.Schema.Types.ObjectId;
     status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
@@ -40,7 +45,7 @@ interface IOrder extends Document {
         collectorRating: number,
         platformRating: number,
         reviewText: string
-    }
+    };
     createdAt: Date;
     updatedAt: Date;
 }
@@ -56,19 +61,24 @@ const OrderSchema: Schema = new Schema({
             patientDetails: {
                 type: [{
                     name: { type: String, required: true },
-                    phone: { type: String, required: true },
-                    address: {
-                        pin: { type: Number, required: true },
-                        city: { type: String, required: true },
-                        district: { type: String, required: true },
-                        other: { type: String, required: false } // road details
-                    }
-                }], required: true, default: []
+                    gender: { type: String, enum: ['Male', 'Female', 'Other'], required: false },
+                    // phone: { type: String, required: true },
+                    age: { type: Number, required: true },
+                    other: { type: String, required: false }
+                }], required: false, default: []
             },
             quantity: { type: Number, required: true },
             date: { type: Date, required: false, default: Date.now }
         }], required: true
     },
+    address: {
+        pin: { type: Number, required: true },
+        city: { type: String, required: true },
+        district: { type: String, required: true },
+        other: { type: String, required: false }, // road details
+        phone: { type: String, required: true },
+    },
+
     user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
     collector: { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'Collector' },
     status: { type: String, enum: ['Ordered', 'Sample Collected', 'Report Generated', 'Report Delivered', 'Canceled'], default: 'Ordered' },

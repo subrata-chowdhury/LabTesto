@@ -36,7 +36,7 @@ const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props)
             </div>
             <div className='pb-4 font-semibold'>Order Information</div>
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
-                <Input label='User *' name='user' placeholder='Enter user' value={orderDetails.user|| ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, user: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'user' ? error.msg : ""} />
+                <Input label='User *' name='user' placeholder='Enter user' value={orderDetails.user || ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, user: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'user' ? error.msg : ""} />
                 <Input label='Collector' name='collector' placeholder='Enter collector' value={orderDetails.collector || ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, collector: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'collector' ? error.msg : ""} />
                 <div className='flex flex-col gap-1'>
                     <p className='font-medium'>Status</p>
@@ -78,11 +78,11 @@ const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props)
                                     Edit
                                 </button>|
                                 <button
-                                onClick={() => {
-                                    // const newPrices = [...labDetails.prices];
-                                    // newPrices.splice(index, 1);
-                                    // onChange.labDetails({ ...labDetails, prices: newPrices });
-                                }}><Image src={trashBin} alt="" width={20} height={20} />
+                                    onClick={() => {
+                                        // const newPrices = [...labDetails.prices];
+                                        // newPrices.splice(index, 1);
+                                        // onChange.labDetails({ ...labDetails, prices: newPrices });
+                                    }}><Image src={trashBin} alt="" width={20} height={20} />
                                 </button>
                             </div>)
                         }
@@ -136,14 +136,17 @@ export type Item = {
     };
     patientDetails: {
         name: string;
-        phone: string;
-        address: {
-            pin: number;
-            city: string;
-            district: string;
-            other?: string; // road details
-        };
+        // phone: string;
+        age: number;
+        gender: 'Male' | 'Female' | 'Other';
+        other?: string;
     }[];
+    address: {
+        pin: number;
+        city: string;
+        district: string;
+        other?: string; // road details
+    };
     quantity: number;
     date?: Date;
 }
@@ -186,8 +189,8 @@ export function OrderPopup({ item, onSave, onClose }: { item: Item, onSave: (ite
                     <MainTable<PatientDetails>
                         config={[
                             { heading: 'Name', selector: 'name' },
-                            { heading: 'Phone', selector: 'phone' },
-                            { heading: 'City', selector: 'address', component: ({ data }) => <div>{data.address.city}</div> },
+                            { heading: 'Phone', selector: 'age' },
+                            { heading: 'City', selector: 'gender' },
                             {
                                 heading: 'Actions',
                                 component: ({ index }) => (
@@ -223,6 +226,12 @@ export function OrderPopup({ item, onSave, onClose }: { item: Item, onSave: (ite
                         onSave={(patientDetails) => {
                             const newPatients = [...itemData.patientDetails];
                             newPatients[patientIndex] = patientDetails;
+                            setItemData({ ...itemData, patientDetails: newPatients });
+                            setShowPatientPopup(false);
+                        }}
+                        onRemove={() => {
+                            const newPatients = [...itemData.patientDetails];
+                            newPatients.slice(patientIndex, 1);
                             setItemData({ ...itemData, patientDetails: newPatients });
                             setShowPatientPopup(false);
                         }}

@@ -7,13 +7,17 @@ interface IUser extends Document {
     phone?: string;
     patientDetails?: {
         name: string;
+        // phone: string;
+        gender: 'Male' | 'Female' | 'Other';
+        age: number;
+        other?: string;
+    }[];
+    address: {
+        pin: { type: Number, required: false },
+        city: { type: String, required: false },
+        district: { type: String, required: false },
+        other: { type: String, required: false }, // road details
         phone: string;
-        address: {
-            pin: number;
-            city: string;
-            district: string;
-            other?: string;
-        };
     }[];
 
     verified: boolean;
@@ -33,13 +37,19 @@ const UserSchema: Schema = new Schema({
     patientDetails: {
         type: [{
             name: { type: String, required: true },
+            // phone: { type: String, required: true },                    
+            gender: { type: String, enum: ['Male', 'Female', 'Other'], required: true },
+            age: { type: Number, required: true },
+            other: { type: String, required: false }
+        }], required: false, default: []
+    },
+    address: {
+        type: [{
+            pin: { type: Number, required: true },
+            city: { type: String, required: true },
+            district: { type: String, required: true },
+            other: { type: String, required: false }, // road details
             phone: { type: String, required: true },
-            address: {
-                pin: { type: Number, required: true },
-                city: { type: String, required: true },
-                district: { type: String, required: true },
-                other: { type: String, required: false } // road details
-            }
         }], required: false, default: []
     },
     verified: { type: Boolean, default: false },

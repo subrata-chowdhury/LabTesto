@@ -23,7 +23,8 @@ const OrderPage = () => {
                 throw new Error('Failed to fetch order');
             }
             if (response.body) {
-                setOrders(response.body); // Assuming you want the first order
+                const sortedOrders = response.body.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+                setOrders(sortedOrders);
             }
         } catch (err) {
             console.log(err)

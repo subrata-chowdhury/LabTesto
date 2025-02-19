@@ -63,6 +63,11 @@ export async function POST(req: NextRequest) {
 
     const testId = body.product.test;
     const labId = body.product.lab;
+
+    if (!labId) {
+        return new NextResponse('LabId is missing: ' + labId)
+    }
+
     if (existingCart) {
         try {
             // if not same then save the new product details
@@ -137,6 +142,7 @@ export async function PUT(req: NextRequest) {
         }
 
         existingCart.items[existingItemIndex] = existingItem;
+        // if (body.address) existingCart.address = body.address;
         await existingCart.save();
 
         return NextResponse.json({ message: 'Cart updated successfully' }, { status: 200 });

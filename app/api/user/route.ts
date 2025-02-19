@@ -33,19 +33,25 @@ export async function POST(req: NextRequest) {
     try {
         await dbConnect();
 
-        const user = await User.findByIdAndUpdate({
-            _id: id
-        }, {
-            name: reqBody.name,
-            email: reqBody.email,
-            phone: reqBody.phone,
-            patientDetails: reqBody.patientDetails
-        }, { new: true });
+        const user = await User.findById(id);
+
+        if (!user) {
+            return new NextResponse('User not found', { status: 404 });
+        }
+
+        user.name = reqBody.name || user.name;
+        user.email = reqBody.email || user.email;
+        user.phone = reqBody.phone || user.phone;
+        user.patientDetails = reqBody.patientDetails || user.patientDetails;
+        user.address = reqBody.address || user.address;
+
+        await user.save();
 
         user.password = "";
 
         return NextResponse.json(user, { status: 200 });
-    } catch {
+    } catch (e) {
+        console.log(e);
         return new NextResponse('Error updating user details', { status: 500 });
     }
 }
