@@ -100,8 +100,8 @@ const CartPage: React.FC = () => {
         await updateCart(updatedItem, fetchCart)
     }
 
-    async function order(products: { product: { test: string, lab: string }, quantity: number }[]) {
-        const res = await fetcher.post<{ product: { test: string, lab: string }, quantity: number }[], { message: string }>(`/orders`, products);
+    async function order(products: { product: { test: string, lab: string }, quantity: number, address?: Address }[]) {
+        const res = await fetcher.post<{ product: { test: string, lab: string }, quantity: number, address?: Address }[], { message: string }>(`/orders`, products);
         if (res.status === 200) {
             // await fetcher.delete('/cart');
             // fetchCart();
@@ -176,7 +176,8 @@ const CartPage: React.FC = () => {
                                                     test: item.product.test._id,
                                                     lab: item.product.lab._id
                                                 },
-                                                quantity: item.quantity
+                                                quantity: item.quantity,
+                                                address: selectedAddress
                                             }])
                                         }}>Order</button>
                                 </div>
@@ -215,7 +216,8 @@ const CartPage: React.FC = () => {
                                 test: item.product.test._id,
                                 lab: item.product.lab._id
                             },
-                            quantity: item.quantity
+                            quantity: item.quantity,
+                            address: selectedAddress
                         })))
                     }}>Order All</button>
                 </div>
@@ -275,7 +277,7 @@ function Locations({ selectedAddress, onChange }: { selectedAddress: Address, on
 
     useEffect(() => {
         fetchUser();
-    }, [])
+    }, [fetchUser])
 
     async function fetchUser() {
         const res = await fetcher.get<User>('/user');
