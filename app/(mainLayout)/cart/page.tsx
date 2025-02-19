@@ -1,10 +1,10 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import fetcher from '@/lib/fetcher';
 // import Input from '@/components/Inputs/Input';
 // import Model from '@/components/Model';
 import Link from 'next/link';
-import PatientDetailsPopup, { PatientDetails } from '../components/popups/PatientDetailsPopup';
+import PatientDetailsPopup, { PatientDetails } from '../../components/popups/PatientDetailsPopup';
 import { useRouter } from 'next/navigation';
 import Plus from '@/assets/reactIcon/Plus';
 import Minus from '@/assets/reactIcon/Minus';
@@ -275,17 +275,17 @@ function Locations({ selectedAddress, onChange }: { selectedAddress: Address, on
     })
     const [showAddressesPopup, setShowAddressesPopup] = useState(false)
 
-    useEffect(() => {
-        fetchUser();
-    }, [fetchUser])
-
-    async function fetchUser() {
+    const fetchUser = useCallback(async () => {
         const res = await fetcher.get<User>('/user');
         if (res.status === 200 && res.body) {
             setUser(res.body);
             onChange(res.body.address[0])
         }
-    }
+    }, [])
+
+    useEffect(() => {
+        fetchUser();
+    }, [fetchUser])
 
     return (
         <>

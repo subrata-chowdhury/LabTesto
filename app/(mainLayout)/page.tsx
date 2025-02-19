@@ -1,6 +1,6 @@
 'use client'
-import Menubar, { SearchBar } from "./components/Menubar";
-import Footer from "./components/Footer";
+import Menubar, { SearchBar } from "../components/Menubar";
+import Footer from "../components/Footer";
 import { useRouter } from "next/navigation";
 import React from "react";
 import Image, { StaticImageData } from "next/image";
@@ -10,14 +10,13 @@ import ontimeIcon from '@/assets/HomePage/ontime.png'
 import accuratelabtest from '@/assets/HomePage/accurate.png'
 import flexdateandtime from '@/assets/HomePage/flex.png'
 import cod from '@/assets/HomePage/cod.png'
-import Slide from "./components/Slide";
+import Slide from "../components/Slide";
 
 export default function Home() {
     const navigate = useRouter();
 
     return (
         <>
-            <Menubar />
             <div className="flex-1 p-2 pt-3">
                 <SearchBar className="md:hidden" active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
                 <div className="mx-2">
@@ -50,7 +49,6 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            <Footer />
         </>
     );
 }

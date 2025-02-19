@@ -3,7 +3,7 @@ import Input from '@/components/Inputs/Input';
 import Model from '@/components/Model';
 import fetcher from '@/lib/fetcher';
 import React, { useEffect, useState } from 'react'
-import ReviewForm, { ReviewType } from '../components/ReviewForm';
+import ReviewForm, { ReviewType } from '../../components/ReviewForm';
 
 const OrderPage = () => {
     const [orders, setOrders] = useState<Order[]>([]);

@@ -1,7 +1,7 @@
 'use client'
 import Input from '@/components/Inputs/Input'
 import React, { useEffect, useState } from 'react'
-import PatientDetailsPopup from '../components/popups/PatientDetailsPopup'
+import PatientDetailsPopup from '../../components/popups/PatientDetailsPopup'
 import fetcher from '@/lib/fetcher'
 import Image from 'next/image'
 import { toast } from 'react-toastify'

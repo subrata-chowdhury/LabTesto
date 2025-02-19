@@ -36,18 +36,16 @@ const Menubar = () => {
                 <div className='hidden ms-6 md:block mr-5'>
                     <SearchBar onSelect={(test) => navigate.push('/tests/' + test._id)} active={true} />
                 </div>
-                <div
+                <Link
                     className='relative mr-0 md:mr-4 cursor-pointer'
-                    onClick={() => {
-                        if (getCookie('token')) navigate.push('/cart')
-                        else navigate.push('/login')
-                    }}>
+                    href={'/cart'}
+                >
                     <Image
                         src={CartIcon}
                         alt=""
                         width={28}
                         height={28} />
-                </div>
+                </Link>
                 <Link className="hidden md:flex items-center space-x-4 cursor-pointer" href='/profile'>
                     {/* <div className="text-white">Profile</div> */}
                     <Image src={user} alt="avatar" width={40} height={40} className="rounded-full p-2 bg-orange-100" />
