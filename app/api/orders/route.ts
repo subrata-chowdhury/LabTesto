@@ -18,24 +18,7 @@ export async function GET(req: NextRequest) {
         await dbConnect();
 
         try {
-            const order = await Order.find({ user: id }).populate({ path: 'items.product.test', model: Test }).populate({ path: 'items.product.lab', model: Lab });
-
-            if (!order) {
-                const orderData = {
-                    user: id,
-                    items: []
-                };
-
-                const order = new Order(orderData);
-
-                try {
-                    await order.save();
-                    return NextResponse.json([], { status: 200 });
-                } catch (e) {
-                    console.log(e);
-                    return new NextResponse('Error creating order', { status: 500 });
-                }
-            }
+            const order = await Order.find({ user: id }).populate({ path: 'items.product.test', model: Test }).populate({ path: 'items.product.lab', model: Lab }).populate({ path: 'collector', model: Collector });
 
             return NextResponse.json(order, { status: 200 });
         } catch (e) {
@@ -86,15 +69,18 @@ export async function POST(req: NextRequest) {
         }
 
         const orderItems = body.map(item => {
-            const cartItem = cart.items.find((cartItem: { product: { test: string, lab: string } }) =>
+            const cartItemIndex = cart.items.findIndex((cartItem: { product: { test: string, lab: string } }) =>
                 cartItem.product.test.toString() === item.product.test &&
                 cartItem.product.lab.toString() === item.product.lab
             );
 
-            cart.items = cart.items.filter((cartItem: { product: { test: string, lab: string } }) =>
-                !(cartItem.product.test.toString() === item.product.test &&
-                    cartItem.product.lab.toString() === item.product.lab)
-            );
+            if (cartItemIndex === -1) {
+                throw new Error('Cart item not found');
+            }
+
+            const cartItem = cart.items[cartItemIndex];
+
+            cart.items.splice(cartItemIndex, 1);
 
             if (!cartItem) {
                 throw new Error('Cart item not found');
@@ -120,7 +106,7 @@ export async function POST(req: NextRequest) {
 
         const orderData = {
             items: orderItems,
-            address: cart.address,
+            address: body[0].address,
             user: userId,
             status: 'Ordered',
             sampleTakenDateTime: { date: { start: new Date(), end: new Date() } },
@@ -138,11 +124,10 @@ export async function POST(req: NextRequest) {
             product: { test: { name: string }, lab: { name: string } },
             patientDetails: {
                 name: string;
-                phone: string;
-                address: {
-                    pin: number;
-                    other: string;
-                }
+                // phone: string;
+                gender: 'Male' | 'Female' | 'Other';
+                age: number;
+                other?: string;
             }[]
         }
 
@@ -154,7 +139,7 @@ export async function POST(req: NextRequest) {
             body: JSON.stringify({
                 chat_id: -4659804693,
                 text: `
-                ${order.items.map((e: Item) => `Test: ${e.product.test.name}, \nLab: ${e.product.lab.name}, \nPatients: ${e.patientDetails.map(e2 => `\n    name: ${e2.name},\n    phNo: ${e2.phone},\n    address: ${e2.address.pin},\n    other: ${e2.address.other || 'none'}\n`)}`)}                
+                ${order.items.map((e: Item) => `Test: ${e.product.test.name}, \nLab: ${e.product.lab.name}, \nPatients: ${e.patientDetails.map(e2 => `\n    name: ${e2.name},\n    age: ${e2.age || 'none'},\n    gender: ${e2.gender || 'none'}\n`)}`)} \nAddress: \n Pin:${order.address.pin}, \n City: ${order.address.city}, \n Phone: ${order.address.phone}, \n Landmark: ${order.address.other}               
                 `
             })
         })

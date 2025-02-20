@@ -1,16 +1,16 @@
 'use client'
-import Input from '@/components/Inputs/Input';
 import Model from '@/components/Model';
 import fetcher from '@/lib/fetcher';
 import React, { useEffect, useState } from 'react'
 import ReviewForm, { ReviewType } from '../../components/ReviewForm';
+import { useRouter } from 'next/navigation';
 
 const OrderPage = () => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [showPatientPopup, setShowPatientPopup] = useState<{ orderIndex: number, cartIndex: number, patientIndex: number } | null>(null);
     const [showReviewModel, setShowReviewModel] = useState<{ orderId: string, item: { test: string, lab: string } } | null>(null)
+    const navigate = useRouter();
 
     useEffect(() => {
         fetchOrder();
@@ -53,13 +53,20 @@ const OrderPage = () => {
     return (
         <div className="flex-1 flex flex-col p-4 bg-gray-100 min-h-screen">
             <h1 className="text-2xl font-bold mb-4">Ordered Items</h1>
-            <ul className="space-y-4 flex-1 overflow-y-scroll">
+            <ul className="space-y-3 flex-1 overflow-y-scroll">
                 {orders.map((order, outerIndex) => (
-                    <div key={outerIndex} className='p-2 border-2 border-orange-200 rounded-md flex flex-col gap-1'>
-                        <div className='text-sm font-semibold'>{order.status} | {order.createdAt}</div>
-                        {order.items.map((item, index) => (
-                            <li key={index} className="bg-white rounded drop-shadow-md flex flex-col">
-                                <div className='p-3 px-4 flex justify-between items-center'>
+                    <li
+                        key={outerIndex}
+                        onClick={() => navigate.push('/order/' + order._id)}
+                        className="bg-white rounded drop-shadow-md cursor-pointer p-3 px-4 flex justify-between items-center">
+                        <div>
+                            <div className="text-lg font-semibold">{order.items.map(e => e.product.test.name).join(', ')}</div>
+                            <div className='text'>{order.status}, {new Date(order.updatedAt).toDateString()}</div>
+                        </div>
+                        <div>
+                            ❯
+                        </div>
+                        {/* <div className='p-3 px-4 flex justify-between items-center'>
                                     <div className='flex flex-col gap-2 justify-between h-full'>
                                         <div>
                                             <div className="text-2xl font-semibold">{item.product.test.name}</div>
@@ -121,17 +128,10 @@ const OrderPage = () => {
                                             </div>
                                         ))
                                     }
-                                </div>
-                            </li>
-                        ))}
-                    </div>
+                                </div> */}
+                    </li>
                 ))}
             </ul>
-            {(showPatientPopup?.cartIndex != null) &&
-                <PatientDetailsPopup
-                    patientDetails={orders[showPatientPopup?.orderIndex || 0].items[showPatientPopup?.cartIndex || 0].patientDetails[showPatientPopup.patientIndex]}
-                    onClose={() => setShowPatientPopup(null)}
-                />}
             {
                 showReviewModel && <ReviewModel
                     onSave={async review => {
@@ -149,39 +149,7 @@ const OrderPage = () => {
 
 export default OrderPage;
 
-function PatientDetailsPopup({ patientDetails, onClose }: { patientDetails?: PatientDetails, onSave?: (patientDetails: PatientDetails) => void, onClose: () => void }) {
-    return (
-        <Model heading='Patient Details' onClose={onClose}>
-            <div className='px-7 pb-6 py-4'>
-                <div className='pb-2 font-semibold'>Basic Information</div>
-                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm pb-4'>
-                    <Input label='Name' value={patientDetails?.name || ''} onChange={() => { }} />
-                    <Input label='Phone' value={patientDetails?.phone || ''} onChange={() => { }} />
-                </div>
-                <div className='pb-2 font-semibold'>Address Information</div>
-                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm pb-2'>
-                    <Input label='Pin' value={String(patientDetails?.address.pin)} onChange={() => { }} />
-                    <Input label='City' value={patientDetails?.address.city || ''} onChange={() => { }} />
-                    <Input label='District' value={patientDetails?.address.district || ''} onChange={() => { }} />
-                    <Input label='Other' value={patientDetails?.address.other || ''} onChange={() => { }} />
-                </div>
-            </div>
-        </Model>
-    )
-}
-
-type PatientDetails = {
-    name: string;
-    phone: string;
-    address: {
-        pin: number;
-        city: string;
-        district: string;
-        other?: string; // road details
-    };
-};
-
-type Order = {
+export type Order = {
     _id: string;
     items: {
         product: {
@@ -191,19 +159,29 @@ type Order = {
         };
         patientDetails: {
             name: string;
-            phone: string;
-            address: {
-                pin: number;
-                city: string;
-                district: string;
-                other?: string; // road details
-            };
+            // phone: string;
+            gender: 'Male' | 'Female' | 'Other';
+            age: number;
+            other?: string;
         }[];
         quantity: number;
         date?: Date;
     }[];
+    address: {
+        pin: number;
+        city: string;
+        district: string;
+        other?: string; // road details
+        phone: string;
+    };
+
     user: string;
-    collector?: string;
+    collector?: {
+        name: string;
+        email: string;
+        // password: string;
+        phone?: string;
+    };
     status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
     sampleTakenDateTime: {
         date: {
@@ -218,6 +196,7 @@ type Order = {
         };
     };
     createdAt: string;
+    updatedAt: string;
 }
 
 function ReviewModel({ onClose = () => { }, onSave = () => { } }: { onClose: () => void, onSave: (review: ReviewType) => void }) {

@@ -35,13 +35,7 @@ const CartPage: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [showPatientPopup, setShowPatientPopup] = useState<{ cartIndex: number, patientIndex: number } | null>(null);
-    const [selectedAddress, setSelectedAddress] = useState<{
-        pin: number;
-        city: string;
-        district: string;
-        other?: string;
-        phone: string;
-    }>({
+    const [selectedAddress, setSelectedAddress] = useState<Address | undefined>({
         pin: 0,
         city: '',
         district: '',
@@ -262,7 +256,7 @@ const CartPage: React.FC = () => {
 
 export default CartPage;
 
-function Locations({ selectedAddress, onChange }: { selectedAddress: Address, onChange: (address: Address) => void }) {
+function Locations({ selectedAddress, onChange }: { selectedAddress?: Address, onChange: (address?: Address) => void }) {
     const [user, setUser] = useState<User>({
         name: '',
         email: '',
@@ -283,19 +277,20 @@ function Locations({ selectedAddress, onChange }: { selectedAddress: Address, on
         const res = await fetcher.get<User>('/user');
         if (res.status === 200 && res.body) {
             setUser(res.body);
-            onChange(res.body.address[0])
+            onChange(res.body.address[0]);
         }
     }
 
     return (
         <>
             <div className='w-full flex justify-between items-center py-3 px-4 bg-white rounded shadow mb-5'>
-                <div>
+                {selectedAddress && <div>
                     <div className='font-medium'><span className='font-normal'>Deliver to:</span> {selectedAddress.city}, {selectedAddress.pin}</div>
                     <div className='text-sm text-gray-600'>{selectedAddress.other} | {selectedAddress.phone}</div>
-                </div>
+                </div>}
                 <div>
-                    <div className='px-3 py-1 rounded cursor-pointer text-orange-500 font-medium border-2 border-orange-500' onClick={() => setShowAddressesPopup(true)}>Change</div>
+                    {user.address.length > 0 && <div className='px-3 py-1 rounded cursor-pointer text-orange-500 font-medium border-2 border-orange-500' onClick={() => setShowAddressesPopup(true)}>Change</div>}
+                    {user.address.length <= 0 && <div className='px-3 py-1 rounded cursor-pointer text-orange-500 font-medium border-2 border-orange-500' onClick={() => setShowAddressesPopup(true)}>Add</div>}
                 </div>
             </div>
             {showAddressesPopup && <Model heading='Addresses' onClose={() => setShowAddressesPopup(false)}>
@@ -303,7 +298,7 @@ function Locations({ selectedAddress, onChange }: { selectedAddress: Address, on
                     <div className='grid grid-cols-1 gap-2 sm:gap-4 text-sm pb-4'>
                         {user.address.map((address, index) => (
                             <div key={index} className='bg-white p-3 flex gap-3 rounded-md border-2 border-gray-200 cursor-pointer' onClick={() => { onChange(address); setShowAddressesPopup(false) }}>
-                                <CheckBox value={(address.pin === selectedAddress.pin && address.city === selectedAddress.city && address.district === selectedAddress.district && address.other === selectedAddress.other && address.phone === selectedAddress.phone)} onChange={() => { }} />
+                                <CheckBox value={(address.pin === selectedAddress?.pin && address.city === selectedAddress.city && address.district === selectedAddress.district && address.other === selectedAddress.other && address.phone === selectedAddress.phone)} onChange={() => { }} />
                                 <div>
                                     <div className='font-medium'>{address.city}, {address.pin}</div>
                                     <div className='text-sm text-gray-600'>{address.other} | {address.phone}</div>

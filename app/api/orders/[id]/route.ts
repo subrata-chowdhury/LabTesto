@@ -2,7 +2,31 @@ import dbConnect from "@/config/db";
 import Collector from "@/models/Collector";
 import Lab from "@/models/Lab";
 import Order from "@/models/Order";
+import Test from "@/models/Test";
 import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(req: NextRequest) {
+    try {
+        const id = req.url.split('/').pop();
+
+        if (!id) {
+            return new NextResponse('Order ID is required', { status: 400 });
+        }
+
+        await dbConnect();
+
+        try {
+            const order = await Order.findById(id).populate({ path: 'items.product.test', model: Test }).populate({ path: 'items.product.lab', model: Lab }).populate({ path: 'collector', model: Collector });
+
+            return NextResponse.json(order, { status: 200 });
+        } catch (e) {
+            console.log(e)
+            return new NextResponse('Error fetching order', { status: 500 });
+        }
+    } catch {
+        return new NextResponse('Error fetching orders', { status: 500 });
+    }
+}
 
 export async function PUT(req: NextRequest) {
     const userId = await req.cookies.get('userId')?.value;
