@@ -26,11 +26,11 @@ const Menubar = () => {
                     <Link href={'/'} className=''><span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></Link>
                 </div>
                 <div className="hidden md:flex space-x-6 mr-auto">
-                    <a href="#" className="text-orange-600 menu">Book</a>
-                    {/* <a href="#" className="text-white">Home</a> */}
-                    <a href="#" className="text-orange-600 menu">About</a>
-                    <a href="/order" className="text-orange-600 menu">Orders</a>
-                    <a href="#" className="text-orange-600 menu">Contact</a>
+                    <Link href="#" className="text-orange-600 menu">Book</Link>
+                    {/* <Link href="#" className="text-white">Home</Link> */}
+                    <Link href="#" className="text-orange-600 menu">About</Link>
+                    <Link href="/order" className="text-orange-600 menu">Orders</Link>
+                    <Link href="#" className="text-orange-600 menu">Contact</Link>
                 </div>
                 <div className='hidden ms-6 md:block mr-5'>
                     <SearchBar onSelect={(test) => navigate.push('/tests/' + test._id)} active={true} />
@@ -59,11 +59,11 @@ const Menubar = () => {
                     {/* <div className='py-1 pb-2'>
                         <SearchBar active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
                     </div> */}
-                    <a href="#" className="block text-orange-600 menu py-2">Book a Test</a>
-                    {/* <a href="#" className="block text-white py-2">Home</a> */}
-                    <a href="#" className="block text-orange-600 menu py-2">About</a>
-                    <a href="/order" className="block text-orange-600 menu py-2">Orders</a>
-                    <a href="#" className="block text-orange-600 menu py-2">Contact</a>
+                    <Link href="#" className="block text-orange-600 menu py-2">Book a Test</Link>
+                    {/* <Link href="#" className="block text-white py-2">Home</a> */}
+                    <Link href="#" className="block text-orange-600 menu py-2">About</Link>
+                    <Link href="/order" className="block text-orange-600 menu py-2">Orders</Link>
+                    <Link href="#" className="block text-orange-600 menu py-2">Contact</Link>
                 </div>
             )}
         </nav>
