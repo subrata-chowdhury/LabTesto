@@ -18,7 +18,7 @@ interface IOrder extends Document {
         date?: Date;
     }[];
     address: {
-        pin: number;
+        pin: string;
         city: string;
         district: string;
         other?: string; // road details
@@ -46,6 +46,7 @@ interface IOrder extends Document {
         platformRating: number,
         reviewText: string
     };
+    paid: number;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -72,7 +73,7 @@ const OrderSchema: Schema = new Schema({
         }], required: true
     },
     address: {
-        pin: { type: Number, required: true },
+        pin: { type: String, required: true },
         city: { type: String, required: true },
         district: { type: String, required: true },
         other: { type: String, required: false }, // road details
@@ -101,7 +102,8 @@ const OrderSchema: Schema = new Schema({
             platformRating: { type: Number, require: false },
             reviewText: { type: String, require: false }
         }, require: false
-    }
+    },
+    paid: { type: Number, required: false, default: 0 },
 }, { collection: 'orders', timestamps: true });
 
 const Order = mongoose.models.Order || mongoose.model<IOrder>('Order', OrderSchema);

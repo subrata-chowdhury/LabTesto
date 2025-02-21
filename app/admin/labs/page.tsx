@@ -77,13 +77,13 @@ const Labs = () => {
                     table={{
                         config: [
                             { heading: 'Name', selector: 'name' },
-                            { heading: 'Location', selector: 'location', component: ({ data }) => <p>{data.location.address}</p> },
+                            { heading: 'Location', selector: 'location', component: ({ data }) => <p>{data.location.address.pin}</p> },
                             { heading: 'Rating', selector: 'rating' },
                             { heading: 'Rated', selector: 'rated' },
                             {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
-                                    {/* <button className='text-blue-500' onClick={() => navigate.push('/admin/labs/view/' + data._id)}>View</button>| */}
-                                    <button className='text-blue-500' onClick={() => navigate.push(`/admin/labs/edit/${data._id}`)} >Edit</button>|
+                                    <button className='text-blue-500' onClick={() => navigate.push(`/admin/labs/edit/tests/${data._id}`)} >Edit Tests</button>|
+                                    <button className='text-blue-500' onClick={() => navigate.push('/admin/labs/edit/about/' + data._id)}>Edit About</button>|
                                     <button className='text-red-500' onClick={() => deleteLab(data._id as string)} ><Image src={trashBin} alt="" width={20} height={20} /></button>
                                 </div>
                             }
@@ -105,7 +105,12 @@ export default Labs;
 type Lab = {
     name: string,
     location: {
-        address: string,
+        address: {
+            pin: string,
+            city: string,
+            district: string,
+            other: string, // road details 
+        },
         location: {
             lat: number,
             lang: number

@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react'
 import TestForm, { TestDetails } from '../../components/TestsForm';
 import { useParams } from 'next/navigation';
 import fetcher from '@/lib/fetcher';
+import { toast } from 'react-toastify';
 
 const Page = () => {
     const [testDetails, setTestDetails] = useState<TestDetails>({
         name: '',
         sampleType: 'Blood',
-        tubeType: 'Clot/Plain tube (red color cap)',
+        tubeType: 'Clot Tube',
+        otherTerms: [],
         description: '',
         fastingRequired: '',
         overview: '',
@@ -23,9 +25,11 @@ const Page = () => {
         getTestDetails(id);
     }, [id])
 
-    const handleSave = () => {
-        // Implement save logic here
-        console.log('Test details saved:', testDetails);
+    const handleSave = async () => {
+        const res = await fetcher.post<TestDetails, { messege: string }>(`/tests/${id}`, testDetails);
+        if (res.status === 200) {
+            toast.success('Test Updated Successfully')
+        }
     };
 
     async function getTestDetails(id: string) {
@@ -33,6 +37,7 @@ const Page = () => {
         if (res.body && res.status === 200)
             setTestDetails({
                 name: res.body.name || '',
+                otherTerms: res.body.otherTerms || '',
                 sampleType: res.body.sampleType || '',
                 tubeType: res.body.tubeType || '',
                 description: res.body.description || '',

@@ -16,9 +16,9 @@ const TagInput = ({ label, values = [], onChange = () => { }, error = '' }: Prop
     return (
         <div className='flex flex-col gap-1 rounded' onClick={() => inputContainer.current?.focus()}>
             {label && <div className='font-medium'>{label}</div>}
-            <div className='gap-2 border-2 px-3 py-2 max-h-44 min-h-20 overflow-y-auto'>
+            <div className='gap-2 border-2 rounded px-3 py-2 max-h-44 min-h-20 overflow-y-auto'>
                 {values.length > 0 && values.map((tag, index) =>
-                    <div key={index} className='bg-gray-200 inline-flex items-center justify-between m-1 px-2 py-1 rounded'>
+                    <div key={index} className='bg-gray-200 inline-flex items-center justify-between m-1 px-2 py-1 rounded text-sm'>
                         {tag}
                         <Image
                             src={crossIcon}

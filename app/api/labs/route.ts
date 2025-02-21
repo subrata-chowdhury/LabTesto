@@ -50,11 +50,8 @@ export async function POST(req: NextRequest) {
     if (!body.name) {
         return new NextResponse('Name is required', { status: 400 });
     }
-    if (!body.location || !body.location.address || !body.location.location || !body.location.location.lat || !body.location.location.lang) {
+    if (!body.location || !body.location.address || !body.location.location) {
         return new NextResponse('Complete location information is required', { status: 400 });
-    }
-    if (!body.prices || !Array.isArray(body.prices) || body.prices.length === 0) {
-        return new NextResponse('Prices are required', { status: 400 });
     }
 
     const existingLab = await Lab.findOne({ name: body.name });

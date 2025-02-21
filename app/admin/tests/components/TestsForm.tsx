@@ -6,6 +6,7 @@ import Image from 'next/image'
 // import CheckBox from '@/components/Inputs/CheckBox'
 import Title from '@/components/Title'
 import informationIcon from '@/assets/information.svg'
+import TagInput from '@/components/Inputs/TagInput'
 
 type Props = {
     testDetails: TestDetails,
@@ -30,29 +31,33 @@ const TestForm = ({ testDetails, error, onChange, onSave = () => { } }: Props) =
                 <Input label='Name *' name='name' placeholder='Enter name' value={testDetails.name} onChange={(val) => onChange.testDetails({ ...testDetails, name: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'name' ? error.msg : ""} />
                 <div className='flex flex-col gap-1'>
                     <p className='font-medium'>Sample Type</p>
-                    <Dropdown options={['Blood', 'Urine', 'Semen', 'Stool', 'Sputum', 'Other body fluid']} value={testDetails.sampleType} onChange={(val) => onChange.testDetails({ ...testDetails, sampleType: val.value as 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other body fluid' })} width={'100%'} />
+                    <Dropdown options={['Blood', 'Urine', 'Semen', 'Stool', 'Sputum', 'Other Body Fluid']} value={testDetails.sampleType} onChange={(val) => onChange.testDetails({ ...testDetails, sampleType: val.value as 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other Body Fluid' })} width={'100%'} />
                 </div>
                 <div className='flex flex-col gap-1'>
                     <p className='font-medium'>Tube Type</p>
-                    <Dropdown options={['Clot/Plain tube (red color cap)', 'Fluoride/Sugar tube (gray color cap)', 'EDTA tube (purple color cap)', 'Citrate tube (blue color cap)']} value={testDetails.tubeType} onChange={(val) => onChange.testDetails({ ...testDetails, tubeType: val.value as 'Clot/Plain tube (red color cap)' | 'Fluoride/Sugar tube (gray color cap)' | 'EDTA tube (purple color cap)' | 'Citrate tube (blue color cap)' })} width={'100%'} />
+                    <Dropdown options={['Clot Tube', 'Fluoride Tube', 'EDTA Tube', 'Citrate Tube']} value={testDetails.tubeType} onChange={(val) => onChange.testDetails({ ...testDetails, tubeType: val.value as 'Clot Tube' | 'Fluoride Tube' | 'EDTA Tube' | 'Citrate Tube' })} width={'100%'} />
                 </div>
                 <Input label='Fasting Required *' name='fastingRequired' placeholder='Enter fasting requirement' value={testDetails.fastingRequired} onChange={(val) => onChange.testDetails({ ...testDetails, fastingRequired: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'fastingRequired' ? error.msg : ""} />
-                <Input label='Result Time *' name='resultTime' placeholder='Enter result time' value={testDetails.resultTime} onChange={(val) => onChange.testDetails({ ...testDetails, resultTime: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'resultTime' ? error.msg : ""} />
+                <Input label='Result Time' name='resultTime' placeholder='Enter result time' value={testDetails.resultTime} onChange={(val) => onChange.testDetails({ ...testDetails, resultTime: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'resultTime' ? error.msg : ""} />
+            </div>
+            <div className='flex flex-col gap-1 mt-4'>
+                <p className='font-medium text-sm'>Other Terms *</p>
+                <TagInput values={testDetails.otherTerms} onChange={(values) => onChange.testDetails({ ...testDetails, otherTerms: values })} />
             </div>
             <div className='text-sm flex flex-col gap-1 pt-4'>
                 <label className='font-medium'>Description</label>
                 <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Description' value={testDetails.description} onChange={(e) => onChange.testDetails({ ...testDetails, description: e.target.value })}></textarea>
             </div>
             <div className='text-sm flex flex-col gap-1 pt-4'>
-                <label className='font-medium'>Overview *</label>
+                <label className='font-medium'>Overview</label>
                 <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Overview' value={testDetails.overview} onChange={(e) => onChange.testDetails({ ...testDetails, overview: e.target.value })}></textarea>
             </div>
             <div className='text-sm flex flex-col gap-1 pt-4'>
-                <label className='font-medium'>Test Result Interpretation *</label>
+                <label className='font-medium'>Test Result Interpretation</label>
                 <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Test Result Interpretation' value={testDetails.testResultInterpretation} onChange={(e) => onChange.testDetails({ ...testDetails, testResultInterpretation: e.target.value })}></textarea>
             </div>
             <div className='text-sm flex flex-col gap-1 pt-4'>
-                <label className='font-medium'>Risk Assessment *</label>
+                <label className='font-medium'>Risk Assessment</label>
                 <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Risk Assessment' value={testDetails.riskAssesment} onChange={(e) => onChange.testDetails({ ...testDetails, riskAssesment: e.target.value })}></textarea>
             </div>
             <div className='p-5 px-0 ms-auto justify-end items-end flex gap-4'>
@@ -67,8 +72,9 @@ export default TestForm;
 
 export type TestDetails = {
     name: string,
-    sampleType: 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other body fluid',
-    tubeType: 'Clot/Plain tube (red color cap)' | 'Fluoride/Sugar tube (gray color cap)' | 'EDTA tube (purple color cap)' | 'Citrate tube (blue color cap)',
+    otherTerms: string[],
+    sampleType: 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other Body Fluid',
+    tubeType: 'Clot Tube' | 'Fluoride Tube' | 'EDTA Tube' | 'Citrate Tube',
     description: string,
     fastingRequired: string,
     overview: string,

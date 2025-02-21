@@ -113,7 +113,7 @@ function OrderPage() {
                 <div><span className='font-medium'>Phone Number:</span> {order?.collector?.phone}</div>
             </div>
             <div className='bg-white px-6 py-4 rounded'>
-                <div className='text-lg font-semibold'>Shipping Details</div>
+                <div className='text-lg font-semibold'>Report Delivery Address</div>
                 <div><span className='font-medium'>City:</span> {order?.address?.city}</div>
                 <div><span className='font-medium'>District:</span> {order?.address?.district}</div>
                 <div><span className='font-medium'>Pin:</span> {order?.address?.pin}</div>

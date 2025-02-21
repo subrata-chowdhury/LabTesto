@@ -4,8 +4,12 @@ interface ILab extends Document {
     name: string;
     description?: string;
     location: {
-        address: string;
-        pin: number;
+        address: {
+            pin: string,
+            city: string,
+            district: string,
+            other: string, // road details
+        };
         location: {
             lat: number;
             lang: number;
@@ -13,8 +17,9 @@ interface ILab extends Document {
     };
     certification?: {
         organization: string;
+        year?: number;
         imageUrl?: string;
-    };
+    }[];
     prices: {
         test: mongoose.Schema.Types.ObjectId;
         price: number;
@@ -31,6 +36,10 @@ interface ILab extends Document {
     }[];
     rating: number;
     rated: number;
+    contractDetails?: {
+        email?: string[],
+        phone?: string[]
+    }
 }
 
 const LabSchema: Schema = new Schema({
@@ -38,16 +47,21 @@ const LabSchema: Schema = new Schema({
     description: { type: String, required: false },
     location: {
         type: {
-            address: { type: String, require: true },
-            pin: { type: Number, require: true },
-            location: { type: { lat: { type: Number, require: true }, lang: { type: Number, require: true } }, require: true }
-        }, required: true
+            address: {
+                pin: { type: String, required: true },
+                city: { type: String, required: true },
+                district: { type: String, required: true },
+                other: { type: String, required: false }, // road details
+            },
+            location: { lat: { type: Number, require: false }, lang: { type: Number, require: false } }
+        }, required: false
     },
     certification: {
-        type: {
+        type: [{
             organization: { type: String, require: true },
+            year: { type: Number, require: false },
             imageUrl: { type: String, require: false }
-        }, required: false
+        }], required: false
     },
     prices: {
         type: [{
@@ -56,7 +70,7 @@ const LabSchema: Schema = new Schema({
             offer: { type: Number, require: false, default: 0 },
             expenses: { type: Number, require: false, default: 0 }
         }],
-        required: true,
+        required: false,
         default: []
     },
     packagesInclude: {
@@ -77,6 +91,13 @@ const LabSchema: Schema = new Schema({
     },
     rating: { type: Number, require: false, default: 0 },
     rated: { type: Number, require: false, default: 0 },
+    contractDetails: {
+        type: {
+            email: [String],
+            phone: [String]
+        },
+        required: false
+    }
 }, { collection: 'labs', timestamps: true });
 
 const Lab = mongoose.models.Lab || mongoose.model<ILab>('Lab', LabSchema);

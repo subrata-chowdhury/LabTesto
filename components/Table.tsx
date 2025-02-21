@@ -90,7 +90,7 @@ export function MainTable<T>({
                 </tr>
             </thead>
             <tbody>
-                {data.map((obj, index) => (
+                {data?.length > 0 && data.map((obj, index) => (
                     <tr key={index} className='border-t' style={{ height: 48 }}>
                         {config.map((configObj, innerIndex) => (
                             // @ts-expect-error: Type 'keyof T' cannot be used as an index type.
@@ -98,6 +98,7 @@ export function MainTable<T>({
                         ))}
                     </tr>
                 ))}
+                {(!data || data?.length <= 0) && <tr><td className='text-center' colSpan={config.length}>No Data Found</td></tr>}
             </tbody>
         </table>
     )

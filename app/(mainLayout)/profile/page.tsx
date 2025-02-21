@@ -183,7 +183,7 @@ function AddressDetailsPopup({ addressDetails, onSave, onClose }: { addressDetai
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
     return (
-        <Model heading='Patient Details' onClose={onClose}>
+        <Model heading='Address Details' onClose={onClose}>
             <div className='px-7 py-4 min-w-80'>
                 <div className='pb-2 font-semibold'>Basic Information</div>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-sm pb-4'>

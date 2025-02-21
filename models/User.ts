@@ -13,10 +13,10 @@ interface IUser extends Document {
         other?: string;
     }[];
     address: {
-        pin: { type: Number, required: false },
-        city: { type: String, required: false },
-        district: { type: String, required: false },
-        other: { type: String, required: false }, // road details
+        pin: string,
+        city: string,
+        district: string,
+        other: string, // road details
         phone: string;
     }[];
 
@@ -45,7 +45,7 @@ const UserSchema: Schema = new Schema({
     },
     address: {
         type: [{
-            pin: { type: Number, required: true },
+            pin: { type: String, required: true },
             city: { type: String, required: true },
             district: { type: String, required: true },
             other: { type: String, required: false }, // road details

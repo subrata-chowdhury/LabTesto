@@ -13,6 +13,8 @@ import PackageIcon from '@/assets/reactIcon/test/Package'
 import { MainTable } from '@/components/Table'
 import CheckBox from '@/components/Inputs/CheckBox'
 import { toast } from 'react-toastify'
+import Title from '@/components/Title'
+import informationIcon from '@/assets/information.svg'
 
 function Test() {
     const [testDetails, setTestDetails] = useState<TestDetails>({
@@ -120,6 +122,9 @@ function Test() {
                             Lab
                         </p>
                         <p className='text-gray-500'>{lab.name}</p>
+                        <Title title={<p className='text-nowrap font-medium'>To autofill by labs themselves, <br /> enable checkbox at below of this form</p>}>
+                            <Image src={informationIcon} alt="" width={20} height={20} />
+                        </Title>
                         {/* <Dropdown
                             options={labs.map(e => e.name)}
                             value={lab?.name || ''}
@@ -138,11 +143,11 @@ function Test() {
                             width={'100%'} /> */}
                     </div>}
                 </div>
-                <div className='flex items-center justify-between mt-3'>
+                <div className='bottom-0 flex items-center justify-between mt-3'>
                     <div className='flex items-center gap-2'>
-                        <div className='text-2xl font-semibold'>₹{(labBaseDetails.price - (labBaseDetails.price * (labBaseDetails.offer / 100))).toFixed(2)}</div>
+                        <div className='text-2xl font-semibold'>₹{(labBaseDetails.offer).toFixed(2)}</div>
                         <div className='text-base line-through text-gray-500'>₹{labBaseDetails.price}</div>
-                        <div className='text-sm font-semibold text-red-400'>{labBaseDetails.offer}% OFF</div>
+                        <div className='text-sm font-semibold text-red-400'>{(((labBaseDetails.price - labBaseDetails.offer) / labBaseDetails.price) * 100).toFixed(2)}% OFF</div>
                     </div>
                     <button disabled={loading} className='px-5 py-2 rounded-md bg-orange-500 text-white font-medium' onClick={() => {
                         const cartItem = {
@@ -172,12 +177,17 @@ function Test() {
             <div className='mt-1 md:mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 md:gap-5 rounded-lg'>
                 {labs.length > 0 && labs.map((labObj, i) => (
                     <div key={i} className='border-2 p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white' onClick={() => onLabSelect(labs[i], id)}>
-                        <div>
-                            <div className='font-semibold text-orange-500'>{labObj.name}</div>
-                            <div className='flex items-center gap-2'>
-                                <div className='text-lg font-semibold'>₹{(labObj.prices[0].price - (labObj.prices[0].price * (labObj.prices[0].offer / 100))).toFixed(2)}</div>
-                                <div className='text-base line-through text-gray-500'>₹{labObj.prices[0].price}</div>
-                                <div className='text-sm font-semibold text-red-400'>{labObj.prices[0].offer}% OFF</div>
+                        <div className='flex items-center gap-3'>
+                            <div className='w-14 h-14 bg-orange-200 rounded-md flex items-center justify-center'>
+                                {/* <Image src='/download.png' alt='' width={115} height={50} /> */}
+                            </div>
+                            <div>
+                                <div className='font-semibold text-orange-500'>{labObj.name}</div>
+                                <div className='flex items-center gap-2'>
+                                    <div className='text-lg font-semibold'>₹{labObj.prices[0].offer}</div>
+                                    <div className='text-base line-through text-gray-500'>₹{labObj.prices[0].price}</div>
+                                    <div className='text-sm font-semibold text-red-400'>{(((labObj.prices[0].price - labObj.prices[0].offer) / labObj.prices[0].price) * 100).toFixed(2)}% OFF</div>
+                                </div>
                             </div>
                         </div>
                         <CheckBox

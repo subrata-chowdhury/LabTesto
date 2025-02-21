@@ -1,13 +1,12 @@
 'use client'
 import React, { useEffect } from 'react'
-import LabForm, { LabDetails } from '../../components/LabForm'
+import LabForm, { LabTestDetails } from '../../../components/LabForm'
 import { useParams } from 'next/navigation'
 import fetcher from '@/lib/fetcher'
+import { toast } from 'react-toastify'
 
 const Page = () => {
-    const [labDetails, setLabDetails] = React.useState<LabDetails>({
-        name: '',
-        location: { address: '', location: { lat: 0, lang: 0 } },
+    const [labDetails, setLabDetails] = React.useState<LabTestDetails>({
         prices: [],
         ranges: [],
     })
@@ -17,11 +16,7 @@ const Page = () => {
     useEffect(() => {
         fetcher.get<FetchedLabDetails>(`/labs/${id}`).then((res) => {
             if (res.status === 200 && res.body) {
-                const labDetails: LabDetails = {
-                    name: res.body.name,
-                    description: res.body.description,
-                    location: res.body.location,
-                    certification: res.body.certification,
+                const labDetails: LabTestDetails = {
                     prices: [],
                 };
                 labDetails.prices = res.body.prices.map(e => ({ test: e.test._id, name: e.test.name, offer: e.offer, price: e.price, expenses: e.expenses }))
@@ -33,11 +28,11 @@ const Page = () => {
     }, [id])
 
     async function saveLab() {
-        const res = await fetcher.post<LabDetails, { messege: string }>(`/labs/${id}`, labDetails);
+        const res = await fetcher.post<LabTestDetails, { messege: string }>(`/labs/${id}`, labDetails);
         if (res.status === 200) {
-            alert('Lab saved successfully');
+            toast.success('Lab saved successfully');
         } else {
-            alert('Error saving lab');
+            toast.error('Error saving lab');
         }
     }
 
@@ -54,19 +49,6 @@ const Page = () => {
 }
 
 type FetchedLabDetails = {
-    name: string,
-    description?: string,
-    location: {
-        address: string,
-        location: {
-            lat: number,
-            lang: number
-        }
-    },
-    certification?: {
-        organization?: string,
-        imageUrl?: string
-    },
     prices: Price[],
     packagesInclude?: PackageInclude[],
     ranges?: Range[]
@@ -76,7 +58,7 @@ type Price = {
     name?: string,
     test: { _id: string, name: string },
     price: number,
-    offer: number, 
+    offer: number,
     expenses: number
 }
 

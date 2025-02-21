@@ -6,8 +6,9 @@ import fetcher from '@/lib/fetcher';
 const Page = () => {
     const [testDetails, setTestDetails] = useState<TestDetails>({
         name: '',
+        otherTerms: [],
         sampleType: 'Blood',
-        tubeType: 'Clot/Plain tube (red color cap)',
+        tubeType: 'Clot Tube',
         description: '',
         fastingRequired: '',
         overview: '',

@@ -17,14 +17,14 @@ function Menubar() {
     const currentPath = usePathname();
 
     return (
-        <div className='absolute sm:relative bg-white flex flex-col gap-2 px-4 py-6 shadow h-full transition-all' onMouseEnter={() => setMenubarHovered(true)} onMouseLeave={() => setMenubarHovered(false)}>
+        <div className='absolute sm:relative bg-white flex flex-col gap-2 z-20 px-4 py-6 shadow h-full transition-all' onMouseEnter={() => setMenubarHovered(true)} onMouseLeave={() => setMenubarHovered(false)}>
             <div className='flex flex-col gap-2 flex-1 transition-all'>
                 <Menu name='Dashboard' image={dashboard} link='/admin' active={currentPath === '/admin'} menubarHovered={menubarHovered} />
-                <Menu name='Tests' image={form} link='/admin/tests' active={currentPath === '/admin/tests'} menubarHovered={menubarHovered} />
-                <Menu name='Labs' image={sheet} link='/admin/labs' active={currentPath === '/admin/labs'} menubarHovered={menubarHovered} />
-                <Menu name='Collectors' image={students} link='/admin/collectors' active={currentPath === '/admin/collectors'} menubarHovered={menubarHovered} />
-                <Menu name='Carts' image={cart} link='/admin/carts' active={currentPath === '/admin/carts'} menubarHovered={menubarHovered} />
-                <Menu name='Orders' image={form} link='/admin/orders' active={currentPath === '/admin/orders'} menubarHovered={menubarHovered} />
+                <Menu name='Tests' image={form} link='/admin/tests' active={currentPath.includes('/admin/tests')} menubarHovered={menubarHovered} />
+                <Menu name='Labs' image={sheet} link='/admin/labs' active={currentPath.includes('/admin/labs')} menubarHovered={menubarHovered} />
+                <Menu name='Collectors' image={students} link='/admin/collectors' active={currentPath.includes('/admin/collectors')} menubarHovered={menubarHovered} />
+                <Menu name='Carts' image={cart} link='/admin/carts' active={currentPath.includes('/admin/carts')} menubarHovered={menubarHovered} />
+                <Menu name='Orders' image={form} link='/admin/orders' active={currentPath.includes('/admin/orders')} menubarHovered={menubarHovered} />
             </div>
             <div className=''>
                 <div

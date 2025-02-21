@@ -16,12 +16,6 @@ interface ICart extends Document {
         quantity: number;
         date: Date;
     }[],
-    // address: {
-    //     pin: number;
-    //     city: string;
-    //     district: string;
-    //     other?: string; // road details
-    // };
     user: mongoose.Types.ObjectId;
     createdAt: Date;
     updatedAt: Date;
@@ -47,12 +41,6 @@ const CartSchema: Schema = new Schema({
             date: { type: Date, required: false, default: Date.now }
         }], required: true
     },
-    // address: {
-    //     pin: { type: Number, required: false },
-    //     city: { type: String, required: false },
-    //     district: { type: String, required: false },
-    //     other: { type: String, required: false } // road details
-    // },
 
     user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
 }, { collection: 'carts', timestamps: true });

@@ -24,7 +24,7 @@ export default function Home() {
                 <div className="mx-auto md:w-[95%] 2xl:w-fit pt-0 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
                     <h1 className="text-xl font-semibold translate-y-full ml-2 bg-white w-fit px-2">Frequently Required Tests</h1>
                     <div className="mt-4 p-3 md:p-5 border-2 border-orange-200 border-dashed rounded-md bg-white w-full">
-                        <div className="w-full overflow-x-auto flex gap-2">
+                        <div className="w-full overflow-x-auto hide-scroll flex gap-2">
                             <Card label="CBC" subText="Blood" description="Check Your Overall Health" />
                             <Card label="CBC" subText="Blood" description="Check Your Overall Health" />
                             <Card label="CBC" subText="Blood" description="Check Your Overall Health" />
@@ -37,7 +37,7 @@ export default function Home() {
                 <div className="mx-auto md:w-[95%] 2xl:w-fit pt-0 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
                     <h1 className="text-xl font-semibold translate-y-full ml-2 bg-white w-fit px-2">Our Promise</h1>
                     <div className="mt-4 p-3 md:p-5 border-2 border-orange-200 border-dashed rounded-md bg-white w-full">
-                        <div className="w-full overflow-x-auto flex gap-2">
+                        <div className="w-full overflow-x-auto hide-scroll flex gap-2">
                             <CardType2 label="NABL Certified Lab Test" icon={nablcertiIcon} />
                             <CardType2 label="On Time Sample Collection by Expert" icon={ontimeIcon} />
                             <CardType2 label="Accurate Test Report" icon={accuratelabtest} />

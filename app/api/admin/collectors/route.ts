@@ -13,10 +13,10 @@ export async function GET(req: NextRequest) {
 
         await dbConnect();
 
-        if (filter.name) {
-            filter.name = { $regex: `^${filter.name}`, $options: 'i' };
+        if (filter.email) {
+            filter.email = { $regex: `^${filter.email}`, $options: 'i' };
         } else {
-            delete filter.name;
+            delete filter.email;
         }
 
         const collectors = await Collector.find(filter)
@@ -42,6 +42,7 @@ export async function GET(req: NextRequest) {
         return new NextResponse('Error fetching collectors', { status: 500 });
     }
 }
+
 export async function POST(req: NextRequest) {
     const body = await req.json();
 

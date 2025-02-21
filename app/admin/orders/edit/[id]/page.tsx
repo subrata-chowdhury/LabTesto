@@ -3,23 +3,37 @@ import React, { useEffect, useState } from 'react'
 import OrderForm, { OrderDetails } from '../../components/OrderForm';
 import { useParams } from 'next/navigation';
 import fetcher from '@/lib/fetcher';
+import { toast } from 'react-toastify';
 
 const Page = () => {
     const [orderDetails, setOrderDetails] = useState<OrderDetails>({
         items: [],
-        user: '',
+        user: {
+            _id: '',
+            name: ''
+        },
+        collector: {
+            _id: '',
+            name: ''
+        },
         status: 'Ordered',
         sampleTakenDateTime: {
             date: {
-                start: new Date(),
-                end: new Date()
+                start: new Date(new Date().setHours(6, 0, 0)).toISOString(),
+                end: new Date(new Date().setHours(6, 0, 0)).toISOString()
             }
         },
         reportDeliverTime: {
             date: {
-                start: new Date(),
-                end: new Date()
+                start: new Date(new Date().setHours(6, 0, 0)).toISOString(),
+                end: new Date(new Date().setHours(6, 0, 0)).toISOString()
             }
+        },
+        address: {
+            pin: '',
+            city: '',
+            district: '',
+            phone: ''
         }
     });
 
@@ -29,9 +43,17 @@ const Page = () => {
         getOrderDetails(id);
     }, [id])
 
-    const handleSave = () => {
-        // Implement save logic here
-        console.log('Order details saved:', orderDetails);
+    const handleSave = async () => {
+        const res = await fetcher.post(`/admin/orders/${id}`, {
+            ...orderDetails,
+            user: orderDetails.user._id,
+            collector: orderDetails.collector?._id,
+            items: orderDetails.items.map(e => ({ ...e, product: { test: e.product.test._id, lab: e.product.lab._id, price: e.product.price } }))
+        });
+        if (res.status === 200)
+            toast.success('Order updated successfully');
+        else
+            toast.error('Error updating order');
     };
 
     async function getOrderDetails(id: string) {
@@ -42,7 +64,8 @@ const Page = () => {
                 user: res.body.user,
                 status: res.body.status,
                 sampleTakenDateTime: res.body.sampleTakenDateTime,
-                reportDeliverTime: res.body.reportDeliverTime
+                reportDeliverTime: res.body.reportDeliverTime,
+                address: res.body.address
             });
     }
 

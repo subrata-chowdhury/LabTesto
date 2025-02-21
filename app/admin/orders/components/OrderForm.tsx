@@ -13,6 +13,9 @@ import PatientDetailsPopup, { PatientDetails } from "@/app/components/popups/Pat
 import SelectTest from '@/app/components/SelectTest'
 import trashBin from '@/assets/trash-bin.svg'
 import SelectLab from '@/app/components/SelectLab'
+import SelectCollector from '@/app/components/SelectCollector'
+import SelectUser from '@/app/components/SelectUser'
+import DateInput from '@/components/Inputs/DateInput'
 
 type Props = {
     orderDetails: OrderDetails,
@@ -36,21 +39,46 @@ const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props)
             </div>
             <div className='pb-4 font-semibold'>Order Information</div>
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
-                <Input label='User *' name='user' placeholder='Enter user' value={orderDetails.user || ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, user: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'user' ? error.msg : ""} />
-                <Input label='Collector' name='collector' placeholder='Enter collector' value={orderDetails.collector || ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, collector: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'collector' ? error.msg : ""} />
+                <div className='flex flex-col gap-1'>
+                    <div className='font-medium flex items-center gap-2'>
+                        User
+                        <Title title={<p className='text-nowrap font-medium'>Search using email</p>}>
+                            <Image src={informationIcon} alt="" width={16} height={16} />
+                        </Title>
+                    </div>
+                    <SelectUser onSelect={(val) => onChange.orderDetails({ ...orderDetails, user: val })} />
+                </div>
+                <div className='flex flex-col gap-1'>
+                    <div className='font-medium flex items-center gap-2'>
+                        Collector
+                        <Title title={<p className='text-nowrap font-medium'>Search using email</p>}>
+                            <Image src={informationIcon} alt="" width={16} height={16} />
+                        </Title>
+                    </div>
+                    <SelectCollector onSelect={(val) => onChange.orderDetails({ ...orderDetails, collector: val })} />
+                </div>
+                {/* <Input label='Collector' name='collector' placeholder='Enter collector' value={orderDetails.collector || ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, collector: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'collector' ? error.msg : ""} /> */}
                 <div className='flex flex-col gap-1'>
                     <p className='font-medium'>Status</p>
                     <Dropdown options={['Ordered', 'Sample Collected', 'Report Generated', 'Report Delivered', 'Canceled']} value={orderDetails.status} onChange={(val) => onChange.orderDetails({ ...orderDetails, status: val.value as 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' })} width={'100%'} />
                 </div>
             </div>
             <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
-                Time Information
+                Address Information
             </div>
-            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
-                <Input label='Sample Taken Start Date' name='sampleTakenStartDate' placeholder='Enter sample taken start date' value={String(orderDetails.sampleTakenDateTime.date.start) || ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { date: { ...orderDetails.sampleTakenDateTime.date, start: new Date(val) } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'sampleTakenStartDate' ? error.msg : ""} />
-                <Input label='Sample Taken End Date' name='sampleTakenEndDate' placeholder='Enter sample taken end date' value={String(orderDetails.sampleTakenDateTime.date.end) || ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { date: { ...orderDetails.sampleTakenDateTime.date, end: new Date(val) } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'sampleTakenEndDate' ? error.msg : ""} />
-                <Input label='Report Deliver Start Date' name='reportDeliverStartDate' placeholder='Enter report deliver start date' value={String(orderDetails.reportDeliverTime.date.start) || ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, reportDeliverTime: { date: { ...orderDetails.reportDeliverTime.date, start: new Date(val) } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'reportDeliverStartDate' ? error.msg : ""} />
-                <Input label='Report Deliver End Date' name='reportDeliverEndDate' placeholder='Enter report deliver end date' value={String(orderDetails.reportDeliverTime.date.end) || ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, reportDeliverTime: { date: { ...orderDetails.reportDeliverTime.date, end: new Date(val) } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'reportDeliverEndDate' ? error.msg : ""} />
+            <div className='grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-sm pb-4'>
+                <Input label='City *' value={orderDetails.address.city} onChange={val => onChange.orderDetails({ ...orderDetails, address: { ...orderDetails.address, city: val } })} />
+                {/* <div className='text-sm flex flex-col gap-1'>
+                        <label className='font-medium'>Gender *</label>
+                        <Dropdown options={['Male', 'Female', 'Other']} width={'100%'} value={'Male'} onChange={({ value }) => setValues({ ...values, gender: value as 'Male' | 'Female' | 'Other' })} />
+                    </div> */}
+                <Input label='District *' value={orderDetails.address.district} onChange={val => onChange.orderDetails({ ...orderDetails, address: { ...orderDetails.address, district: val } })} />
+                <Input label='Pin *' value={orderDetails.address.pin} onChange={val => onChange.orderDetails({ ...orderDetails, address: { ...orderDetails.address, pin: val } })} />
+                <Input label='Phone *' value={orderDetails.address.phone} onChange={val => onChange.orderDetails({ ...orderDetails, address: { ...orderDetails.address, phone: val } })} />
+            </div>
+            <div className='text-sm flex flex-col gap-1 pt-2'>
+                <label className='font-medium'>Landmark / Any Other details</label>
+                <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Other Details' value={orderDetails.address.other} onChange={(e) => onChange.orderDetails({ ...orderDetails, address: { ...orderDetails.address, other: e.target.value } })}></textarea>
             </div>
             <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
                 Items Information
@@ -67,7 +95,14 @@ const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props)
                         {
                             heading: 'Test', selector: 'product', component: ({ data }) => {
                                 return (
-                                    <div>{data.product.test}</div>
+                                    <div>{data.product.test.name}</div>
+                                )
+                            }
+                        },
+                        {
+                            heading: 'Patients', selector: 'patientDetails', component: ({ data }) => {
+                                return (
+                                    <div>{data.patientDetails.length}</div>
                                 )
                             }
                         },
@@ -99,6 +134,15 @@ const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props)
                     }}
                     onClose={() => setShowOrderPopup(null)} />}
             </div>
+            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
+                Time Information
+            </div>
+            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
+                <DateInput label='Sample Taken Start Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.sampleTakenDateTime.date.start || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { date: { ...orderDetails.sampleTakenDateTime.date, start: new Date(val).toISOString() } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'sampleTakenStartDate' ? error.msg : ""} />
+                <DateInput label='Sample Taken End Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.sampleTakenDateTime.date.end || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { date: { ...orderDetails.sampleTakenDateTime.date, end: new Date(val).toISOString() } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'sampleTakenEndDate' ? error.msg : ""} />
+                <DateInput label='Report Deliver Start Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.reportDeliverTime.date.start || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, reportDeliverTime: { date: { ...orderDetails.reportDeliverTime.date, start: new Date(val).toISOString() } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'reportDeliverStartDate' ? error.msg : ""} />
+                <DateInput label='Report Deliver End Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.reportDeliverTime.date.end || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, reportDeliverTime: { date: { ...orderDetails.reportDeliverTime.date, end: new Date(val).toISOString() } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'reportDeliverEndDate' ? error.msg : ""} />
+            </div>
             <div className='p-5 px-0 ms-auto justify-end items-end flex gap-4'>
                 <div className='font-medium text-blue-500 h-10 flex justify-center items-center px-4 border-2 border-blue-400 rounded cursor-pointer' onClick={() => { }}>Cancel</div>
                 <div className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => { await onSave(); }}>Save</div>
@@ -111,27 +155,34 @@ export default OrderForm;
 
 export type OrderDetails = {
     items: Item[];
-    user: string;
-    collector?: string;
+    user: { _id: string, name: string };
+    collector?: { _id: string, name: string };
     status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
     sampleTakenDateTime: {
         date: {
-            start?: Date;
-            end?: Date;
+            start?: string;
+            end?: string;
         };
     };
     reportDeliverTime: {
         date: {
-            start?: Date;
-            end?: Date;
+            start?: string;
+            end?: string;
         };
+    };
+    address: {
+        pin: string;
+        city: string;
+        district: string;
+        other?: string; // road details
+        phone: string;
     };
 }
 
 export type Item = {
     product: {
-        test: string;
-        lab: string;
+        test: { _id: string, name: string };
+        lab: { _id: string, name: string };
         price: number;
     };
     patientDetails: {
@@ -162,11 +213,11 @@ export function OrderPopup({ item, onSave, onClose }: { item: Item, onSave: (ite
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
                     <div className='flex flex-col gap-1'>
                         <label className='font-medium'>Test</label>
-                        <SelectTest onSelect={val => setItemData({ ...itemData, product: { ...itemData?.product, test: val._id } })} />
+                        <SelectTest onSelect={val => setItemData({ ...itemData, product: { ...itemData?.product, test: val } })} />
                     </div>
                     <div className='flex flex-col gap-1'>
                         <label className='font-medium'>Lab</label>
-                        <SelectLab onSelect={val => setItemData({ ...itemData, product: { ...itemData.product, lab: val._id } })} />
+                        <SelectLab onSelect={val => setItemData({ ...itemData, product: { ...itemData.product, lab: val } })} />
                     </div>
                     {/* <Input label='Test' value={itemData?.product.test || ''} onChange={val => setItemData({ ...itemData, product: { ...itemData.product, test: val } })} /> */}
                     {/* <Input label='Lab' value={itemData?.product.lab || ''} onChange={val => setItemData({ ...itemData, product: { ...itemData.product, lab: val } })} /> */}
@@ -189,8 +240,8 @@ export function OrderPopup({ item, onSave, onClose }: { item: Item, onSave: (ite
                     <MainTable<PatientDetails>
                         config={[
                             { heading: 'Name', selector: 'name' },
-                            { heading: 'Phone', selector: 'age' },
-                            { heading: 'City', selector: 'gender' },
+                            { heading: 'Age', selector: 'age' },
+                            { heading: 'Gender', selector: 'gender' },
                             {
                                 heading: 'Actions',
                                 component: ({ index }) => (

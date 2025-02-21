@@ -1,18 +1,28 @@
 'use client'
 import React from 'react'
-import LabForm, { LabDetails } from '../components/LabForm'
 import fetcher from '@/lib/fetcher'
+import AboutForm, {LabAboutDetails} from '../components/AboutForm'
 
 const Page = () => {
-    const [labDetails, setLabDetails] = React.useState<LabDetails>({
+    const [labDetails, setLabDetails] = React.useState<LabAboutDetails>({
         name: '',
-        location: { address: '', location: { lat: 0, lang: 0 } },
-        prices: [],
-        ranges: [],
+        description: '',
+        location: {
+            address: {
+                pin: '',
+                city: '',
+                district: '',
+                other: ''
+            },
+            location: {
+                lat: 0,
+                lang: 0
+            }
+        }
     })
 
     async function saveLab() {
-        const res = await fetcher.post<LabDetails, { messege: string }>('/labs', labDetails);
+        const res = await fetcher.post<LabAboutDetails, { messege: string }>('/labs', labDetails);
         if (res.status === 200) {
             alert('Lab saved successfully');
         } else {
@@ -22,10 +32,9 @@ const Page = () => {
 
     return (
         <>
-            <LabForm
+            <AboutForm
                 labDetails={labDetails}
-                error={null}
-                onChange={{ labDetails: setLabDetails }}
+                onChange={setLabDetails }
                 onSave={() => saveLab()}
             />
         </>
