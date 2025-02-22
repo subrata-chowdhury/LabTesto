@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import fetcher from "@/lib/fetcher";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import PasswordInput from "@/components/Inputs/PasswordInput";
 import Input from "@/components/Inputs/Input";
 import { toast } from "react-toastify";
@@ -15,8 +14,6 @@ export default function Login() {
     });
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
-    const navigate = useRouter();
 
     async function login(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -41,7 +38,7 @@ export default function Login() {
                 document.cookie = `token=${res.body.token}; path=/; secure; samesite=strict`;
                 const urlParams = new URLSearchParams(window.location.search);
                 const redirectUrl = urlParams.get('redirect') || '/';
-                navigate.replace(redirectUrl);
+                setTimeout(() => window.location.replace(redirectUrl), 300)
             }
         });
         setLoading(false);

@@ -79,11 +79,13 @@ export function SearchBar({ active = false, className = '', onSelect = () => { }
         <div className={"relative text-sm text-orange-500 z-10 " + className}>
             {showSearchBar && <SelectTest
                 onSelect={onSelect}
-                optionElement={(option, index) => (
-                    <div key={index} className='px-3 py-2 border-b-2 hover:bg-gray-100' onClick={() => onSelect(option)}>
-                        <div className='text-base font-medium'>{option.name}</div>
-                        <div className='text-xs'>{option.sampleType}</div>
-                    </div>
+                optionElement={(option, index, onClick) => (
+                    <Link href={'/tests/' + option._id} key={index}>
+                        <div key={index} className='px-3 py-2 border-b-2 hover:bg-gray-100' onClick={() => { onClick(); onSelect(option) }}>
+                            <div className='text-base font-medium'>{option.name}</div>
+                            <div className='text-xs'>{option.sampleType}</div>
+                        </div>
+                    </Link>
                 )}
                 className='rounded-full px-4'
                 placeholder='Search Test' />}

@@ -6,7 +6,7 @@ interface SelectInstituteProps {
     placeholder?: string;
     className?: string;
     inputRef?: React.RefObject<HTMLInputElement | null>;
-    optionElement?: (option: Test, index: number) => React.JSX.Element
+    optionElement?: (option: Test, index: number, onClick: () => void) => React.JSX.Element
 }
 
 type Test = {
@@ -72,7 +72,11 @@ const SelectTest: React.FC<SelectInstituteProps> = ({
                             </div> */}
                             </div>
                         ))}
-                        {optionElement && tests.map((option, index) => optionElement(option, index))}
+                        {optionElement && tests.map((option, index) => optionElement(option, index, () => {
+                            setTestSearch(option.name)
+                            setOpen(false)
+                            onSelect(option)
+                        }))}
                     </div>
                 </div>
             }

@@ -2,7 +2,7 @@
 import Card from '@/components/Card';
 import Table from '@/components/Table';
 import React, { useCallback, useEffect, useState } from 'react'
-import plusIcon from '@/assets/plus.svg'
+// import plusIcon from '@/assets/plus.svg'
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import fetcher from '@/lib/fetcher';
@@ -70,10 +70,10 @@ const Carts = () => {
                     <Card label='Total Graduated' value={analytics.graduated} colors={{ lineColor: '#A74726', iconBgColor: '#FEE1D7' }} className='mr-3 mt-3' />
                     <Card label='Total Applied' value={analytics.applied} colors={{ lineColor: '#A74726', iconBgColor: '#FEF3DD' }} className='mr-3 mt-3' /> */}
                 </div>
-                <div className='ms-auto mb-4 flex gap-2 bg-blue-500 text-white px-4 py-2 rounded cursor-pointer' onClick={() => navigate.push('/admin/carts/new')}>
+                {/* <div className='ms-auto mb-4 flex gap-2 bg-blue-500 text-white px-4 py-2 rounded cursor-pointer' onClick={() => navigate.push('/admin/carts/new')}>
                     <div>New Cart</div>
                     <Image src={plusIcon} alt='' />
-                </div>
+                </div> */}
                 <Table<Cart>
                     name='Carts'
                     table={{
@@ -84,7 +84,7 @@ const Carts = () => {
                                     return <div>{data.items.length}</div>
                                 }
                             },
-                            { heading: 'Created At', selector: 'createdAt' },
+                            { heading: 'Created At', selector: 'createdAt', component: ({ data }) => <div>{new Date(data.createdAt).toDateString()}</div> },
                             {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
                                     <button className='text-blue-500' onClick={() => navigate.push('/carts/' + data._id)}>View</button>|

@@ -47,6 +47,28 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
+                <div className=" mx-auto md:w-[95%] pt-0 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
+                    <ul className=" grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                        <CardType3 label="Cardiology" link="/tests/cardiology" />
+                        <CardType3 label="Dentistry" link="/tests/dentistry" />
+                        <CardType3 label="Dermatology" link="/tests/dermatology" />
+                        <CardType3 label="Diabetes" link="/tests/diabetes" />
+                        <CardType3 label="ENT" link="/tests/ent" />
+                        <CardType3 label="Gastroenterology" link="/tests/gastroenterology" />
+                        <CardType3 label="General Surgery" link="/tests/general-surgery" />
+                        <CardType3 label="Gynecology" link="/tests/gynecology" />
+                        <CardType3 label="Hematology" link="/tests/hematology" />
+                        <CardType3 label="Internal Medicine" link="/tests/internal-medicine" />
+                        <CardType3 label="Neurology" link="/tests/neurology" />
+                        <CardType3 label="Oncology" link="/tests/oncology" />
+                        <CardType3 label="Orthopedics" link="/tests/orthopedics" />
+                        <CardType3 label="Pediatrics" link="/tests/pediatrics" />
+                        <CardType3 label="Physiotherapy" link="/tests/physiotherapy" />
+                        <CardType3 label="Psychiatry" link="/tests/psychiatry" />
+                        <CardType3 label="Radiology" link="/tests/radiology" />
+                        <CardType3 label="Urology" link="/tests/urology" />
+                    </ul>
+                </div>
             </div>
         </>
     );
@@ -84,5 +106,24 @@ function CardType2({ label = "CBC", subText, description, icon }: { label: strin
                     <img src="/blood-test.jpg" alt="blood test" className="w-full h-32 object-cover rounded-md" />
                 </div> */}
         </div>
+    )
+}
+
+function CardType3({ label = "Cardiology", link = "#" }: { label: string, link?: string, icon?: StaticImageData }) {
+    return (
+        <li className="shadow-md shadow-indigo-100 bg-white rounded-md p-2 py-6">
+            <a href={link} className="flex flex-col items-center">
+                <figure>
+                    <Image
+                        src="https://healthworldhospitals.com/wp-content/themes/healthworld/images/home/department/Cardiology.svg"
+                        alt=""
+                        className="sr-icon"
+                        width={50}
+                        height={50}
+                    />
+                </figure>
+                <span className="text-[#3987ba]">{label}</span>
+            </a>
+        </li>
     )
 }

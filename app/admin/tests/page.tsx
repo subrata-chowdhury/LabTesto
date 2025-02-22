@@ -86,7 +86,7 @@ const Tests = () => {
                         config: [
                             { heading: 'Name', selector: 'name' },
                             { heading: 'Type', selector: 'sampleType' },
-                            { heading: 'Created At', selector: 'createdAt' },
+                            { heading: 'Created At', selector: 'createdAt', component: ({ data }) => <div>{new Date(data.createdAt).toDateString()}</div> },
                             {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
                                     <button className='text-blue-500' onClick={() => navigate.push('/tests/' + data._id)}>View</button>|

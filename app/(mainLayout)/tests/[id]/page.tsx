@@ -1,6 +1,6 @@
 'use client'
 import { useParams, useRouter } from 'next/navigation'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import labIcon from '@/assets/lab.png'
 import Image from 'next/image'
 import fetcher from '@/lib/fetcher'
@@ -15,6 +15,7 @@ import CheckBox from '@/components/Inputs/CheckBox'
 import { toast } from 'react-toastify'
 import Title from '@/components/Title'
 import informationIcon from '@/assets/information.svg'
+import Loading, { LabLoader } from './loading'
 
 function Test() {
     const [testDetails, setTestDetails] = useState<TestDetails>({
@@ -37,6 +38,8 @@ function Test() {
     const [lab, setLab] = useState<{ _id: string, name: string, prices: { test: string, price: number, offer: number }[] }>({ name: '', _id: '', prices: [] })
     const [labs, setLabs] = useState<LabDetails[]>([]);
     const [loading, setLoading] = useState(false);
+    const [loadingTest, setLoadingTest] = useState(true);
+    const [loadingLabs, setLoadingLabs] = useState(true);
     const [limit, setLimit] = useState<number>(10);
     const { id } = useParams<{ id: string }>();
 
@@ -44,9 +47,10 @@ function Test() {
 
     useEffect(() => {
         getTestDetails(id);
+        getLabs(id, 10)
     }, [id])
 
-    const onLabSelect = useCallback(async (lab: LabDetails, testId: string) => {
+    const onLabSelect = async (lab: LabDetails, testId: string) => {
         const selectedLab = lab;
         if (selectedLab) {
             // console.log(selectedLab);
@@ -61,22 +65,23 @@ function Test() {
                 ranges: ranges?.ranges || []
             });
         }
-    }, [])
+    }
 
-    useEffect(() => {
+    async function getLabs(id: string, limit: number = 10) {
         const filter = { 'prices.test': id };
-        fetcher.get<{ labs: LabDetails[] }>(`/labs?filter=${JSON.stringify(filter)}&limit=${limit}`).then(res => {
+        await fetcher.get<{ labs: LabDetails[] }>(`/labs?filter=${JSON.stringify(filter)}&limit=${limit}`).then(res => {
             if (res.body && res.status === 200) {
                 setLabs(res.body.labs);
                 setLab(res.body.labs[0]);
                 onLabSelect(res.body.labs[0], id);
+                setLoadingLabs(false)
             }
         })
-    }, [id, limit, onLabSelect])
+    }
 
     async function getTestDetails(id: string) {
         const res = await fetcher.get<TestDetails>(`/tests/${id}`);
-        if (res.body && res.status === 200)
+        if (res.body && res.status === 200) {
             setTestDetails({
                 name: res.body.name || '',
                 sampleType: res.body.sampleType || '',
@@ -88,7 +93,11 @@ function Test() {
                 riskAssesment: res.body.riskAssesment || '',
                 resultTime: res.body.resultTime || ''
             });
+            setLoadingTest(false);
+        }
     }
+
+    if (loadingTest) return <Loading />
 
     return (
         <div className='bg-blue-50 p-1 md:py-9 md:px-10'>
@@ -145,11 +154,17 @@ function Test() {
                 </div>
                 <div className='bottom-0 flex items-center justify-between mt-3'>
                     <div className='flex items-center gap-2'>
-                        <div className='text-2xl font-semibold'>₹{(labBaseDetails.offer).toFixed(2)}</div>
-                        <div className='text-base line-through text-gray-500'>₹{labBaseDetails.price}</div>
-                        <div className='text-sm font-semibold text-red-400'>{(((labBaseDetails.price - labBaseDetails.offer) / labBaseDetails.price) * 100).toFixed(2)}% OFF</div>
+                        {loadingLabs ? (
+                            <div className='animate-pulse'>
+                                <div className='h-8 w-32 bg-gray-300 rounded'></div>
+                            </div>
+                        ) : (<>
+                            <div className='text-2xl font-semibold'>₹{(labBaseDetails.offer).toFixed(2)}</div>
+                            <div className='text-base line-through text-gray-500'>₹{labBaseDetails.price}</div>
+                            <div className='text-sm font-semibold text-red-400'>{(((labBaseDetails.price - labBaseDetails.offer) / labBaseDetails.price) * 100).toFixed(2)}% OFF</div>
+                        </>)}
                     </div>
-                    <button disabled={loading} className='px-5 py-2 rounded-md bg-orange-500 text-white font-medium' onClick={() => {
+                    {(!loadingLabs && !loadingTest) && <button disabled={loading} className='px-5 py-2 rounded-md bg-orange-500 text-white font-medium' onClick={() => {
                         const cartItem = {
                             product: {
                                 test: id,
@@ -171,11 +186,12 @@ function Test() {
                             }
                             setLoading(false);
                         });
-                    }}>{loading ? 'Booking..' : 'Book'}</button>
+                    }}>{loading ? 'Booking..' : 'Book'}</button>}
                 </div>
             </div>
             <div className='mt-1 md:mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 md:gap-5 rounded-lg'>
-                {labs.length > 0 && labs.map((labObj, i) => (
+                {loadingLabs === true && <LabLoader />}
+                {loadingLabs === false && labs.length > 0 && labs.map((labObj, i) => (
                     <div key={i} className='border-2 p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white' onClick={() => onLabSelect(labs[i], id)}>
                         <div className='flex items-center gap-3'>
                             <div className='w-14 h-14 bg-orange-200 rounded-md flex items-center justify-center'>
@@ -202,7 +218,10 @@ function Test() {
                 <div className='w-full flex justify-center'>
                     <button
                         className='mt-2 px-5 py-2 rounded-md bg-orange-500 text-white font-medium'
-                        onClick={() => setLimit(prevLimit => prevLimit + 10)}
+                        onClick={async () => {
+                            setLimit(prevLimit => prevLimit + 10);
+                            await getLabs(id, limit + 10)
+                        }}
                     >
                         Load More
                     </button>

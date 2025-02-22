@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import fetcher from "@/lib/fetcher";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import PasswordInput from "@/components/Inputs/PasswordInput";
 import Input from "@/components/Inputs/Input";
 
@@ -14,8 +13,6 @@ export default function AdminLogin() {
     });
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
-    const navigate = useRouter();
 
     async function login(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -40,7 +37,7 @@ export default function AdminLogin() {
                 document.cookie = `adminToken=${res.body.token}; path=/; secure; samesite=strict`;
                 const urlParams = new URLSearchParams(window.location.search);
                 const redirectUrl = urlParams.get('redirect') || '/admin';
-                navigate.replace(redirectUrl);
+                setTimeout(() => window.location.replace(redirectUrl), 300)
             }
         });
         setLoading(false);

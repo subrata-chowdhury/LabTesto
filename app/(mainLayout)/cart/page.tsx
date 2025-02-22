@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import { User } from '../profile/page';
 import Model from '@/components/Model';
 import CheckBox from '@/components/Inputs/CheckBox';
+import Loading, { AddressLoader, CartLoader } from './loading';
 
 type CartItem = {
     product: {
@@ -105,11 +106,11 @@ const CartPage: React.FC = () => {
     }
 
     if (loading) {
-        return <div className="flex justify-center items-center h-screen">Loading...</div>;
+        return <Loading />;
     }
 
     if (error) {
-        return <div className="flex justify-center items-center h-screen text-red-500">Error: {error}</div>;
+        return <div className="flex justify-center items-center h-screen text-red-500">Please Reload Your Page Or Click <button onClick={() => window.location.reload()}>Reload</button></div>;
     }
 
     if (!cart) {
@@ -119,7 +120,8 @@ const CartPage: React.FC = () => {
     return (
         <div className="flex-1 flex flex-col p-4 bg-gray-100 min-h-screen">
             <Locations selectedAddress={selectedAddress} onChange={address => setSelectedAddress(address)} />
-            {(cart && cart.items?.length > 0) ? <>
+            {loading && <CartLoader />}
+            {!loading && cart.items?.length > 0 ? <>
                 <h1 className="text-2xl font-bold mb-4">Cart Items</h1>
                 <ul className="space-y-4 flex-1 max-h-[70vh] overflow-y-scroll pb-5">
                     {cart.items.map((item, index) => (
@@ -268,6 +270,7 @@ function Locations({ selectedAddress, onChange }: { selectedAddress?: Address, o
         updatedAt: new Date()
     })
     const [showAddressesPopup, setShowAddressesPopup] = useState(false)
+    const [loadingAddress, setLoadingAddress] = useState(true);
 
     useEffect(() => {
         fetchUser();
@@ -278,8 +281,11 @@ function Locations({ selectedAddress, onChange }: { selectedAddress?: Address, o
         if (res.status === 200 && res.body) {
             setUser(res.body);
             onChange(res.body.address[0]);
+            setLoadingAddress(false)
         }
     }
+
+    if(loadingAddress) return <AddressLoader />
 
     return (
         <>

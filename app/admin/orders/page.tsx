@@ -86,7 +86,7 @@ const Orders = () => {
                         config: [
                             { heading: 'User', selector: 'user' },
                             { heading: 'Collector', selector: 'collector', component: ({ data }) => <div>{data.collector || 'Not Assigned'}</div> },
-                            { heading: 'Status', selector: 'status' },
+                            { heading: 'Status', selector: 'status', component: ({ data }) => <ColoredStatus data={data} /> },
                             {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
                                     {/* <button className='text-blue-500' onClick={() => navigate.push('/admin/orders/view/' + data._id)}>View</button>| */}
@@ -108,6 +108,14 @@ const Orders = () => {
 }
 
 export default Orders;
+
+function ColoredStatus({data}:{data:Order}){
+    if(data.status === 'Ordered') return <div className='text-blue-500'>{data.status}</div>
+    if(data.status === 'Sample Collected') return <div className='text-yellow-500'>{data.status}</div>
+    if(data.status === 'Report Generated') return <div className='text-green-500'>{data.status}</div>
+    if(data.status === 'Report Delivered') return <div className='text-green-500'>{data.status}</div>
+    if(data.status === 'Canceled') return <div className='text-red-500'>{data.status}</div>
+}
 
 
 type Order = {

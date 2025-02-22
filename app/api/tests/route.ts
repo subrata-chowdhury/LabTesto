@@ -34,7 +34,8 @@ export async function GET(req: NextRequest) {
                 pageSize: limit,
             },
         });
-    } catch {
+    } catch(e) {
+        console.log(e)
         return new NextResponse('Error fetching tests', { status: 500 });
     }
 }
