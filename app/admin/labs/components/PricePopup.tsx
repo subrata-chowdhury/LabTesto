@@ -3,7 +3,7 @@ import Input from "@/components/Inputs/Input";
 import Model from "@/components/Model";
 import { useState } from "react";
 
-export default function PricePopup({ priceDetails, onClose = () => { }, onSave = () => { } }: { priceDetails: { test: string, price: number, offer: number, expenses: number }, onClose?: () => void, onSave?: (priceDetails: { test: string, price: number, offer: number, name?: string, expenses: number }) => void }) {
+export default function PricePopup({ priceDetails, onClose = () => { }, onSave = () => { } }: { priceDetails?: { test: string, price: number, offer: number, expenses: number }, onClose?: () => void, onSave?: (priceDetails: { test: string, price: number, offer: number, name?: string, expenses: number }) => void }) {
     const [testSearch, setTestSearch] = useState<string>('');
     const [priceData, setPriceData] = useState<{ test: string, price: number, offer: number, expenses: number }>(priceDetails || {
         test: '',

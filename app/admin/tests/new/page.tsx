@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import TestForm, { TestDetails } from '../components/TestsForm';
 import fetcher from '@/lib/fetcher';
+import { toast } from 'react-toastify';
 
 const Page = () => {
     const [testDetails, setTestDetails] = useState<TestDetails>({
@@ -14,16 +15,15 @@ const Page = () => {
         overview: '',
         testResultInterpretation: '',
         riskAssesment: '',
-        resultTime: ''
     });
 
     const handleSave = async () => {
         const res = await fetcher.post('/tests', testDetails);
         if(res.status === 200) {
-            alert('Test saved successfully');
+            toast.success('Test saved successfully');
             console.log('Test details saved:', testDetails);
         } else {
-            alert('Error saving test');
+            toast.error(res.error || "Error saing Test")
             console.error('Error saving test:', res.body);
         }
     };

@@ -13,10 +13,10 @@ const Menubar = () => {
     const navigate = useRouter();
 
     return (
-        <nav className="bg-[#fff] shadow-lg shadow-orange-50 p-4 px-6">
+        <nav className="bg-[#fff] shadow-md shadow-[#3986ba16] p-4 px-6">
             <div className="mx-auto flex justify-between items-center">
                 <div className="md:hidden flex items-center">
-                    <button onClick={() => setIsOpen(!isOpen)} className="text-orange-600 menu focus:outline-none">
+                    <button onClick={() => setIsOpen(!isOpen)} className="text-[#3987ba] menu focus:outline-none">
                         <svg className="w-6 h-6 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"}></path>
                         </svg>
@@ -26,11 +26,11 @@ const Menubar = () => {
                     <Link href={'/'} className=''><span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></Link>
                 </div>
                 <div className="hidden md:flex space-x-6 mr-auto">
-                    <Link href="#" className="text-orange-600 menu">Book</Link>
+                    <Link href="#" className="text-[#3987ba] menu">Book</Link>
                     {/* <Link href="#" className="text-white">Home</Link> */}
-                    <Link href="#" className="text-orange-600 menu">About</Link>
-                    <Link href="/order" className="text-orange-600 menu">Orders</Link>
-                    <Link href="#" className="text-orange-600 menu">Contact</Link>
+                    <Link href="#" className="text-[#3987ba] menu">About</Link>
+                    <Link href="/order" className="text-[#3987ba] menu">Orders</Link>
+                    <Link href="#" className="text-[#3987ba] menu">Contact</Link>
                 </div>
                 <div className='hidden ms-6 md:block mr-5'>
                     <SearchBar onSelect={(test) => navigate.push('/tests/' + test._id)} active={true} />
@@ -47,23 +47,23 @@ const Menubar = () => {
                 </Link>
                 <Link className="hidden md:flex items-center space-x-4 cursor-pointer" href='/profile'>
                     {/* <div className="text-white">Profile</div> */}
-                    <Image src={user} alt="avatar" width={40} height={40} className="rounded-full p-2 bg-orange-100" />
+                    <Image src={user} alt="avatar" width={40} height={40} className="rounded-full p-2 bg-[#a0d9ff9d]" />
                 </Link>
             </div>
             {isOpen && (
                 <div className="md:hidden fixed left-0 top-14 w-full sm:w-2/5 px-10 z-20 bg-white h-screen">
                     <Link className="flex flex-col gap-2 justify-center items-center cursor-pointer py-5 pb-7" href={'/profile'}>
                         <Image src={user} alt="avatar" width={40} height={40} className="rounded-full p-2 bg-gray-100" />
-                        <div className="text-orange-600 menu">Profile</div>
+                        <div className="text-[#3987ba] menu">Profile</div>
                     </Link>
                     {/* <div className='py-1 pb-2'>
                         <SearchBar active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
                     </div> */}
-                    <Link href="#" className="block text-orange-600 menu py-2">Book a Test</Link>
+                    <Link href="#" className="block text-[#3987ba] menu py-2">Book a Test</Link>
                     {/* <Link href="#" className="block text-white py-2">Home</a> */}
-                    <Link href="#" className="block text-orange-600 menu py-2">About</Link>
-                    <Link href="/order" className="block text-orange-600 menu py-2">Orders</Link>
-                    <Link href="#" className="block text-orange-600 menu py-2">Contact</Link>
+                    <Link href="#" className="block text-[#3987ba] menu py-2">About</Link>
+                    <Link href="/order" className="block text-[#3987ba] menu py-2">Orders</Link>
+                    <Link href="#" className="block text-[#3987ba] menu py-2">Contact</Link>
                 </div>
             )}
         </nav>
@@ -76,7 +76,7 @@ export function SearchBar({ active = false, className = '', onSelect = () => { }
     const [showSearchBar, setShowSearchBar] = useState(active);
 
     return (
-        <div className={"relative text-sm text-orange-500 z-10 " + className}>
+        <div className={"relative text-sm text-[#3987ba] z-10 flex items-center justify-center gap-3 px-4 py-2 border-[#539aca70] border-2 outline-none w-full rounded-full " + className}>
             {showSearchBar && <SelectTest
                 onSelect={onSelect}
                 optionElement={(option, index, onClick) => (
@@ -87,9 +87,10 @@ export function SearchBar({ active = false, className = '', onSelect = () => { }
                         </div>
                     </Link>
                 )}
-                className='rounded-full px-4'
+                className='rounded-full'
+                style={{ border: 'none', padding: 0, borderRadius: 0 }}
                 placeholder='Search Test' />}
-            <button type="submit" className={(showSearchBar ? "absolute right-0 top-0 mt-3 mr-4" : "bg-white p-3 rounded-full")} onClick={() => setShowSearchBar(true)}>
+            <button type="submit" className={(showSearchBar ? "relative right-0 top-0" : "bg-white p-3 rounded-full")} onClick={() => setShowSearchBar(true)}>
                 <svg className="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" version="1.1" id="Capa_1" x="0px" y="0px"
                     viewBox="0 0 56.966 56.966" xmlSpace="preserve" width="512px" height="512px">
                     <path d="M55.146,51.887L41.588,38.329c3.486-4.191,5.377-9.479,5.377-14.979C46.965,10.478,36.486,0,23.482,0

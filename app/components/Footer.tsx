@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 const Footer = () => {
     return (
-        <footer className="bg-orange-50 text-orange-500 py-6 pt-5">
+        <footer className="bg-[#3986ba1f] text-[#3987ba] py-6 pt-5">
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-4">
                     <div className='mr-4'>
@@ -69,7 +69,7 @@ const Footer = () => {
                     </div>
                 </div>
 
-                <div className="border-t border-orange-500 mt-5 pt-4 text-center flex justify-between text-xs">
+                <div className="border-t border-[#3987ba] mt-5 pt-4 text-center flex justify-between text-xs">
                     <p>Privacy Policy | Terms of Service</p>
                     <p>&copy; 2023 Your Company. All rights reserved.</p>
                 </div>

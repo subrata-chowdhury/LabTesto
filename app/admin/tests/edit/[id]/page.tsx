@@ -16,7 +16,6 @@ const Page = () => {
         overview: '',
         testResultInterpretation: '',
         riskAssesment: '',
-        resultTime: ''
     });
 
     const { id } = useParams<{ id: string }>();
@@ -45,7 +44,6 @@ const Page = () => {
                 overview: res.body.overview || '',
                 testResultInterpretation: res.body.testResultInterpretation || '',
                 riskAssesment: res.body.riskAssesment || '',
-                resultTime: res.body.resultTime || ''
             });
     }
 

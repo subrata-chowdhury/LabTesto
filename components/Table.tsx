@@ -98,7 +98,7 @@ export function MainTable<T>({
                         ))}
                     </tr>
                 ))}
-                {(!data || data?.length <= 0) && <tr><td className='text-center' colSpan={config.length}>No Data Found</td></tr>}
+                {(!data || data?.length <= 0) && <tr><td className='text-center h-12 text-red-500 font-medium' colSpan={config.length}>No Data Found</td></tr>}
             </tbody>
         </table>
     )

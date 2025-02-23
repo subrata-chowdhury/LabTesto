@@ -30,22 +30,21 @@ const TestForm = ({ testDetails, error, onChange, onSave = () => { } }: Props) =
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
                 <Input label='Name *' name='name' placeholder='Enter name' value={testDetails.name} onChange={(val) => onChange.testDetails({ ...testDetails, name: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'name' ? error.msg : ""} />
                 <div className='flex flex-col gap-1'>
-                    <p className='font-medium'>Sample Type</p>
+                    <p className='font-medium'>Sample Type *</p>
                     <Dropdown options={['Blood', 'Urine', 'Semen', 'Stool', 'Sputum', 'Other Body Fluid']} value={testDetails.sampleType} onChange={(val) => onChange.testDetails({ ...testDetails, sampleType: val.value as 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other Body Fluid' })} width={'100%'} />
                 </div>
                 <div className='flex flex-col gap-1'>
-                    <p className='font-medium'>Tube Type</p>
+                    <p className='font-medium'>Tube Type *</p>
                     <Dropdown options={['Clot Tube', 'Fluoride Tube', 'EDTA Tube', 'Citrate Tube']} value={testDetails.tubeType} onChange={(val) => onChange.testDetails({ ...testDetails, tubeType: val.value as 'Clot Tube' | 'Fluoride Tube' | 'EDTA Tube' | 'Citrate Tube' })} width={'100%'} />
                 </div>
-                <Input label='Fasting Required *' name='fastingRequired' placeholder='Enter fasting requirement' value={testDetails.fastingRequired} onChange={(val) => onChange.testDetails({ ...testDetails, fastingRequired: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'fastingRequired' ? error.msg : ""} />
-                <Input label='Result Time' name='resultTime' placeholder='Enter result time' value={testDetails.resultTime} onChange={(val) => onChange.testDetails({ ...testDetails, resultTime: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'resultTime' ? error.msg : ""} />
+                <Input label='Fasting Required' name='fastingRequired' placeholder='Enter fasting requirement' value={testDetails.fastingRequired} onChange={(val) => onChange.testDetails({ ...testDetails, fastingRequired: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'fastingRequired' ? error.msg : ""} />
             </div>
             <div className='flex flex-col gap-1 mt-4'>
-                <p className='font-medium text-sm'>Other Terms *</p>
+                <p className='font-medium text-sm'>Other Terms / Tags</p>
                 <TagInput values={testDetails.otherTerms} onChange={(values) => onChange.testDetails({ ...testDetails, otherTerms: values })} />
             </div>
             <div className='text-sm flex flex-col gap-1 pt-4'>
-                <label className='font-medium'>Description</label>
+                <label className='font-medium'>Description *</label>
                 <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Description' value={testDetails.description} onChange={(e) => onChange.testDetails({ ...testDetails, description: e.target.value })}></textarea>
             </div>
             <div className='text-sm flex flex-col gap-1 pt-4'>
@@ -80,5 +79,4 @@ export type TestDetails = {
     overview: string,
     testResultInterpretation: string,
     riskAssesment: string,
-    resultTime: string
 }

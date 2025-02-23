@@ -23,7 +23,7 @@ export default function Home() {
                 </div>
                 <div className="mx-auto md:w-[95%] 2xl:w-fit pt-0 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
                     <h1 className="text-xl font-semibold translate-y-full ml-2 bg-white w-fit px-2">Frequently Required Tests</h1>
-                    <div className="mt-4 p-3 md:p-5 border-2 border-orange-200 border-dashed rounded-md bg-white w-full">
+                    <div className="mt-4 p-3 md:p-5 border-2 border-[#3986ba64] border-dashed rounded-md bg-white w-full">
                         <div className="w-full overflow-x-auto hide-scroll flex gap-2">
                             <Card label="CBC" subText="Blood" description="Check Your Overall Health" />
                             <Card label="CBC" subText="Blood" description="Check Your Overall Health" />
@@ -36,7 +36,7 @@ export default function Home() {
                 </div>
                 <div className="mx-auto md:w-[95%] 2xl:w-fit pt-0 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
                     <h1 className="text-xl font-semibold translate-y-full ml-2 bg-white w-fit px-2">Our Promise</h1>
-                    <div className="mt-4 p-3 md:p-5 border-2 border-orange-200 border-dashed rounded-md bg-white w-full">
+                    <div className="mt-4 p-3 md:p-5 border-2 border-[#3986ba65] border-dashed rounded-md bg-white w-full">
                         <div className="w-full overflow-x-auto hide-scroll flex gap-2">
                             <CardType2 label="NABL Certified Lab Test" icon={nablcertiIcon} />
                             <CardType2 label="On Time Sample Collection by Expert" icon={ontimeIcon} />
@@ -77,11 +77,11 @@ export default function Home() {
 
 function Card({ label = "CBC", subText, description, icon }: { label: string, subText?: string, description?: string, icon?: StaticImageData }) {
     return (
-        <div className="bg-orange-400 rounded-md shadow-md border-2 border-orange-500 text-white p-4 min-w-52">
+        <div className="bg-[#97c7e762] rounded-md shadow-md border-2 border-[#3987ba] text-[#3987ba] p-4 min-w-52">
             <div className="flex gap-2">
                 <div className="">
                     <h1 className="text-lg font-semibold">{label}</h1>
-                    {subText && <p className="text-sm text-gray-100">{subText}</p>}
+                    {subText && <p className="text-sm text-[#3986baa1]">{subText}</p>}
                     {description && <p className="text-sm">{description}</p>}
                     {icon && <Image src={icon} alt="" style={{ width: 120 }} />}
                 </div>
@@ -95,11 +95,11 @@ function Card({ label = "CBC", subText, description, icon }: { label: string, su
 
 function CardType2({ label = "CBC", subText, description, icon }: { label: string, subText?: string, description?: string, icon?: StaticImageData }) {
     return (
-        <div className="bg-orange-400 rounded-md shadow-md border-2 border-orange-500 text-white p-4 min-w-52 w-[209px]">
+        <div className="bg-[#9bc6e260] rounded-md shadow-md border-2 border-[#3987ba] text-[#3987ba] p-4 min-w-52 w-[209px]">
             <div className="flex flex-col gap-3">
                 {icon && <Image src={icon} alt="" className="mx-auto" width={120} />}
                 <h1 className="text-lg font-medium text-center">{label}</h1>
-                {subText && <p className="text-sm text-gray-100">{subText}</p>}
+                {subText && <p className="text-sm text-[#3986ba6e]">{subText}</p>}
                 {description && <p className="text-sm">{description}</p>}
             </div>
             {/* <div className="w-1/2">

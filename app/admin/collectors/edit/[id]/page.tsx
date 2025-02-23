@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import CollectorForm, { CollectorDetails } from '../../components/CollectorForm';
 import { useParams, useRouter } from 'next/navigation';
 import fetcher from '@/lib/fetcher';
+import { toast } from 'react-toastify';
 
 const Page = () => {
     const [collectorDetails, setCollectorDetails] = useState<CollectorDetails>({
@@ -26,8 +27,10 @@ const Page = () => {
     const handleSave = async () => {
         const res = await fetcher.post<CollectorDetails, { messege: string }>(`/admin/collectors/${id}`, collectorDetails);
         if (res.body && res.status === 200) {
-            alert('Collector saved successfully');
+            toast.success('Collector saved successfully');
             navigator.replace('/admin/collectors');
+        } else {
+            toast.error(res.error || 'Error saving data')
         }
     };
 

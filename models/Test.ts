@@ -11,7 +11,7 @@ interface ITest extends Document {
     overview: string;
     testResultInterpretation: string;
     riskAssesment: string;
-    resultTime: string;
+    // resultTime: string;
 
     createdAt: Date;
     updatedAt: Date;
@@ -35,7 +35,7 @@ const TestSchema: Schema = new Schema({
     overview: { type: String, required: false },
     testResultInterpretation: { type: String, required: false },
     riskAssesment: { type: String, required: false },
-    resultTime: { type: String, required: false },
+    // resultTime: { type: String, required: false },
 }, { collection: 'tests', timestamps: true });
 
 const Test = mongoose.models.Test || mongoose.model<ITest>('Test', TestSchema);

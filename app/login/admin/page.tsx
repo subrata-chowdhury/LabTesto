@@ -4,6 +4,7 @@ import fetcher from "@/lib/fetcher";
 import Link from "next/link";
 import PasswordInput from "@/components/Inputs/PasswordInput";
 import Input from "@/components/Inputs/Input";
+import { toast } from "react-toastify";
 
 export default function AdminLogin() {
     const [loading, setLoading] = useState(false);
@@ -29,7 +30,7 @@ export default function AdminLogin() {
         setLoading(true);
         await fetcher.post<{ email: string, password: string }, { user: { verified: boolean, institution: string, type: string }, token: string }>('/admin/auth/login', { email, password }).then(async (res) => {
             if (res.status !== 200) {
-                alert(res.error || 'Error signing up');
+                toast.error(res.error || 'Error signing up');
                 return;
             }
             if (res.body) {
@@ -37,6 +38,7 @@ export default function AdminLogin() {
                 document.cookie = `adminToken=${res.body.token}; path=/; secure; samesite=strict`;
                 const urlParams = new URLSearchParams(window.location.search);
                 const redirectUrl = urlParams.get('redirect') || '/admin';
+                await fetcher.get('/user');
                 setTimeout(() => window.location.replace(redirectUrl), 300)
             }
         });

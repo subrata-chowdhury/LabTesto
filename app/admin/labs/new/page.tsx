@@ -2,6 +2,7 @@
 import React from 'react'
 import fetcher from '@/lib/fetcher'
 import AboutForm, {LabAboutDetails} from '../components/AboutForm'
+import { toast } from 'react-toastify'
 
 const Page = () => {
     const [labDetails, setLabDetails] = React.useState<LabAboutDetails>({
@@ -24,9 +25,9 @@ const Page = () => {
     async function saveLab() {
         const res = await fetcher.post<LabAboutDetails, { messege: string }>('/labs', labDetails);
         if (res.status === 200) {
-            alert('Lab saved successfully');
+            toast.success('Lab saved successfully');
         } else {
-            alert('Error saving lab');
+            toast.error(res.error || 'Error saving lab');
         }
     }
 

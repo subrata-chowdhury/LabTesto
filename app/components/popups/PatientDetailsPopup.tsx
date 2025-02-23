@@ -30,9 +30,9 @@ export default function PatientDetailsPopup({ patientDetails, onSave = () => { }
                     <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Other Details' value={values.other} onChange={(e) => setValues({ ...values, other: e.target.value })}></textarea>
                 </div>
                 <div className='p-5 pb-2 px-0 ms-auto justify-end items-end flex gap-4'>
-                    <div className='font-medium text-orange-500 h-10 flex justify-center items-center px-4 border-2 border-orange-500 rounded cursor-pointer' onClick={onClose}>Cancel</div>
-                    <div className="bg-orange-500 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer" onClick={onRemove}>Remove</div>
-                    <div className='bg-orange-500 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => {
+                    <div className='font-medium text-[#3986ba] h-10 flex justify-center items-center px-4 border-2 border-[#3986ba] rounded cursor-pointer' onClick={onClose}>Cancel</div>
+                    <div className="bg-[#3986ba] font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer" onClick={onRemove}>Remove</div>
+                    <div className='bg-[#3986ba] font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => {
                         // validate
                         const errors: { [key: string]: string } = {};
                         if (!values.name) errors.name = 'Name is required';

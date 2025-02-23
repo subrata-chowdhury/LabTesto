@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     await dbConnect();
 
     try {
-        const lab = await Lab.findById(id).populate({ path: 'prices.test', model: Test }).populate({ path: 'packagesInclude.test', model: Test }).populate({ path: 'ranges.test', model: Test });
+        const lab = await Lab.findById(id).populate({ path: 'prices.test', model: Test }).populate({ path: 'packagesInclude.test', model: Test }).populate({ path: 'ranges.test', model: Test }).populate({ path: 'resultTimes.test', model: Test });
 
         if (!lab) {
             return new NextResponse('Lab not found', { status: 404 });
@@ -36,12 +36,12 @@ export async function POST(req: NextRequest) {
     if (!body) {
         return new NextResponse('Request body is missing', { status: 400 });
     }
-    if (!body.name) {
-        return new NextResponse('Name is required', { status: 400 });
-    }
-    if (body.certification && !body.certification.organization) {
-        return new NextResponse('Certification organization is required', { status: 400 });
-    }
+    // if (!body.name) {
+    //     return new NextResponse('Name is required', { status: 400 });
+    // }
+    // if (body.certification && !body.certification.organization) {
+    //     return new NextResponse('Certification organization is required', { status: 400 });
+    // }
 
     const labData: Partial<{
         name: string;
@@ -62,6 +62,10 @@ export async function POST(req: NextRequest) {
             test: string;
             range: string;
         }>;
+        resultTimes: Array<{
+            test: string;
+            range: string;
+        }>;
     }> = {};
 
     if (body.name) labData.name = body.name;
@@ -70,6 +74,7 @@ export async function POST(req: NextRequest) {
     if (body.prices) labData.prices = body.prices;
     if (body.packagesInclude) labData.packagesInclude = body.packagesInclude;
     if (body.ranges) labData.ranges = body.ranges;
+    if (body.resultTimes) labData.resultTimes = body.resultTimes;
 
     try {
         const updatedLab = await Lab.findByIdAndUpdate(id, labData, { new: true, runValidators: true });

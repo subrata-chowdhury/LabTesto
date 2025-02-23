@@ -9,6 +9,7 @@ const Page = () => {
     const [labDetails, setLabDetails] = React.useState<LabTestDetails>({
         prices: [],
         ranges: [],
+        resultTimes: [],
     })
 
     const { id } = useParams();
@@ -22,6 +23,7 @@ const Page = () => {
                 labDetails.prices = res.body.prices.map(e => ({ test: e.test._id, name: e.test.name, offer: e.offer, price: e.price, expenses: e.expenses }))
                 labDetails.packagesInclude = res.body.packagesInclude?.map(e => ({ test: e.test._id, name: e.test.name, packages: e.packages }))
                 labDetails.ranges = res.body.ranges?.map(e => ({ test: e.test._id, name: e.test.name, ranges: e.ranges }))
+                labDetails.resultTimes = res.body.resultTimes?.map(e => ({ test: e.test._id, name: e.test.name, resultTime: e.resultTime }))
                 setLabDetails(labDetails);
             }
         })
@@ -32,7 +34,7 @@ const Page = () => {
         if (res.status === 200) {
             toast.success('Lab saved successfully');
         } else {
-            toast.error('Error saving lab');
+            toast.error(res.error || 'Error saving lab');
         }
     }
 
@@ -49,9 +51,16 @@ const Page = () => {
 }
 
 type FetchedLabDetails = {
+    resultTimes?: ResultTime[],
     prices: Price[],
     packagesInclude?: PackageInclude[],
     ranges?: Range[]
+}
+
+type ResultTime = {
+    name?: string,
+    test: { _id: string, name: string },
+    resultTime: string,
 }
 
 type Price = {

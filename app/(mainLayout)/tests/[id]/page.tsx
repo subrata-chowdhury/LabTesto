@@ -102,7 +102,7 @@ function Test() {
     return (
         <div className='bg-blue-50 p-1 md:py-9 md:px-10'>
             <div className='bg-white border-2 p-7 px-8 flex flex-col rounded-lg'>
-                <div className='text-2xl font-bold pb-6 text-orange-600'>{testDetails.name}</div>
+                <div className='text-2xl font-bold pb-6 text-[#3986ba]'>{testDetails.name}</div>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-5'>
                     <div className='flex gap-4'>
                         <p className='font-medium flex gap-2'>
@@ -118,13 +118,13 @@ function Test() {
                         </p>
                         <p className='text-gray-500'>{testDetails.tubeType}</p>
                     </div>
-                    <div className='flex gap-4'>
+                    {testDetails.fastingRequired?.length > 0 && <div className='flex gap-4'>
                         <p className='font-medium flex gap-2'>
                             <FoodIcon />
                             Fasting Required
                         </p>
                         <p className='text-gray-500'>{testDetails.fastingRequired}</p>
-                    </div>
+                    </div>}
                     {labs.length > 0 && <div className='flex gap-4 items-center'>
                         <p className='font-medium flex gap-2'>
                             <Image src={labIcon} alt='' width={24} height={24} />
@@ -158,13 +158,13 @@ function Test() {
                             <div className='animate-pulse'>
                                 <div className='h-8 w-32 bg-gray-300 rounded'></div>
                             </div>
-                        ) : (<>
+                        ) : (labs.length > 0 && <>
                             <div className='text-2xl font-semibold'>₹{(labBaseDetails.offer).toFixed(2)}</div>
                             <div className='text-base line-through text-gray-500'>₹{labBaseDetails.price}</div>
                             <div className='text-sm font-semibold text-red-400'>{(((labBaseDetails.price - labBaseDetails.offer) / labBaseDetails.price) * 100).toFixed(2)}% OFF</div>
                         </>)}
                     </div>
-                    {(!loadingLabs && !loadingTest) && <button disabled={loading} className='px-5 py-2 rounded-md bg-orange-500 text-white font-medium' onClick={() => {
+                    {(!loadingLabs && !loadingTest && labs.length > 0) && <button disabled={loading} className='px-5 py-2 rounded-md bg-[#3986ba] text-white font-medium' onClick={() => {
                         const cartItem = {
                             product: {
                                 test: id,
@@ -194,11 +194,11 @@ function Test() {
                 {loadingLabs === false && labs.length > 0 && labs.map((labObj, i) => (
                     <div key={i} className='border-2 p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white' onClick={() => onLabSelect(labs[i], id)}>
                         <div className='flex items-center gap-3'>
-                            <div className='w-14 h-14 bg-orange-200 rounded-md flex items-center justify-center'>
+                            <div className='w-14 h-14 bg-[rgba(57,134,186,0.2)] rounded-md flex items-center justify-center'>
                                 {/* <Image src='/download.png' alt='' width={115} height={50} /> */}
                             </div>
                             <div>
-                                <div className='font-semibold text-orange-500'>{labObj.name}</div>
+                                <div className='font-semibold text-[#3986ba]'>{labObj.name}</div>
                                 <div className='flex items-center gap-2'>
                                     <div className='text-lg font-semibold'>₹{labObj.prices[0].offer}</div>
                                     <div className='text-base line-through text-gray-500'>₹{labObj.prices[0].price}</div>

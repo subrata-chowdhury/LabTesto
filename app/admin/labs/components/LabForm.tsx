@@ -6,6 +6,7 @@ import trashBin from '@/assets/trash-bin.svg'
 import PricePopup from './PricePopup'
 import PackageIncludePopup from './PackageIncludePopup'
 import RangePopup from './RangePopup'
+import ResultTimePopup from './ResultTimePopup'
 
 type Props = {
     labDetails: LabTestDetails,
@@ -20,6 +21,7 @@ const LabForm = ({ labDetails, onChange, onSave = () => { } }: Props) => {
     const [showPricePopup, setShowPricePopup] = useState<{ index: number } | null>(null);
     const [showPackageIncludePopup, setShowPackageIncludePopup] = useState<{ index: number } | null>(null);
     const [showRangePopup, setShowRangePopup] = useState<{ index: number } | null>(null);
+    const [showResultTimePopup, setShowResultTimesPopup] = useState<{ index: number } | null>(null);
 
     return (
         <div className='bg-white mt-4 p-8 px-10'>
@@ -27,10 +29,54 @@ const LabForm = ({ labDetails, onChange, onSave = () => { } }: Props) => {
                 Tests Lab Form
             </div>
             <div className='pb-4 flex justify-between font-semibold'>
+                Result Times
+                <div
+                    className='ms-auto flex gap-2 font-semibold text-sm text-blue-500 border-2 border-blue-500 px-4 py-2 rounded cursor-pointer'
+                    onClick={() => setShowResultTimesPopup({ index: labDetails.resultTimes?.length || 0 })}>
+                    <div>New Entry</div>
+                    <Image src={plusIcon} alt='' width={20} height={20} />
+                </div>
+            </div>
+            <div className='border-2 border-t-0 rounded'>
+                <MainTable<ResultTime>
+                    config={[
+                        { heading: 'Test', selector: 'name' },
+                        { heading: 'ResultTime', selector: 'resultTime' },
+                        {
+                            heading: 'Actions',
+                            component: ({ index }) => (<div className='flex items-center gap-1'>
+                                <button onClick={() => setShowResultTimesPopup({ index })}>
+                                    Edit
+                                </button>|
+                                <button
+                                    onClick={() => {
+                                        const newResultTimes = [...(labDetails.resultTimes || [])];
+                                        newResultTimes.splice(index, 1);
+                                        onChange.labDetails({ ...labDetails, resultTimes: newResultTimes });
+                                    }}><Image src={trashBin} alt="" width={20} height={20} /></button>
+                            </div>)
+                        }
+                    ]}
+                    data={labDetails.resultTimes || []}
+                    className='rounded text-sm border-0' />
+                {
+                    showResultTimePopup && <ResultTimePopup
+                        details={labDetails.resultTimes?.[showResultTimePopup.index]}
+                        onClose={() => setShowResultTimesPopup(null)}
+                        onSave={(details) => {
+                            const newResultTimes = [...(labDetails.resultTimes || [])];
+                            newResultTimes[showResultTimePopup.index] = details;
+                            onChange.labDetails({ ...labDetails, resultTimes: newResultTimes });
+                            setShowResultTimesPopup(null);
+                        }}
+                    />
+                }
+            </div>
+            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
                 Prices
                 <div
                     className='ms-auto flex gap-2 font-semibold text-sm text-blue-500 border-2 border-blue-500 px-4 py-2 rounded cursor-pointer'
-                    onClick={() => setShowPricePopup({ index: labDetails.prices.length })}>
+                    onClick={() => setShowPricePopup({ index: labDetails.prices?.length || 0 })}>
                     <div>New Entry</div>
                     <Image src={plusIcon} alt='' width={20} height={20} />
                 </div>
@@ -49,20 +95,20 @@ const LabForm = ({ labDetails, onChange, onSave = () => { } }: Props) => {
                                 </button>|
                                 <button
                                     onClick={() => {
-                                        const newPrices = [...labDetails.prices];
+                                        const newPrices = [...(labDetails.prices || [])];
                                         newPrices.splice(index, 1);
                                         onChange.labDetails({ ...labDetails, prices: newPrices });
                                     }}><Image src={trashBin} alt="" width={20} height={20} /></button>
                             </div>)
                         }
                     ]}
-                    data={labDetails.prices}
+                    data={labDetails.prices || []}
                     className='rounded text-sm border-0' />
                 {showPricePopup && <PricePopup
-                    priceDetails={labDetails.prices[showPricePopup.index]}
+                    priceDetails={labDetails?.prices?.[showPricePopup.index]}
                     onClose={() => setShowPricePopup(null)}
                     onSave={priceData => {
-                        const newPrices = [...labDetails.prices];
+                        const newPrices = [...(labDetails.prices || [])];
                         newPrices[showPricePopup.index] = priceData;
                         onChange.labDetails({ ...labDetails, prices: newPrices });
                         setShowPricePopup(null);
@@ -166,9 +212,16 @@ const LabForm = ({ labDetails, onChange, onSave = () => { } }: Props) => {
 export default LabForm;
 
 export type LabTestDetails = {
-    prices: Price[],
+    resultTimes?: ResultTime[],
+    prices?: Price[],
     packagesInclude?: PackageInclude[],
     ranges?: Range[]
+}
+
+type ResultTime = {
+    name?: string,
+    test: string,
+    resultTime: string,
 }
 
 type Price = {

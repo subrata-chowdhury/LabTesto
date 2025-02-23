@@ -4,6 +4,7 @@ import fetcher from '@/lib/fetcher';
 import React, { useEffect, useState } from 'react'
 import ReviewForm, { ReviewType } from '../../components/ReviewForm';
 import { useRouter } from 'next/navigation';
+import OrdersLoading from './loading';
 
 const OrderPage = () => {
     const [orders, setOrders] = useState<Order[]>([]);
@@ -38,12 +39,10 @@ const OrderPage = () => {
         }
     };
 
-    if (loading) {
-        return <div className="flex justify-center items-center h-screen">Loading...</div>;
-    }
+    if (loading) return <OrdersLoading />
 
     if (error) {
-        return <div className="flex justify-center items-center h-screen text-red-500">Error: {error}</div>;
+        return <div className="flex justify-center items-center h-screen text-red-500">Please Reload Your Page Or Click <button onClick={() => window.location.reload()}>Reload</button></div>;
     }
 
     if (orders?.length <= 0) {

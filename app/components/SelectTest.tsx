@@ -5,6 +5,7 @@ interface SelectInstituteProps {
     onSelect: (value: Test) => void;
     placeholder?: string;
     className?: string;
+    style?: React.CSSProperties;
     inputRef?: React.RefObject<HTMLInputElement | null>;
     optionElement?: (option: Test, index: number, onClick: () => void) => React.JSX.Element
 }
@@ -19,6 +20,7 @@ const SelectTest: React.FC<SelectInstituteProps> = ({
     onSelect = () => { },
     placeholder = 'Select Test',
     className = '',
+    style = {},
     inputRef,
     optionElement
 }) => {
@@ -40,7 +42,8 @@ const SelectTest: React.FC<SelectInstituteProps> = ({
     return (
         <div className="relative">
             <input
-                className={"px-3 py-2 border-orange-200 border-2 rounded outline-none w-full " + className}
+                className={"px-3 py-2 border-[#539aca70] border-2 rounded outline-none w-full " + className}
+                style={style}
                 type="text"
                 value={testSearch}
                 placeholder={placeholder}

@@ -48,7 +48,7 @@ body {
 
 .menu:hover {
   transition: 0.3s;
-  text-shadow: 0 0 1.5px rgba(234, 88, 12, 1);
+  text-shadow: 0 0 1.5px rgba(57, 135, 186, 1);
 }
 
 .slide {

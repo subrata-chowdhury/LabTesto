@@ -20,6 +20,10 @@ interface ILab extends Document {
         year?: number;
         imageUrl?: string;
     }[];
+    resultTimes: {
+        test: mongoose.Schema.Types.ObjectId;
+        resultTime: string;
+    }[];
     prices: {
         test: mongoose.Schema.Types.ObjectId;
         price: number;
@@ -62,6 +66,12 @@ const LabSchema: Schema = new Schema({
             year: { type: Number, require: false },
             imageUrl: { type: String, require: false }
         }], required: false
+    },
+    resultTimes: {
+        type: [{
+            test: { type: Schema.Types.ObjectId, ref: 'Test', required: true },
+            resultTime: { type: String, require: true }
+        }], required: false, default: []
     },
     prices: {
         type: [{

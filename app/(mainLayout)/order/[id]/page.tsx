@@ -8,11 +8,12 @@ import Model from '@/components/Model';
 import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import ReviewForm, { ReviewType } from '@/app/components/ReviewForm';
+import Loading from './loading';
 
 function OrderPage() {
     const [order, setOrder] = useState<Order>();
     const [showPatientPopup, setShowPatientPopup] = useState<{ itemIndex: number, patientIndex: number } | null>(null);
-    const [showReviewModel, setShowReviewModel] = useState<{ orderId: string, item: { test: string, lab: string } } | null>(null)
+    const [showReviewModel, setShowReviewModel] = useState<{ orderId: string, item: { test: string, lab: string } } | null>(null);
     const { id } = useParams();
 
     const fetchOrderDetails = useCallback(async () => {
@@ -35,6 +36,8 @@ function OrderPage() {
         }
         startUp()
     }, [fetchOrderDetails])
+
+    if(!order) return <Loading />
 
     return (
         <div className='flex-1 flex flex-col gap-4 bg-gray-100 px-5 py-4'>
@@ -79,7 +82,7 @@ function OrderPage() {
                                     if (res.status === 200) setOrder(await fetchOrderDetails())
                                 }}>Delivered</button>}
                             {(order.status === 'Report Delivered') && <button
-                                className="bg-orange-600 text-white px-3 py-1 rounded"
+                                className="bg-[#3986ba] text-white px-3 py-1 rounded"
                                 onClick={async () => {
                                     setShowReviewModel({
                                         orderId: order._id,
@@ -91,12 +94,12 @@ function OrderPage() {
                                 }}>Review</button>}
                         </div>
                     </div>
-                    <div className='bg-orange-50 flex gap-2 p-2 text-xs'>
+                    <div className='bg-[rgba(57,134,186,0.08)] flex gap-2 p-2 text-xs'>
                         {
                             Array(item.quantity).fill(0).map((_, i) => (
                                 <div
                                     key={i}
-                                    className='bg-orange-200 px-3 py-1 rounded-full cursor-pointer'
+                                    className='bg-[rgba(57,134,186,0.25)] px-3 py-1 rounded-full cursor-pointer'
                                     onClick={() =>
                                         setShowPatientPopup({ itemIndex: index, patientIndex: i })}>
                                     {order.items[index]?.patientDetails[i]?.name?.split(' ').map(e => e.charAt(0)).join('') || 'Add +'}

@@ -47,7 +47,7 @@ const Page = () => {
             toast.success('Order saved successfully');
             console.log('Order details saved:', orderDetails);
         } else {
-            toast.error('Error saving order');
+            toast.error(res.error || 'Error saving order');
             console.error('Error saving order:', res.body);
         }
     };

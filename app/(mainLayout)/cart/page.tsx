@@ -123,7 +123,7 @@ const CartPage: React.FC = () => {
             {loading && <CartLoader />}
             {!loading && cart.items?.length > 0 ? <>
                 <h1 className="text-2xl font-bold mb-4">Cart Items</h1>
-                <ul className="space-y-4 flex-1 max-h-[70vh] overflow-y-scroll pb-5">
+                <ul className="space-y-4 flex-1 max-h-[51vh] overflow-y-scroll pb-5">
                     {cart.items.map((item, index) => (
                         <li key={index} className="bg-white rounded shadow-md flex flex-col">
                             <div className='p-4 flex justify-between items-center'>
@@ -150,7 +150,7 @@ const CartPage: React.FC = () => {
                                         </button>
                                     </div>
                                     <button
-                                        className="border-orange-500 border-2 text-orange-500 px-2 py-1 rounded"
+                                        className="border-[#3986ba] border-2 text-[#3986ba] px-2 py-1 rounded"
                                         onClick={async () => {
                                             const res = await fetcher.delete<{ test: string, lab: string }, { message: string } | string>("/cart", {
                                                 test: item.product.test._id,
@@ -159,7 +159,7 @@ const CartPage: React.FC = () => {
                                             if (res.status === 200) fetchCart()
                                         }}>Remove</button>
                                     <button
-                                        className="bg-orange-500 text-white px-2 py-1 rounded"
+                                        className="bg-[#3986ba] text-white px-2 py-1 rounded"
                                         onClick={async () => {
                                             // verify patient details
                                             if (item.patientDetails.length < item.quantity) {
@@ -178,12 +178,12 @@ const CartPage: React.FC = () => {
                                         }}>Order</button>
                                 </div>
                             </div>
-                            <div className='bg-orange-50 p-1 text-xs'>
+                            <div className='bg-[rgba(57,134,186,0.05)] p-1 text-xs'>
                                 {
                                     Array(item.quantity).fill(0).map((_, i) => (
                                         <div
                                             key={i}
-                                            className='bg-orange-200 px-3 py-1 rounded-full cursor-pointer inline-flex m-1'
+                                            className='bg-[rgba(57,134,186,0.2)] px-3 py-1 rounded-full cursor-pointer inline-flex m-1'
                                             onClick={() =>
                                                 setShowPatientPopup({ cartIndex: index, patientIndex: i })}>
                                             {cart.items[index]?.patientDetails[i]?.name?.split(' ').map(e => e.charAt(0)).join('') || 'Add +'}
@@ -196,7 +196,7 @@ const CartPage: React.FC = () => {
                 </ul>
                 <div className='p-4 flex justify-between items-center bg-white'>
                     <div>Total: <div className="text-2xl font-semibold">₹{cart.items.reduce((total, item) => total + (item.product.price || 0) * item.quantity, 0).toFixed(2)}</div> <div className='text-gray-500'>+ ₹0 Delivery Charges</div></div>
-                    <button className="bg-orange-500 text-white px-5 py-2 rounded-sm" onClick={async () => {
+                    <button className="bg-[#3986ba] text-white px-5 py-2 rounded-sm" onClick={async () => {
                         // verification
                         if (cart?.items?.length <= 0) toast.warning("Cart is empty");
 
@@ -285,7 +285,7 @@ function Locations({ selectedAddress, onChange }: { selectedAddress?: Address, o
         }
     }
 
-    if(loadingAddress) return <AddressLoader />
+    if (loadingAddress) return <AddressLoader />
 
     return (
         <>
@@ -295,8 +295,8 @@ function Locations({ selectedAddress, onChange }: { selectedAddress?: Address, o
                     <div className='text-sm text-gray-600'>{selectedAddress.other} | {selectedAddress.phone}</div>
                 </div>}
                 <div>
-                    {user.address.length > 0 && <div className='px-3 py-1 rounded cursor-pointer text-orange-500 font-medium border-2 border-orange-500' onClick={() => setShowAddressesPopup(true)}>Change</div>}
-                    {user.address.length <= 0 && <div className='px-3 py-1 rounded cursor-pointer text-orange-500 font-medium border-2 border-orange-500' onClick={() => setShowAddressesPopup(true)}>Add</div>}
+                    {user.address.length > 0 && <div className='px-3 py-1 rounded cursor-pointer text-[#3986ba] font-medium border-2 border-[#3986ba]' onClick={() => setShowAddressesPopup(true)}>Change</div>}
+                    {user.address.length <= 0 && <div className='px-3 py-1 rounded cursor-pointer text-[#3986ba] font-medium border-2 border-[#3986ba]' onClick={() => setShowAddressesPopup(true)}>Add</div>}
                 </div>
             </div>
             {showAddressesPopup && <Model heading='Addresses' onClose={() => setShowAddressesPopup(false)}>

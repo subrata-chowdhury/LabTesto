@@ -38,6 +38,7 @@ export default function Login() {
                 document.cookie = `token=${res.body.token}; path=/; secure; samesite=strict`;
                 const urlParams = new URLSearchParams(window.location.search);
                 const redirectUrl = urlParams.get('redirect') || '/';
+                await fetcher.get('/user');
                 setTimeout(() => window.location.replace(redirectUrl), 300)
             }
         });

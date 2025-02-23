@@ -53,7 +53,7 @@ const Page = () => {
         if (res.status === 200)
             toast.success('Order updated successfully');
         else
-            toast.error('Error updating order');
+            toast.error(res.error || 'Error updating order');
     };
 
     async function getOrderDetails(id: string) {

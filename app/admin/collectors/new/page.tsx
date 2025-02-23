@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import CollectorForm, { CollectorDetails } from '../components/CollectorForm';
 import fetcher from '@/lib/fetcher';
+import { toast } from 'react-toastify';
 
 const Page = () => {
     const [collectorDetails, setCollectorDetails] = useState<CollectorDetails>({
@@ -18,10 +19,10 @@ const Page = () => {
     const handleSave = async () => {
         const res = await fetcher.post('/collectors', collectorDetails);
         if (res.status === 200) {
-            alert('Collector saved successfully');
+            toast.success('Collector saved successfully');
             console.log('Collector details saved:', collectorDetails);
         } else {
-            alert('Error saving collector');
+            toast.error(res.error || 'Error saving collector');
             console.error('Error saving collector:', res.body);
         }
     };
