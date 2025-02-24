@@ -69,6 +69,16 @@ export default function Home() {
                         <CardType3 label="Urology" link="/tests/urology" />
                     </ul>
                 </div>
+                <div className="mx-auto md:w-[95%] pt-0 mt-5 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
+                    <h1 className="text-2xl font-semibold bg-white w-fit">Our Achivements</h1>
+                    <div className="mt-4 bg-white w-full grid gap-1 md:gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+                        {/* <CardType4 label="1000+" subText="" /> */}
+                        <CardType4 label="100+" subText="Labs" />
+                        <CardType4 label="8000+" subText="Tests" />
+                        <CardType4 label="2000+" subText="Clients" />
+                        <CardType4 label="97%" subText="Happy Customers" />
+                    </div>
+                </div>
             </div>
         </>
     );
@@ -125,5 +135,23 @@ function CardType3({ label = "Cardiology", link = "#" }: { label: string, link?:
                 <span className="text-[#3987ba]">{label}</span>
             </a>
         </li>
+    )
+}
+
+function CardType4({ label = "CBC", subText, icon }: { label: string, subText?: string, description?: string, icon?: StaticImageData }) {
+    return (
+        <div className="inline-flex w-full h-32 mr-3 mb-3 flex-col items-center justify-center rounded-lg border-2 border-[#3987ba] bg-[#9bc6e260]">
+            {icon && <figure>
+                <Image
+                    src={icon}
+                    alt=""
+                    className="sr-icon"
+                    width={50}
+                    height={50}
+                />
+            </figure>}
+            <span className="text-[#3987ba] text-5xl font-bold">{label}</span>
+            <span className="text-[#3987ba]">{subText}</span>
+        </div>
     )
 }

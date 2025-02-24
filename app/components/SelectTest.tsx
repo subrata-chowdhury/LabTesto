@@ -40,7 +40,7 @@ const SelectTest: React.FC<SelectInstituteProps> = ({
     }, [])
 
     return (
-        <div className="relative">
+        <div className="relative flex-1">
             <input
                 className={"px-3 py-2 border-[#539aca70] border-2 rounded outline-none w-full " + className}
                 style={style}

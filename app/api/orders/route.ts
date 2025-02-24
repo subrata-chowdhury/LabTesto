@@ -29,7 +29,6 @@ export async function GET(req: NextRequest) {
         return new NextResponse('Error fetching orders', { status: 500 });
     }
 }
-
 export async function POST(req: NextRequest) {
     try {
         const userId = await req.cookies.get('userId')?.value;
@@ -68,7 +67,7 @@ export async function POST(req: NextRequest) {
             }
         }
 
-        const orderItems = body.map(item => {
+        const orderItems = await Promise.all(body.map(async item => {
             const cartItemIndex = cart.items.findIndex((cartItem: { product: { test: string, lab: string } }) =>
                 cartItem.product.test.toString() === item.product.test &&
                 cartItem.product.lab.toString() === item.product.lab
@@ -86,17 +85,28 @@ export async function POST(req: NextRequest) {
                 throw new Error('Cart item not found');
             }
 
+            const lab = await Lab.findById(item.product.lab);
+            if (!lab) {
+                throw new Error('Lab not found');
+            }
+
+            const priceDetails: { test: string, expenses?: number } | undefined = lab.prices.find((price: { test: string }) => price.test.toString() === item.product.test);
+            if (!priceDetails) {
+                throw new Error('Price details not found for the test in the lab');
+            }
+
             return {
                 product: {
                     test: cartItem.product.test,
                     lab: cartItem.product.lab,
                     price: cartItem.product.price,
+                    expenses: priceDetails.expenses || 0
                 },
                 patientDetails: cartItem.patientDetails,
                 quantity: item.quantity,
                 date: new Date()
             };
-        });
+        }));
 
         const collectors = await Collector.find({});
         if (collectors.length === 0) {
@@ -119,12 +129,10 @@ export async function POST(req: NextRequest) {
 
         await (await order.populate('items.product.test')).populate('items.product.lab')
 
-
         type Item = {
             product: { test: { name: string }, lab: { name: string } },
             patientDetails: {
                 name: string;
-                // phone: string;
                 gender: 'Male' | 'Female' | 'Other';
                 age: number;
                 other?: string;

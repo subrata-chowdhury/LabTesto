@@ -20,7 +20,7 @@ export default function Slide({ slides = 1, slideElement }: { slideElement?: Rea
                 <div className={goingForward.current ? 'slide' : 'slide-reverse'} key={slideIndex}>
                     {!slideElement && <>
                         <div className="text-[#f2f2f2] text-[12px] px-[12px] py-[8px] absolute top-[0]">{slideIndex} / 3</div>
-                        <div className="w-full h-72 flex justify-center items-center bg-[#3986ba43]">Slide {slideIndex}</div>
+                        <div className="w-full h-72 flex justify-center items-center bg-[#3986ba43] font-semibold text-6xl text-[#3986ba92]">Slide {slideIndex}</div>
                     </>}
                     {slideElement && React.createElement(slideElement, { slide: slideIndex })}
                 </div>

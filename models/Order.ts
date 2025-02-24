@@ -6,6 +6,7 @@ interface IOrder extends Document {
             test: mongoose.Schema.Types.ObjectId;
             lab: mongoose.Schema.Types.ObjectId;
             price: number;
+            expenses: number;
         };
         patientDetails: {
             name: string;
@@ -58,6 +59,7 @@ const OrderSchema: Schema = new Schema({
                 test: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Test' },
                 lab: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Lab' },
                 price: { type: Number, required: true },
+                expenses: { type: Number, required: false, default: 0 }
             },
             patientDetails: {
                 type: [{

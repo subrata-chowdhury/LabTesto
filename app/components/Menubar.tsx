@@ -1,16 +1,26 @@
 'use client'
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import user from '@/assets/user.png';
 import Link from 'next/link';
 import SelectTest from './SelectTest';
 import { useRouter } from 'next/navigation';
 import CartIcon from '@/assets/cart.svg'
+import fetcher from '@/lib/fetcher';
 
 const Menubar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [itemsCount, setItemsCount] = useState<number | null>(null);
     const navigate = useRouter();
+
+    useEffect(() => {
+        fetcher.get<{ items: number }>('/cart/count').then(res => {
+            if (res.status === 200 && res.body) {
+                setItemsCount(res.body.items || 0)
+            };
+        })
+    }, [])
 
     return (
         <nav className="bg-[#fff] shadow-md shadow-[#3986ba16] p-4 px-6">
@@ -39,6 +49,7 @@ const Menubar = () => {
                     className='relative mr-0 md:mr-4 cursor-pointer'
                     href={'/cart'}
                 >
+                    {(itemsCount || 0) > 0 && <div className='absolute -right-1 -top-1 px-[6px] py-[2px] rounded-full text-xs text-white font-medium bg-[#3986ba]'>{(itemsCount || 0) > 9 ? '9+' : itemsCount}</div>}
                     <Image
                         src={CartIcon}
                         alt=""
@@ -76,7 +87,7 @@ export function SearchBar({ active = false, className = '', onSelect = () => { }
     const [showSearchBar, setShowSearchBar] = useState(active);
 
     return (
-        <div className={"relative text-sm text-[#3987ba] z-10 flex items-center justify-center gap-3 px-4 py-2 border-[#539aca70] border-2 outline-none w-full rounded-full " + className}>
+        <div className={"relative text-sm text-[#3987ba] z-10 flex gap-3 items-center justify-between px-4 py-2 border-[#539aca70] border-2 outline-none w-full rounded-full " + className}>
             {showSearchBar && <SelectTest
                 onSelect={onSelect}
                 optionElement={(option, index, onClick) => (
@@ -88,7 +99,7 @@ export function SearchBar({ active = false, className = '', onSelect = () => { }
                     </Link>
                 )}
                 className='rounded-full'
-                style={{ border: 'none', padding: 0, borderRadius: 0 }}
+                style={{ border: 'none', padding: 0, borderRadius: 0, marginRight: 12 }}
                 placeholder='Search Test' />}
             <button type="submit" className={(showSearchBar ? "relative right-0 top-0" : "bg-white p-3 rounded-full")} onClick={() => setShowSearchBar(true)}>
                 <svg className="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" version="1.1" id="Capa_1" x="0px" y="0px"
