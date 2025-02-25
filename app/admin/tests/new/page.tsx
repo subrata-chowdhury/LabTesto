@@ -22,10 +22,10 @@ const Page = () => {
     const handleSave = async () => {
         const res = await fetcher.post('/tests', {
             ...testDetails,
-            description: testDetails.tempDescription || '',
-            overview: testDetails.tempOverview || '',
-            testResultInterpretation: testDetails.tempTestResultInterpretation || '',
-            riskAssesment: testDetails.tempRiskAssesment || ''
+            description: testDetails.tempDescription || testDetails.description || '',
+            overview: testDetails.tempOverview || testDetails.overview || '',
+            testResultInterpretation: testDetails.tempTestResultInterpretation || testDetails.testResultInterpretation || '',
+            riskAssesment: testDetails.tempRiskAssesment || testDetails.riskAssesment || '',
         });
         if (res.status === 200) {
             toast.success('Test saved successfully');

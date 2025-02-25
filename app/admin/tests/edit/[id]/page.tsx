@@ -30,10 +30,10 @@ const Page = () => {
         setLoading(true);
         const res = await fetcher.post<TestDetails, { messege: string }>(`/tests/${id}`, {
             ...testDetails,
-            description: testDetails.tempDescription || '',
-            overview: testDetails.tempOverview || '',
-            testResultInterpretation: testDetails.tempTestResultInterpretation || '',
-            riskAssesment: testDetails.tempRiskAssesment || ''
+            description: testDetails.tempDescription || testDetails.description || '',
+            overview: testDetails.tempOverview || testDetails.overview || '',
+            testResultInterpretation: testDetails.tempTestResultInterpretation || testDetails.testResultInterpretation || '',
+            riskAssesment: testDetails.tempRiskAssesment || testDetails.riskAssesment || '',
         });
         if (res.status === 200) {
             toast.success('Test Updated Successfully');
