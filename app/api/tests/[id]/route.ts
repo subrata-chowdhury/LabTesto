@@ -46,21 +46,21 @@ export async function POST(req: NextRequest) {
     if (!body.description) {
         return new NextResponse('Description is required', { status: 400 });
     }
-    if (!body.fastingRequired) {
-        return new NextResponse('Fasting requirement is required', { status: 400 });
-    }
-    if (!body.overview) {
-        return new NextResponse('Overview is required', { status: 400 });
-    }
-    if (!body.testResultInterpretation) {
-        return new NextResponse('Test result interpretation is required', { status: 400 });
-    }
-    if (!body.riskAssesment) {
-        return new NextResponse('Risk assessment is required', { status: 400 });
-    }
-    if (!body.resultTime) {
-        return new NextResponse('Result time is required', { status: 400 });
-    }
+    // if (!body.fastingRequired) {
+    //     return new NextResponse('Fasting requirement is required', { status: 400 });
+    // }
+    // if (!body.overview) {
+    //     return new NextResponse('Overview is required', { status: 400 });
+    // }
+    // if (!body.testResultInterpretation) {
+    //     return new NextResponse('Test result interpretation is required', { status: 400 });
+    // }
+    // if (!body.riskAssesment) {
+    //     return new NextResponse('Risk assessment is required', { status: 400 });
+    // }
+    // if (!body.resultTime) {
+    //     return new NextResponse('Result time is required', { status: 400 });
+    // }
 
     const testData = {
         name: body.name,

@@ -1,16 +1,17 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import LabForm, { LabTestDetails } from '../../../components/LabForm'
 import { useParams } from 'next/navigation'
 import fetcher from '@/lib/fetcher'
 import { toast } from 'react-toastify'
 
 const Page = () => {
-    const [labDetails, setLabDetails] = React.useState<LabTestDetails>({
+    const [labDetails, setLabDetails] = useState<LabTestDetails>({
         prices: [],
         ranges: [],
         resultTimes: [],
     })
+    const [loading, setLoading] = useState(false);
 
     const { id } = useParams();
 
@@ -30,18 +31,21 @@ const Page = () => {
     }, [id])
 
     async function saveLab() {
+        setLoading(true);
         const res = await fetcher.post<LabTestDetails, { messege: string }>(`/labs/${id}`, labDetails);
         if (res.status === 200) {
             toast.success('Lab saved successfully');
         } else {
             toast.error(res.error || 'Error saving lab');
         }
+        setLoading(false);
     }
 
     return (
         <>
             <LabForm
                 labDetails={labDetails}
+                loading={loading}
                 error={null}
                 onChange={{ labDetails: setLabDetails }}
                 onSave={() => saveLab()}

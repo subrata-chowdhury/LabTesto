@@ -10,6 +10,7 @@ import ResultTimePopup from './ResultTimePopup'
 
 type Props = {
     labDetails: LabTestDetails,
+    loading?: boolean,
     error: { field: string, msg: string } | null,
     onChange: {
         labDetails: (labDetails: LabTestDetails) => void
@@ -17,7 +18,7 @@ type Props = {
     onSave: () => void
 }
 
-const LabForm = ({ labDetails, onChange, onSave = () => { } }: Props) => {
+const LabForm = ({ labDetails, loading, onChange, onSave = () => { } }: Props) => {
     const [showPricePopup, setShowPricePopup] = useState<{ index: number } | null>(null);
     const [showPackageIncludePopup, setShowPackageIncludePopup] = useState<{ index: number } | null>(null);
     const [showRangePopup, setShowRangePopup] = useState<{ index: number } | null>(null);
@@ -201,9 +202,12 @@ const LabForm = ({ labDetails, onChange, onSave = () => { } }: Props) => {
             </div>
             <div className='p-5 px-0 ms-auto justify-end items-end flex gap-4'>
                 <div className='font-medium text-blue-500 h-10 flex justify-center items-center px-4 border-2 border-blue-400 rounded cursor-pointer' onClick={() => { }}>Cancel</div>
-                <div className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => {
-                    await onSave();
-                }}>Save</div>
+                <button
+                    className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer'
+                    onClick={async () => {
+                        await onSave();
+                    }}
+                    disabled={loading}>{loading ? 'Saving..' : 'Save'}</button>
             </div>
         </div>
     )

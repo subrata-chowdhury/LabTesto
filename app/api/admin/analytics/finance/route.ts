@@ -18,7 +18,8 @@ export async function GET(request: NextRequest) {
         const financeData = await Order.aggregate([
             {
                 $match: {
-                    'items.date': { $gte: startDate, $lte: endDate }
+                    'items.date': { $gte: startDate, $lte: endDate },
+                    'paid': { $gt: 0 }
                 }
             },
             {

@@ -56,16 +56,18 @@ function Page() {
                     <Card label='Total Admins' value={analytics.totalAdmins} colors={{ lineColor: '#A74726', iconBgColor: '#FEF3DD' }} className='mr-3 mt-3' />
                     <Card label='Total Orders' value={analytics.totalOrders} colors={{ lineColor: '#A74726', iconBgColor: '#FEF3DD' }} className='mr-3 mt-3' />
                 </div>
-                {financeData.length > 0 && <div className='mt-5'>
+                {financeData.length > 0 && <div className='mt-5 bg-white p-5 rounded-lg shadow w-fit'>
                     <div className='text-xl font-medium mb-3'>Total Price vs Expenses of {new Date().getFullYear()} (monthly)</div>
-                    <BarChart width={730} height={250} data={financeData}>
-                        <XAxis dataKey="date" tickFormatter={(date) => new Date(date).toLocaleString('default', { month: 'short' })} />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey="totalPrice" fill="#8884d8" />
-                        <Bar dataKey="expenses" fill="#82ca9d" />
-                    </BarChart>
+                    <div className="w-full overflow-x-auto">
+                        <BarChart width={730} height={250} data={financeData} className="min-w-[730px]">
+                            <XAxis dataKey="date" tickFormatter={(date) => new Date(date).toLocaleString('default', { month: 'short' })} tick={{ fontSize: 12 }} />
+                            <YAxis tick={{ fontSize: 12 }} />
+                            <Tooltip />
+                            <Legend iconType="circle" wrapperStyle={{ fontSize: 14 }} />
+                            <Bar dataKey="totalPrice" name="Total Price" fill="#8884d8" barSize={10} radius={[10, 10, 0, 0]} />
+                            <Bar dataKey="expenses" name="Expenses" fill="#82ca9d" barSize={10} radius={[10, 10, 0, 0]} />
+                        </BarChart>
+                    </div>
                 </div>}
             </div>
         </>

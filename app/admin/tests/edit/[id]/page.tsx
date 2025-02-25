@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import TestForm, { TestDetails } from '../../components/TestsForm';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import fetcher from '@/lib/fetcher';
 import { toast } from 'react-toastify';
 
@@ -17,18 +17,31 @@ const Page = () => {
         testResultInterpretation: '',
         riskAssesment: '',
     });
+    const [loading, setLoading] = useState(false);
 
     const { id } = useParams<{ id: string }>();
+    const navigate = useRouter();
 
     useEffect(() => {
         getTestDetails(id);
     }, [id])
 
     const handleSave = async () => {
-        const res = await fetcher.post<TestDetails, { messege: string }>(`/tests/${id}`, testDetails);
+        setLoading(true);
+        const res = await fetcher.post<TestDetails, { messege: string }>(`/tests/${id}`, {
+            ...testDetails,
+            description: testDetails.tempDescription || '',
+            overview: testDetails.tempOverview || '',
+            testResultInterpretation: testDetails.tempTestResultInterpretation || '',
+            riskAssesment: testDetails.tempRiskAssesment || ''
+        });
         if (res.status === 200) {
-            toast.success('Test Updated Successfully')
+            toast.success('Test Updated Successfully');
+            navigate.push('/admin/tests');
+        } else {
+            toast.error(res.error || "Error updating Test");
         }
+        setLoading(false)
     };
 
     async function getTestDetails(id: string) {
@@ -50,6 +63,7 @@ const Page = () => {
     return (
         <TestForm
             testDetails={testDetails}
+            loading={loading}
             onChange={{
                 testDetails: setTestDetails
             }}

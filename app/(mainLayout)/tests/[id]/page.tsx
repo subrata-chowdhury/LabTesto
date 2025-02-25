@@ -227,35 +227,38 @@ function Test() {
                     </button>
                 </div>
             )}
-            <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 bg-white'>
-                <div className='flex gap-2'>
+            <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 bg-white tiptap'>
+                <div className='grid grid-flow-col justify-start gap-2'>
                     <DescriptionIcon />
                     <div className='flex flex-col gap-1'>
                         <p className='font-medium'>Description</p>
-                        <p className='text-gray-500'>{testDetails.description}</p>
+                        <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.description }}></div>
                     </div>
                 </div>
-                <div className='flex gap-2'>
+                {testDetails?.overview?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
                     <DescriptionIcon />
                     <div className='flex flex-col gap-1'>
                         <p className='font-medium flex gap-2'>Overview</p>
-                        <p className='text-gray-500'>{testDetails.overview}</p>
+                        <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.overview }}></div>
+                        {/* <p className='text-gray-500'>{testDetails.overview}</p> */}
                     </div>
-                </div>
-                <div className='flex gap-2'>
+                </div>}
+                {testDetails?.testResultInterpretation?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
                     <DescriptionIcon />
                     <div className='flex flex-col gap-1'>
                         <p className='font-medium flex gap-2'>Test Result Interpretation</p>
-                        <p className='text-gray-500'>{testDetails.testResultInterpretation}</p>
+                        <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.testResultInterpretation }}></div>
+                        {/* <p className='text-gray-500'>{testDetails.testResultInterpretation}</p> */}
                     </div>
-                </div>
-                <div className='flex gap-2'>
+                </div>}
+                {testDetails?.riskAssesment?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
                     <DescriptionIcon />
                     <div className='flex flex-col gap-1'>
                         <p className='font-medium flex gap-2'>Risk Assessment</p>
-                        <p className='text-gray-500'>{testDetails.riskAssesment}</p>
+                        <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.riskAssesment }}></div>
+                        {/* <p className='text-gray-500'>{testDetails.riskAssesment}</p> */}
                     </div>
-                </div>
+                </div>}
             </div>
             {(labBaseDetails.packagesInclude.length > 0 && labBaseDetails.ranges.length > 0) && <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 bg-white'>
                 {labBaseDetails.packagesInclude.length > 0 && <div className='flex items-start gap-2'>

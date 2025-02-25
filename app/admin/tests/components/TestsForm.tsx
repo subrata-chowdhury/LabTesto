@@ -7,9 +7,11 @@ import Image from 'next/image'
 import Title from '@/components/Title'
 import informationIcon from '@/assets/information.svg'
 import TagInput from '@/components/Inputs/TagInput'
+import RichTextEditor from '@/app/components/RichTextEditor'
 
 type Props = {
     testDetails: TestDetails,
+    loading?: boolean,
     error?: { field: string, msg: string } | null,
     onChange: {
         testDetails: (testDetails: TestDetails) => void,
@@ -17,7 +19,7 @@ type Props = {
     onSave: () => void
 }
 
-const TestForm = ({ testDetails, error, onChange, onSave = () => { } }: Props) => {
+const TestForm = ({ testDetails, loading, error, onChange, onSave = () => { } }: Props) => {
     return (
         <div className='bg-white mt-4 p-8 px-10'>
             <div className='text-xl flex gap-3 items-center font-bold pb-6'>
@@ -45,23 +47,27 @@ const TestForm = ({ testDetails, error, onChange, onSave = () => { } }: Props) =
             </div>
             <div className='text-sm flex flex-col gap-1 pt-4'>
                 <label className='font-medium'>Description *</label>
-                <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Description' value={testDetails.description} onChange={(e) => onChange.testDetails({ ...testDetails, description: e.target.value })}></textarea>
+                <RichTextEditor value={testDetails.description} onChange={(val) => onChange.testDetails({ ...testDetails, tempDescription: val })} />
+                {/* <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Description' value={testDetails.description} onChange={(e) => onChange.testDetails({ ...testDetails, description: e.target.value })}></textarea> */}
             </div>
             <div className='text-sm flex flex-col gap-1 pt-4'>
                 <label className='font-medium'>Overview</label>
-                <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Overview' value={testDetails.overview} onChange={(e) => onChange.testDetails({ ...testDetails, overview: e.target.value })}></textarea>
+                <RichTextEditor value={testDetails.overview} onChange={(val) => onChange.testDetails({ ...testDetails, tempOverview: val })} />
+                {/* <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Overview' value={testDetails.overview} onChange={(e) => onChange.testDetails({ ...testDetails, overview: e.target.value })}></textarea> */}
             </div>
             <div className='text-sm flex flex-col gap-1 pt-4'>
                 <label className='font-medium'>Test Result Interpretation</label>
-                <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Test Result Interpretation' value={testDetails.testResultInterpretation} onChange={(e) => onChange.testDetails({ ...testDetails, testResultInterpretation: e.target.value })}></textarea>
+                <RichTextEditor value={testDetails.testResultInterpretation} onChange={(val) => onChange.testDetails({ ...testDetails, tempTestResultInterpretation: val })} />
+                {/* <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Test Result Interpretation' value={testDetails.testResultInterpretation} onChange={(e) => onChange.testDetails({ ...testDetails, testResultInterpretation: e.target.value })}></textarea> */}
             </div>
             <div className='text-sm flex flex-col gap-1 pt-4'>
                 <label className='font-medium'>Risk Assessment</label>
-                <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Risk Assessment' value={testDetails.riskAssesment} onChange={(e) => onChange.testDetails({ ...testDetails, riskAssesment: e.target.value })}></textarea>
+                <RichTextEditor value={testDetails.riskAssesment} onChange={(val) => onChange.testDetails({ ...testDetails, tempRiskAssesment: val })} />
+                {/* <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Risk Assessment' value={testDetails.riskAssesment || ''} onChange={(e) => onChange.testDetails({ ...testDetails, riskAssesment: e.target.value })}></textarea> */}
             </div>
             <div className='p-5 px-0 ms-auto justify-end items-end flex gap-4'>
                 <div className='font-medium text-blue-500 h-10 flex justify-center items-center px-4 border-2 border-blue-400 rounded cursor-pointer' onClick={() => { }}>Cancel</div>
-                <div className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => { await onSave(); }}>Save</div>
+                <button className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => { await onSave(); }} disabled={loading}>{loading ? 'Saving..' : 'Save'}</button>
             </div>
         </div>
     )
@@ -74,9 +80,14 @@ export type TestDetails = {
     otherTerms: string[],
     sampleType: 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other Body Fluid',
     tubeType: 'Clot Tube' | 'Fluoride Tube' | 'EDTA Tube' | 'Citrate Tube',
-    description: string,
     fastingRequired: string,
+    description: string,
     overview: string,
     testResultInterpretation: string,
     riskAssesment: string,
+
+    tempDescription?: string,
+    tempOverview?: string,
+    tempTestResultInterpretation?: string,
+    tempRiskAssesment?: string,
 }

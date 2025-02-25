@@ -10,9 +10,50 @@ interface SelectInstituteProps {
 }
 
 type Lab = {
-    name: string;
     _id: string;
-    sampleType: string;
+    name: string;
+    description?: string;
+    location: {
+        address: {
+            pin: string,
+            city: string,
+            district: string,
+            other: string, // road details
+        };
+        location: {
+            lat: number;
+            lang: number;
+        };
+    };
+    certification?: {
+        organization: string;
+        year?: number;
+        imageUrl?: string;
+    }[];
+    resultTimes: {
+        test: string;
+        resultTime: string;
+    }[];
+    prices: {
+        test: string;
+        price: number;
+        offer?: number;
+        expenses?: number;
+    }[];
+    packagesInclude?: {
+        test: string;
+        packages: string[];
+    }[];
+    ranges?: {
+        test: string;
+        ranges: object[];
+    }[];
+    rating: number;
+    rated: number;
+    contractDetails?: {
+        email?: string[],
+        phone?: string[]
+    }
 }
 
 const SelectLab: React.FC<SelectInstituteProps> = ({

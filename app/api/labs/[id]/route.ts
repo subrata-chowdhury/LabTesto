@@ -45,6 +45,7 @@ export async function POST(req: NextRequest) {
 
     const labData: Partial<{
         name: string;
+        description: string;
         location: string;
         certification: {
             organization: string;
@@ -75,6 +76,7 @@ export async function POST(req: NextRequest) {
     if (body.packagesInclude) labData.packagesInclude = body.packagesInclude;
     if (body.ranges) labData.ranges = body.ranges;
     if (body.resultTimes) labData.resultTimes = body.resultTimes;
+    if (body.description) labData.description = body.description;
 
     try {
         const updatedLab = await Lab.findByIdAndUpdate(id, labData, { new: true, runValidators: true });

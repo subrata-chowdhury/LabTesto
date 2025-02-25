@@ -65,7 +65,8 @@ export async function POST(req: NextRequest) {
         certification: body.certification,
         prices: body.prices,
         packagesInclude: body.packagesInclude,
-        ranges: body.ranges
+        ranges: body.ranges,
+        description: body.description,
     }
 
     const lab = new Lab(labData);

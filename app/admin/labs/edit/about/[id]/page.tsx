@@ -1,12 +1,12 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import fetcher from '@/lib/fetcher'
 import AboutForm, { LabAboutDetails } from '../../../components/AboutForm'
 import { toast } from 'react-toastify'
 
 const Page = () => {
-    const [labDetails, setLabDetails] = React.useState<LabAboutDetails>({
+    const [labDetails, setLabDetails] = useState<LabAboutDetails>({
         name: '',
         description: '',
         location: {
@@ -22,6 +22,7 @@ const Page = () => {
             }
         }
     })
+    const [loading, setLoading] = useState(false);
 
     const { id } = useParams();
 
@@ -40,17 +41,19 @@ const Page = () => {
     }, [id])
 
     async function saveLab() {
-        const res = await fetcher.post<LabAboutDetails, { messege: string }>(`/labs/${id}`, labDetails);
+        setLoading(true);
+        const res = await fetcher.post<LabAboutDetails, { messege: string }>(`/labs/${id}`, { ...labDetails, description: labDetails.tempDescription });
         if (res.status === 200) {
             toast.success('Lab saved successfully');
         } else {
             toast.error(res.error || 'Error saving lab');
         }
+        setLoading(false);
     }
 
     return (
         <>
-            <AboutForm labDetails={labDetails} onChange={(labDetails) => setLabDetails(labDetails)} onSave={saveLab} />
+            <AboutForm labDetails={labDetails} loading={loading} onChange={(labDetails) => setLabDetails(labDetails)} onSave={saveLab} />
         </>
     )
 }

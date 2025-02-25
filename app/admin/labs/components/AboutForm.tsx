@@ -5,15 +5,16 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import Model from '@/components/Model'
 import plusIcon from '@/assets/blue-plus.svg'
-import TextEditor from '../../components/TextEditor'
+import RichTextEditor from '@/app/components/RichTextEditor'
 
 type Props = {
     labDetails: LabAboutDetails,
+    loading?: boolean,
     onChange: (labDetails: LabAboutDetails) => void,
     onSave: () => void
 }
 
-const AboutForm = ({ labDetails, onChange = () => { }, onSave = async () => { } }: Props) => {
+const AboutForm = ({ labDetails, loading, onChange = () => { }, onSave = async () => { } }: Props) => {
     const [certificationIndex, setCetificationIndex] = useState<{ index: number } | null>(null)
 
     return (
@@ -84,12 +85,18 @@ const AboutForm = ({ labDetails, onChange = () => { }, onSave = async () => { } 
                         setCetificationIndex(null);
                     }} />}
             </div>
-            <TextEditor />
+            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
+                Description
+            </div>
+            <RichTextEditor value={labDetails.description || ''} onChange={val => onChange({ ...labDetails, tempDescription: val })} />
             <div className='p-5 px-0 ms-auto justify-end items-end flex gap-4'>
                 <div className='font-medium text-blue-500 h-10 flex justify-center items-center px-4 border-2 border-blue-400 rounded cursor-pointer' onClick={() => { }}>Cancel</div>
-                <div className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => {
-                    await onSave();
-                }}>Save</div>
+                <button
+                    className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer'
+                    onClick={async () => {
+                        await onSave();
+                    }}
+                    disabled={loading}>{loading ? 'Saving..' : 'Save'}</button>
             </div>
         </div>
     )
@@ -101,6 +108,7 @@ export default AboutForm;
 export type LabAboutDetails = {
     name: string,
     description?: string,
+    tempDescription?: string,
     location: {
         address: {
             pin: string,
