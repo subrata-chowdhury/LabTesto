@@ -25,7 +25,7 @@ const Collectors = () => {
     const [totalPages, setTotalPages] = useState(0);
 
     const fetchCollectors = useCallback(async () => {
-        const filterData: { sampleType?: string, name?: string } = {  sampleType: type, name: name };
+        const filterData: { sampleType?: string, name?: string } = { sampleType: type, name: name };
         // if (branch === 'All') delete filterData.department;
         if (type === 'All') delete filterData.sampleType;
         if (name === '') delete filterData.name;
@@ -46,6 +46,7 @@ const Collectors = () => {
     }, [type, name, currentPage, limit, fetchCollectors]);
 
     async function deleteCollector(id: string) {
+        if (!window.confirm('Are you sure you want to delete this collector?')) return;
         const res = await fetcher.delete(`/admin/collectors/${id}`);
         if (res.status !== 200) return;
         await fetchCollectors();

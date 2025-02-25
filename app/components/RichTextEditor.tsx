@@ -51,6 +51,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
                             .run()
                     }
                     className={(editor.isActive('bold') ? 'is-active' : '')}
+                    title="Bold"
                 >
                     <Image width={18} height={18} src={boldIcon} alt="Bold" />
                 </button>
@@ -64,6 +65,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
                             .run()
                     }
                     className={(editor.isActive('italic') ? 'is-active' : '')}
+                    title="Italic"
                 >
                     <Image width={18} height={18} src={italicIcon} alt="Italic" />
                 </button>
@@ -77,6 +79,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
                             .run()
                     }
                     className={(editor.isActive('strike') ? 'is-active' : '')}
+                    title="Strikethrough"
                 >
                     <Image width={18} height={18} src={strikethroughIcon} alt="Strike" />
                 </button>
@@ -90,89 +93,100 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
                             .run()
                     }
                     className={(editor.isActive('code') ? 'is-active' : '')}
+                    title="Code"
                 >
                     <Image width={18} height={18} src={codeIcon} alt="Code" />
                 </button>
-                <button onClick={() => editor.chain().focus().unsetAllMarks().run()}>
+                <button onClick={() => editor.chain().focus().unsetAllMarks().run()} title="Clear marks">
                     Clear marks
                 </button>
-                <button onClick={() => editor.chain().focus().clearNodes().run()}>
+                <button onClick={() => editor.chain().focus().clearNodes().run()} title="Clear nodes">
                     Clear nodes
                 </button>
                 <button
                     onClick={() => editor.chain().focus().setParagraph().run()}
                     className={(editor.isActive('paragraph') ? 'is-active' : '')}
+                    title="Paragraph"
                 >
                     <Image width={18} height={18} src={paragraphIcon} alt="Paragraph" />
                 </button>
                 <button
                     onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
                     className={(editor.isActive('heading', { level: 1 }) ? 'is-active' : '')}
+                    title="Heading 1"
                 >
                     H1
                 </button>
                 <button
                     onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
                     className={(editor.isActive('heading', { level: 2 }) ? 'is-active' : '')}
+                    title="Heading 2"
                 >
                     H2
                 </button>
                 <button
                     onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
                     className={(editor.isActive('heading', { level: 3 }) ? 'is-active' : '')}
+                    title="Heading 3"
                 >
                     H3
                 </button>
                 <button
                     onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
                     className={(editor.isActive('heading', { level: 4 }) ? 'is-active' : '')}
+                    title="Heading 4"
                 >
                     H4
                 </button>
                 <button
                     onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
                     className={(editor.isActive('heading', { level: 5 }) ? 'is-active' : '')}
+                    title="Heading 5"
                 >
                     H5
                 </button>
                 <button
                     onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
                     className={(editor.isActive('heading', { level: 6 }) ? 'is-active' : '')}
+                    title="Heading 6"
                 >
                     H6
                 </button>
                 <button
                     onClick={() => editor.chain().focus().toggleBulletList().run()}
                     className={(editor.isActive('bulletList') ? 'is-active' : '')}
+                    title="Bullet List"
                 >
                     <Image width={18} height={18} src={bulletListIcon} alt="Bullet list" />
                 </button>
                 <button
                     onClick={() => editor.chain().focus().toggleOrderedList().run()}
                     className={(editor.isActive('orderedList') ? 'is-active' : '')}
+                    title="Ordered List"
                 >
-                    <Image width={18} height={18} src={bulletListRomanIcon} alt="Bullet list" />
+                    <Image width={18} height={18} src={bulletListRomanIcon} alt="Ordered list" />
                 </button>
                 <button
                     onClick={() => editor.chain().focus().toggleCodeBlock().run()}
                     className={(editor.isActive('codeBlock') ? 'is-active' : '')}
+                    title="Code Block"
                 >
                     Code block
                 </button>
                 <button
                     onClick={() => editor.chain().focus().toggleBlockquote().run()}
                     className={(editor.isActive('blockquote') ? 'is-active' : '')}
+                    title="Blockquote"
                 >
                     Blockquote
                 </button>
-                <button onClick={() => editor.chain().focus().setHorizontalRule().run()}>
+                <button onClick={() => editor.chain().focus().setHorizontalRule().run()} title="Horizontal Rule">
                     Horizontal rule
                 </button>
-                <button onClick={() => editor.chain().focus().setHardBreak().run()}>
+                <button onClick={() => editor.chain().focus().setHardBreak().run()} title="Hard Break">
                     Hard break
                 </button>
                 <button
-
                     onClick={() => editor.chain().focus().undo().run()}
                     disabled={
                         !editor.can()
@@ -181,11 +195,11 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
                             .undo()
                             .run()
                     }
+                    title="Undo"
                 >
                     Undo
                 </button>
                 <button
-
                     onClick={() => editor.chain().focus().redo().run()}
                     disabled={
                         !editor.can()
@@ -194,94 +208,99 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
                             .redo()
                             .run()
                     }
+                    title="Redo"
                 >
                     Redo
                 </button>
                 <button
                     onClick={() => editor.chain().focus().setColor('#958DF1').run()}
                     className={(editor.isActive('textStyle', { color: '#958DF1' }) ? 'is-active' : '')}
+                    title="Purple"
                 >
                     Purple
                 </button>
                 <button
                     onClick={() => editor.chain().focus().setTextAlign('center').run()}
                     className={(editor.isActive({ textAlign: 'center' }) ? 'is-active' : '')}
+                    title="Align Center"
                 >
                     <Image width={18} height={18} src={alignCenterIcon} alt="Center" />
                 </button>
                 <button
                     onClick={() => editor.chain().focus().setTextAlign('left').run()}
                     className={(editor.isActive({ textAlign: 'left' }) ? 'is-active' : '')}
+                    title="Align Left"
                 >
                     <Image width={18} height={18} src={alignLeftIcon} alt="Left" />
                 </button>
                 <button
                     onClick={() => editor.chain().focus().setTextAlign('right').run()}
                     className={(editor.isActive({ textAlign: 'right' }) ? 'is-active' : '')}
+                    title="Align Right"
                 >
                     <Image width={18} height={18} src={alignRightIcon} alt="Right" />
                 </button>
             </div>
             <div className="button-group">
-                <button onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}>
+                <button onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()} title="Insert Table">
                     <Image width={18} height={18} src={insertTableIcon} alt="Insert table" />
                 </button>
                 <button onClick={() => editor.chain().focus().insertContent('', {
                     parseOptions: {
                         preserveWhitespace: false,
                     },
-                }).run()}>
+                }).run()} title="Insert HTML Table">
                     Insert HTML table
                 </button>
-                <button onClick={() => editor.chain().focus().addColumnBefore().run()} disabled={!editor.can().addColumnBefore()}>
+                <button onClick={() => editor.chain().focus().addColumnBefore().run()} disabled={!editor.can().addColumnBefore()} title="Add Column Before">
                     <Image width={18} height={18} src={tableAddColumnLeftIcon} alt="Add column before" />
                 </button>
-                <button onClick={() => editor.chain().focus().addColumnAfter().run()} disabled={!editor.can().addColumnAfter()}>
+                <button onClick={() => editor.chain().focus().addColumnAfter().run()} disabled={!editor.can().addColumnAfter()} title="Add Column After">
                     <Image width={18} height={18} src={tableAddColumnRightIcon} alt="Add column after" />
                 </button>
-                <button onClick={() => editor.chain().focus().deleteColumn().run()} disabled={!editor.can().deleteColumn()}>
+                <button onClick={() => editor.chain().focus().deleteColumn().run()} disabled={!editor.can().deleteColumn()} title="Delete Column">
                     <Image width={18} height={18} src={columnDeleteIcon} alt="Delete column" />
                 </button>
-                <button onClick={() => editor.chain().focus().addRowBefore().run()} disabled={!editor.can().addRowBefore()}>
+                <button onClick={() => editor.chain().focus().addRowBefore().run()} disabled={!editor.can().addRowBefore()} title="Add Row Before">
                     <Image width={18} height={18} src={tableAddRowAboveIcon} alt="Add row before" />
                 </button>
-                <button onClick={() => editor.chain().focus().addRowAfter().run()} disabled={!editor.can().addRowAfter()}>
+                <button onClick={() => editor.chain().focus().addRowAfter().run()} disabled={!editor.can().addRowAfter()} title="Add Row After">
                     <Image width={18} height={18} src={tableAddRowBelowIcon} alt="Add row after" />
                 </button>
-                <button onClick={() => editor.chain().focus().deleteRow().run()} disabled={!editor.can().deleteRow()}>
+                <button onClick={() => editor.chain().focus().deleteRow().run()} disabled={!editor.can().deleteRow()} title="Delete Row">
                     <Image width={18} height={18} src={rowDeleteIcon} alt="Delete row" />
                 </button>
-                <button onClick={() => editor.chain().focus().deleteTable().run()} disabled={!editor.can().deleteTable()}>
+                <button onClick={() => editor.chain().focus().deleteTable().run()} disabled={!editor.can().deleteTable()} title="Delete Table">
                     <Image width={18} height={18} src={tableDeleteIcon} alt="Delete table" />
                 </button>
-                <button onClick={() => editor.chain().focus().mergeCells().run()} disabled={!editor.can().mergeCells()}>
+                <button onClick={() => editor.chain().focus().mergeCells().run()} disabled={!editor.can().mergeCells()} title="Merge Cells">
                     <Image width={18} height={18} src={tableCellMergeIcon} alt="Merge cells" />
                 </button>
-                <button onClick={() => editor.chain().focus().splitCell().run()} disabled={!editor.can().splitCell()}>
+                <button onClick={() => editor.chain().focus().splitCell().run()} disabled={!editor.can().splitCell()} title="Split Cell">
                     <Image width={18} height={18} src={splitCellsHorizontalIcon} alt="Split cell" />
                 </button>
-                <button onClick={() => editor.chain().focus().toggleHeaderColumn().run()} disabled={!editor.can().toggleHeaderColumn()}>
+                <button onClick={() => editor.chain().focus().toggleHeaderColumn().run()} disabled={!editor.can().toggleHeaderColumn()} title="Toggle Header Column">
                     ToggleHeaderColumn
                 </button>
-                <button onClick={() => editor.chain().focus().toggleHeaderRow().run()} disabled={!editor.can().toggleHeaderRow()}>
+                <button onClick={() => editor.chain().focus().toggleHeaderRow().run()} disabled={!editor.can().toggleHeaderRow()} title="Toggle Header Row">
                     Toggle header row
                 </button>
-                <button onClick={() => editor.chain().focus().toggleHeaderCell().run()} disabled={!editor.can().toggleHeaderCell()}>
+                <button onClick={() => editor.chain().focus().toggleHeaderCell().run()} disabled={!editor.can().toggleHeaderCell()} title="Toggle Header Cell">
                     Toggle header cell
                 </button>
-                <button onClick={() => editor.chain().focus().mergeOrSplit().run()} disabled={!editor.can().mergeOrSplit()}>
+                <button onClick={() => editor.chain().focus().mergeOrSplit().run()} disabled={!editor.can().mergeOrSplit()} title="Merge or Split">
                     Merge or split
                 </button>
-                <button onClick={() => editor.chain().focus().setCellAttribute('backgroundColor', '#FAF594').run()} disabled={!editor.can().setCellAttribute('backgroundColor', '#FAF594')}>
+                <button onClick={() => editor.chain().focus().setCellAttribute('backgroundColor', '#FAF594').run()} disabled={!editor.can().setCellAttribute('backgroundColor', '#FAF594')} title="Set Cell Attribute">
                     Set cell attribute
                 </button>
-                <button onClick={() => editor.chain().focus().fixTables().run()} disabled={!editor.can().fixTables()}>
+                <button onClick={() => editor.chain().focus().fixTables().run()} disabled={!editor.can().fixTables()} title="Fix Tables">
                     Fix tables
                 </button>
-                <button onClick={() => editor.chain().focus().goToNextCell().run()} disabled={!editor.can().goToNextCell()}>
+                <button onClick={() => editor.chain().focus().goToNextCell().run()} disabled={!editor.can().goToNextCell()} title="Go to Next Cell">
                     Go to next cell
                 </button>
-                <button onClick={() => editor.chain().focus().goToPreviousCell().run()} disabled={!editor.can().goToPreviousCell()}>
+                <button onClick={() => editor.chain().focus().goToPreviousCell().run()} disabled={!editor.can().goToPreviousCell()} title="Go to Previous Cell">
                     Go to previous cell
                 </button>
             </div>

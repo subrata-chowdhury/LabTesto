@@ -62,6 +62,7 @@ const Orders = () => {
     }
 
     async function deleteOrder(id: string) {
+        if(!window.confirm('Are you sure you want to delete this order?')) return;
         const res = await fetcher.delete(`/admin/orders/${id}`);
         if (res.status !== 200) return;
         await fetchOrders();
