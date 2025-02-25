@@ -36,8 +36,8 @@ const TestForm = ({ testDetails, loading, error, onChange, onSave = () => { } }:
                     <Dropdown options={['Blood', 'Urine', 'Semen', 'Stool', 'Sputum', 'Other Body Fluid']} value={testDetails.sampleType} onChange={(val) => onChange.testDetails({ ...testDetails, sampleType: val.value as 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other Body Fluid' })} width={'100%'} />
                 </div>
                 <div className='flex flex-col gap-1'>
-                    <p className='font-medium'>Tube Type *</p>
-                    <Dropdown options={['Clot Tube', 'Fluoride Tube', 'EDTA Tube', 'Citrate Tube']} value={testDetails.tubeType} onChange={(val) => onChange.testDetails({ ...testDetails, tubeType: val.value as 'Clot Tube' | 'Fluoride Tube' | 'EDTA Tube' | 'Citrate Tube' })} width={'100%'} />
+                    <p className='font-medium'>Tube / Container Type *</p>
+                    <Dropdown options={['Clot Tube', 'Fluoride Tube', 'EDTA Tube', 'Citrate Tube', 'Sterile Container', 'Non-Sterile Container']} value={testDetails.tubeType} onChange={(val) => onChange.testDetails({ ...testDetails, tubeType: val.value as 'Clot Tube' | 'Fluoride Tube' | 'EDTA Tube' | 'Citrate Tube' | 'Sterile Container' | 'Non-Sterile Container' })} width={'100%'} />
                 </div>
                 <Input label='Fasting Required' name='fastingRequired' placeholder='Enter fasting requirement' value={testDetails.fastingRequired} onChange={(val) => onChange.testDetails({ ...testDetails, fastingRequired: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'fastingRequired' ? error.msg : ""} />
             </div>
@@ -79,7 +79,7 @@ export type TestDetails = {
     name: string,
     otherTerms: string[],
     sampleType: 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other Body Fluid',
-    tubeType: 'Clot Tube' | 'Fluoride Tube' | 'EDTA Tube' | 'Citrate Tube',
+    tubeType: 'Clot Tube' | 'Fluoride Tube' | 'EDTA Tube' | 'Citrate Tube' | 'Sterile Container' | 'Non-Sterile Container',
     fastingRequired: string,
     description: string,
     overview: string,

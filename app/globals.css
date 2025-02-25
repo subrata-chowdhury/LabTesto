@@ -111,6 +111,13 @@ body {
   border: 2px solid rgb(229, 231, 235);
   border-collapse: collapse;
   width: 100%;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.tiptap table tr {
+  width: 100%;
+  height: 48px;
 }
 
 .tiptap table th,
@@ -125,26 +132,35 @@ body {
 .tiptap h6 {
   font-size: 1.25rem;
   font-weight: 500;
+  color: rgba(0, 0, 0, 0.7);
 }
 .tiptap h5 {
   font-size: 1.5rem;
   font-weight: 500;
+  color: rgba(0, 0, 0, 0.7);
 }
 .tiptap h4 {
   font-size: 1.75rem;
   font-weight: 500;
+  color: rgba(0, 0, 0, 0.7);
 }
 .tiptap h3 {
   font-size: 2rem;
   font-weight: 500;
+  color: rgba(0, 0, 0, 0.7);
 }
 .tiptap h2 {
   font-size: 2.25rem;
   font-weight: 500;
+  color: rgba(0, 0, 0, 0.7);
 }
 .tiptap h1 {
   font-size: 2.5rem;
   font-weight: 500;
+  color: rgba(0, 0, 0, 0.7);
+}
+.tiptap strong {
+  color: rgba(0, 0, 0, 0.7);
 }
 .tiptap ol {
   list-style-type: decimal;

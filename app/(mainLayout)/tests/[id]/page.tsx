@@ -114,7 +114,7 @@ function Test() {
                     <div className='flex gap-4'>
                         <p className='font-medium flex gap-2'>
                             <TubeIcon />
-                            Tube Type
+                            {testDetails.tubeType.includes('Tube') ? 'Tube' : 'Container'} Type
                         </p>
                         <p className='text-gray-500'>{testDetails.tubeType}</p>
                     </div>
@@ -186,7 +186,7 @@ function Test() {
                             }
                             setLoading(false);
                         });
-                    }}>{loading ? 'Booking..' : 'Book'}</button>}
+                    }}>{loading ? 'Add to Cart..' : 'Add to Cart'}</button>}
                 </div>
             </div>
             <div className='mt-1 md:mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 md:gap-5 rounded-lg'>
@@ -228,19 +228,32 @@ function Test() {
                 </div>
             )}
             <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 bg-white tiptap'>
-                <div className='grid grid-flow-col justify-start gap-2'>
-                    <DescriptionIcon />
+                {labBaseDetails.packagesInclude.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
+                    <PackageIcon />
                     <div className='flex flex-col gap-1'>
-                        <p className='font-medium'>Description</p>
-                        <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.description }}></div>
+                        <p className='font-medium'>Packages Include</p>
+                        <ul className='list-disc list-inside'>
+                            {
+                                labBaseDetails.packagesInclude.map(e => (
+                                    <li key={e}>{e}</li>
+                                ))
+                            }
+                        </ul>
                     </div>
-                </div>
+                </div>}
                 {testDetails?.overview?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
                     <DescriptionIcon />
                     <div className='flex flex-col gap-1'>
                         <p className='font-medium flex gap-2'>Overview</p>
                         <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.overview }}></div>
                         {/* <p className='text-gray-500'>{testDetails.overview}</p> */}
+                    </div>
+                </div>}
+                {testDetails.description.length > 0 && <div className='flex justify-start gap-2'>
+                    <DescriptionIcon />
+                    <div className='flex-1 flex flex-col gap-1'>
+                        <p className='font-medium'>Description</p>
+                        <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.description }}></div>
                     </div>
                 </div>}
                 {testDetails?.testResultInterpretation?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
@@ -260,20 +273,7 @@ function Test() {
                     </div>
                 </div>}
             </div>
-            {(labBaseDetails.packagesInclude.length > 0 && labBaseDetails.ranges.length > 0) && <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 bg-white'>
-                {labBaseDetails.packagesInclude.length > 0 && <div className='flex items-start gap-2'>
-                    <PackageIcon />
-                    <div className='flex flex-col gap-1'>
-                        <p className='font-medium'>Packages Include</p>
-                        <ul className='list-disc list-inside'>
-                            {
-                                labBaseDetails.packagesInclude.map(e => (
-                                    <li key={e}>{e}</li>
-                                ))
-                            }
-                        </ul>
-                    </div>
-                </div>}
+            {labBaseDetails.ranges.length > 0 && <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 bg-white'>
                 {labBaseDetails.ranges.length > 0 && <div className='flex gap-2'>
                     <DescriptionIcon />
                     <div className='flex flex-1 flex-col gap-1'>

@@ -58,9 +58,9 @@ export async function POST(req: NextRequest) {
     if (!body.tubeType) {
         return new NextResponse('Tube Type is required', { status: 400 });
     }
-    if (!body.description) {
-        return new NextResponse('Description is required', { status: 400 });
-    }
+    // if (!body.description) {
+    //     return new NextResponse('Description is required', { status: 400 });
+    // }
     // if (!body.fastingRequired) {
     //     return new NextResponse('Fasting Required is required', { status: 400 });
     // }

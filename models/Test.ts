@@ -4,7 +4,7 @@ interface ITest extends Document {
     name: string;
     otherTerms: string[];
     sampleType: 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other Body Fluid';
-    tubeType: 'Clot Tube' | 'Fluoride Tube' | 'EDTA Tube' | 'Citrate Tube';
+    tubeType: 'Clot Tube' | 'Fluoride Tube' | 'EDTA Tube' | 'Citrate Tube' | 'Sterile Container' | 'Non-Sterile Container';
     description: string;
     fastingRequired: string;
     // tubeType: 'Red Color Cap' | 'Gray Color Cap' | 'Purple Color cap' | 'Blue Color Cap';
@@ -27,10 +27,10 @@ const TestSchema: Schema = new Schema({
     },
     tubeType: {
         type: String,
-        enum: ['Clot Tube', 'Fluoride Tube', 'EDTA Tube', 'Citrate Tube'],
+        enum: ['Clot Tube', 'Fluoride Tube', 'EDTA Tube', 'Citrate Tube', 'Sterile Container', 'Non-Sterile Container'],
         required: true
     },
-    description: { type: String, required: true },
+    description: { type: String, required: false },
     fastingRequired: { type: String, required: false },
     overview: { type: String, required: false },
     testResultInterpretation: { type: String, required: false },

@@ -43,9 +43,9 @@ export async function POST(req: NextRequest) {
     if (!body.tubeType) {
         return new NextResponse('Tube type is required', { status: 400 });
     }
-    if (!body.description) {
-        return new NextResponse('Description is required', { status: 400 });
-    }
+    // if (!body.description) {
+    //     return new NextResponse('Description is required', { status: 400 });
+    // }
     // if (!body.fastingRequired) {
     //     return new NextResponse('Fasting requirement is required', { status: 400 });
     // }
@@ -84,7 +84,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ message: 'Test updated successfully' }, { status: 200 });
     } catch(e) {
         console.log(e);
-
         return new NextResponse('Error updating test', { status: 500 });
     }
 }
