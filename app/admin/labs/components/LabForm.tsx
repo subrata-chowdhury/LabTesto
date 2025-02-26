@@ -27,7 +27,7 @@ const LabForm = ({ labDetails, loading, onChange, onSave = () => { } }: Props) =
     return (
         <div className='bg-white mt-4 p-8 px-10'>
             <div className='text-xl flex gap-3 items-center font-bold pb-6'>
-                Tests Lab Form
+                Tests Lab Form of <span className='text-blue-600'>{labDetails.name}</span>
             </div>
             <div className='pb-4 flex justify-between font-semibold'>
                 Result Times
@@ -131,7 +131,7 @@ const LabForm = ({ labDetails, loading, onChange, onSave = () => { } }: Props) =
                         { heading: 'Packages', selector: 'packages', component: ({ data }) => <div>{data.packages.join(', ')}</div> },
                         {
                             heading: 'Actions',
-                            component: ({ index }) => (<div className='flex items-center gap-1'>
+                            component: ({ index }) => (<div className='flex items-center gap-1 w-20'>
                                 <button
                                     onClick={() => setShowPackageIncludePopup({ index })}>
                                     Edit
@@ -219,7 +219,8 @@ export type LabTestDetails = {
     resultTimes?: ResultTime[],
     prices?: Price[],
     packagesInclude?: PackageInclude[],
-    ranges?: Range[]
+    ranges?: Range[],
+    name?: string
 }
 
 type ResultTime = {

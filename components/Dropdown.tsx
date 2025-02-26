@@ -9,15 +9,16 @@ type Props = {
     height?: number,
     showPopupAtTop?: boolean,
     containerClassName?: string,
-    optionElement?: (props: { option: string | number, index: number, onClick: () => void }) => React.JSX.Element
+    optionElement?: (props: { option: string | number, index: number, onClick: () => void }) => React.JSX.Element,
+    ref?: React.RefObject<HTMLDivElement | null>;
 }
 
-function Dropdown({ options = [], value = "", onChange = () => { }, containerClassName = '', width, height, showPopupAtTop = false, optionElement }: Props) {
+function Dropdown({ options = [], value = "", onChange = () => { }, containerClassName = '', width, height, showPopupAtTop = false, optionElement, ref }: Props) {
     const [isOpen, setIsOpen] = useState(false)
 
     return (
         <div className={'relative ' + containerClassName} style={{ width: width || 'fit-content' }}>
-            <div className='flex justify-between items-center border-2 p-2 rounded cursor-pointer gap-1' onClick={() => setIsOpen(!isOpen)} style={{ height: height || 40, width: width || 'fit-content' }}>
+            <div className='flex justify-between items-center border-2 p-2 rounded cursor-pointer gap-1' onClick={() => setIsOpen(!isOpen)} ref={ref} style={{ height: height || 40, width: width || 'fit-content' }}>
                 <div className='text-nowrap truncate' title={value.toString()}>{value}</div>
                 <Image src={dropdownArrow} alt='Search Icon' width={16} height={16} className={`transition-all w-4 h-4 ${isOpen ? 'rotate-180' : 'rotate-0'}`} />
             </div>

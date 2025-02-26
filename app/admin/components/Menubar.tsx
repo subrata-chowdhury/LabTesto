@@ -25,6 +25,7 @@ function Menubar() {
                 <Menu name='Collectors' image={students} link='/admin/collectors' active={currentPath.includes('/admin/collectors')} menubarHovered={menubarHovered} />
                 <Menu name='Carts' image={cart} link='/admin/carts' active={currentPath.includes('/admin/carts')} menubarHovered={menubarHovered} />
                 <Menu name='Orders' image={form} link='/admin/orders' active={currentPath.includes('/admin/orders')} menubarHovered={menubarHovered} />
+                <Menu name='Data Misses' image={form} link='/admin/warnings' active={currentPath.includes('/admin/warnings')} menubarHovered={menubarHovered} />
             </div>
             <div className=''>
                 <div

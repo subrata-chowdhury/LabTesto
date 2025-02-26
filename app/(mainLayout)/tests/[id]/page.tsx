@@ -71,6 +71,11 @@ function Test() {
         const filter = { 'prices.test': id };
         await fetcher.get<{ labs: LabDetails[] }>(`/labs?filter=${JSON.stringify(filter)}&limit=${limit}`).then(res => {
             if (res.body && res.status === 200) {
+                res.body.labs.forEach(lab => {
+                    lab.prices = lab.prices.filter(p => p.test === id);
+                    lab.packagesInclude = lab.packagesInclude.filter(p => p.test === id);
+                    lab.ranges = lab.ranges.filter(p => p.test === id);
+                });
                 setLabs(res.body.labs);
                 setLab(res.body.labs[0]);
                 onLabSelect(res.body.labs[0], id);
@@ -152,7 +157,7 @@ function Test() {
                             width={'100%'} /> */}
                     </div>}
                 </div>
-                <div className='bottom-0 flex items-center justify-between mt-3'>
+                <div className='bottom-0 flex items-center justify-between mt-6'>
                     <div className='flex items-center gap-2'>
                         {loadingLabs ? (
                             <div className='animate-pulse'>

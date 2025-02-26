@@ -61,18 +61,18 @@ export async function POST(req: NextRequest) {
     // if (!body.resultTime) {
     //     return new NextResponse('Result time is required', { status: 400 });
     // }
+    const testData = {} as Record<string, unknown>;
 
-    const testData = {
-        name: body.name,
-        sampleType: body.sampleType,
-        tubeType: body.tubeType,
-        description: body.description,
-        fastingRequired: body.fastingRequired,
-        overview: body.overview,
-        testResultInterpretation: body.testResultInterpretation,
-        riskAssesment: body.riskAssesment,
-        resultTime: body.resultTime,
-    }
+    if (body.name) testData.name = body.name;
+    if (body.otherTerms) testData.otherTerms = body.otherTerms;
+    if (body.sampleType) testData.sampleType = body.sampleType;
+    if (body.tubeType) testData.tubeType = body.tubeType;
+    if (body.description) testData.description = body.description;
+    if (body.fastingRequired) testData.fastingRequired = body.fastingRequired;
+    if (body.overview) testData.overview = body.overview;
+    if (body.testResultInterpretation) testData.testResultInterpretation = body.testResultInterpretation;
+    if (body.riskAssesment) testData.riskAssesment = body.riskAssesment;
+    if (body.resultTime) testData.resultTime = body.resultTime;
 
     try {
         const updatedTest = await Test.findByIdAndUpdate(id, testData, { new: true, runValidators: true });

@@ -85,6 +85,7 @@ export async function POST(req: NextRequest) {
     const testData = {
         name: body.name,
         sampleType: body.sampleType,
+        otherTerms: body.otherTerms,
         tubeType: body.tubeType,
         description: body.description,
         fastingRequired: body.fastingRequired,

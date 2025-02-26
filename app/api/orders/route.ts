@@ -29,6 +29,7 @@ export async function GET(req: NextRequest) {
         return new NextResponse('Error fetching orders', { status: 500 });
     }
 }
+
 export async function POST(req: NextRequest) {
     try {
         const userId = await req.cookies.get('userId')?.value;

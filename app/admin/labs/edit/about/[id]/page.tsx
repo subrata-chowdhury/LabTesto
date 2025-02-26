@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import fetcher from '@/lib/fetcher'
 import AboutForm, { LabAboutDetails } from '../../../components/AboutForm'
 import { toast } from 'react-toastify'
@@ -24,6 +24,7 @@ const Page = () => {
     })
     const [loading, setLoading] = useState(false);
 
+    const navigate = useRouter();
     const { id } = useParams();
 
     useEffect(() => {
@@ -42,9 +43,10 @@ const Page = () => {
 
     async function saveLab() {
         setLoading(true);
-        const res = await fetcher.post<LabAboutDetails, { messege: string }>(`/labs/${id}`, { ...labDetails, description: labDetails.tempDescription });
+        const res = await fetcher.post<LabAboutDetails, { messege: string }>(`/labs/${id}`, { ...labDetails, description: labDetails.tempDescription || labDetails.description || '' });
         if (res.status === 200) {
             toast.success('Lab saved successfully');
+            navigate.push('/admin/labs');
         } else {
             toast.error(res.error || 'Error saving lab');
         }

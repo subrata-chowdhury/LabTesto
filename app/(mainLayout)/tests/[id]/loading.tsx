@@ -60,7 +60,7 @@ export function BasicTestDetailsLoader() {
                     </div>
                 </div>
             </div>
-            <div className='bottom-0 flex items-center justify-between mt-3'>
+            <div className='bottom-0 flex items-center justify-between mt-6'>
                 <div className='flex items-center gap-2'>
                     <div className='animate-pulse'>
                         <div className='h-8 w-32 bg-gray-300 rounded'></div>

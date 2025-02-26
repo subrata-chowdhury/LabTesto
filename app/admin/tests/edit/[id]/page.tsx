@@ -49,7 +49,7 @@ const Page = () => {
         if (res.body && res.status === 200)
             setTestDetails({
                 name: res.body.name || '',
-                otherTerms: res.body.otherTerms || '',
+                otherTerms: res.body.otherTerms || [],
                 sampleType: res.body.sampleType || '',
                 tubeType: res.body.tubeType || '',
                 description: res.body.description || '',

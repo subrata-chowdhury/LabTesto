@@ -112,7 +112,6 @@ body {
   border-collapse: collapse;
   width: 100%;
   border-radius: 5px;
-  overflow: hidden;
 }
 
 .tiptap table tr {
@@ -127,6 +126,7 @@ body {
 
 .tiptap table th {
   background-color: rgb(229, 231, 235);
+  color: rgba(0, 0, 0, 0.68);
 }
 
 .tiptap h6 {
@@ -192,6 +192,8 @@ body {
   min-width: 34px;
   min-height: 34px;
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .control-group .button-group button.is-active {

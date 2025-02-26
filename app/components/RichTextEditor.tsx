@@ -2,6 +2,7 @@ import { Color } from '@tiptap/extension-color'
 import ListItem from '@tiptap/extension-list-item'
 import TextStyle from '@tiptap/extension-text-style'
 import { EditorContent, Editor, useEditor } from '@tiptap/react'
+import Underline from '@tiptap/extension-underline'
 import StarterKit from '@tiptap/starter-kit'
 import React, { useEffect } from 'react'
 import Table from '@tiptap/extension-table'
@@ -68,6 +69,20 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
                     title="Italic"
                 >
                     <Image width={18} height={18} src={italicIcon} alt="Italic" />
+                </button>
+                <button
+                    onClick={() => editor.chain().focus().toggleUnderline().run()}
+                    disabled={
+                        !editor.can()
+                            .chain()
+                            .focus()
+                            .toggleUnderline()
+                            .run()
+                    }
+                    className={(editor.isActive('underline') ? 'is-active' : '')}
+                    title="Underline"
+                >
+                    U
                 </button>
                 <button
                     onClick={() => editor.chain().focus().toggleStrike().run()}
@@ -245,7 +260,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
                 <button onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()} title="Insert Table">
                     <Image width={18} height={18} src={insertTableIcon} alt="Insert table" />
                 </button>
-                <button onClick={() => editor.chain().focus().insertContent('', {
+                <button disabled onClick={() => editor.chain().focus().insertContent('', {
                     parseOptions: {
                         preserveWhitespace: false,
                     },
@@ -331,6 +346,8 @@ const CustomTableCell = TableCell.extend({
 
 const extensions = [
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
+    TextStyle,
+    Underline,
     TextStyle,
     StarterKit.configure({
         bulletList: {
