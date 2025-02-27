@@ -10,6 +10,7 @@ import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import TextAlign from '@tiptap/extension-text-align'
+import Link from '@tiptap/extension-link'
 import Image from 'next/image'
 
 //icons
@@ -255,6 +256,18 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
                 >
                     <Image width={18} height={18} src={alignRightIcon} alt="Right" />
                 </button>
+                <button
+                    onClick={() => {
+                        const url = prompt('Enter the URL')
+                        if (url) {
+                            editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+                        }
+                    }}
+                    className={editor.isActive('link') ? 'is-active' : ''}
+                    title="Hyperlink"
+                >
+                    Link
+                </button>
             </div>
             <div className="button-group">
                 <button onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()} title="Insert Table">
@@ -345,6 +358,7 @@ const CustomTableCell = TableCell.extend({
 })
 
 const extensions = [
+    Link,
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle,
     Underline,

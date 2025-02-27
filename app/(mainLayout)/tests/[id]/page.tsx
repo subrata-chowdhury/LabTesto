@@ -1,6 +1,6 @@
 'use client'
 import { useParams, useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import labIcon from '@/assets/lab.png'
 import Image from 'next/image'
 import fetcher from '@/lib/fetcher'
@@ -16,6 +16,10 @@ import { toast } from 'react-toastify'
 import Title from '@/components/Title'
 import informationIcon from '@/assets/information.svg'
 import Loading, { LabLoader } from './loading'
+import star from '@/assets/star.svg'
+import filledStar from '@/assets/star-fill.svg'
+import cross from '@/assets/cross.svg'
+import { CartPage } from '../../cart/component/CartPage'
 
 function Test() {
     const [testDetails, setTestDetails] = useState<TestDetails>({
@@ -35,14 +39,25 @@ function Test() {
         packagesInclude: [],
         ranges: [{}]
     })
-    const [lab, setLab] = useState<{ _id: string, name: string, prices: { test: string, price: number, offer: number }[] }>({ name: '', _id: '', prices: [] })
+    const [lab, setLab] = useState<{ _id: string, name: string, description: string, rating: number, prices: { test: string, price: number, offer: number }[] }>({ name: '', description: '', rating: 0, _id: '', prices: [] })
     const [labs, setLabs] = useState<LabDetails[]>([]);
     const [loading, setLoading] = useState(false);
+    const [booking, setBooking] = useState(false);
     const [loadingTest, setLoadingTest] = useState(true);
     const [loadingLabs, setLoadingLabs] = useState(true);
     const [limit, setLimit] = useState<number>(10);
-    const { id } = useParams<{ id: string }>();
+    const [showLabDetails, setShowLabDetails] = useState(false);
+    // const [seeMore, setSeeMore] = useState({
+    //     packagesInclude: false,
+    //     overview: false,
+    //     description: false,
+    //     testResultInterpretation: false,
+    //     riskAssesment: false
+    // });
+    const [showOrderPopup, setShowOrderPopup] = useState(false);
+    const isItemFound = useRef(false)
 
+    const { id } = useParams<{ id: string }>();
     const navigate = useRouter();
 
     useEffect(() => {
@@ -90,12 +105,13 @@ function Test() {
             setTestDetails({
                 name: res.body.name || '',
                 sampleType: res.body.sampleType || '',
+                otherTerms: res.body.otherTerms || [],
                 tubeType: res.body.tubeType || '',
-                description: res.body.description || '',
+                description: res.body.description.replace(/<p>/g, '').replace(/<\/p>/g, '<br/>') || '',
                 fastingRequired: res.body.fastingRequired || '',
-                overview: res.body.overview || '',
-                testResultInterpretation: res.body.testResultInterpretation || '',
-                riskAssesment: res.body.riskAssesment || '',
+                overview: res.body.overview.replace(/<p>/g, '').replace(/<\/p>/g, '<br/>') || '',
+                testResultInterpretation: res.body.testResultInterpretation.replace(/<p>/g, '').replace(/<\/p>/g, '<br/>') || '',
+                riskAssesment: res.body.riskAssesment.replace(/<p>/g, '').replace(/<\/p>/g, '<br/>') || '',
                 resultTime: res.body.resultTime || ''
             });
             setLoadingTest(false);
@@ -107,8 +123,11 @@ function Test() {
     return (
         <div className='bg-blue-50 p-1 md:py-9 md:px-10'>
             <div className='bg-white border-2 p-7 px-8 flex flex-col rounded-lg'>
-                <div className='text-2xl font-bold pb-6 text-[#3986ba]'>{testDetails.name}</div>
-                <div className='grid grid-cols-1 sm:grid-cols-2 gap-5'>
+                <div className='text-2xl font-bold text-[#3986ba]'>{testDetails.name}</div>
+                {(testDetails?.otherTerms || []).length > 0 && <div className='text-sm text-gray-500 pt-2'>
+                    Also known as: <div className='text-black font-medium'>{testDetails.otherTerms}</div>
+                </div>}
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-5 pt-6'>
                     <div className='flex gap-4'>
                         <p className='font-medium flex gap-2'>
                             <SampleTypeIcon />
@@ -136,7 +155,7 @@ function Test() {
                             Lab
                         </p>
                         <p className='text-gray-500'>{lab.name}</p>
-                        <Title title={<p className='text-nowrap font-medium'>To autofill by labs themselves, <br /> enable checkbox at below of this form</p>}>
+                        <Title title={<p className='text-nowrap font-medium'>See lab Details</p>} onClick={() => setShowLabDetails(true)} titleClass='bg-white text-[#3986ba]'>
                             <Image src={informationIcon} alt="" width={20} height={20} />
                         </Title>
                         {/* <Dropdown
@@ -169,29 +188,54 @@ function Test() {
                             <div className='text-sm font-semibold text-red-400'>{(((labBaseDetails.price - labBaseDetails.offer) / labBaseDetails.price) * 100).toFixed(2)}% OFF</div>
                         </>)}
                     </div>
-                    {(!loadingLabs && !loadingTest && labs.length > 0) && <button disabled={loading} className='px-5 py-2 rounded-md bg-[#3986ba] text-white font-medium' onClick={() => {
-                        const cartItem = {
-                            product: {
-                                test: id,
-                                lab: lab._id,
-                                price: (labBaseDetails.price - (labBaseDetails.price * (labBaseDetails.offer / 100))).toFixed(2)
-                            },
-                            quantity: 1
-                        };
-                        setLoading(true);
-                        fetcher.post('/cart', cartItem).then(res => {
-                            if (res.status === 200) {
-                                toast.success('Test added to cart successfully');
-                                navigate.push('/cart');
-                            } else if (res.status === 401) {
-                                toast.error('Please login to add test to cart');
-                                navigate.push('/login?redirect=/tests/' + id);
-                            } else {
-                                toast.error('Failed to add test to cart please try again');
-                            }
-                            setLoading(false);
-                        });
-                    }}>{loading ? 'Add to Cart..' : 'Add to Cart'}</button>}
+                    <div>
+                        {(!loadingLabs && !loadingTest && labs.length > 0) && <button disabled={loading} className='px-5 py-2 rounded-md bg-[#3986ba] text-white font-medium mr-3' onClick={() => {
+                            const cartItem = {
+                                product: {
+                                    test: id,
+                                    lab: lab._id,
+                                    price: (labBaseDetails.price - (labBaseDetails.price * (labBaseDetails.offer / 100))).toFixed(2)
+                                },
+                                quantity: 1
+                            };
+                            setBooking(true);
+                            fetcher.post('/cart', cartItem).then(res => {
+                                if (res.status === 200) {
+                                    // toast.success('Test added to cart successfully');
+                                    setShowOrderPopup(true);
+                                } else if (res.status === 401) {
+                                    toast.error('Please login to add test to cart');
+                                    navigate.push('/login?redirect=/tests/' + id);
+                                } else {
+                                    toast.error('Failed to add test to cart please try again');
+                                }
+                                setBooking(false);
+                            });
+                        }}>{booking ? 'Booking..' : 'Book'}</button>}
+                        {(!loadingLabs && !loadingTest && labs.length > 0) && <button disabled={loading} className='px-5 py-2 rounded-md bg-[#3986ba] text-white font-medium' onClick={() => {
+                            const cartItem = {
+                                product: {
+                                    test: id,
+                                    lab: lab._id,
+                                    price: (labBaseDetails.price - (labBaseDetails.price * (labBaseDetails.offer / 100))).toFixed(2)
+                                },
+                                quantity: 1
+                            };
+                            setLoading(true);
+                            fetcher.post('/cart', cartItem).then(res => {
+                                if (res.status === 200) {
+                                    toast.success('Test added to cart successfully');
+                                    navigate.push('/cart');
+                                } else if (res.status === 401) {
+                                    toast.error('Please login to add test to cart');
+                                    navigate.push('/login?redirect=/tests/' + id);
+                                } else {
+                                    toast.error('Failed to add test to cart please try again');
+                                }
+                                setLoading(false);
+                            });
+                        }}>{loading ? 'Adding to Cart..' : 'Add to Cart'}</button>}
+                    </div>
                 </div>
             </div>
             <div className='mt-1 md:mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 md:gap-5 rounded-lg'>
@@ -249,22 +293,22 @@ function Test() {
                 {testDetails?.overview?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
                     <DescriptionIcon />
                     <div className='flex flex-col gap-1'>
-                        <p className='font-medium flex gap-2'>Overview</p>
+                        <p className='font-semibold text-xl flex gap-2'>Overview</p>
                         <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.overview }}></div>
                         {/* <p className='text-gray-500'>{testDetails.overview}</p> */}
                     </div>
                 </div>}
-                {testDetails.description.length > 0 && <div className='flex justify-start gap-2'>
+                {testDetails.description.replace(/<br\/>/g, '').length > 0 && <div className='flex justify-start gap-2'>
                     <DescriptionIcon />
                     <div className='flex-1 flex flex-col gap-1'>
-                        <p className='font-medium'>Description</p>
+                        <p className='font-semibold text-xl'>Description</p>
                         <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.description }}></div>
                     </div>
                 </div>}
                 {testDetails?.testResultInterpretation?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
                     <DescriptionIcon />
                     <div className='flex flex-col gap-1'>
-                        <p className='font-medium flex gap-2'>Test Result Interpretation</p>
+                        <p className='font-semibold text-xl flex gap-2'>Test Result Interpretation</p>
                         <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.testResultInterpretation }}></div>
                         {/* <p className='text-gray-500'>{testDetails.testResultInterpretation}</p> */}
                     </div>
@@ -272,7 +316,7 @@ function Test() {
                 {testDetails?.riskAssesment?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
                     <DescriptionIcon />
                     <div className='flex flex-col gap-1'>
-                        <p className='font-medium flex gap-2'>Risk Assessment</p>
+                        <p className='font-semibold text-xl flex gap-2'>Risk Assessment</p>
                         <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.riskAssesment }}></div>
                         {/* <p className='text-gray-500'>{testDetails.riskAssesment}</p> */}
                     </div>
@@ -282,7 +326,7 @@ function Test() {
                 {labBaseDetails.ranges.length > 0 && <div className='flex gap-2'>
                     <DescriptionIcon />
                     <div className='flex flex-1 flex-col gap-1'>
-                        <p className='font-medium flex gap-2'>Ranges</p>
+                        <p className='font-semibold text-xl flex gap-2'>Ranges</p>
                         <div>
                             <MainTable
                                 config={Object.keys(labBaseDetails.ranges[0] || {}).map(e => ({ heading: e, selector: e }))}
@@ -293,6 +337,49 @@ function Test() {
                     </div>
                 </div>}
             </div>}
+            {
+                showLabDetails &&
+                <div className='fixed w-screen h-screen top-0 left-0 bg-black bg-opacity-20 z-50' onClick={() => setShowLabDetails(false)}>
+                    <div className='fixed left-0 top-0 w-[70vw] bg-white shadow-2xl' onClick={e => e.stopPropagation()}>
+                        <button className='flex justify-end p-2 absolute right-0 top-0 translate-x-full bg-white rounded-e-md border-2' onClick={() => setShowLabDetails(false)}>
+                            <Image src={cross} alt='' />
+                        </button>
+                        <div className='overflow-y-scroll h-screen'>
+                            <div className='bg-blue-200 relative min-h-52 overflow-hidden p-4'>
+                                <p className='font-bold text-2xl bottom-10 absolute z-20 text-white'>{lab.name}</p>
+                                <div className='flex gap-2 absolute bottom-4 z-20'>
+                                    {Array.from({ length: Math.floor(lab.rating) }).map((_, i) => (
+                                        <Image key={i} src={filledStar} alt='' width={20} height={20} />
+                                    ))}
+                                    {Array.from({ length: 5 - Math.floor(lab.rating) }).map((_, i) => (
+                                        <Image key={i} src={star} alt='' width={20} height={20} />
+                                    ))}
+                                </div>
+                                <div className='absolute bottom-0 w-full h-full z-10 -translate-x-[10%] translate-y-1/2 bg-gradient-to-t from-gray-400 to-transparent transform rotate-[20deg]'></div>
+                            </div>
+                            <div className='tiptap border-0 p-5' dangerouslySetInnerHTML={{ __html: lab.description.replace(/<p>/g, '').replace(/<\/p>/g, '<br/>') }}></div>
+                        </div>
+                    </div>
+                </div>
+            }
+            {
+                showOrderPopup && <div className='w-screen h-screen z-20 flex flex-col fixed top-0 left-0 bg-gray-100'>
+                    <div className='ms-auto mr-6 mt-7 cursor-pointer' onClick={() => setShowOrderPopup(false)}>
+                        <Image src={cross} alt=""></Image>
+                    </div>
+                    <CartPage
+                        showRemoveBtn={false}
+                        onFetchedCart={() => { isItemFound.current = false }}
+                        filterCartFunc={(item) => {
+                            if (isItemFound.current) return false;
+                            if (item.product.test._id === id && item.product.lab._id === lab._id) {
+                                isItemFound.current = true;
+                                return true;
+                            }
+                            return false
+                        }} />
+                </div>
+            }
         </div>
     )
 }
@@ -301,6 +388,7 @@ export default Test;
 
 type TestDetails = {
     name: string,
+    otherTerms?: string[],
     sampleType: string,
     tubeType: string,
     description: string,
@@ -313,6 +401,8 @@ type TestDetails = {
 
 type LabDetails = {
     _id: string,
+    description: string,
+    rating: number,
     name: string,
     sampleType: string,
     prices: { test: string, price: number, offer: number }[],

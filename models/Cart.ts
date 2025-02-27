@@ -5,7 +5,7 @@ interface ICart extends Document {
         product: {
             test: mongoose.Types.ObjectId;
             lab: mongoose.Types.ObjectId;
-            price: number;
+            // price: number;
         };
         patientDetails: {
             name: string;
@@ -27,7 +27,7 @@ const CartSchema: Schema = new Schema({
             product: {
                 test: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Test' },
                 lab: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Lab' },
-                price: { type: Number, required: true },
+                // price: { type: Number, required: true },
             },
             patientDetails: {
                 type: [{

@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     await dbConnect();
 
     try {
-        const cart = await Cart.findOne({ user: id }).populate({ path: 'items.product.test', model: Test }).populate('items.product.lab').populate({ path: 'user', model: User });
+        const cart = await Cart.findOne({ user: id }).populate({ path: 'items.product.test', model: Test }).populate({ path: 'items.product.lab', model: Lab }).populate({ path: 'user', model: User });
 
         if (!cart) {
             const cartData = {
@@ -70,12 +70,7 @@ export async function POST(req: NextRequest) {
 
     if (existingCart) {
         try {
-            // if not same then save the new product details
-            const lab = await Lab.findById(labId);
-            const priceDetails: { test: string, price: number, offer: number } = lab.prices.filter((price: { test: string, price: string }) => price.test.toString() === testId)[0];
-            const price = (priceDetails.price - (priceDetails.price * (priceDetails.offer / 100))).toFixed(2);
-
-            existingCart.items.push({ product: { test: testId, lab: labId, price }, quantity: 1, date: new Date() });
+            existingCart.items.push({ product: { test: testId, lab: labId }, quantity: 1, date: new Date() });
 
             await existingCart.save();
             return NextResponse.json({ message: 'Cart updated successfully' }, { status: 200 });

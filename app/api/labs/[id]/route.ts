@@ -67,6 +67,7 @@ export async function POST(req: NextRequest) {
             test: string;
             range: string;
         }>;
+        rating: number;
     }> = {};
 
     if (body.name) labData.name = body.name;
@@ -77,6 +78,7 @@ export async function POST(req: NextRequest) {
     if (body.ranges) labData.ranges = body.ranges;
     if (body.resultTimes) labData.resultTimes = body.resultTimes;
     if (body.description) labData.description = body.description;
+    if (body.rating) labData.rating = body.rating;
 
     try {
         const updatedLab = await Lab.findByIdAndUpdate(id, labData, { new: true, runValidators: true });

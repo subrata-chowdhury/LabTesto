@@ -153,7 +153,7 @@ export type Order = {
     items: {
         product: {
             test: { name: string, _id: string };
-            lab: { name: string, _id: string, location: { address: string } };
+            lab: { name: string, _id: string, location: { address: { pin: string } } };
             price: number;
         };
         patientDetails: {

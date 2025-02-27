@@ -62,6 +62,7 @@ export async function POST(req: NextRequest) {
     const labData = {
         name: body.name,
         location: body.location,
+        rating: body.rating || 0,
         certification: body.certification,
         prices: body.prices,
         packagesInclude: body.packagesInclude,

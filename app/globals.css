@@ -128,39 +128,36 @@ body {
   background-color: rgb(229, 231, 235);
   color: rgba(0, 0, 0, 0.68);
 }
+.tiptap h1, .tiptap h2, .tiptap h3, .tiptap h4, .tiptap h5, .tiptap h6 {
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.tiptap h1 {
+  font-size: 2.5rem;
+}
+
+.tiptap h2 {
+  font-size: 2.25rem;
+}
+
+.tiptap h3 {
+  font-size: 2rem;
+}
+
+.tiptap h4 {
+  font-size: 1.75rem;
+}
+
+.tiptap h5 {
+  font-size: 1.5rem;
+}
 
 .tiptap h6 {
   font-size: 1.25rem;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.7);
-}
-.tiptap h5 {
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.7);
-}
-.tiptap h4 {
-  font-size: 1.75rem;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.7);
-}
-.tiptap h3 {
-  font-size: 2rem;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.7);
-}
-.tiptap h2 {
-  font-size: 2.25rem;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.7);
-}
-.tiptap h1 {
-  font-size: 2.5rem;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.7);
 }
 .tiptap strong {
-  color: rgba(0, 0, 0, 0.7);
+  color: rgba(0, 0, 0, 0.6);
 }
 .tiptap ol {
   list-style-type: decimal;
@@ -175,6 +172,9 @@ body {
   background-color: rgb(229, 231, 235);
   padding: 0.2rem 0.5rem;
   border-radius: 8px;
+}
+.tiptap a {
+  color: dodgerblue;
 }
 
 .control-group .button-group {

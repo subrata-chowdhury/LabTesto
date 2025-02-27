@@ -3,7 +3,7 @@ import Input from "@/components/Inputs/Input";
 import Model from "@/components/Model";
 import { useState } from "react";
 
-export default function PatientDetailsPopup({ patientDetails, onSave = () => { }, onRemove = () => { }, onClose = () => { } }: { patientDetails?: PatientDetails, onSave: (patientDetails: PatientDetails) => void, onRemove: () => void, onClose: () => void }) {
+export default function PatientDetailsPopup({ patientDetails, onSave = () => { }, onRemove = () => { }, onClose = () => { }, patients  }: { patientDetails?: PatientDetails, onSave: (patientDetails: PatientDetails) => void, onRemove: () => void, onClose: () => void, patients?: PatientDetails[] }) {
     const [values, setValues] = useState<PatientDetails>(patientDetails || {
         name: '',
         gender: 'Male',
@@ -44,6 +44,18 @@ export default function PatientDetailsPopup({ patientDetails, onSave = () => { }
                     }}>Save</div>
                 </div>
             </div>
+            {patients && <div className='bg-[rgba(57,134,186,0.05)] p-1 text-xs'>
+                {
+                    patients.map((patient, i) => (
+                        <div
+                            key={i}
+                            className='bg-[rgba(57,134,186,0.2)] px-3 py-1 rounded-full cursor-pointer inline-flex m-1'
+                            onClick={() => setValues(patient)}>
+                            {patient?.name?.split(' ').map(e => e.charAt(0)).join('') || 'Add +'}
+                        </div>
+                    ))
+                }
+            </div>}
         </Model>
     )
 }

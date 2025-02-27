@@ -37,7 +37,7 @@ function OrderPage() {
         startUp()
     }, [fetchOrderDetails])
 
-    if(!order) return <Loading />
+    if (!order) return <Loading />
 
     return (
         <div className='flex-1 flex flex-col gap-4 bg-gray-100 px-5 py-4'>
@@ -48,7 +48,7 @@ function OrderPage() {
                         <div className='flex flex-col gap-2 justify-between h-full'>
                             <div>
                                 <div className="text-2xl font-semibold">{item.product.test.name}</div>
-                                <div className='text-sm'>{item.product.lab.name}, {item.product.lab.location.address}</div>
+                                <div className='text-sm'>{item.product.lab.name}, {item.product.lab.location.address.pin}</div>
                             </div>
                             <div className='mt-auto font-medium text-xl'>₹{(item.product.price || 0) * item.quantity}</div>
                         </div>

@@ -100,7 +100,7 @@ export async function POST(req: NextRequest) {
                 product: {
                     test: cartItem.product.test,
                     lab: cartItem.product.lab,
-                    price: cartItem.product.price,
+                    price: await lab.prices.find((price: { test: string, price: number, offer: number }) => price.test.toString() === item.product.test)?.offer || 0,
                     expenses: priceDetails.expenses || 0
                 },
                 patientDetails: cartItem.patientDetails,

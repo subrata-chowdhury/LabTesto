@@ -17,7 +17,8 @@ export async function GET(req: NextRequest) {
         user.password = "";
 
         return NextResponse.json(user, { status: 200 });
-    } catch {
+    } catch(e) {
+        console.log(e)
         return new NextResponse('Error fetching user details', { status: 500 });
     }
 }

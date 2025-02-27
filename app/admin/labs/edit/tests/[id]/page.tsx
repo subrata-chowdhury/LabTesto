@@ -32,6 +32,7 @@ const Page = () => {
                 setLabDetails(labDetails);
             }
         })
+        fetchDatamissByLab()
     }, [id])
 
     async function fetchDatamissByLab() {
