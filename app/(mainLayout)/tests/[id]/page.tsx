@@ -47,13 +47,13 @@ function Test() {
     const [loadingLabs, setLoadingLabs] = useState(true);
     const [limit, setLimit] = useState<number>(10);
     const [showLabDetails, setShowLabDetails] = useState(false);
-    // const [seeMore, setSeeMore] = useState({
-    //     packagesInclude: false,
-    //     overview: false,
-    //     description: false,
-    //     testResultInterpretation: false,
-    //     riskAssesment: false
-    // });
+    const [seeMore, setSeeMore] = useState({
+        packagesInclude: false,
+        overview: false,
+        description: false,
+        testResultInterpretation: false,
+        riskAssesment: false
+    });
     const [showOrderPopup, setShowOrderPopup] = useState(false);
     const isItemFound = useRef(false)
 
@@ -176,7 +176,7 @@ function Test() {
                             width={'100%'} /> */}
                     </div>}
                 </div>
-                <div className='bottom-0 flex items-center justify-between mt-6'>
+                <div className='bottom-0 flex flex-col sm:flex-row gap-4 items-center justify-between mt-6'>
                     <div className='flex items-center gap-2'>
                         {loadingLabs ? (
                             <div className='animate-pulse'>
@@ -188,8 +188,8 @@ function Test() {
                             <div className='text-sm font-semibold text-red-400'>{(((labBaseDetails.price - labBaseDetails.offer) / labBaseDetails.price) * 100).toFixed(2)}% OFF</div>
                         </>)}
                     </div>
-                    <div>
-                        {(!loadingLabs && !loadingTest && labs.length > 0) && <button disabled={loading} className='px-5 py-2 rounded-md bg-[#3986ba] text-white font-medium mr-3' onClick={() => {
+                    <div className='flex gap-3'>
+                        {(!loadingLabs && !loadingTest && labs.length > 0) && <button disabled={loading} className='px-5 py-2 rounded-md bg-[#3986ba] text-white font-medium' onClick={() => {
                             const cartItem = {
                                 product: {
                                     test: id,
@@ -212,7 +212,7 @@ function Test() {
                                 setBooking(false);
                             });
                         }}>{booking ? 'Booking..' : 'Book'}</button>}
-                        {(!loadingLabs && !loadingTest && labs.length > 0) && <button disabled={loading} className='px-5 py-2 rounded-md bg-[#3986ba] text-white font-medium' onClick={() => {
+                        {(!loadingLabs && !loadingTest && labs.length > 0) && <button disabled={loading} className='px-5 py-2 rounded-md bg-[#3986ba] text-white font-medium text-nowrap' onClick={() => {
                             const cartItem = {
                                 product: {
                                     test: id,
@@ -276,67 +276,105 @@ function Test() {
                     </button>
                 </div>
             )}
-            <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 bg-white tiptap'>
-                {labBaseDetails.packagesInclude.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
-                    <PackageIcon />
-                    <div className='flex flex-col gap-1'>
-                        <p className='font-medium'>Packages Include</p>
-                        <ul className='list-disc list-inside'>
-                            {
-                                labBaseDetails.packagesInclude.map(e => (
-                                    <li key={e}>{e}</li>
-                                ))
-                            }
-                        </ul>
-                    </div>
-                </div>}
-                {testDetails?.overview?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
-                    <DescriptionIcon />
-                    <div className='flex flex-col gap-1'>
-                        <p className='font-semibold text-xl flex gap-2'>Overview</p>
-                        <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.overview }}></div>
-                        {/* <p className='text-gray-500'>{testDetails.overview}</p> */}
-                    </div>
-                </div>}
-                {testDetails.description.replace(/<br\/>/g, '').length > 0 && <div className='flex justify-start gap-2'>
-                    <DescriptionIcon />
-                    <div className='flex-1 flex flex-col gap-1'>
-                        <p className='font-semibold text-xl'>Description</p>
-                        <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.description }}></div>
-                    </div>
-                </div>}
-                {testDetails?.testResultInterpretation?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
-                    <DescriptionIcon />
-                    <div className='flex flex-col gap-1'>
-                        <p className='font-semibold text-xl flex gap-2'>Test Result Interpretation</p>
-                        <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.testResultInterpretation }}></div>
-                        {/* <p className='text-gray-500'>{testDetails.testResultInterpretation}</p> */}
-                    </div>
-                </div>}
-                {testDetails?.riskAssesment?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
-                    <DescriptionIcon />
-                    <div className='flex flex-col gap-1'>
-                        <p className='font-semibold text-xl flex gap-2'>Risk Assessment</p>
-                        <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.riskAssesment }}></div>
-                        {/* <p className='text-gray-500'>{testDetails.riskAssesment}</p> */}
-                    </div>
+            <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 bg-white '>
+                <div className='tiptap' style={{ padding: 0, border: 0 }}>
+                    {labBaseDetails.packagesInclude.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
+                        <PackageIcon />
+                        <div className='flex flex-col gap-1 w-full'>
+                            <p className='font-semibold text-xl w-full'>Packages Include</p>
+                            <ul className={'list-disc list-inside relative w-full ' + (!seeMore.packagesInclude ? 'max-h-[5rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, packagesInclude: !seeMore.packagesInclude })}>
+                                {
+                                    labBaseDetails.packagesInclude.map(e => (
+                                        <li key={e}>{e}</li>
+                                    ))
+                                }
+                                <div className=' absolute flex flex-col top-0 left-0 h-full w-full'>
+                                    <div className={'h-full w-full mt-auto bg-gradient-to-t flex flex-col ' + (!seeMore.packagesInclude ? 'from-white to-transparent' : '')}>
+                                        <div className='ms-auto mt-auto text-sm font-medium cursor-pointer text-[#3986ba]'>See {!seeMore.packagesInclude ? 'More' : 'Less'}</div>
+                                    </div>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>}
+                    {testDetails?.overview?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
+                        <DescriptionIcon />
+                        <div className='flex flex-col gap-1'>
+                            <p className='font-semibold text-xl flex gap-2'>Overview</p>
+                            <div className={'text-gray-500 relative ' + (!seeMore.overview ? 'max-h-[5rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, overview: !seeMore.overview })}>
+                                <div dangerouslySetInnerHTML={{ __html: testDetails.overview }}></div>
+                                <div className=' absolute flex flex-col top-0 left-0 h-full w-full'>
+                                    <div className={'h-full w-full mt-auto bg-gradient-to-t flex flex-col ' + (!seeMore.overview ? 'from-white to-transparent' : '')}>
+                                        <div className='ms-auto mt-auto text-sm font-medium cursor-pointer text-[#3986ba]'>See {!seeMore.overview ? 'More' : 'Less'}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* <p className='text-gray-500'>{testDetails.overview}</p> */}
+                        </div>
+                    </div>}
+                    {testDetails.description.replace(/<br\/>/g, '').length > 0 && <div className='flex justify-start gap-2'>
+                        <DescriptionIcon />
+                        <div className='flex-1 flex flex-col gap-1'>
+                            <p className='font-semibold text-xl'>Description</p>
+                            <div className={'text-gray-500 relative ' + (!seeMore.description ? 'max-h-[5rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, description: !seeMore.description })}>
+                                <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.description }}></div>
+                                <div className=' absolute flex flex-col top-0 left-0 h-full w-full'>
+                                    <div className={'h-full w-full mt-auto bg-gradient-to-t flex flex-col ' + (!seeMore.description ? 'from-white to-transparent' : '')}>
+                                        <div className='ms-auto mt-auto text-sm font-medium cursor-pointer text-[#3986ba]'>See {!seeMore.description ? 'More' : 'Less'}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>}
+                    {testDetails?.testResultInterpretation?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
+                        <DescriptionIcon />
+                        <div className='flex flex-col gap-1'>
+                            <p className='font-semibold text-xl flex gap-2'>Test Result Interpretation</p>
+                            <div className={'text-gray-500 relative ' + (!seeMore.testResultInterpretation ? 'max-h-[5rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, testResultInterpretation: !seeMore.testResultInterpretation })}>
+                                <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.testResultInterpretation }}></div>
+                                <div className=' absolute flex flex-col top-0 left-0 h-full w-full'>
+                                    <div className={'h-full w-full mt-auto bg-gradient-to-t flex flex-col ' + (!seeMore.testResultInterpretation ? 'from-white to-transparent' : '')}>
+                                        <div className='ms-auto mt-auto text-sm font-medium cursor-pointer text-[#3986ba]'>See {!seeMore.testResultInterpretation ? 'More' : 'Less'}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* <p className='text-gray-500'>{testDetails.testResultInterpretation}</p> */}
+                        </div>
+                    </div>}
+                    {testDetails?.riskAssesment?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
+                        <DescriptionIcon />
+                        <div className='flex flex-col gap-1'>
+                            <p className='font-semibold text-xl flex gap-2'>Risk Assessment</p>
+                            <div className={'text-gray-500 relative ' + (!seeMore.riskAssesment ? 'max-h-[5rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, riskAssesment: !seeMore.riskAssesment })}>
+                                <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.riskAssesment }}></div>
+                                <div className=' absolute flex flex-col top-0 left-0 h-full w-full'>
+                                    <div className={'h-full w-full mt-auto bg-gradient-to-t flex flex-col ' + (!seeMore.riskAssesment ? 'from-white to-transparent' : '')}>
+                                        <div className='ms-auto mt-auto text-sm font-medium cursor-pointer text-[#3986ba]'>See {!seeMore.riskAssesment ? 'More' : 'Less'}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* <p className='text-gray-500'>{testDetails.riskAssesment}</p> */}
+                        </div>
+                    </div>}
+                </div>
+                {labBaseDetails.ranges.length > 0 && <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 bg-white'>
+                    {labBaseDetails.ranges.length > 0 && <div className='flex gap-2'>
+                        <DescriptionIcon />
+                        <div className='flex flex-1 flex-col gap-1'>
+                            <p className='font-semibold text-xl flex gap-2'>Ranges</p>
+                            <div>
+                                <MainTable
+                                    config={Object.keys(labBaseDetails.ranges[0] || {}).map(e => ({ heading: e, selector: e }))}
+                                    data={labBaseDetails.ranges}
+                                    className='border-2'
+                                />
+                            </div>
+                        </div>
+                    </div>}
                 </div>}
             </div>
-            {labBaseDetails.ranges.length > 0 && <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 bg-white'>
-                {labBaseDetails.ranges.length > 0 && <div className='flex gap-2'>
-                    <DescriptionIcon />
-                    <div className='flex flex-1 flex-col gap-1'>
-                        <p className='font-semibold text-xl flex gap-2'>Ranges</p>
-                        <div>
-                            <MainTable
-                                config={Object.keys(labBaseDetails.ranges[0] || {}).map(e => ({ heading: e, selector: e }))}
-                                data={labBaseDetails.ranges}
-                                className='border-2'
-                            />
-                        </div>
-                    </div>
-                </div>}
-            </div>}
+
+
+
             {
                 showLabDetails &&
                 <div className='fixed w-screen h-screen top-0 left-0 bg-black bg-opacity-20 z-50' onClick={() => setShowLabDetails(false)}>
