@@ -4,8 +4,10 @@ import fetcher from "@/lib/fetcher";
 import { useEffect, useState } from "react";
 import { User } from "../../profile/page";
 import { AddressLoader } from "../loading";
+import AddressDetailsPopup from "@/app/components/popups/AddressDetailsPopup";
+import { toast } from "react-toastify";
 
-export function SelectLocation({ selectedAddress, onChange }: { selectedAddress?: Address, onChange: (address?: Address) => void }) {
+export function SelectLocation({ selectedAddress, onChange }: { selectedAddress?: Address, onChange: (address: Address) => void }) {
     const [user, setUser] = useState<User>({
         name: '',
         email: '',
@@ -16,7 +18,8 @@ export function SelectLocation({ selectedAddress, onChange }: { selectedAddress?
         createdAt: new Date(),
         updatedAt: new Date()
     })
-    const [showAddressesPopup, setShowAddressesPopup] = useState(false)
+    const [showAddressesPopup, setShowAddressesPopup] = useState(false);
+    const [showAddAddressDetailsPopup, setShowAddAddressDetailsPopup] = useState<{ index: number } | null>(null);
     const [loadingAddress, setLoadingAddress] = useState(true);
 
     useEffect(() => {
@@ -29,6 +32,14 @@ export function SelectLocation({ selectedAddress, onChange }: { selectedAddress?
             setUser(res.body);
             onChange(res.body.address[0]);
             setLoadingAddress(false)
+        }
+    }
+
+    async function updateUser(user: User) {
+        const res = await fetcher.post<User, User>('/user', user);
+        if (res.status === 200 && res.body) {
+            setUser(res.body)
+            toast.success('Address updated successfully')
         }
     }
 
@@ -56,11 +67,31 @@ export function SelectLocation({ selectedAddress, onChange }: { selectedAddress?
                                     <div className='font-medium'>{address.city}, {address.pin}</div>
                                     <div className='text-sm text-gray-600'>{address.other} | {address.phone}</div>
                                 </div>
+                                <div className="px-2 py-1 my-auto ms-auto rounded cursor-pointer text-[#3986ba] font-medium border-2 border-[#3986ba]" onClick={() => setShowAddAddressDetailsPopup({ index })}>Edit</div>
                             </div>
                         ))}
+                        <div className="bg-[#3986ba] p-2 px-3 flex gap-3 rounded-md text-white cursor-pointer ms-auto" onClick={() => setShowAddAddressDetailsPopup({ index: user.address.length })}>Add new Address</div>
                     </div>
                 </div>
             </Model>}
+            {showAddAddressDetailsPopup && <AddressDetailsPopup
+                addressDetails={user.address?.[showAddAddressDetailsPopup.index]}
+                onClose={() => setShowAddAddressDetailsPopup(null)}
+                onRemove={async () => {
+                    const updatedAddressDetails = [...(user.address || [])];
+                    updatedAddressDetails.splice(showAddAddressDetailsPopup.index, 1);
+                    setUser({ ...user, address: updatedAddressDetails });
+                    await updateUser({ ...user, address: updatedAddressDetails });
+                    setShowAddAddressDetailsPopup(null);
+                }}
+                onSave={async values => {
+                    const updatedAddressDetails = [...(user.address || [])];
+                    updatedAddressDetails[showAddAddressDetailsPopup.index] = values;
+                    setUser({ ...user, address: updatedAddressDetails });
+                    await updateUser({ ...user, address: updatedAddressDetails });
+                    await fetchUser();
+                    setShowAddAddressDetailsPopup(null);
+                }} />}
         </>
     )
 }

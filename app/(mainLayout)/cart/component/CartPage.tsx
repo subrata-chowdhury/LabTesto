@@ -1,14 +1,13 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import fetcher from '@/lib/fetcher';
-// import Input from '@/components/Inputs/Input';
-// import Model from '@/components/Model';
 import PatientDetailsPopup, { PatientDetails } from '../../../components/popups/PatientDetailsPopup';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import Loading, { CartLoader } from '../loading';
 import { SelectLocation } from '@/app/(mainLayout)/cart/component/SelectLocation';
 import CartItemCard from './CartItemCard';
+import OrderTimeSelector from './OrderTimeSelector';
 
 export type CartItem = {
     product: {
@@ -38,13 +37,9 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [showPatientPopup, setShowPatientPopup] = useState<{ cartIndex: number, patientIndex: number } | null>(null);
-    const [selectedAddress, setSelectedAddress] = useState<Address | undefined>({
-        pin: 0,
-        city: '',
-        district: '',
-        other: '',
-        phone: ''
-    })
+    const [selectedAddress, setSelectedAddress] = useState<Address | undefined>()
+    const [showScheduleOrderTimesModel, setShowScheduleOrderTimesModel] = useState(false);
+    const [sampleTakenDateTime, setSampleTakenDateTime] = useState<{ start: Date, end: Date } | null>(null);
     const navigate = useRouter();
 
     useEffect(() => {
@@ -101,8 +96,8 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
         await updateCart(updatedItem, fetchCart)
     }
 
-    async function order(products: { product: { test: string, lab: string }, quantity: number, address?: Address }[]) {
-        const res = await fetcher.post<{ product: { test: string, lab: string }, quantity: number, address?: Address }[], { message: string }>(`/orders`, products);
+    async function order(orderDetails: { items: { product: { test: string, lab: string }, quantity: number }[], address: Address, sampleTakenDateTime?: { start: Date, end: Date }, reportDeliverTime?: { start: Date, end: Date } }) {
+        const res = await fetcher.post<{ items: { product: { test: string, lab: string }, quantity: number }[], address: Address, sampleTakenDateTime?: { start: Date, end: Date }, reportDeliverTime?: { start: Date, end: Date } }, { message: string }>(`/orders`, orderDetails);
         if (res.status === 200) {
             // await fetcher.delete('/cart');
             // fetchCart();
@@ -126,6 +121,15 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
     return (
         <div className="flex-1 flex flex-col p-4 bg-gray-100 min-h-screen">
             <SelectLocation selectedAddress={selectedAddress} onChange={address => setSelectedAddress(address)} />
+            <div className='w-full flex justify-between items-center py-3 px-4 bg-white rounded shadow mb-5 text-sm'>
+                {sampleTakenDateTime && <div>
+                    <div className='font-medium'><span className='font-normal'>Start:</span> {sampleTakenDateTime.start.toDateString()}, {sampleTakenDateTime.start.toTimeString().split(' ')[0]}</div>
+                    <div className='font-medium'><span className='font-normal'>End:</span> {sampleTakenDateTime.end.toDateString()}, {sampleTakenDateTime.end.toTimeString().split(' ')[0]}</div>
+                    {/* <div className='text-sm text-gray-600'>{selectedAddress.other} | {selectedAddress.phone}</div> */}
+                </div>}
+                {!sampleTakenDateTime && <div className='font-medium text-base'><span className='font-normal'>Sample Taken Time:</span> Not Scheduled</div>}
+                <div className='px-3 py-1 rounded cursor-pointer text-[#3986ba] font-medium border-2 border-[#3986ba] text-base' onClick={() => setShowScheduleOrderTimesModel(true)}>Schedule</div>
+            </div>
             {loading && <CartLoader />}
             {!loading && cart.items?.length > 0 ? <>
                 <h1 className="text-2xl font-bold mb-4">Cart Items</h1>
@@ -142,15 +146,40 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
                                     setShowPatientPopup({ cartIndex: index, patientIndex: item.patientDetails.length });
                                     return;
                                 }
+                                if(!selectedAddress) {
+                                    toast.warning('Please select a valid address');
+                                    return;
+                                }
+                                if (!selectedAddress.pin || !selectedAddress.city || !selectedAddress.district || !selectedAddress.phone) {
+                                    toast.warning('Please select a valid address');
+                                    return;
+                                }
+                                if (item.quantity <= 0) {
+                                    toast.warning('Quantity should be greater than 0');
+                                    return;
+                                }
+                                if (!sampleTakenDateTime) {
+                                    toast.warning('Please select sample taken date and time');
+                                    setShowScheduleOrderTimesModel(true);
+                                    return;
+                                }
+                                if (sampleTakenDateTime.start > sampleTakenDateTime.end) {
+                                    toast.warning('Sample taken start time should be before end time');
+                                    return;
+                                }
 
-                                await order([{
-                                    product: {
-                                        test: item.product.test._id,
-                                        lab: item.product.lab._id
-                                    },
-                                    quantity: item.quantity,
-                                    address: selectedAddress
-                                }])
+
+                                await order({
+                                    items: [{
+                                        product: {
+                                            test: item.product.test._id,
+                                            lab: item.product.lab._id
+                                        },
+                                        quantity: item.quantity,
+                                    }],
+                                    address: selectedAddress,
+                                    sampleTakenDateTime: sampleTakenDateTime
+                                })
                             }}
                             onPatientClick={i => setShowPatientPopup({ cartIndex: index, patientIndex: i })}
                         />
@@ -168,15 +197,35 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
                                 return;
                             }
                         }
+                        if(!selectedAddress) {
+                            toast.warning('Please select a valid address');
+                            return;
+                        }
+                        if (!selectedAddress.pin || !selectedAddress.city || !selectedAddress.district || !selectedAddress.phone) {
+                            toast.warning('Please select a valid address');
+                            return;
+                        }
+                        if (!sampleTakenDateTime) {
+                            toast.warning('Please select sample taken date and time');
+                            setShowScheduleOrderTimesModel(true);
+                            return;
+                        }
+                        if (sampleTakenDateTime.start > sampleTakenDateTime.end) {
+                            toast.warning('Sample taken start time should be before end time');
+                            return;
+                        }
 
-                        await order(cart.items.map(item => ({
-                            product: {
-                                test: item.product.test._id,
-                                lab: item.product.lab._id
-                            },
-                            quantity: item.quantity,
-                            address: selectedAddress
-                        })))
+                        await order({
+                            items: cart.items.map(item => ({
+                                product: {
+                                    test: item.product.test._id,
+                                    lab: item.product.lab._id
+                                },
+                                quantity: item.quantity,
+                            })),
+                            address: selectedAddress,
+                            sampleTakenDateTime: sampleTakenDateTime
+                        })
                     }}>Order All</button>
                 </div>
             </> : <div className='flex justify-center items-center h-screen'>Cart is Empty</div>}
@@ -214,6 +263,10 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
                         });
                         setShowPatientPopup(null);
                     }} />}
+            {showScheduleOrderTimesModel && <OrderTimeSelector
+                onClose={() => setShowScheduleOrderTimesModel(false)}
+                onChange={(sampleTakenDateTime) => setSampleTakenDateTime(sampleTakenDateTime)}
+            />}
         </div>
     );
 };

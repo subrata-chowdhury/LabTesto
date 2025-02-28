@@ -3,11 +3,11 @@ import Input from "@/components/Inputs/Input";
 import Model from "@/components/Model";
 import { useState } from "react";
 
-export default function PatientDetailsPopup({ patientDetails, onSave = () => { }, onRemove = () => { }, onClose = () => { }, patients  }: { patientDetails?: PatientDetails, onSave: (patientDetails: PatientDetails) => void, onRemove: () => void, onClose: () => void, patients?: PatientDetails[] }) {
+export default function PatientDetailsPopup({ patientDetails, onSave = () => { }, onRemove = () => { }, onClose = () => { }, patients }: { patientDetails?: PatientDetails, onSave: (patientDetails: ValidPatientDetails) => void, onRemove: () => void, onClose: () => void, patients?: PatientDetails[] }) {
     const [values, setValues] = useState<PatientDetails>(patientDetails || {
         name: '',
-        gender: 'Male',
-        age: 20,
+        gender: '',
+        age: '',
         other: ''
     });
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -21,6 +21,7 @@ export default function PatientDetailsPopup({ patientDetails, onSave = () => { }
                     <div className='text-sm flex flex-col gap-1'>
                         <label className='font-medium'>Gender *</label>
                         <Dropdown options={['Male', 'Female', 'Other']} width={'100%'} value={values?.gender || ''} onChange={({ value }) => setValues({ ...values, gender: value as 'Male' | 'Female' | 'Other' })} />
+                        {errors.gender && <div className='text-red-500 text-xs'>{errors.gender}</div>}
                     </div>
                     {/* <Input label='Phone' value={values.phone} error={errors.phone} onChange={val => setValues({ ...values, phone: val })} /> */}
                     <Input label='Age *' value={values.age?.toString()} type="number" error={errors.age} onChange={val => setValues({ ...values, age: Number(val) })} />
@@ -36,11 +37,15 @@ export default function PatientDetailsPopup({ patientDetails, onSave = () => { }
                         // validate
                         const errors: { [key: string]: string } = {};
                         if (!values.name) errors.name = 'Name is required';
-                        if (!values.gender) errors.phone = 'Gender is required';
+                        if (!values.gender) errors.gender = 'Gender is required';
                         if (!values.age) errors.age = 'Age is required';
                         if (Object.keys(errors).length) return setErrors(errors);
 
-                        await onSave(values);
+                        await onSave({
+                            ...values,
+                            age: Number(values.age) || 0,
+                            gender: values.gender as 'Male' | 'Female' | 'Other'
+                        });
                     }}>Save</div>
                 </div>
             </div>
@@ -62,7 +67,12 @@ export default function PatientDetailsPopup({ patientDetails, onSave = () => { }
 
 export type PatientDetails = {
     name: string;
-    gender: 'Male' | 'Female' | 'Other';
-    age: number;
+    gender: 'Male' | 'Female' | 'Other' | '';
+    age: number | '';
     other?: string;
 };
+
+interface ValidPatientDetails extends PatientDetails {
+    gender: 'Male' | 'Female' | 'Other';
+    age: number;
+}

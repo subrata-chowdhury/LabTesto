@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
         const newOrder = new Order(data);
         await newOrder.save();
 
-        return NextResponse.json(newOrder, { status: 201 });
+        return NextResponse.json(newOrder, { status: 200 });
     } catch (error) {
         console.error(error);
         return new NextResponse('Error creating order', { status: 500 });

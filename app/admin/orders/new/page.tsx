@@ -17,16 +17,12 @@ const Page = () => {
         },
         status: 'Ordered',
         sampleTakenDateTime: {
-            date: {
-                start: new Date(new Date().setHours(6, 0, 0)).toISOString(),
-                end: new Date(new Date().setHours(6, 0, 0)).toISOString()
-            }
+            start: new Date(new Date().setHours(6, 0, 0)).toISOString(),
+            end: new Date(new Date().setHours(6, 0, 0)).toISOString()
         },
         reportDeliverTime: {
-            date: {
-                start: new Date(new Date().setHours(6, 0, 0)).toISOString(),
-                end: new Date(new Date().setHours(6, 0, 0)).toISOString()
-            }
+            start: new Date(new Date().setHours(6, 0, 0)).toISOString(),
+            end: new Date(new Date().setHours(6, 0, 0)).toISOString()
         },
         address: {
             pin: '',
@@ -70,16 +66,12 @@ export type OrderDetailsUnPopulated = {
     collector?: string;
     status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
     sampleTakenDateTime: {
-        date: {
-            start?: string;
-            end?: string;
-        };
+        start?: string;
+        end?: string;
     };
     reportDeliverTime: {
-        date: {
-            start?: string;
-            end?: string;
-        };
+        start?: string;
+        end?: string;
     };
     address: {
         pin: string;

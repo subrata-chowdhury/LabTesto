@@ -12,11 +12,12 @@ type Props = {
     error?: string;
     containerClass?: string;
     labelClass?: string;
-    minTime?: Date | undefined;
-    maxTime?: Date | undefined;
+    minTime?: Date;
+    maxTime?: Date;
+    maxDate?: Date;
 }
 
-const DateInput = ({ label = "", error = "", value = new Date(), onChange = () => { }, containerClass = "", labelClass = "", minTime = undefined, maxTime = undefined }: Props) => {
+const DateInput = ({ label = "", error = "", value = new Date(), onChange = () => { }, containerClass = "", labelClass = "", minTime, maxTime, maxDate }: Props) => {
     return (
         <label className={"flex flex-col gap-1 " + containerClass}>
             <div className={labelClass}>{label}</div>
@@ -26,6 +27,8 @@ const DateInput = ({ label = "", error = "", value = new Date(), onChange = () =
                 className="px-3 py-2 border-2 w-full rounded outline-none"
                 showTimeSelect
                 dateFormat="Pp"
+                minDate={minTime}
+                maxDate={maxDate}
                 minTime={minTime}
                 maxTime={maxTime}
             />

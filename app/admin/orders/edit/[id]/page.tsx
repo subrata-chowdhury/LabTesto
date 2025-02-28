@@ -18,16 +18,12 @@ const Page = () => {
         },
         status: 'Ordered',
         sampleTakenDateTime: {
-            date: {
-                start: new Date(new Date().setHours(6, 0, 0)).toISOString(),
-                end: new Date(new Date().setHours(6, 0, 0)).toISOString()
-            }
+            start: new Date(new Date().setHours(6, 0, 0)).toISOString(),
+            end: new Date(new Date().setHours(6, 0, 0)).toISOString()
         },
         reportDeliverTime: {
-            date: {
-                start: new Date(new Date().setHours(6, 0, 0)).toISOString(),
-                end: new Date(new Date().setHours(6, 0, 0)).toISOString()
-            }
+            start: new Date(new Date().setHours(6, 0, 0)).toISOString(),
+            end: new Date(new Date().setHours(6, 0, 0)).toISOString()
         },
         address: {
             pin: '',

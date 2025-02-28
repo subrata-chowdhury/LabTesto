@@ -38,13 +38,13 @@ export async function POST(req: NextRequest) {
         }
 
         const body = await req.json();
-        if (!Array.isArray(body) || body.length === 0) {
+        if (!Array.isArray(body.items) || body.items.length === 0) {
             return new NextResponse('Request body is missing or invalid', { status: 400 });
         }
 
         await dbConnect();
 
-        for (const item of body) {
+        for (const item of body.items) {
             if (!item.product?.test || !item.product?.lab) {
                 return new NextResponse('Product test and lab are required', { status: 400 });
             }
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
             return new NextResponse('Cart not found for user', { status: 404 });
         }
 
-        for (const item of body) {
+        for (const item of body.items) {
             const cartItem = cart.items.find((cartItem: { product: { test: string, lab: string } }) =>
                 cartItem.product.test.toString() === item.product.test &&
                 cartItem.product.lab.toString() === item.product.lab
@@ -68,8 +68,53 @@ export async function POST(req: NextRequest) {
             }
         }
 
-        const orderItems = await Promise.all(body.map(async item => {
-            const cartItemIndex = cart.items.findIndex((cartItem: { product: { test: string, lab: string } }) =>
+        interface Product {
+            test: string;
+            lab: string;
+        }
+
+        interface CartItem {
+            product: Product;
+            patientDetails: {
+                name: string;
+                gender: 'Male' | 'Female' | 'Other';
+                age: number;
+                other?: string;
+            }[];
+        }
+
+        interface LabPrice {
+            test: string;
+            price: number;
+            offer: number;
+            expenses?: number;
+        }
+
+        interface OrderItem {
+            product: {
+                test: string;
+                lab: string;
+                price: number;
+                expenses: number;
+            };
+            patientDetails: {
+                name: string;
+                gender: 'Male' | 'Female' | 'Other';
+                age: number;
+                other?: string;
+            }[];
+            quantity: number;
+            date: Date;
+            address: {
+                pin: string;
+                city: string;
+                phone: string;
+                other?: string;
+            };
+        }
+
+        const orderItems: OrderItem[] = await Promise.all(body.items.map(async (item: { product: Product; quantity: number; address: { pin: string; city: string; phone: string; other?: string; } }) => {
+            const cartItemIndex = cart.items.findIndex((cartItem: CartItem) =>
                 cartItem.product.test.toString() === item.product.test &&
                 cartItem.product.lab.toString() === item.product.lab
             );
@@ -91,7 +136,7 @@ export async function POST(req: NextRequest) {
                 throw new Error('Lab not found');
             }
 
-            const priceDetails: { test: string, expenses?: number } | undefined = lab.prices.find((price: { test: string }) => price.test.toString() === item.product.test);
+            const priceDetails: LabPrice | undefined = lab.prices.find((price: LabPrice) => price.test.toString() === item.product.test);
             if (!priceDetails) {
                 throw new Error('Price details not found for the test in the lab');
             }
@@ -100,12 +145,13 @@ export async function POST(req: NextRequest) {
                 product: {
                     test: cartItem.product.test,
                     lab: cartItem.product.lab,
-                    price: await lab.prices.find((price: { test: string, price: number, offer: number }) => price.test.toString() === item.product.test)?.offer || 0,
+                    price: await lab.prices.find((price: LabPrice) => price.test.toString() === item.product.test)?.offer || 0,
                     expenses: priceDetails.expenses || 0
                 },
                 patientDetails: cartItem.patientDetails,
                 quantity: item.quantity,
-                date: new Date()
+                date: new Date(),
+                address: item.address
             };
         }));
 
@@ -117,18 +163,18 @@ export async function POST(req: NextRequest) {
 
         const orderData = {
             items: orderItems,
-            address: body[0].address,
             user: userId,
             status: 'Ordered',
-            sampleTakenDateTime: { date: { start: new Date(), end: new Date() } },
-            reportDeliverTime: { date: { start: new Date(), end: new Date() } },
+            address: body.address,
+            sampleTakenDateTime: body.sampleTakenDateTime || { start: new Date(), end: new Date() },
+            reportDeliverTime: body.reportDeliverTime || { start: new Date(), end: new Date() },
             collector: randomCollector
         };
 
         const order = new Order(orderData);
         await order.save();
 
-        await (await order.populate('items.product.test')).populate('items.product.lab')
+        await (await order.populate('items.product.test')).populate('items.product.lab');
 
         type Item = {
             product: { test: { name: string }, lab: { name: string } },
@@ -138,7 +184,7 @@ export async function POST(req: NextRequest) {
                 age: number;
                 other?: string;
             }[]
-        }
+        };
 
         await fetch('https://api.telegram.org/bot7846622941:AAEjj6UdF2C42GG_S1RVvK2oPhmRxFUCukA/sendMessage', {
             method: 'POST',
@@ -146,12 +192,21 @@ export async function POST(req: NextRequest) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                chat_id: -4659804693,
+                chat_id: randomCollector.chatId || -4659804693,
                 text: `
-                ${order.items.map((e: Item) => `Test: ${e.product.test.name}, \nLab: ${e.product.lab.name}, \nPatients: ${e.patientDetails.map(e2 => `\n    name: ${e2.name},\n    age: ${e2.age || 'none'},\n    gender: ${e2.gender || 'none'}\n`)}`)} \nAddress: \n Pin:${order.address.pin}, \n City: ${order.address.city}, \n Phone: ${order.address.phone}, \n Landmark: ${order.address.other}               
-                `
+    Order ID: ${order._id}
+${order.items.map((e: Item) => `Test: ${e.product.test.name}, \nLab: ${e.product.lab.name}, \nPatients: ${e.patientDetails.map(e2 => `\n    Name: ${e2.name},\n    Age: ${e2.age || 'none'},\n    Gender: ${e2.gender || 'none'}\n`).join('')}`).join('\n')}
+Address: 
+    Pin: ${order.address.pin}, 
+    City: ${order.address.city}, 
+    Phone: ${order.address.phone}, 
+    Landmark: ${order.address.other || 'none'}
+Sample Taken Time:
+    Start: ${order.sampleTakenDateTime.start},
+    End: ${order.sampleTakenDateTime.end}
+            `
             })
-        })
+        });
 
         await cart.save();
 

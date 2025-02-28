@@ -30,16 +30,12 @@ interface IOrder extends Document {
     collector?: mongoose.Schema.Types.ObjectId;
     status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
     sampleTakenDateTime: {
-        date: {
-            start?: Date;
-            end?: Date;
-        };
+        start?: Date;
+        end?: Date;
     };
     reportDeliverTime: {
-        date: {
-            start?: Date;
-            end?: Date;
-        };
+        start?: Date;
+        end?: Date;
     };
     review: {
         labRating: number,
@@ -86,16 +82,12 @@ const OrderSchema: Schema = new Schema({
     collector: { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'Collector' },
     status: { type: String, enum: ['Ordered', 'Sample Collected', 'Report Generated', 'Report Delivered', 'Canceled'], default: 'Ordered' },
     sampleTakenDateTime: {
-        date: {
-            start: { type: Date, required: false, default: Date.now },
-            end: { type: Date, required: false, default: Date.now }
-        }
+        start: { type: Date, required: false, default: Date.now },
+        end: { type: Date, required: false, default: Date.now }
     },
     reportDeliverTime: {
-        date: {
-            start: { type: Date, required: false, default: Date.now },
-            end: { type: Date, required: false, default: Date.now }
-        }
+        start: { type: Date, required: false, default: Date.now },
+        end: { type: Date, required: false, default: Date.now }
     },
     review: {
         type: {

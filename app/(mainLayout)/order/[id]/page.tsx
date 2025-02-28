@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Order } from '../page';
 import fetcher from '@/lib/fetcher';
 import { PatientDetails } from '@/app/components/popups/PatientDetailsPopup';
-import Input from '@/components/Inputs/Input';
 import Model from '@/components/Model';
 import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -67,7 +66,10 @@ function OrderPage() {
                                         },
                                         status: 'Canceled'
                                     })
-                                    if (res.status === 200) setOrder(await fetchOrderDetails())
+                                    if (res.status === 200) {
+                                        toast.success('Order Canceled')
+                                        setOrder(await fetchOrderDetails())
+                                    }
                                 }}>Cancel</button>}
                             {(order.status === 'Report Generated') && <button
                                 className="bg-orange-600 text-white px-3 py-1 rounded"
@@ -110,11 +112,16 @@ function OrderPage() {
                 </div>
             ))}
             <div className='bg-white px-6 py-4 rounded'>
+                <div className='text-lg font-semibold'>Sample Taken Time </div>
+                <div><span className='font-medium'>Start:</span> {new Date(order?.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
+                <div><span className='font-medium'>End:</span> {new Date(order?.sampleTakenDateTime?.end || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.end || '').toTimeString().split(' ')[0]}</div>
+            </div>
+            {!(order.status === 'Report Delivered' || order.status === 'Canceled') && <div className='bg-white px-6 py-4 rounded'>
                 <div className='text-lg font-semibold'>Collector Details</div>
                 <div><span className='font-medium'>Name:</span> {order?.collector?.name}</div>
                 <div><span className='font-medium'>Email:</span> {order?.collector?.email}</div>
                 <div><span className='font-medium'>Phone Number:</span> {order?.collector?.phone}</div>
-            </div>
+            </div>}
             <div className='bg-white px-6 py-4 rounded'>
                 <div className='text-lg font-semibold'>Report Delivery Address</div>
                 <div><span className='font-medium'>City:</span> {order?.address?.city}</div>
@@ -147,13 +154,10 @@ export default OrderPage
 function PatientDetailsPopup({ patientDetails, onClose }: { patientDetails?: PatientDetails, onSave?: (patientDetails: PatientDetails) => void, onClose: () => void }) {
     return (
         <Model heading='Patient Details' onClose={onClose}>
-            <div className='px-7 pb-6 py-4'>
-                <div className='pb-2 font-semibold'>Basic Information</div>
-                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm pb-4'>
-                    <Input label='Name' value={patientDetails?.name || ''} onChange={() => { }} />
-                    <Input label='Age' value={String(patientDetails?.age) || ''} onChange={() => { }} />
-                    <Input label='Gender' value={String(patientDetails?.gender) || ''} onChange={() => { }} />
-                </div>
+            <div className='px-7 pb-6 py-4 grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                <div className='font-normal'>Name: <span className='font-semibold'>{patientDetails?.name}</span></div>
+                <div className='font-normal'>Age: <span className='font-semibold'>{patientDetails?.age}</span></div>
+                <div className='font-normal'>Gender: <span className='font-semibold'>{patientDetails?.gender}</span></div>
             </div>
         </Model>
     )

@@ -183,16 +183,12 @@ export type Order = {
     };
     status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
     sampleTakenDateTime: {
-        date: {
-            start?: Date;
-            end?: Date;
-        };
+        start?: string;
+        end?: string;
     };
     reportDeliverTime: {
-        date: {
-            start?: Date;
-            end?: Date;
-        };
+        start?: string;
+        end?: string;
     };
     createdAt: string;
     updatedAt: string;

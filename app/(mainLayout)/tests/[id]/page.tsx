@@ -276,8 +276,8 @@ function Test() {
                     </button>
                 </div>
             )}
-            <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 bg-white '>
-                <div className='tiptap' style={{ padding: 0, border: 0 }}>
+            <div className='mt-1 md:mt-4 py-8 px-8 rounded-lg border-2 bg-white '>
+                <div className='tiptap flex flex-col gap-5' style={{ padding: 0, border: 0 }}>
                     {labBaseDetails.packagesInclude.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
                         <PackageIcon />
                         <div className='flex flex-col gap-1 w-full'>
@@ -288,11 +288,11 @@ function Test() {
                                         <li key={e}>{e}</li>
                                     ))
                                 }
-                                <div className=' absolute flex flex-col top-0 left-0 h-full w-full'>
+                                {labBaseDetails.packagesInclude.length > 5 && <div className=' absolute flex flex-col top-0 left-0 h-full w-full'>
                                     <div className={'h-full w-full mt-auto bg-gradient-to-t flex flex-col ' + (!seeMore.packagesInclude ? 'from-white to-transparent' : '')}>
                                         <div className='ms-auto mt-auto text-sm font-medium cursor-pointer text-[#3986ba]'>See {!seeMore.packagesInclude ? 'More' : 'Less'}</div>
                                     </div>
-                                </div>
+                                </div>}
                             </ul>
                         </div>
                     </div>}
@@ -302,11 +302,11 @@ function Test() {
                             <p className='font-semibold text-xl flex gap-2'>Overview</p>
                             <div className={'text-gray-500 relative ' + (!seeMore.overview ? 'max-h-[5rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, overview: !seeMore.overview })}>
                                 <div dangerouslySetInnerHTML={{ __html: testDetails.overview }}></div>
-                                <div className=' absolute flex flex-col top-0 left-0 h-full w-full'>
+                                {testDetails.overview.length > 50 && <div className=' absolute flex flex-col top-0 left-0 h-full w-full'>
                                     <div className={'h-full w-full mt-auto bg-gradient-to-t flex flex-col ' + (!seeMore.overview ? 'from-white to-transparent' : '')}>
                                         <div className='ms-auto mt-auto text-sm font-medium cursor-pointer text-[#3986ba]'>See {!seeMore.overview ? 'More' : 'Less'}</div>
                                     </div>
-                                </div>
+                                </div>}
                             </div>
                             {/* <p className='text-gray-500'>{testDetails.overview}</p> */}
                         </div>
@@ -317,11 +317,11 @@ function Test() {
                             <p className='font-semibold text-xl'>Description</p>
                             <div className={'text-gray-500 relative ' + (!seeMore.description ? 'max-h-[5rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, description: !seeMore.description })}>
                                 <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.description }}></div>
-                                <div className=' absolute flex flex-col top-0 left-0 h-full w-full'>
+                                {testDetails.description.length > 50 && <div className=' absolute flex flex-col top-0 left-0 h-full w-full'>
                                     <div className={'h-full w-full mt-auto bg-gradient-to-t flex flex-col ' + (!seeMore.description ? 'from-white to-transparent' : '')}>
                                         <div className='ms-auto mt-auto text-sm font-medium cursor-pointer text-[#3986ba]'>See {!seeMore.description ? 'More' : 'Less'}</div>
                                     </div>
-                                </div>
+                                </div>}
                             </div>
                         </div>
                     </div>}
@@ -331,11 +331,11 @@ function Test() {
                             <p className='font-semibold text-xl flex gap-2'>Test Result Interpretation</p>
                             <div className={'text-gray-500 relative ' + (!seeMore.testResultInterpretation ? 'max-h-[5rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, testResultInterpretation: !seeMore.testResultInterpretation })}>
                                 <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.testResultInterpretation }}></div>
-                                <div className=' absolute flex flex-col top-0 left-0 h-full w-full'>
+                                {testDetails.testResultInterpretation.length > 50 && <div className=' absolute flex flex-col top-0 left-0 h-full w-full'>
                                     <div className={'h-full w-full mt-auto bg-gradient-to-t flex flex-col ' + (!seeMore.testResultInterpretation ? 'from-white to-transparent' : '')}>
                                         <div className='ms-auto mt-auto text-sm font-medium cursor-pointer text-[#3986ba]'>See {!seeMore.testResultInterpretation ? 'More' : 'Less'}</div>
                                     </div>
-                                </div>
+                                </div>}
                             </div>
                             {/* <p className='text-gray-500'>{testDetails.testResultInterpretation}</p> */}
                         </div>
@@ -346,17 +346,17 @@ function Test() {
                             <p className='font-semibold text-xl flex gap-2'>Risk Assessment</p>
                             <div className={'text-gray-500 relative ' + (!seeMore.riskAssesment ? 'max-h-[5rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, riskAssesment: !seeMore.riskAssesment })}>
                                 <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.riskAssesment }}></div>
-                                <div className=' absolute flex flex-col top-0 left-0 h-full w-full'>
+                                {testDetails.riskAssesment.length > 50 && <div className=' absolute flex flex-col top-0 left-0 h-full w-full'>
                                     <div className={'h-full w-full mt-auto bg-gradient-to-t flex flex-col ' + (!seeMore.riskAssesment ? 'from-white to-transparent' : '')}>
                                         <div className='ms-auto mt-auto text-sm font-medium cursor-pointer text-[#3986ba]'>See {!seeMore.riskAssesment ? 'More' : 'Less'}</div>
                                     </div>
-                                </div>
+                                </div>}
                             </div>
                             {/* <p className='text-gray-500'>{testDetails.riskAssesment}</p> */}
                         </div>
                     </div>}
                 </div>
-                {labBaseDetails.ranges.length > 0 && <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 bg-white'>
+                {labBaseDetails.ranges.length > 0 && <div className='mt-1 md:mt-4 flex flex-col gap-5 rounded-lg bg-white'>
                     {labBaseDetails.ranges.length > 0 && <div className='flex gap-2'>
                         <DescriptionIcon />
                         <div className='flex flex-1 flex-col gap-1'>
@@ -378,7 +378,7 @@ function Test() {
             {
                 showLabDetails &&
                 <div className='fixed w-screen h-screen top-0 left-0 bg-black bg-opacity-20 z-50' onClick={() => setShowLabDetails(false)}>
-                    <div className='fixed left-0 top-0 w-[70vw] bg-white shadow-2xl' onClick={e => e.stopPropagation()}>
+                    <div className='fixed left-0 top-0 w-[90vw] sm:w-[70vw] bg-white shadow-2xl' onClick={e => e.stopPropagation()}>
                         <button className='flex justify-end p-2 absolute right-0 top-0 translate-x-full bg-white rounded-e-md border-2' onClick={() => setShowLabDetails(false)}>
                             <Image src={cross} alt='' />
                         </button>

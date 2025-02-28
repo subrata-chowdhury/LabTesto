@@ -257,6 +257,13 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
                     <Image width={18} height={18} src={alignRightIcon} alt="Right" />
                 </button>
                 <button
+                    onClick={() => editor.chain().focus().setTextAlign('justify').run()}
+                    className={(editor.isActive({ textAlign: 'justify' }) ? 'is-active' : '')}
+                    title="Align Justify"
+                >
+                    Justify
+                </button>
+                <button
                     onClick={() => {
                         const url = prompt('Enter the URL')
                         if (url) {

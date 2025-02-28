@@ -135,10 +135,10 @@ const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props)
                 Time Information
             </div>
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
-                <DateInput label='Sample Taken Start Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.sampleTakenDateTime.date.start || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { date: { ...orderDetails.sampleTakenDateTime.date, start: new Date(val).toISOString() } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'sampleTakenStartDate' ? error.msg : ""} />
-                <DateInput label='Sample Taken End Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.sampleTakenDateTime.date.end || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { date: { ...orderDetails.sampleTakenDateTime.date, end: new Date(val).toISOString() } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'sampleTakenEndDate' ? error.msg : ""} />
-                <DateInput label='Report Deliver Start Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.reportDeliverTime.date.start || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, reportDeliverTime: { date: { ...orderDetails.reportDeliverTime.date, start: new Date(val).toISOString() } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'reportDeliverStartDate' ? error.msg : ""} />
-                <DateInput label='Report Deliver End Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.reportDeliverTime.date.end || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, reportDeliverTime: { date: { ...orderDetails.reportDeliverTime.date, end: new Date(val).toISOString() } } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'reportDeliverEndDate' ? error.msg : ""} />
+                <DateInput label='Sample Taken Start Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.sampleTakenDateTime.start || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { ...orderDetails.sampleTakenDateTime, start: new Date(val).toISOString() } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'sampleTakenStartDate' ? error.msg : ""} />
+                <DateInput label='Sample Taken End Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.sampleTakenDateTime.end || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { ...orderDetails.sampleTakenDateTime, end: new Date(val).toISOString() } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'sampleTakenEndDate' ? error.msg : ""} />
+                <DateInput label='Report Deliver Start Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.reportDeliverTime.start || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, reportDeliverTime: { ...orderDetails.reportDeliverTime, start: new Date(val).toISOString() } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'reportDeliverStartDate' ? error.msg : ""} />
+                <DateInput label='Report Deliver End Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.reportDeliverTime.end || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, reportDeliverTime: { ...orderDetails.reportDeliverTime, end: new Date(val).toISOString() } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'reportDeliverEndDate' ? error.msg : ""} />
             </div>
             <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
                 Payment Information
@@ -163,16 +163,12 @@ export type OrderDetails = {
     collector?: { _id: string, name: string };
     status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
     sampleTakenDateTime: {
-        date: {
-            start?: string;
-            end?: string;
-        };
+        start?: string;
+        end?: string;
     };
     reportDeliverTime: {
-        date: {
-            start?: string;
-            end?: string;
-        };
+        start?: string;
+        end?: string;
     };
     address: {
         pin: string;
