@@ -225,7 +225,7 @@ function Test() {
                             fetcher.post('/cart', cartItem).then(res => {
                                 if (res.status === 200) {
                                     toast.success('Test added to cart successfully');
-                                    navigate.push('/cart');
+                                    // navigate.push('/cart');
                                 } else if (res.status === 401) {
                                     toast.error('Please login to add test to cart');
                                     navigate.push('/login?redirect=/tests/' + id);

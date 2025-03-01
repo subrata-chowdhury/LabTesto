@@ -42,7 +42,7 @@ const OrderPage = () => {
     if (loading) return <OrdersLoading />
 
     if (error) {
-        return <div className="flex justify-center items-center h-screen text-red-500">Please Reload Your Page Or Click <button onClick={() => window.location.reload()}>Reload</button></div>;
+        return <div className="flex justify-center items-center h-screen text-red-500">Please Reload Your Page Or Click &nbsp;<button onClick={() => window.location.reload()}>Reload</button></div>;
     }
 
     if (orders?.length <= 0) {

@@ -48,6 +48,7 @@ export function SelectLocation({ selectedAddress, onChange }: { selectedAddress?
     return (
         <>
             <div className='w-full flex justify-between items-center py-3 px-4 bg-white rounded shadow mb-5'>
+                {user.address.length <= 0 && <div className='text-sm text-gray-600'>Add Address</div>}
                 {selectedAddress && <div>
                     <div className='font-medium'><span className='font-normal'>Deliver to:</span> {selectedAddress.city}, {selectedAddress.pin}</div>
                     <div className='text-sm text-gray-600'>{selectedAddress.other} | {selectedAddress.phone}</div>

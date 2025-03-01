@@ -8,11 +8,13 @@ import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import ReviewForm, { ReviewType } from '@/app/components/ReviewForm';
 import Loading from './loading';
+import ConfirmationModel from '@/app/components/popups/ConfirmationModel';
 
 function OrderPage() {
     const [order, setOrder] = useState<Order>();
     const [showPatientPopup, setShowPatientPopup] = useState<{ itemIndex: number, patientIndex: number } | null>(null);
     const [showReviewModel, setShowReviewModel] = useState<{ orderId: string, item: { test: string, lab: string } } | null>(null);
+    const [showConfirmPopup, setShowConfirmPopup] = useState<{ test: string, lab: string } | null>(null);
     const { id } = useParams();
 
     const fetchOrderDetails = useCallback(async () => {
@@ -58,18 +60,11 @@ function OrderPage() {
                             </div>
                             {(order.status === 'Ordered') && <button
                                 className="bg-orange-600 text-white px-3 py-1 rounded"
-                                onClick={async () => {
-                                    const res = await fetcher.put<{ product: { test: string, lab: string }, status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' }, { message: string } | string>("/orders/" + order._id, {
-                                        product: {
-                                            test: item.product.test._id,
-                                            lab: item.product.lab._id
-                                        },
-                                        status: 'Canceled'
+                                onClick={() => {
+                                    setShowConfirmPopup({
+                                        test: item.product.test._id,
+                                        lab: item.product.lab._id
                                     })
-                                    if (res.status === 200) {
-                                        toast.success('Order Canceled')
-                                        setOrder(await fetchOrderDetails())
-                                    }
                                 }}>Cancel</button>}
                             {(order.status === 'Report Generated') && <button
                                 className="bg-orange-600 text-white px-3 py-1 rounded"
@@ -145,6 +140,26 @@ function OrderPage() {
                     }}
                     onClose={() => setShowReviewModel(null)} />
             }
+            {showConfirmPopup && <ConfirmationModel
+                msg={
+                    <div className='px-6 pt-6'>
+                        Are you sure you want to cancel this order? <br />This action <span className='text-red-500'>cannot be undone.</span>
+                    </div>
+                }
+                onDecline={() => setShowConfirmPopup(null)}
+                onApprove={async () => {
+                    const res = await fetcher.put<{ product: { test: string, lab: string }, status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' }, { message: string } | string>("/orders/" + order._id, {
+                        product: {
+                            test: showConfirmPopup.test,
+                            lab: showConfirmPopup.lab
+                        },
+                        status: 'Canceled'
+                    })
+                    if (res.status === 200) {
+                        toast.success('Order Canceled')
+                        setOrder(await fetchOrderDetails())
+                    }
+                }} />}
         </div>
     )
 }

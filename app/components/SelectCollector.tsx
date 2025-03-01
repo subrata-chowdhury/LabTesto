@@ -56,7 +56,7 @@ const SelectCollector: React.FC<SelectInstituteProps> = ({
                     <div className=" max-h-[150px] overflow-y-auto">
                         {!optionElement && collectors.map(e => (
                             <div
-                                key={e.name}
+                                key={e._id}
                                 className="px-3 py-2 border-b-2 hover:bg-gray-100"
                                 onClick={(event) => {
                                     event.stopPropagation()

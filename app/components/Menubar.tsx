@@ -8,6 +8,7 @@ import SelectTest from './SelectTest';
 import { useRouter } from 'next/navigation';
 import CartIcon from '@/assets/cart.svg'
 import fetcher from '@/lib/fetcher';
+import logout from '@/assets/Menubar/logout.svg'
 
 const Menubar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -70,11 +71,20 @@ const Menubar = () => {
                     {/* <div className='py-1 pb-2'>
                         <SearchBar active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
                     </div> */}
-                    <Link href="#" className="block text-[#3987ba] menu py-2">Book a Test</Link>
-                    {/* <Link href="#" className="block text-white py-2">Home</a> */}
-                    <Link href="#" className="block text-[#3987ba] menu py-2">About</Link>
-                    <Link href="/order" className="block text-[#3987ba] menu py-2">Orders</Link>
-                    <Link href="#" className="block text-[#3987ba] menu py-2">Contact</Link>
+                    <Link href="#" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>Book a Test</Link>
+                    {/* <Link href="#" className="block text-white py-2">Home</Link> */}
+                    <Link href="#" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>About</Link>
+                    <Link href="/order" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>Orders</Link>
+                    <Link href="#" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>Contact</Link>
+                    <div
+                        className={`cursor-pointer flex justify-start gap-3 p-3 mt-40 items-center rounded-lg`}
+                        onClick={() => {
+                            document.cookie = 'token=; Max-Age=0; path=/;';
+                            window.location.href = '/';
+                        }}>
+                        <Image src={logout} alt='' width={20} height={20} style={{ width: 20, height: 20 }} />
+                        <p>Log Out</p>
+                    </div>
                 </div>
             )}
         </nav>

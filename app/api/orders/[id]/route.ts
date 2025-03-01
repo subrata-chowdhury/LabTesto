@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
     try {
         const id = req.url.split('/').pop();
+        const userId = await req.cookies.get('userId')?.value;
 
         if (!id) {
             return new NextResponse('Order ID is required', { status: 400 });
@@ -16,7 +17,7 @@ export async function GET(req: NextRequest) {
         await dbConnect();
 
         try {
-            const order = await Order.findById(id).populate({ path: 'items.product.test', model: Test }).populate({ path: 'items.product.lab', model: Lab }).populate({ path: 'collector', model: Collector });
+            const order = await Order.findOne({ _id: id, user: userId }).populate({ path: 'items.product.test', model: Test }).populate({ path: 'items.product.lab', model: Lab }).populate({ path: 'collector', model: Collector });
 
             return NextResponse.json(order, { status: 200 });
         } catch (e) {

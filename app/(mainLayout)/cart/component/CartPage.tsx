@@ -111,7 +111,7 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
     }
 
     if (error) {
-        return <div className="flex justify-center items-center h-screen text-red-500">Please Reload Your Page Or Click <button onClick={() => window.location.reload()}>Reload</button></div>;
+        return <div className="flex justify-center items-center h-screen text-red-500">Please Reload Your Page Or Click &nbsp;<button onClick={() => window.location.reload()}>Reload</button></div>;
     }
 
     if (!cart) {
@@ -133,7 +133,7 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
             {loading && <CartLoader />}
             {!loading && cart.items?.length > 0 ? <>
                 <h1 className="text-2xl font-bold mb-4">Cart Items</h1>
-                <ul className="space-y-4 flex-1 max-h-[51vh] overflow-y-scroll pb-5">
+                <ul className="space-y-4 flex-1 pb-32">
                     {cart.items.map((item, index) => (
                         <CartItemCard
                             key={index}
@@ -146,7 +146,7 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
                                     setShowPatientPopup({ cartIndex: index, patientIndex: item.patientDetails.length });
                                     return;
                                 }
-                                if(!selectedAddress) {
+                                if (!selectedAddress) {
                                     toast.warning('Please select a valid address');
                                     return;
                                 }
@@ -185,7 +185,7 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
                         />
                     ))}
                 </ul>
-                <div className='p-4 flex justify-between items-center bg-white'>
+                <div className='p-4 fixed bottom-0 left-0 w-screen flex justify-between items-center bg-white'>
                     <div>Total: <div className="text-2xl font-semibold">₹{cart.items.reduce((total, item) => total + (item.product.price || 0) * item.quantity, 0).toFixed(2)}</div> <div className='text-gray-500'>+ ₹0 Delivery Charges</div></div>
                     <button className="bg-[#3986ba] text-white px-5 py-2 rounded-sm" onClick={async () => {
                         // verification
@@ -197,7 +197,7 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
                                 return;
                             }
                         }
-                        if(!selectedAddress) {
+                        if (!selectedAddress) {
                             toast.warning('Please select a valid address');
                             return;
                         }

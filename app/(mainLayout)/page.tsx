@@ -10,6 +10,7 @@ import accuratelabtest from '@/assets/HomePage/accurate.png'
 import flexdateandtime from '@/assets/HomePage/flex.png'
 import cod from '@/assets/HomePage/cod.png'
 import Slide from "../components/Slide";
+import Footer from "../components/Footer";
 
 export default function Home() {
     const navigate = useRouter();
@@ -80,6 +81,7 @@ export default function Home() {
                     </div>
                 </div>
             </div>
+            <Footer />
         </>
     );
 }
