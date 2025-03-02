@@ -79,7 +79,7 @@ function OrderPage() {
                                     if (res.status === 200) setOrder(await fetchOrderDetails())
                                 }}>Delivered</button>}
                             {(order.status === 'Report Delivered') && <button
-                                className="bg-[#3986ba] text-white px-3 py-1 rounded"
+                                className="bg-primary text-white px-3 py-1 rounded"
                                 onClick={async () => {
                                     setShowReviewModel({
                                         orderId: order._id,

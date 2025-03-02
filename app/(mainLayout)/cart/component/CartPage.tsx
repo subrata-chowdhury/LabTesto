@@ -8,6 +8,8 @@ import Loading, { CartLoader } from '../loading';
 import { SelectLocation } from '@/app/(mainLayout)/cart/component/SelectLocation';
 import CartItemCard from './CartItemCard';
 import OrderTimeSelector from './OrderTimeSelector';
+import ConfirmationModel from '@/app/components/popups/ConfirmationModel';
+import { User } from '../../profile/page';
 
 export type CartItem = {
     product: {
@@ -40,11 +42,21 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
     const [selectedAddress, setSelectedAddress] = useState<Address | undefined>()
     const [showScheduleOrderTimesModel, setShowScheduleOrderTimesModel] = useState(false);
     const [sampleTakenDateTime, setSampleTakenDateTime] = useState<{ start: Date, end: Date } | null>(null);
+    const [showConfirmPopup, setShowConfirmPopup] = useState<{ item: CartItem, index: number } | null>(null);
+    const [patientDetails, setPatientDetails] = useState<PatientDetails[]>([]);
     const navigate = useRouter();
 
     useEffect(() => {
         fetchCart();
+        fetchUser();
     }, []);
+
+    async function fetchUser() {
+        const res = await fetcher.get<User>('/user');
+        if (res.status === 200 && res.body) {
+            setPatientDetails(res.body.patientDetails);
+        }
+    }
 
     async function fetchCart() {
         try {
@@ -121,14 +133,14 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
     return (
         <div className="flex-1 flex flex-col p-4 bg-gray-100 min-h-screen">
             <SelectLocation selectedAddress={selectedAddress} onChange={address => setSelectedAddress(address)} />
-            <div className='w-full flex justify-between items-center py-3 px-4 bg-white rounded shadow mb-5 text-sm'>
+            <div className='w-full flex gap-4 justify-between items-center py-3 px-4 bg-white rounded shadow mb-5 text-sm'>
                 {sampleTakenDateTime && <div>
                     <div className='font-medium'><span className='font-normal'>Start:</span> {sampleTakenDateTime.start.toDateString()}, {sampleTakenDateTime.start.toTimeString().split(' ')[0]}</div>
                     <div className='font-medium'><span className='font-normal'>End:</span> {sampleTakenDateTime.end.toDateString()}, {sampleTakenDateTime.end.toTimeString().split(' ')[0]}</div>
                     {/* <div className='text-sm text-gray-600'>{selectedAddress.other} | {selectedAddress.phone}</div> */}
                 </div>}
                 {!sampleTakenDateTime && <div className='font-medium text-base'><span className='font-normal'>Sample Taken Time:</span> Not Scheduled</div>}
-                <div className='px-3 py-1 rounded cursor-pointer text-[#3986ba] font-medium border-2 border-[#3986ba] text-base' onClick={() => setShowScheduleOrderTimesModel(true)}>Schedule</div>
+                <div className='px-3 py-1 rounded cursor-pointer text-primary font-medium border-2 border-primary text-base' onClick={() => setShowScheduleOrderTimesModel(true)}>Schedule</div>
             </div>
             {loading && <CartLoader />}
             {!loading && cart.items?.length > 0 ? <>
@@ -140,54 +152,14 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
                             item={item}
                             onRemove={showRemoveBtn ? () => fetchCart() : undefined}
                             onQuantityChange={quantity => changeQuantity(item.product.test._id, item.product.lab._id, quantity)}
-                            onOrder={async () => {
-                                // verify patient details
-                                if (item.patientDetails.length < item.quantity) {
-                                    setShowPatientPopup({ cartIndex: index, patientIndex: item.patientDetails.length });
-                                    return;
-                                }
-                                if (!selectedAddress) {
-                                    toast.warning('Please select a valid address');
-                                    return;
-                                }
-                                if (!selectedAddress.pin || !selectedAddress.city || !selectedAddress.district || !selectedAddress.phone) {
-                                    toast.warning('Please select a valid address');
-                                    return;
-                                }
-                                if (item.quantity <= 0) {
-                                    toast.warning('Quantity should be greater than 0');
-                                    return;
-                                }
-                                if (!sampleTakenDateTime) {
-                                    toast.warning('Please select sample taken date and time');
-                                    setShowScheduleOrderTimesModel(true);
-                                    return;
-                                }
-                                if (sampleTakenDateTime.start > sampleTakenDateTime.end) {
-                                    toast.warning('Sample taken start time should be before end time');
-                                    return;
-                                }
-
-
-                                await order({
-                                    items: [{
-                                        product: {
-                                            test: item.product.test._id,
-                                            lab: item.product.lab._id
-                                        },
-                                        quantity: item.quantity,
-                                    }],
-                                    address: selectedAddress,
-                                    sampleTakenDateTime: sampleTakenDateTime
-                                })
-                            }}
+                            onOrder={() => setShowConfirmPopup({ item, index })}
                             onPatientClick={i => setShowPatientPopup({ cartIndex: index, patientIndex: i })}
                         />
                     ))}
                 </ul>
                 <div className='p-4 fixed bottom-0 left-0 w-screen flex justify-between items-center bg-white'>
                     <div>Total: <div className="text-2xl font-semibold">₹{cart.items.reduce((total, item) => total + (item.product.price || 0) * item.quantity, 0).toFixed(2)}</div> <div className='text-gray-500'>+ ₹0 Delivery Charges</div></div>
-                    <button className="bg-[#3986ba] text-white px-5 py-2 rounded-sm" onClick={async () => {
+                    <button className="bg-primary text-white px-5 py-2 rounded-sm" onClick={async () => {
                         // verification
                         if (cart?.items?.length <= 0) toast.warning("Cart is empty");
 
@@ -231,6 +203,7 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
             </> : <div className='flex justify-center items-center h-screen'>Cart is Empty</div>}
             {(showPatientPopup?.cartIndex != null) &&
                 <PatientDetailsPopup
+                    patients={patientDetails}
                     patientDetails={cart.items[showPatientPopup?.cartIndex || 0].patientDetails[showPatientPopup.patientIndex]}
                     onClose={() => setShowPatientPopup(null)}
                     onSave={async values => {
@@ -267,6 +240,56 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
                 onClose={() => setShowScheduleOrderTimesModel(false)}
                 onChange={(sampleTakenDateTime) => setSampleTakenDateTime(sampleTakenDateTime)}
             />}
+            {showConfirmPopup && <ConfirmationModel
+                msg={
+                    <div className='px-6 pt-6'>
+                        Are you sure you want to order only this test?<br />
+                        <div className='font-semibold'>{showConfirmPopup.item.product.test.name}</div>
+                        from <span className='text-gray-500'>{showConfirmPopup.item.product.lab.name}</span>
+                    </div>
+                }
+                onDecline={() => setShowConfirmPopup(null)}
+                onApprove={async () => {
+                    // verify patient details
+                    if (showConfirmPopup.item.patientDetails.length < showConfirmPopup.item.quantity) {
+                        setShowPatientPopup({ cartIndex: showConfirmPopup.index, patientIndex: showConfirmPopup.item.patientDetails.length });
+                        return;
+                    }
+                    if (!selectedAddress) {
+                        toast.warning('Please select a valid address');
+                        return;
+                    }
+                    if (!selectedAddress.pin || !selectedAddress.city || !selectedAddress.district || !selectedAddress.phone) {
+                        toast.warning('Please select a valid address');
+                        return;
+                    }
+                    if (showConfirmPopup.item.quantity <= 0) {
+                        toast.warning('Quantity should be greater than 0');
+                        return;
+                    }
+                    if (!sampleTakenDateTime) {
+                        toast.warning('Please select sample taken date and time');
+                        setShowScheduleOrderTimesModel(true);
+                        return;
+                    }
+                    if (sampleTakenDateTime.start > sampleTakenDateTime.end) {
+                        toast.warning('Sample taken start time should be before end time');
+                        return;
+                    }
+
+
+                    await order({
+                        items: [{
+                            product: {
+                                test: showConfirmPopup.item.product.test._id,
+                                lab: showConfirmPopup.item.product.lab._id
+                            },
+                            quantity: showConfirmPopup.item.quantity,
+                        }],
+                        address: selectedAddress,
+                        sampleTakenDateTime: sampleTakenDateTime
+                    })
+                }} />}
         </div>
     );
 };

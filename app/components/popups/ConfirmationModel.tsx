@@ -14,8 +14,8 @@ const ConfirmationModel = ({ msg = '', approveLabel = 'Yes', declineLabel = 'No'
         <Model heading='Confirm' onClose={onDecline}>
             {msg}
             <div className='flex gap-2 px-6 py-6 ms-auto'>
-                <div className='px-3 py-1 rounded cursor-pointer text-[#3986ba] font-medium border-2 border-[#3986ba] text-base' onClick={onDecline}>{declineLabel}</div>
-                <div className='px-3 py-1 rounded cursor-pointer text-white font-medium border-2 bg-[#3986ba] border-[#3986ba] text-base' onClick={() => { onApprove(); onDecline() }}>{approveLabel}</div>
+                <div className='px-3 py-1 rounded cursor-pointer text-primary font-medium border-2 border-primary text-base' onClick={onDecline}>{declineLabel}</div>
+                <div className='px-3 py-1 rounded cursor-pointer text-white font-medium border-2 bg-primary border-primary text-base' onClick={() => { onApprove(); onDecline() }}>{approveLabel}</div>
             </div>
         </Model>
     )

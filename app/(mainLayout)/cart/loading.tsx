@@ -16,7 +16,7 @@ export function AddressLoader() {
                 <div className='w-52 h-6 rounded bg-gray-300 animate-pulse mb-1'></div>
                 <div className='w-32 h-5 rounded bg-gray-300 animate-pulse'></div>
             </div>
-            <div className='w-24 h-9 ml-2 rounded bg-[#3986ba] animate-pulse'></div>
+            <div className='w-24 h-9 ml-2 rounded bg-primary animate-pulse'></div>
         </div>
     )
 }
@@ -50,8 +50,8 @@ export function CartLoader() {
                                     {/* <Plus size={18} fill='black' /> */}
                                 </div>
                             </div>
-                            <div className="border-[#3986ba] border-2 text-[#3986ba] px-2 py-1 w-20 h-7 animate-pulse rounded"></div>
-                            <div className="bg-[#3986ba] text-white px-2 py-1 w-20 h-7 animate-pulse rounded"></div>
+                            <div className="border-primary border-2 text-primary px-2 py-1 w-20 h-7 animate-pulse rounded"></div>
+                            <div className="bg-primary text-white px-2 py-1 w-20 h-7 animate-pulse rounded"></div>
                         </div>
                     </div>
                     <div className='bg-[rgba(57,134,186,0.08)] p-1 text-xs'>

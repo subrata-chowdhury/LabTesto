@@ -54,8 +54,8 @@ export function SelectLocation({ selectedAddress, onChange }: { selectedAddress?
                     <div className='text-sm text-gray-600'>{selectedAddress.other} | {selectedAddress.phone}</div>
                 </div>}
                 <div>
-                    {user.address.length > 0 && <div className='px-3 py-1 rounded cursor-pointer text-[#3986ba] font-medium border-2 border-[#3986ba]' onClick={() => setShowAddressesPopup(true)}>Change</div>}
-                    {user.address.length <= 0 && <div className='px-3 py-1 rounded cursor-pointer text-[#3986ba] font-medium border-2 border-[#3986ba]' onClick={() => setShowAddressesPopup(true)}>Add</div>}
+                    {user.address.length > 0 && <div className='px-3 py-1 rounded cursor-pointer text-primary font-medium border-2 border-primary' onClick={() => setShowAddressesPopup(true)}>Change</div>}
+                    {user.address.length <= 0 && <div className='px-3 py-1 rounded cursor-pointer text-primary font-medium border-2 border-primary' onClick={() => setShowAddressesPopup(true)}>Add</div>}
                 </div>
             </div>
             {showAddressesPopup && <Model heading='Addresses' onClose={() => setShowAddressesPopup(false)}>
@@ -68,10 +68,10 @@ export function SelectLocation({ selectedAddress, onChange }: { selectedAddress?
                                     <div className='font-medium'>{address.city}, {address.pin}</div>
                                     <div className='text-sm text-gray-600'>{address.other} | {address.phone}</div>
                                 </div>
-                                <div className="px-2 py-1 my-auto ms-auto rounded cursor-pointer text-[#3986ba] font-medium border-2 border-[#3986ba]" onClick={() => setShowAddAddressDetailsPopup({ index })}>Edit</div>
+                                <div className="px-2 py-1 my-auto ms-auto rounded cursor-pointer text-primary font-medium border-2 border-primary" onClick={() => setShowAddAddressDetailsPopup({ index })}>Edit</div>
                             </div>
                         ))}
-                        <div className="bg-[#3986ba] p-2 px-3 flex gap-3 rounded-md text-white cursor-pointer ms-auto" onClick={() => setShowAddAddressDetailsPopup({ index: user.address.length })}>Add new Address</div>
+                        <div className="bg-primary p-2 px-3 flex gap-3 rounded-md text-white cursor-pointer ms-auto" onClick={() => setShowAddAddressDetailsPopup({ index: user.address.length })}>Add new Address</div>
                     </div>
                 </div>
             </Model>}

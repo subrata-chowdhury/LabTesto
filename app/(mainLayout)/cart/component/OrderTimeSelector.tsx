@@ -5,11 +5,8 @@ import { toast } from "react-toastify";
 
 
 export default function OrderTimeSelector({ onClose, onChange }: { onClose: () => void, onChange: (sampleTakenDateTime: { start: Date, end: Date }) => void }) {
-    const now = new Date();
-    const minTime = now.getHours() >= 18 ? new Date(now.setDate(now.getDate() + 1)).setHours(6, 0, 0, 0) : new Date(now.setHours(Math.max(now.getHours() + 1, 6), 0, 0, 0));
-
-    const [sampleStartTime, setSampleStartTime] = useState<Date>(new Date(minTime));
-    const [sampleEndTime, setSampleEndTime] = useState<Date>(new Date(minTime));
+    const [sampleStartTime, setSampleStartTime] = useState<Date>(new Date(0, 0, 0, 6, 0));
+    const [sampleEndTime, setSampleEndTime] = useState<Date>(new Date(0, 0, 0, 6, 0));
 
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newDate = new Date(e.target.value);
@@ -80,7 +77,7 @@ export default function OrderTimeSelector({ onClose, onChange }: { onClose: () =
             </div>
             <div className='flex justify-end pb-8 px-7'>
                 <button
-                    className="bg-[#3986ba] text-white px-5 py-2 rounded"
+                    className="bg-primary text-white px-5 py-2 rounded"
                     onClick={() => {
                         if (sampleStartTime && sampleEndTime && sampleStartTime < sampleEndTime) {
                             onChange(

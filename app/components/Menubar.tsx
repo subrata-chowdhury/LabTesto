@@ -34,10 +34,10 @@ const Menubar = () => {
                     </button>
                 </div>
                 <div className="text-white text-lg font-bold mr-0 md:mr-16">
-                    <Link href={'/'} className=''><span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></Link>
+                    <Link href={'/'} onClick={() => setIsOpen(false)} className=''><span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></Link>
                 </div>
                 <div className="hidden md:flex space-x-6 mr-auto">
-                    <Link href="#" className="text-[#3987ba] menu">Book</Link>
+                    <Link href="/tests" className="text-[#3987ba] menu">Book</Link>
                     {/* <Link href="#" className="text-white">Home</Link> */}
                     <Link href="#" className="text-[#3987ba] menu">About</Link>
                     <Link href="/order" className="text-[#3987ba] menu">Orders</Link>
@@ -49,8 +49,9 @@ const Menubar = () => {
                 <Link
                     className='relative mr-0 md:mr-4 cursor-pointer'
                     href={'/cart'}
+                    onClick={() => setIsOpen(false)}
                 >
-                    {(itemsCount || 0) > 0 && <div className='absolute -right-1 -top-1 px-[6px] py-[2px] rounded-full text-xs text-white font-medium bg-[#3986ba]'>{(itemsCount || 0) > 9 ? '9+' : itemsCount}</div>}
+                    {(itemsCount || 0) > 0 && <div className='absolute -right-1 -top-1 px-[6px] py-[2px] rounded-full text-xs text-white font-medium bg-primary'>{(itemsCount || 0) > 9 ? '9+' : itemsCount}</div>}
                     <Image
                         src={CartIcon}
                         alt=""
@@ -64,20 +65,20 @@ const Menubar = () => {
             </div>
             {isOpen && (
                 <div className="md:hidden fixed left-0 top-14 w-full sm:w-2/5 px-10 z-20 bg-white h-screen">
-                    <Link className="flex flex-col gap-2 justify-center items-center cursor-pointer py-5 pb-7" href={'/profile'}>
+                    <Link className="flex flex-col gap-2 justify-center items-center cursor-pointer py-5 pb-7" href={'/profile'} onClick={() => setIsOpen(false)}>
                         <Image src={user} alt="avatar" width={40} height={40} className="rounded-full p-2 bg-gray-100" />
                         <div className="text-[#3987ba] menu">Profile</div>
                     </Link>
                     {/* <div className='py-1 pb-2'>
                         <SearchBar active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
                     </div> */}
-                    <Link href="#" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>Book a Test</Link>
+                    <Link href="/tests" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>Book a Test</Link>
                     {/* <Link href="#" className="block text-white py-2">Home</Link> */}
                     <Link href="#" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>About</Link>
                     <Link href="/order" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>Orders</Link>
                     <Link href="#" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>Contact</Link>
                     <div
-                        className={`cursor-pointer flex justify-start gap-3 p-3 mt-40 items-center rounded-lg`}
+                        className={`cursor-pointer flex justify-start gap-3 p-3 mt-40 items-center rounded-lg text-primary   `}
                         onClick={() => {
                             document.cookie = 'token=; Max-Age=0; path=/;';
                             window.location.href = '/';

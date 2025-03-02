@@ -20,7 +20,7 @@ export default function Slide({ slides = 1, slideElement }: { slideElement?: Rea
                 <div className={goingForward.current ? 'slide' : 'slide-reverse'} key={slideIndex}>
                     {!slideElement && <>
                         <div className="text-[#f2f2f2] text-[12px] px-[12px] py-[8px] absolute top-[0]">{slideIndex} / 3</div>
-                        <div className="w-full h-72 flex justify-center items-center bg-[#3986ba43] font-semibold text-6xl text-[#3986ba92]">Slide {slideIndex}</div>
+                        <div className="w-full h-72 flex justify-center items-center bg-primary bg-opacity-25 font-semibold text-6xl text-primary text-opacity-60">Slide {slideIndex}</div>
                     </>}
                     {slideElement && React.createElement(slideElement, { slide: slideIndex })}
                 </div>
@@ -31,7 +31,7 @@ export default function Slide({ slides = 1, slideElement }: { slideElement?: Rea
 
             <div className="text-center justify-center flex gap-2">
                 {Array(slides).fill(0).map((_, index) => (
-                    <span key={index} className={`cursor-pointer h-3 w-3 ${slideIndex === index + 1 ? 'bg-[#3987ba]' : 'bg-[#3986ba40]'} rounded-full inline-block [transition:background-color_0.6s_ease]`} onClick={() => setSlideIndex(index + 1)}></span>
+                    <span key={index} className={`cursor-pointer h-3 w-3 ${slideIndex === index + 1 ? 'bg-[#3987ba]' : 'bg-primary bg-opacity-25'} rounded-full inline-block [transition:background-color_0.6s_ease]`} onClick={() => setSlideIndex(index + 1)}></span>
                 ))}
             </div>
         </>

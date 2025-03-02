@@ -31,7 +31,7 @@ export default function CartItemCard({ item, onQuantityChange, onRemove, onOrder
                         </button>
                     </div>
                     {onRemove && <button
-                        className="border-[#3986ba] border-2 text-[#3986ba] px-2 py-1 rounded"
+                        className="border-primary border-2 text-primary px-2 py-1 rounded"
                         onClick={async () => {
                             const res = await fetcher.delete<{ test: string, lab: string }, { message: string } | string>("/cart", {
                                 test: item.product.test._id,
@@ -40,7 +40,7 @@ export default function CartItemCard({ item, onQuantityChange, onRemove, onOrder
                             if (res.status === 200) onRemove()
                         }}>Remove</button>}
                     <button
-                        className="bg-[#3986ba] text-white px-2 py-1 rounded"
+                        className="bg-primary text-white px-2 py-1 rounded"
                         onClick={async () => {
                             onOrder()
                         }}>Order</button>

@@ -98,10 +98,10 @@ const ProfilePage = () => {
                 </div>
             </div>
             {isDirty && <div className='px-20 pt-8 pb-10 flex'>
-                <button className='bg-[#3986ba] text-white py-2 px-4 rounded ms-auto' onClick={async () => await updateUser()}>Save</button>
+                <button className='bg-primary text-white py-2 px-4 rounded ms-auto' onClick={async () => await updateUser()}>Save</button>
             </div>}
             <div className='px-20 pt-8 pb-10 flex'>
-                <button className='bg-[#3986ba] text-white py-2 px-4 rounded-md'>Delete Your Account</button>
+                <button className='bg-primary text-white py-2 px-4 rounded-md'>Delete Your Account</button>
             </div>
             {showPatientPopup?.patientIndex != null &&
                 <PatientDetailsPopup
