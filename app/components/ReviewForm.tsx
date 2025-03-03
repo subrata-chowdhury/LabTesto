@@ -11,8 +11,8 @@ export type ReviewType = {
     reviewText: string
 }
 
-export default function ReviewForm({ onSave = () => { } }: { onSave: (review: ReviewType) => void }) {
-    const [review, setReview] = useState<ReviewType>({
+export default function ReviewForm({ reviewDetails, onSave = () => { } }: { reviewDetails?: ReviewType, onSave: (review: ReviewType) => void }) {
+    const [review, setReview] = useState<ReviewType>(reviewDetails || {
         labRating: 0,
         collectorRating: 0,
         platformRating: 0,
@@ -28,7 +28,7 @@ export default function ReviewForm({ onSave = () => { } }: { onSave: (review: Re
                 <label className='font-medium'>Others</label>
                 <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter any other issue or idea that can help you' value={review.reviewText} onChange={(e) => setReview({ ...review, reviewText: e.target.value })}></textarea>
             </div>
-            <button className='bg-orange-500 text-white rounded-md py-2' onClick={() => onSave(review)}>Submit</button>
+            <button className='bg-primary text-white rounded-md py-2' onClick={() => onSave(review)}>Submit</button>
         </div>
     )
 }

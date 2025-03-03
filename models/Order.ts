@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-interface IOrder extends Document {
+export interface IOrder extends Document {
     items: {
         product: {
             test: mongoose.Schema.Types.ObjectId;
@@ -38,11 +38,13 @@ interface IOrder extends Document {
         end?: Date;
     };
     review: {
+        test: mongoose.Schema.Types.ObjectId;
+        lab: mongoose.Schema.Types.ObjectId;
         labRating: number,
         collectorRating: number,
         platformRating: number,
         reviewText: string
-    };
+    }[];
     paid: number;
     createdAt: Date;
     updatedAt: Date;
@@ -90,12 +92,14 @@ const OrderSchema: Schema = new Schema({
         end: { type: Date, required: false, default: Date.now }
     },
     review: {
-        type: {
+        type: [{
+            lab: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Lab' },
+            test: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Test' },
             labRating: { type: Number, require: false },
             collectorRating: { type: Number, require: false },
             platformRating: { type: Number, require: false },
             reviewText: { type: String, require: false }
-        }, require: false
+        }], require: false, default: []
     },
     paid: { type: Number, required: false, default: 0 },
 }, { collection: 'orders', timestamps: true });

@@ -66,14 +66,12 @@ export async function POST(req: NextRequest) {
             if (!item.product || !item.product.test || !item.product.lab || !item.product.price) {
                 return new NextResponse('Each item must have a product with test, lab, and price', { status: 400 });
             }
-            if (!item.patientDetails || !Array.isArray(item.patientDetails) || item.patientDetails.length === 0) {
-                return new NextResponse('Each item must have patient details', { status: 400 });
-            }
-            for (const patient of item.patientDetails) {
-                if (!patient.name || !patient.gender || !patient.age) {
-                    return new NextResponse('Each patient detail must have name, gender, and age', { status: 400 });
+            if (item.patientDetails?.length > 0)
+                for (const patient of item.patientDetails) {
+                    if (!patient.name || !patient.gender || !patient.age) {
+                        return new NextResponse('Each patient detail must have name, gender, and age', { status: 400 });
+                    }
                 }
-            }
         }
         if (!data.address || !data.address.pin || !data.address.city || !data.address.district || !data.address.phone) {
             return new NextResponse('Address must have pin, city, district, and phone', { status: 400 });

@@ -48,7 +48,7 @@ const ProfilePage = () => {
                     <Image src={'/user.png'} alt="profile picture" width={118} height={118} className='w-[118px] h-[118px] p-2 border-4 border-[rgb(57,134,186)] shadow-lg shadow-[rgba(57,134,186,0.2)] rounded-full bg-white' />
                 </div>
             </div>
-            <div className='p-20 pb-2 px-10 md:px-20 '>
+            <section className='p-20 pb-2 px-10 md:px-20'>
                 <div className='font-semibold text-lg'>Account Details</div>
                 <div className='mt-2 grid gap-6 grid-cols-1 md:grid-cols-2'>
                     <Input label='Name' value={user.name} onChange={(val) => { setUser({ ...user, name: val }); setIsDirty(true) }} />
@@ -56,8 +56,8 @@ const ProfilePage = () => {
                     {/* <Input label='Password' value={user.password} onChange={(val) => { setUser({ ...user, password: val }); setIsDirty(true) }} /> */}
                     <Input label='Phone' value={user.phone || ''} onChange={(val) => { setUser({ ...user, phone: val }); setIsDirty(true) }} />
                 </div>
-            </div>
-            <div className='px-20 pt-2'>
+            </section>
+            <section className='px-10 md:px-20 pt-2'>
                 <div className='font-semibold text-lg'>Patient Details</div>
                 <div className='flex gap-2 mt-2 text-sm text-white'>
                     {user?.patientDetails?.map((patientDetail, i) => (
@@ -76,8 +76,8 @@ const ProfilePage = () => {
                         Add +
                     </div>
                 </div>
-            </div>
-            <div className='px-20 pt-2 mt-2'>
+            </section>
+            <section className='px-20 pt-2 mt-2'>
                 <div className='font-semibold text-lg'>Address Details</div>
                 <div className='flex gap-2 mt-2 text-sm text-white'>
                     {user?.address?.map((address, i) => (
@@ -96,7 +96,7 @@ const ProfilePage = () => {
                         Add +
                     </div>
                 </div>
-            </div>
+            </section>
             {isDirty && <div className='px-20 pt-8 pb-10 flex'>
                 <button className='bg-primary text-white py-2 px-4 rounded ms-auto' onClick={async () => await updateUser()}>Save</button>
             </div>}

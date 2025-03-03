@@ -122,10 +122,10 @@ function Test() {
 
     return (
         <div className='bg-blue-50 p-1 md:py-9 md:px-10'>
-            <div className='bg-white border-2 p-7 px-8 flex flex-col rounded-lg'>
-                <div className='text-2xl font-bold text-primary'>{testDetails.name}</div>
+            <section className='bg-white border-2 p-7 px-8 flex flex-col rounded-lg'>
+                <h1 className='text-2xl font-bold text-primary'>{testDetails.name}</h1>
                 {(testDetails?.otherTerms || []).length > 0 && <div className='text-sm text-gray-500 pt-2'>
-                    Also known as: <div className='text-black font-medium'>{testDetails.otherTerms}</div>
+                    <strong className='font-normal'>Also known as:</strong> <span className='text-black font-medium'>{testDetails?.otherTerms?.join(', ')}</span>
                 </div>}
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-5 pt-6'>
                     <div className='flex gap-4'>
@@ -151,29 +151,13 @@ function Test() {
                     </div>}
                     {labs.length > 0 && <div className='flex gap-4 items-center'>
                         <p className='font-medium flex gap-2'>
-                            <Image src={labIcon} alt='' width={24} height={24} />
+                            <Image src={labIcon} alt='Lab Icon' width={24} height={24} />
                             Lab
                         </p>
                         <p className='text-gray-500'>{lab.name}</p>
                         <Title title={<p className='text-nowrap font-medium'>See lab Details</p>} onClick={() => setShowLabDetails(true)} titleClass='bg-white text-primary'>
-                            <Image src={informationIcon} alt="" width={20} height={20} />
+                            <Image src={informationIcon} alt="Information Icon" width={20} height={20} />
                         </Title>
-                        {/* <Dropdown
-                            options={labs.map(e => e.name)}
-                            value={lab?.name || ''}
-                            containerClassName='flex-1'
-                            optionElement={({ index, onClick }) => (
-                                <div key={index} onClick={() => { onLabSelect(index); onClick() }} className='p-2 border-b-2 hover:bg-gray-200 cursor-pointer'>
-                                    <div className='font-semibold text-orange-500'>{labs[index].name}</div>
-                                    <div className='flex items-center gap-2'>
-                                        <div className='text-lg font-semibold'>₹{(labs[index].prices[0].price - (labs[index].prices[0].price * (labs[index].prices[0].offer / 100))).toFixed(2)}</div>
-                                        <div className='text-base line-through text-gray-500'>₹{labs[index].prices[0].price}</div>
-                                        <div className='text-sm font-semibold text-red-400'>{labs[index].prices[0].offer}% OFF</div>
-                                    </div>
-                                </div>
-                            )}
-                            onChange={({ index }) => onLabSelect(index)}
-                            width={'100%'} /> */}
                     </div>}
                 </div>
                 <div className='bottom-0 flex flex-col sm:flex-row gap-4 items-center justify-between mt-6'>
@@ -201,7 +185,6 @@ function Test() {
                             setBooking(true);
                             fetcher.post('/cart', cartItem).then(res => {
                                 if (res.status === 200) {
-                                    // toast.success('Test added to cart successfully');
                                     setShowOrderPopup(true);
                                 } else if (res.status === 401) {
                                     toast.error('Please login to add test to cart');
@@ -225,7 +208,6 @@ function Test() {
                             fetcher.post('/cart', cartItem).then(res => {
                                 if (res.status === 200) {
                                     toast.success('Test added to cart successfully');
-                                    // navigate.push('/cart');
                                 } else if (res.status === 401) {
                                     toast.error('Please login to add test to cart');
                                     navigate.push('/login?redirect=/tests/' + id);
@@ -237,14 +219,13 @@ function Test() {
                         }}>{loading ? 'Adding to Cart..' : 'Add to Cart'}</button>}
                     </div>
                 </div>
-            </div>
-            <div className='mt-1 md:mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 md:gap-5 rounded-lg'>
+            </section>
+            <section className='mt-1 md:mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 md:gap-5 rounded-lg'>
                 {loadingLabs === true && <LabLoader />}
                 {loadingLabs === false && labs.length > 0 && labs.map((labObj, i) => (
                     <div key={i} className='border-2 p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white' onClick={() => onLabSelect(labs[i], id)}>
                         <div className='flex items-center gap-3'>
                             <div className='w-14 h-14 bg-[rgba(57,134,186,0.2)] rounded-md flex items-center justify-center'>
-                                {/* <Image src='/download.png' alt='' width={115} height={50} /> */}
                             </div>
                             <div>
                                 <div className='font-semibold text-primary'>{labObj.name}</div>
@@ -262,11 +243,11 @@ function Test() {
                         />
                     </div>
                 ))}
-            </div>
+            </section>
             {labs.length >= limit && (
                 <div className='w-full flex justify-center'>
                     <button
-                        className='mt-2 px-5 py-2 rounded-md bg-orange-500 text-white font-medium'
+                        className='mt-2 px-5 py-2 rounded-md bg-primary text-white font-medium'
                         onClick={async () => {
                             setLimit(prevLimit => prevLimit + 10);
                             await getLabs(id, limit + 10)
@@ -276,12 +257,12 @@ function Test() {
                     </button>
                 </div>
             )}
-            <div className='mt-1 md:mt-4 py-8 px-8 rounded-lg border-2 bg-white '>
-                <div className='tiptap flex flex-col gap-5' style={{ padding: 0, border: 0 }}>
+            <section className='mt-1 md:mt-4 py-8 px-8 rounded-lg border-2 bg-white '>
+                <div className='flex flex-col gap-5' style={{ padding: 0, border: 0 }}>
                     {labBaseDetails.packagesInclude.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
                         <PackageIcon />
                         <div className='flex flex-col gap-1 w-full'>
-                            <p className='font-semibold text-xl w-full'>Packages Include</p>
+                            <h2 className='font-semibold text-xl w-full'>Packages Include</h2>
                             <ul className={'list-disc list-inside relative w-full ' + (!seeMore.packagesInclude ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, packagesInclude: !seeMore.packagesInclude })}>
                                 {
                                     labBaseDetails.packagesInclude.map(e => (
@@ -295,20 +276,19 @@ function Test() {
                     {testDetails?.overview?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
                         <DescriptionIcon />
                         <div className='flex flex-col gap-1'>
-                            <p className='font-semibold text-xl flex gap-2'>Overview</p>
+                            <h2 className='font-semibold text-xl flex gap-2'>Overview</h2>
                             <div className={'text-gray-500 relative ' + (!seeMore.overview ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, overview: !seeMore.overview })}>
-                                <div dangerouslySetInnerHTML={{ __html: testDetails.overview }}></div>
+                                <div className='tiptap' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.overview }}></div>
                             </div>
                             {testDetails.overview.length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, overview: !seeMore.overview })}>See {!seeMore.overview ? 'More' : 'Less'}</div>}
-                            {/* <p className='text-gray-500'>{testDetails.overview}</p> */}
                         </div>
                     </div>}
                     {testDetails.description.replace(/<br\/>/g, '').length > 0 && <div className='flex justify-start gap-2'>
                         <DescriptionIcon />
                         <div className='flex-1 flex flex-col gap-1'>
-                            <p className='font-semibold text-xl'>Description</p>
+                            <h2 className='font-semibold text-xl'>Description</h2>
                             <div className={'text-gray-500 relative ' + (!seeMore.description ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, description: !seeMore.description })}>
-                                <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.description }}></div>
+                                <div className='tiptap text-gray-500' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.description }}></div>
                             </div>
                             {testDetails.description.length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, description: !seeMore.description })}>See {!seeMore.description ? 'More' : 'Less'}</div>}
                         </div>
@@ -316,27 +296,21 @@ function Test() {
                     {testDetails?.testResultInterpretation?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
                         <DescriptionIcon />
                         <div className='flex flex-col gap-1'>
-                            <p className='font-semibold text-xl flex gap-2'>Test Result Interpretation</p>
+                            <h2 className='font-semibold text-xl flex gap-2'>Test Result Interpretation</h2>
                             <div className={'text-gray-500 relative ' + (!seeMore.testResultInterpretation ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, testResultInterpretation: !seeMore.testResultInterpretation })}>
-                                <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.testResultInterpretation }}></div>
+                                <div className='tiptap text-gray-500' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.testResultInterpretation }}></div>
                             </div>
                             {testDetails.testResultInterpretation.length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, testResultInterpretation: !seeMore.testResultInterpretation })}>See {!seeMore.testResultInterpretation ? 'More' : 'Less'}</div>}
-                            {/* <p className='text-gray-500'>{testDetails.testResultInterpretation}</p> */}
                         </div>
                     </div>}
                     {testDetails?.riskAssesment?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
                         <DescriptionIcon />
                         <div className='flex flex-col gap-1'>
-                            <p className='font-semibold text-xl flex gap-2'>Risk Assessment</p>
+                            <h2 className='font-semibold text-xl flex gap-2'>Risk Assessment</h2>
                             <div className={'text-gray-500 relative ' + (!seeMore.riskAssesment ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, riskAssesment: !seeMore.riskAssesment })}>
-                                <div className='text-gray-500' dangerouslySetInnerHTML={{ __html: testDetails.riskAssesment }}></div>
-                                {testDetails.riskAssesment.length > 50 && <div className=' absolute flex flex-col top-0 left-0 h-full w-full'>
-                                    <div className={'h-full w-full mt-auto bg-gradient-to-t flex flex-col ' + (!seeMore.riskAssesment ? 'from-white to-transparent' : '')}>
-                                        <div className='mt-auto text-sm font-semibold cursor-pointer text-primary'>See {!seeMore.riskAssesment ? 'More' : 'Less'}</div>
-                                    </div>
-                                </div>}
+                                <div className='tiptap text-gray-500' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.riskAssesment }}></div>
                             </div>
-                            {/* <p className='text-gray-500'>{testDetails.riskAssesment}</p> */}
+                            {testDetails.riskAssesment.length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, riskAssesment: !seeMore.riskAssesment })}>See {!seeMore.riskAssesment ? 'More' : 'Less'}</div>}
                         </div>
                     </div>}
                 </div>
@@ -344,7 +318,7 @@ function Test() {
                     {labBaseDetails.ranges.length > 0 && <div className='flex gap-2'>
                         <DescriptionIcon />
                         <div className='flex flex-1 flex-col gap-1'>
-                            <p className='font-semibold text-xl flex gap-2'>Ranges</p>
+                            <h2 className='font-semibold text-xl flex gap-2'>Ranges</h2>
                             <div>
                                 <MainTable
                                     config={Object.keys(labBaseDetails.ranges[0] || {}).map(e => ({ heading: e, selector: e }))}
@@ -355,13 +329,13 @@ function Test() {
                         </div>
                     </div>}
                 </div>}
-            </div>
+            </section>
 
 
 
             {
                 showLabDetails &&
-                <div className='fixed w-screen h-screen top-0 left-0 bg-black bg-opacity-20 z-50' onClick={() => setShowLabDetails(false)}>
+                <section className='fixed w-screen h-screen top-0 left-0 bg-black bg-opacity-20 z-50' onClick={() => setShowLabDetails(false)}>
                     <div className='fixed left-0 top-0 w-[90vw] sm:w-[70vw] bg-white shadow-2xl' onClick={e => e.stopPropagation()}>
                         <button className='flex justify-end p-2 absolute right-0 top-0 translate-x-full bg-white rounded-e-md border-2' onClick={() => setShowLabDetails(false)}>
                             <Image src={cross} alt='' />
@@ -379,13 +353,13 @@ function Test() {
                                 </div>
                                 <div className='absolute bottom-0 w-full h-full z-10 -translate-x-[10%] translate-y-1/2 bg-gradient-to-t from-gray-400 to-transparent transform rotate-[20deg]'></div>
                             </div>
-                            <div className='tiptap border-0 p-5' dangerouslySetInnerHTML={{ __html: lab.description.replace(/<p>/g, '').replace(/<\/p>/g, '<br/>') }}></div>
+                            <div className='tiptap border-0 p-5' style={{ padding: 0, border: 0 }} dangerouslySetInnerHTML={{ __html: lab.description.replace(/<p>/g, '').replace(/<\/p>/g, '<br/>') }}></div>
                         </div>
                     </div>
-                </div>
+                </section>
             }
             {
-                showOrderPopup && <div className='w-screen h-screen z-20 flex flex-col fixed top-0 left-0 bg-gray-100'>
+                showOrderPopup && <section className='w-screen h-screen z-20 flex flex-col fixed top-0 left-0 bg-gray-100'>
                     <div className='ms-auto mr-6 mt-7 cursor-pointer' onClick={() => setShowOrderPopup(false)}>
                         <Image src={cross} alt=""></Image>
                     </div>
@@ -400,7 +374,7 @@ function Test() {
                             }
                             return false
                         }} />
-                </div>
+                </section>
             }
         </div>
     )

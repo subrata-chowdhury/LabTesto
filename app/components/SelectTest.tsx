@@ -1,3 +1,4 @@
+'use client'
 import fetcher from "@/lib/fetcher";
 import React, { useEffect, useState } from "react";
 

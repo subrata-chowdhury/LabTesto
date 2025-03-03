@@ -18,7 +18,7 @@ function Dropdown({ options = [], value = "", onChange = () => { }, containerCla
 
     return (
         <div className={'relative ' + containerClassName} style={{ width: width || 'fit-content' }}>
-            <div className='flex justify-between items-center border-2 p-2 rounded cursor-pointer gap-1' onClick={() => setIsOpen(!isOpen)} ref={ref} style={{ height: height || 40, width: width || 'fit-content' }}>
+            <div className='flex justify-between items-center border-primary border-opacity-40 border-2 p-2 rounded cursor-pointer gap-1' onClick={() => setIsOpen(!isOpen)} ref={ref} style={{ height: height || 40, width: width || 'fit-content' }}>
                 <div className='text-nowrap truncate' title={value.toString()}>{value}</div>
                 <Image src={dropdownArrow} alt='Search Icon' width={16} height={16} className={`transition-all w-4 h-4 ${isOpen ? 'rotate-180' : 'rotate-0'}`} />
             </div>

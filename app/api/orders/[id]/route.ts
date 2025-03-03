@@ -1,7 +1,7 @@
 import dbConnect from "@/config/db";
 import Collector from "@/models/Collector";
 import Lab from "@/models/Lab";
-import Order from "@/models/Order";
+import Order, { IOrder } from "@/models/Order";
 import Test from "@/models/Test";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -49,12 +49,26 @@ export async function PUT(req: NextRequest) {
         existingOrder.status = body.status || existingOrder.status;
 
         if (body.review) {
-            existingOrder.review = body.review;
+            const reviewIndex = (existingOrder as IOrder).review.findIndex((r) => r.test.toString() === body.review.test && r.lab.toString() === body.review.lab);
+
+            if (reviewIndex !== -1) {
+                existingOrder.review[reviewIndex] = {
+                    lab: body.product.lab,
+                    test: body.product.test,
+                    ...body.review
+                };
+            } else {
+                existingOrder.review.push({
+                    lab: body.product.lab,
+                    test: body.product.test,
+                    ...body.review
+                });
+            }
 
             const { labRating, collectorRating } = body.review;
 
             if (collectorRating) {
-                const collector = await Collector.findById(existingOrder.collectorId);
+                const collector = await Collector.findById(body.product.test);
                 if (collector) {
                     collector.rating = ((collector.rating * collector.rated) + collectorRating) / (collector.rated + 1);
                     collector.rated += 1;
@@ -63,7 +77,7 @@ export async function PUT(req: NextRequest) {
             }
 
             if (labRating) {
-                const lab = await Lab.findById(existingOrder.labId);
+                const lab = await Lab.findById(body.product.lab);
                 if (lab) {
                     lab.rating = ((lab.rating * lab.rated) + labRating) / (lab.rated + 1);
                     lab.rated += 1;

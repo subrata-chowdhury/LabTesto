@@ -19,10 +19,10 @@ export default function Home() {
         <>
             <div className="flex-1 p-2 pt-3">
                 <SearchBar className="md:hidden" active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
-                <div className="mx-2">
+                <section className="mx-2">
                     <Slide slides={3} />
-                </div>
-                <div className="mx-auto md:w-[95%] 2xl:w-fit pt-0 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
+                </section>
+                <section className="mx-auto md:w-[95%] 2xl:w-fit pt-0 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
                     <h1 className="text-xl font-semibold translate-y-full ml-2 bg-white w-fit px-2">Frequently Required Tests</h1>
                     <div className="mt-4 p-3 md:p-5 border-2 border-primary border-opacity-40 border-dashed rounded-md bg-white w-full">
                         <div className="w-full overflow-x-auto hide-scroll flex gap-2">
@@ -34,8 +34,8 @@ export default function Home() {
                             <Card label="CBC" subText="Blood" description="Check Your Overall Health" />
                         </div>
                     </div>
-                </div>
-                <div className="mx-auto md:w-[95%] 2xl:w-fit pt-0 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
+                </section>
+                <section className="mx-auto md:w-[95%] 2xl:w-fit pt-0 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
                     <h1 className="text-xl font-semibold translate-y-full ml-2 bg-white w-fit px-2">Our Promise</h1>
                     <div className="mt-4 p-3 md:p-5 border-2 border-primary border-opacity-40 border-dashed rounded-md bg-white w-full">
                         <div className="w-full overflow-x-auto hide-scroll flex gap-2">
@@ -47,8 +47,8 @@ export default function Home() {
                             <CardType2 label="Cash On Delivery" icon={cod} />
                         </div>
                     </div>
-                </div>
-                <div className=" mx-auto md:w-[95%] pt-0 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
+                </section>
+                <section className=" mx-auto md:w-[95%] pt-0 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
                     <ul className=" grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                         <CardType3 label="Cardiology" link="/tests/cardiology" />
                         <CardType3 label="Dentistry" link="/tests/dentistry" />
@@ -69,8 +69,8 @@ export default function Home() {
                         <CardType3 label="Radiology" link="/tests/radiology" />
                         <CardType3 label="Urology" link="/tests/urology" />
                     </ul>
-                </div>
-                <div className="mx-auto md:w-[95%] pt-0 mt-5 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
+                </section>
+                <section className="mx-auto md:w-[95%] pt-0 mt-5 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
                     <h1 className="text-2xl font-semibold bg-white w-fit">Our Achivements</h1>
                     <div className="mt-4 bg-white w-full grid gap-1 md:gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
                         {/* <CardType4 label="1000+" subText="" /> */}
@@ -79,7 +79,7 @@ export default function Home() {
                         <CardType4 label="2000+" subText="Clients" />
                         <CardType4 label="97%" subText="Happy Customers" />
                     </div>
-                </div>
+                </section>
             </div>
             <Footer />
         </>

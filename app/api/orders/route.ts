@@ -58,15 +58,15 @@ export async function POST(req: NextRequest) {
             return new NextResponse('Cart not found for user', { status: 404 });
         }
 
-        for (const item of body.items) {
-            const cartItem = cart.items.find((cartItem: { product: { test: string, lab: string } }) =>
-                cartItem.product.test.toString() === item.product.test &&
-                cartItem.product.lab.toString() === item.product.lab
-            );
-            if (!cartItem || cartItem.patientDetails.length !== item.quantity) {
-                return new NextResponse('Quantity must match the number of patient details', { status: 400 });
-            }
-        }
+        // for (const item of body.items) {
+        //     const cartItem = cart.items.find((cartItem: { product: { test: string, lab: string } }) =>
+        //         cartItem.product.test.toString() === item.product.test &&
+        //         cartItem.product.lab.toString() === item.product.lab
+        //     );
+        //     if (!cartItem || cartItem.patientDetails.length !== item.quantity) {
+        //         return new NextResponse('Quantity must match the number of patient details', { status: 400 });
+        //     }
+        // }
 
         interface Product {
             test: string;
@@ -194,13 +194,22 @@ export async function POST(req: NextRequest) {
             body: JSON.stringify({
                 chat_id: randomCollector.chatId || -4659804693,
                 text: `
-    Order ID: ${order._id}
-${order.items.map((e: Item) => `Test: ${e.product.test.name}, \nLab: ${e.product.lab.name}, \nPatients: ${e.patientDetails.map(e2 => `\n    Name: ${e2.name},\n    Age: ${e2.age || 'none'},\n    Gender: ${e2.gender || 'none'}\n`).join('')}`).join('\n')}
+Order ID: ${order._id}
+${order.items.map((e: Item) => `
+Test: ${e.product.test.name},
+Lab: ${e.product.lab.name}, 
+
+Patients: ${e.patientDetails.map(e2 => `
+    Name: ${e2.name},
+    Age: ${e2.age || 'none'},
+    Gender: ${e2.gender || 'none'}\n`).join('')}`).join('\n')}
+
 Address: 
     Pin: ${order.address.pin}, 
     City: ${order.address.city}, 
     Phone: ${order.address.phone}, 
     Landmark: ${order.address.other || 'none'}
+    
 Sample Taken Time:
     Start: ${order.sampleTakenDateTime.start},
     End: ${order.sampleTakenDateTime.end}

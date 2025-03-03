@@ -13,8 +13,8 @@ import ConfirmationModel from '@/app/components/popups/ConfirmationModel';
 function OrderPage() {
     const [order, setOrder] = useState<Order>();
     const [showPatientPopup, setShowPatientPopup] = useState<{ itemIndex: number, patientIndex: number } | null>(null);
-    const [showReviewModel, setShowReviewModel] = useState<{ orderId: string, item: { test: string, lab: string } } | null>(null);
-    const [showConfirmPopup, setShowConfirmPopup] = useState<{ test: string, lab: string } | null>(null);
+    const [showReviewModel, setShowReviewModel] = useState<{ orderId: string, item: { test: string, lab: string }, index: number } | null>(null);
+    const [showConfirmPopup, setShowConfirmPopup] = useState<boolean>(false);
     const { id } = useParams();
 
     const fetchOrderDetails = useCallback(async () => {
@@ -53,47 +53,28 @@ function OrderPage() {
                             </div>
                             <div className='mt-auto font-medium text-xl'>₹{(item.product.price || 0) * item.quantity}</div>
                         </div>
-                        <div className='flex flex-col gap-2 text-sm'>
+                        <div className='flex flex-col gap-2 items-center justify-center text-sm'>
                             <div className='flex gap-2'>
                                 <div>Quantity:</div>
                                 <div>{item.quantity}</div>
                             </div>
-                            {(order.status === 'Ordered') && <button
-                                className="bg-orange-600 text-white px-3 py-1 rounded"
-                                onClick={() => {
-                                    setShowConfirmPopup({
-                                        test: item.product.test._id,
-                                        lab: item.product.lab._id
-                                    })
-                                }}>Cancel</button>}
-                            {(order.status === 'Report Generated') && <button
-                                className="bg-orange-600 text-white px-3 py-1 rounded"
-                                onClick={async () => {
-                                    const res = await fetcher.put<{ product: { test: string, lab: string }, status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' }, { message: string } | string>("/orders/" + order._id, {
-                                        product: {
-                                            test: item.product.test._id,
-                                            lab: item.product.lab._id
-                                        },
-                                        status: 'Report Delivered'
-                                    })
-                                    if (res.status === 200) setOrder(await fetchOrderDetails())
-                                }}>Delivered</button>}
                             {(order.status === 'Report Delivered') && <button
-                                className="bg-primary text-white px-3 py-1 rounded"
+                                className="bg-primary text-white px-4 py-2 rounded"
                                 onClick={async () => {
                                     setShowReviewModel({
                                         orderId: order._id,
                                         item: {
                                             test: item.product.test._id,
                                             lab: item.product.lab._id
-                                        }
+                                        },
+                                        index: index
                                     })
                                 }}>Review</button>}
                         </div>
                     </div>
                     <div className='bg-[rgba(57,134,186,0.08)] flex gap-2 p-2 text-xs'>
                         {
-                            Array(item.quantity).fill(0).map((_, i) => (
+                            order.items[index]?.patientDetails?.length > 0 && Array(item.quantity).fill(0).map((_, i) => (
                                 <div
                                     key={i}
                                     className='bg-[rgba(57,134,186,0.25)] px-3 py-1 rounded-full cursor-pointer'
@@ -106,6 +87,21 @@ function OrderPage() {
                     </div>
                 </div>
             ))}
+            <div className='flex justify-end'>
+                {(order.status === 'Ordered') && <button
+                    className="bg-orange-600 text-white px-4 py-2 rounded"
+                    onClick={() => {
+                        setShowConfirmPopup(true)
+                    }}>Cancel Order</button>}
+                {(order.status === 'Report Generated') && <button
+                    className="bg-orange-600 text-white px-4 py-2 rounded"
+                    onClick={async () => {
+                        const res = await fetcher.put<{ status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' }, { message: string } | string>("/orders/" + order._id, {
+                            status: 'Report Delivered'
+                        })
+                        if (res.status === 200) setOrder(await fetchOrderDetails())
+                    }}>Delivered</button>}
+            </div>
             <div className='bg-white px-6 py-4 rounded'>
                 <div className='text-lg font-semibold'>Sample Taken Time </div>
                 <div><span className='font-medium'>Start:</span> {new Date(order?.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
@@ -131,12 +127,17 @@ function OrderPage() {
                 />}
             {
                 showReviewModel && <ReviewModel
+                    reviewDetails={order.review[showReviewModel.index]}
                     onSave={async review => {
                         const res = await fetcher.put<{ product: { test: string, lab: string }, review: ReviewType }, { message: string } | string>("/orders/" + showReviewModel.orderId, {
                             product: showReviewModel.item,
                             review: review
                         })
-                        if (res.status === 200) setOrder(await fetchOrderDetails())
+                        if (res.status === 200) {
+                            toast.success('Review Saved');
+                            setOrder(await fetchOrderDetails());
+                            setShowReviewModel(null);
+                        }
                     }}
                     onClose={() => setShowReviewModel(null)} />
             }
@@ -146,13 +147,9 @@ function OrderPage() {
                         Are you sure you want to cancel this order? <br />This action <span className='text-red-500'>cannot be undone.</span>
                     </div>
                 }
-                onDecline={() => setShowConfirmPopup(null)}
+                onDecline={() => setShowConfirmPopup(false)}
                 onApprove={async () => {
-                    const res = await fetcher.put<{ product: { test: string, lab: string }, status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' }, { message: string } | string>("/orders/" + order._id, {
-                        product: {
-                            test: showConfirmPopup.test,
-                            lab: showConfirmPopup.lab
-                        },
+                    const res = await fetcher.put<{ status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' }, { message: string } | string>("/orders/" + order._id, {
                         status: 'Canceled'
                     })
                     if (res.status === 200) {
@@ -178,10 +175,10 @@ function PatientDetailsPopup({ patientDetails, onClose }: { patientDetails?: Pat
     )
 }
 
-function ReviewModel({ onClose = () => { }, onSave = () => { } }: { onClose: () => void, onSave: (review: ReviewType) => void }) {
+function ReviewModel({ reviewDetails, onClose = () => { }, onSave = () => { } }: { reviewDetails?: ReviewType, onClose: () => void, onSave: (review: ReviewType) => void }) {
     return (
         <Model heading='Review' className='w-[400px]' onClose={onClose}>
-            <ReviewForm onSave={onSave} />
+            <ReviewForm reviewDetails={reviewDetails} onSave={onSave} />
         </Model>
     )
 }

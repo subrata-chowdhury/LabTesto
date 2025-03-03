@@ -4,11 +4,11 @@ import fetcher from "@/lib/fetcher";
 import Link from "next/link";
 import { CartItem } from "./CartPage";
 
-export default function CartItemCard({ item, onQuantityChange, onRemove, onOrder, onPatientClick }: { item: CartItem, onQuantityChange: (quantity: number) => void, onRemove?: () => void, onOrder: () => void, onPatientClick: (index: number) => void }) {
+export default function CartItemCard({ item, isPatientDetailsRequired = false, onQuantityChange, onRemove, onOrder, onPatientClick }: { item: CartItem, isPatientDetailsRequired?: boolean, onQuantityChange: (quantity: number) => void, onRemove?: () => void, onOrder: () => void, onPatientClick: (index: number) => void }) {
     return (
         <li className="bg-white rounded shadow-md flex flex-col">
             <div className='p-4 flex justify-between items-center'>
-                <div className='flex flex-col gap-4 justify-between h-full'>
+                <div className='flex flex-col gap-3 justify-between h-full'>
                     <Link href={'/tests/' + item.product.test._id}>
                         <div className="text-2xl font-semibold">{item.product.test.name}</div>
                         <div className='text-sm'>{item.product.lab.name}, {item.product.lab.location.address.pin}</div>
@@ -48,7 +48,7 @@ export default function CartItemCard({ item, onQuantityChange, onRemove, onOrder
             </div>
             <div className='bg-[rgba(57,134,186,0.05)] p-1 text-xs'>
                 {
-                    Array(item.quantity).fill(0).map((_, i) => (
+                    isPatientDetailsRequired && Array(item.quantity).fill(0).map((_, i) => (
                         <div
                             key={i}
                             className='bg-[rgba(57,134,186,0.2)] px-3 py-1 rounded-full cursor-pointer inline-flex m-1'

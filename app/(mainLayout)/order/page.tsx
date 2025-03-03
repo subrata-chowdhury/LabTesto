@@ -60,74 +60,11 @@ const OrderPage = () => {
                         className="bg-white rounded drop-shadow-md cursor-pointer p-3 px-4 flex justify-between items-center">
                         <div>
                             <div className="text-lg font-semibold">{order.items.map(e => e.product.test.name).join(', ')}</div>
-                            <div className='text'>{order.status}, {new Date(order.updatedAt).toDateString()}</div>
+                            <div><span className={order.status === "Canceled" ? 'text-red-500' : (order.status === 'Report Delivered' ? 'text-green-600' : '')}>{order.status}</span>, {new Date(order.updatedAt).toDateString()}</div>
                         </div>
                         <div>
                             ❯
                         </div>
-                        {/* <div className='p-3 px-4 flex justify-between items-center'>
-                                    <div className='flex flex-col gap-2 justify-between h-full'>
-                                        <div>
-                                            <div className="text-2xl font-semibold">{item.product.test.name}</div>
-                                            <div className='text-sm'>{item.product.lab.name}, {item.product.lab.location.address}</div>
-                                        </div>
-                                        <div className='mt-auto font-medium text-xl'>₹{(item.product.price || 0) * item.quantity}</div>
-                                    </div>
-                                    <div className='flex flex-col gap-2 text-sm'>
-                                        <div className='flex gap-2'>
-                                            <div>Quantity:</div>
-                                            <div>{item.quantity}</div>
-                                        </div>
-                                        {(order.status === 'Ordered') && <button
-                                            className="bg-orange-600 text-white px-3 py-1 rounded"
-                                            onClick={async () => {
-                                                const res = await fetcher.put<{ product: { test: string, lab: string }, status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' }, { message: string } | string>("/orders/" + order._id, {
-                                                    product: {
-                                                        test: item.product.test._id,
-                                                        lab: item.product.lab._id
-                                                    },
-                                                    status: 'Canceled'
-                                                })
-                                                if (res.status === 200) fetchOrder()
-                                            }}>Cancel</button>}
-                                        {(order.status === 'Report Generated') && <button
-                                            className="bg-orange-600 text-white px-3 py-1 rounded"
-                                            onClick={async () => {
-                                                const res = await fetcher.put<{ product: { test: string, lab: string }, status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' }, { message: string } | string>("/orders/" + order._id, {
-                                                    product: {
-                                                        test: item.product.test._id,
-                                                        lab: item.product.lab._id
-                                                    },
-                                                    status: 'Report Delivered'
-                                                })
-                                                if (res.status === 200) fetchOrder()
-                                            }}>Delivered</button>}
-                                        {(order.status === 'Report Delivered') && <button
-                                            className="bg-orange-600 text-white px-3 py-1 rounded"
-                                            onClick={async () => {
-                                                setShowReviewModel({
-                                                    orderId: order._id,
-                                                    item: {
-                                                        test: item.product.test._id,
-                                                        lab: item.product.lab._id
-                                                    }
-                                                })
-                                            }}>Review</button>}
-                                    </div>
-                                </div>
-                                <div className='bg-orange-50 flex gap-2 p-2 text-xs'>
-                                    {
-                                        Array(item.quantity).fill(0).map((_, i) => (
-                                            <div
-                                                key={i}
-                                                className='bg-orange-200 px-3 py-1 rounded-full cursor-pointer'
-                                                onClick={() =>
-                                                    setShowPatientPopup({ orderIndex: outerIndex, cartIndex: index, patientIndex: i })}>
-                                                {order.items[index]?.patientDetails[i]?.name?.split(' ').map(e => e.charAt(0)).join('') || 'Add +'}
-                                            </div>
-                                        ))
-                                    }
-                                </div> */}
                     </li>
                 ))}
             </ul>
@@ -190,6 +127,14 @@ export type Order = {
         start?: string;
         end?: string;
     };
+    review: {
+        test: string;
+        lab: string;
+        labRating: number,
+        collectorRating: number,
+        platformRating: number,
+        reviewText: string
+    }[];
     createdAt: string;
     updatedAt: string;
 }

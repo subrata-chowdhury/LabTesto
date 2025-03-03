@@ -96,13 +96,7 @@ const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props)
                                 )
                             }
                         },
-                        {
-                            heading: 'Patients', selector: 'patientDetails', component: ({ data }) => {
-                                return (
-                                    <div>{data.patientDetails.length}</div>
-                                )
-                            }
-                        },
+                        { heading: 'Patients', selector: 'quantity' },
                         {
                             heading: 'Actions',
                             component: ({ index }) => (<div className='flex items-center gap-1'>
