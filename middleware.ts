@@ -4,18 +4,37 @@ import verifyToken from './lib/tokenVerify';
 import { cookies } from 'next/headers';
 
 export async function middleware(request: NextRequest) {
-    const excludeTokenVerification = ['/api/auth/login', '/api/auth/signup', '/api/tests', '/api/labs', '/api/admin/auth/login', '/api/cart/count'];
+    const excludeTokenVerification = ['/api/auth/login', '/api/auth/signup', '/api/admin/auth/login', '/api/collector/auth/login', '/api/tests', '/api/labs', '/api/cart/count'];
     const excludeTokenVerificationPatterns = [/^\/api\/tests\/.*/, /^\/api\/labs\/.*/];
     if (excludeTokenVerification.includes(request.nextUrl.pathname) || excludeTokenVerificationPatterns.some(pattern => pattern.test(request.nextUrl.pathname))) {
         return NextResponse.next();
     }
 
-    const isAdmin = request.nextUrl.pathname.includes('/admin');
-    const token = isAdmin ? (await cookies()).get('adminToken')?.value : (await cookies()).get('token')?.value;
+    let userType: 'admin' | 'user' | 'collector' = 'user';
+    if (request.nextUrl.pathname.includes('/collector')) userType = 'collector';
+    if (request.nextUrl.pathname.includes('/admin')) userType = 'admin';
+
+    let token = null;
+    switch (userType) {
+        case 'admin':
+            token = (await cookies()).get('adminToken')?.value;
+            break;
+        case 'collector':
+            token = (await cookies()).get('collectorToken')?.value;
+            break;
+        case 'user':
+            token = (await cookies()).get('token')?.value;
+            break;
+
+        default:
+            token = (await cookies()).get('token')?.value;
+            break;
+    }
+    console.log(userType, "Token: ", token)
 
     let user: { id: string, institution: string, type: string } | boolean = false;
     if (token) {
-        user = await verifyToken<{ id: string, institution: string, type: string }>(token, isAdmin);
+        user = await verifyToken<{ id: string, institution: string, type: string }>(token, userType);
         if (!user) {
             return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
         }

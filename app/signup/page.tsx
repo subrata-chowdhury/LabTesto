@@ -13,9 +13,10 @@ export default function Signup() {
         field: '',
         msg: ''
     });
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    // const [confirmPassword, setConfirmPassword] = useState('');
 
     const navigate = useRouter();
 
@@ -23,26 +24,38 @@ export default function Signup() {
         e.preventDefault();
 
         // verification logic
+        if (!name || name?.length <= 0) {
+            setError({ field: 'name', msg: 'Name is required' });
+            return
+        }
         if (!email || email?.length <= 0) {
-            setError({ field: 'email', msg: 'Email is required' });
+            setError({ field: 'email', msg: 'Phone number is required' });
+            return;
+        }
+        if (email.length !== 10) {
+            setError({ field: 'email', msg: 'Invalid Phone number' });
             return;
         }
         if (!password || password?.length <= 0) {
             setError({ field: 'password', msg: 'Password is required' });
             return;
         }
-        if (!confirmPassword || confirmPassword?.length <= 0) {
-            setError({ field: 'confirmpassword', msg: 'Confirm Password is required' });
+        if (password.length < 8) {
+            setError({ field: 'password', msg: 'Password must be at least 8 characters' });
             return;
         }
-        if (password !== confirmPassword) {
-            setError({ field: 'confirmpassword', msg: 'Passwords do not match' });
-            return;
-        }
+        // if (!confirmPassword || confirmPassword?.length <= 0) {
+        //     setError({ field: 'confirmpassword', msg: 'Confirm Password is required' });
+        //     return;
+        // }
+        // if (password !== confirmPassword) {
+        //     setError({ field: 'confirmpassword', msg: 'Passwords do not match' });
+        //     return;
+        // }
 
         // submit logic
         setLoading(true);
-        await fetcher.post<{ email: string, password: string }, { token: string }>('/auth/signup', { email: email, password: password }).then((res) => {
+        await fetcher.post<{ name: string, email: string, password: string }, { token: string }>('/auth/signup', { name: name, email: email, password: password }).then((res) => {
             if (res.status !== 200) {
                 toast.error(res.error || 'Error signing up');
                 return
@@ -65,12 +78,19 @@ export default function Signup() {
                 <h1 className="md:pl-6 ps-0 pb-3 md:pb-0 w-11/12 md:w-9/12 max-w-[450px] text-center md:text-start text-2xl font-semibold">Sign Up to <span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></h1>
                 <form className="flex flex-col gap-4 bg-white p-6 rounded-md w-11/12 md:w-9/12 max-w-[450px]" onSubmit={signup}>
                     <Input
-                        label="Email"
+                        label="Full Name"
+                        value={name}
+                        onChange={val => setName(val)}
+                        error={(error.field == 'name' && error.msg?.length > 0) ? error.msg : ''}
+                        name="name"
+                        placeholder="Enter Your Full Name" />
+                    <Input
+                        label="Phone No."
                         value={email}
                         onChange={val => setEmail(val.trim())}
                         error={(error.field == 'email' && error.msg?.length > 0) ? error.msg : ''}
-                        name="email"
-                        placeholder="eg., example@email.com" />
+                        name="phone"
+                        placeholder="Enter You Phone Number" />
                     <div className="flex flex-col gap-1">
                         <PasswordInput
                             label="Password"
@@ -80,7 +100,7 @@ export default function Signup() {
                             name="password"
                             placeholder="Password" />
                     </div>
-                    <div className="flex flex-col gap-1">
+                    {/* <div className="flex flex-col gap-1">
                         <PasswordInput
                             label="Confirm Password"
                             value={confirmPassword}
@@ -88,7 +108,7 @@ export default function Signup() {
                             error={(error.field == 'confirmpassword' && error.msg?.length > 0) ? error.msg : ''}
                             name="confirmpassword"
                             placeholder="Confirm Password" />
-                    </div>
+                    </div> */}
                     <button type="submit" className="bg-blue-500 text-white rounded p-2" disabled={loading}>{loading ? 'Signing Up...' : 'Sign Up'}</button>
                     <div className="flex flex-col">
                         <div className="text-[0.9rem] text-center text-slate-500">Already have an account?</div>

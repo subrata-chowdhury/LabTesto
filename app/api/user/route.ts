@@ -13,8 +13,7 @@ export async function GET(req: NextRequest) {
     try {
         await dbConnect();
 
-        const user = await User.findById(id);
-        user.password = "";
+        const user = await User.findById(id).select('-password -otp -otpExpiry');
 
         return NextResponse.json(user, { status: 200 });
     } catch(e) {

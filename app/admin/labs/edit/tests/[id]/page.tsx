@@ -32,10 +32,12 @@ const Page = () => {
                 setLabDetails(labDetails);
             }
         })
-        fetchDatamissByLab()
+        fetchDatamissByLab(id);
     }, [id])
 
-    async function fetchDatamissByLab() {
+    async function fetchDatamissByLab(id?: string | string[]) {
+        if (!id) return;
+        if (Array.isArray(id)) id = id[0];
         fetcher.get<LabWithMissingPrices[]>('/admin/datamiss?labId=' + id).then((res) => {
             if (res.body) {
                 setDatamissByLab(res.body);
@@ -45,7 +47,7 @@ const Page = () => {
 
     async function saveLab() {
         setLoading(true);
-        const res = await fetcher.post<LabTestDetails, { messege: string }>(`/labs/${id}`, labDetails);
+        const res = await fetcher.post<LabTestDetails, { messege: string }>(`/admin/labs/${id}`, labDetails);
         if (res.status === 200) {
             toast.success('Lab saved successfully');
         } else {
@@ -63,7 +65,7 @@ const Page = () => {
                 onChange={{ labDetails: setLabDetails }}
                 onSave={async () => {
                     await saveLab();
-                    await fetchDatamissByLab()
+                    await fetchDatamissByLab(id);
                 }}
             />
             {

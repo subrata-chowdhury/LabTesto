@@ -1,5 +1,6 @@
+import debounce from "@/lib/debouncer";
 import fetcher from "@/lib/fetcher";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 interface SelectInstituteProps {
     onSelect: (value: Collector) => void;
@@ -26,12 +27,12 @@ const SelectCollector: React.FC<SelectInstituteProps> = ({
     const [collectors, setCollectors] = useState<Collector[]>([]);
     const [collectorSearch, setCollectorSearch] = useState<string>('');
 
-    async function onSeach(name: string) {
+    const onSeach = useCallback(debounce(async (name: string) => {
         const res = await fetcher.get<{ collectors: Collector[], pagination: { currentPage: number, pageSize: number, totalPages: number } }>(`/admin/collectors?filter=${JSON.stringify({ email: name })}&limit=5&page=1`);
         if (res.status === 200 && res.body) {
             setCollectors(res.body.collectors)
         }
-    }
+    }, 300), [])
 
     useEffect(() => {
         onSeach('');

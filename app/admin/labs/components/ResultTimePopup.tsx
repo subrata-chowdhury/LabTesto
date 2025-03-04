@@ -27,7 +27,7 @@ export default function ResultTimePopup({ details, onClose = () => { }, onSave =
                     <Input label='ResultTime *' name='price' placeholder='Enter result time' value={data.resultTime} onChange={(val) => { setData(prevVal => ({ ...prevVal, resultTime: val })) }} labelClass='font-medium' containerClass='flex-1' />
                 </div>
                 <div className='p-5 px-0 ms-auto justify-end items-end flex gap-4'>
-                    <div className='font-medium text-blue-500 h-10 flex justify-center items-center px-4 border-2 border-blue-400 rounded cursor-pointer' onClick={() => { }}>Cancel</div>
+                    <div className='font-medium text-blue-500 h-10 flex justify-center items-center px-4 border-2 border-blue-400 rounded cursor-pointer' onClick={() => onClose()}>Cancel</div>
                     <div className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => {
                         await onSave({ ...data, name: testSearch });
                     }}>Save</div>

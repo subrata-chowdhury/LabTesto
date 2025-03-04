@@ -6,11 +6,9 @@ import Menubar from './components/Menubar';
 
 const Layout = async ({ children }: { children: ReactNode }) => {
     const token = (await cookies()).get('adminToken')?.value;
-    const isValid = await verifyToken<{ id: string }>(token, true);
+    const isValid = await verifyToken<{ id: string }>(token, 'admin');
 
-    if (!isValid) {
-        redirect('/login/admin'); // Redirect to login if the token is invalid
-    }
+    if (!isValid) redirect('/login/admin'); // Redirect to login if the token is invalid
 
     return isValid && (
         <>

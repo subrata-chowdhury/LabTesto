@@ -1,6 +1,7 @@
 'use client'
+import debounce from "@/lib/debouncer";
 import fetcher from "@/lib/fetcher";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 interface SelectInstituteProps {
     onSelect: (value: Test) => void;
@@ -29,12 +30,12 @@ const SelectTest: React.FC<SelectInstituteProps> = ({
     const [tests, setTests] = useState<Test[]>([]);
     const [testSearch, setTestSearch] = useState<string>('');
 
-    async function onSeach(name: string) {
+    const onSeach = useCallback(debounce(async (name: string) => {
         const res = await fetcher.get<{ tests: Test[], pagination: { currentPage: number, pageSize: number, totalPages: number } }>(`/tests?filter=${JSON.stringify({ name: name })}&limit=5&page=1`);
         if (res.status === 200 && res.body) {
             setTests(res.body.tests)
         }
-    }
+    }, 300), []);
 
     useEffect(() => {
         onSeach('');

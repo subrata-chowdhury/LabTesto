@@ -49,7 +49,7 @@ const Tests = () => {
     }, [branch, type, name, currentPage, limit, fetchTests]);
 
     async function getAnalytics() {
-        const res = await fetcher.get<{ totalTests: number, blood: number, urine: number, stool: number }>('/tests/analytics');
+        const res = await fetcher.get<{ totalTests: number, blood: number, urine: number, stool: number }>('/admin/tests/analytics');
         if (res.status !== 200) return;
         if (res.body) {
             setAnalytics({
@@ -63,7 +63,7 @@ const Tests = () => {
 
     async function deleteTest(id: string) {
         if(!window.confirm('Are you sure you want to delete this test?')) return;
-        const res = await fetcher.delete(`/tests/${id}`);
+        const res = await fetcher.delete(`/admin/tests/${id}`);
         if (res.status !== 200) return;
         await fetchTests();
     }

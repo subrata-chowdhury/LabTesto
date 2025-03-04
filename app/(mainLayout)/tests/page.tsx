@@ -26,9 +26,10 @@ const Tests = () => {
         name: '',
         sampleType: 'All',
     })
-    const [limit, setLimit] = useState(5);
+    const [limit, setLimit] = useState(6);
     const [loading, setLoading] = useState(false);
-
+    const [totalPages, setTotalPages] = useState(1);
+    
     async function onSeach(filter: { name: string, sampleType?: 'All' | 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other' | 'Other Body Fluid' }, limit: number) {
         setLoading(true)
         if (filter?.sampleType === 'All') {
@@ -37,15 +38,16 @@ const Tests = () => {
         if (filter?.sampleType === 'Other') {
             filter.sampleType = 'Other Body Fluid'
         }
-        const res = await fetcher.get<{ tests: Test[], pagination: { currentPage: number, pageSize: number, totalPages: number } }>(`/tests?filter=${JSON.stringify(filter)}&limit=${limit || 5}&page=1`);
+        const res = await fetcher.get<{ tests: Test[], pagination: { totalTests: number, currentPage: number, pageSize: number, totalPages: number } }>(`/tests?filter=${JSON.stringify(filter)}&limit=${limit || 6}&page=1`);
         if (res.status === 200 && res.body) {
             setTests(res.body.tests)
+            setTotalPages(res.body.pagination.totalPages);
         }
         setLoading(false)
     }
 
     useEffect(() => {
-        onSeach({ name: '' }, 5);
+        onSeach({ name: '' }, 6);
     }, [])
 
     return (
@@ -84,8 +86,7 @@ const Tests = () => {
                     }}
                     width={85} />
             </div>
-            {loading && <Loading />}
-            {!loading && <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-5'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-5'>
                 {
                     tests.map(test => (
                         <div key={test._id} className='flex flex-col border-2 border-primary border-opacity-60 rounded-lg px-3 py-2'>
@@ -96,13 +97,14 @@ const Tests = () => {
                         </div>
                     ))
                 }
-            </div>}
-            {!loading && <div className='w-full flex justify-center mt-2'>
+            </div>
+            {loading && <Loading />}
+            {totalPages !== 1 && !loading && <div className='w-full flex justify-center mt-2'>
                 <button
                     className='mt-2 px-5 py-2 rounded-md bg-primary text-white font-medium'
                     onClick={async () => {
-                        setLimit(prevLimit => prevLimit + 10);
-                        await onSeach({ ...filter, sampleType: filter.sampleType as 'All' | 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other' | 'Other Body Fluid' }, limit)
+                        setLimit(prevLimit => prevLimit + 6);
+                        await onSeach({ ...filter, sampleType: filter.sampleType as 'All' | 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other' | 'Other Body Fluid' }, limit + 6)
                     }}
                 >
                     Load More

@@ -58,7 +58,7 @@ const Labs = () => {
 
     async function deleteLab(id: string) {
         if(!window.confirm('Are you sure you want to delete this lab?')) return;
-        const res = await fetcher.delete(`/labs/${id}`);
+        const res = await fetcher.delete(`/admin/labs/${id}`);
         if (res.status !== 200) return;
         await fetchLabs();
     }

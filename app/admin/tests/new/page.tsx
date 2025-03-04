@@ -34,7 +34,7 @@ const Page = () => {
             return;
         }
 
-        const res = await fetcher.post('/tests', {
+        const res = await fetcher.post('/admin/tests', {
             ...testDetails,
             description: testDetails.tempDescription || testDetails.description || '',
             overview: testDetails.tempOverview || testDetails.overview || '',

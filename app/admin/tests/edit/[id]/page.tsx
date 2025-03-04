@@ -28,7 +28,7 @@ const Page = () => {
 
     const handleSave = async () => {
         setLoading(true);
-        const res = await fetcher.post<TestDetails, { messege: string }>(`/tests/${id}`, {
+        const res = await fetcher.post<TestDetails, { messege: string }>(`/admin/tests/${id}`, {
             ...testDetails,
             description: testDetails.tempDescription || testDetails.description || '',
             overview: testDetails.tempOverview || testDetails.overview || '',

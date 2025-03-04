@@ -43,7 +43,7 @@ const Page = () => {
 
     async function saveLab() {
         setLoading(true);
-        const res = await fetcher.post<LabAboutDetails, { messege: string }>(`/labs/${id}`, { ...labDetails, description: labDetails.tempDescription || labDetails.description || '' });
+        const res = await fetcher.post<LabAboutDetails, { messege: string }>(`/admin/labs/${id}`, { ...labDetails, description: labDetails.tempDescription || labDetails.description || '' });
         if (res.status === 200) {
             toast.success('Lab saved successfully');
             navigate.push('/admin/labs');

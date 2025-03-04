@@ -4,16 +4,17 @@ import { hash } from 'bcryptjs';
 import User from '@/models/User';
 import { SignJWT } from 'jose';
 import dbConnect from '@/config/db';
+import Cart from '@/models/Cart';
 
 export async function GET() {
     return NextResponse.json({ message: 'GET request received' });
 }
 
 export async function POST(request: NextRequest) {
-    const { email, password } = await request.json();
+    const { name, email, password } = await request.json();
 
-    if (!email || !password) {
-        return new NextResponse('Username and password are required', { status: 400 });
+    if (!name || !email || !password) {
+        return new NextResponse('Username, Phone no and password are required', { status: 400 });
     }
 
     await dbConnect();
@@ -27,12 +28,22 @@ export async function POST(request: NextRequest) {
     }
 
     const newUser = new User({
+        name,
         email,
         password: hashedPassword,
     });
 
     try {
         await newUser.save();
+        
+        const id = newUser._id;
+        const cartData = {
+            user: id,
+            items: []
+        };
+
+        const cart = new Cart(cartData);
+        cart.save();
     } catch {
         return new NextResponse('Error saving user', { status: 500 });
     }

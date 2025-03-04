@@ -59,13 +59,13 @@ const Menubar = () => {
                         height={28} />
                 </Link>
                 <Link className="hidden md:flex items-center space-x-4 cursor-pointer" href='/profile' aria-label="View Profile">
-                    <Image src={user} alt="User Avatar" width={40} height={40} className="rounded-full p-2 bg-[#a0d9ff9d]" />
+                    <Image src={user} alt="User Avatar" width={40} height={40} className="rounded-full p-2 bg-primary bg-opacity-20" />
                 </Link>
             </div>
             {isOpen && (
-                <div className="md:hidden fixed left-0 top-14 w-full sm:w-2/5 px-10 z-20 bg-white h-screen">
+                <div className="md:hidden fixed left-0 top-14 w-full text-lg sm:w-2/5 px-10 z-20 bg-white h-screen">
                     <Link className="flex flex-col gap-2 justify-center items-center cursor-pointer py-5 pb-7" href={'/profile'} onClick={() => setIsOpen(false)} aria-label="View Profile">
-                        <Image src={user} alt="User Avatar" width={40} height={40} className="rounded-full p-2 bg-gray-100" />
+                        <Image src={user} alt="User Avatar" width={80} height={80} className="rounded-full p-4 bg-primary bg-opacity-20" />
                         <div className="text-[#3987ba] menu">Profile</div>
                     </Link>
                     <Link href="/tests" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>Book a Test</Link>
@@ -73,7 +73,7 @@ const Menubar = () => {
                     <Link href="/order" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>Orders</Link>
                     <Link href="#" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>Contact</Link>
                     <div
-                        className={`cursor-pointer flex justify-start gap-3 p-3 mt-40 items-center rounded-lg text-primary`}
+                        className={`cursor-pointer flex justify-start gap-3 p-3 px-0 mt-40 items-center rounded-lg text-primary`}
                         onClick={() => {
                             document.cookie = 'token=; Max-Age=0; path=/;';
                             window.location.href = '/';

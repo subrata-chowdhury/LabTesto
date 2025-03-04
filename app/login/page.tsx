@@ -20,7 +20,11 @@ export default function Login() {
 
         // verification logic
         if (!email || email?.length <= 0) {
-            setError({ field: 'email', msg: 'Email is required' });
+            setError({ field: 'email', msg: 'Phone number is required' });
+            return;
+        }
+        if(email.length !== 10) {
+            setError({ field: 'email', msg: 'Invalid Phone number' });
             return;
         }
         if (!password || password?.length <= 0) {
@@ -55,12 +59,12 @@ export default function Login() {
                 <h1 className="md:pl-6 ps-0 pb-3 md:pb-0 w-11/12 md:w-9/12 max-w-[450px] text-center md:text-start text-2xl font-semibold">Log In to <span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></h1>
                 <form className="flex flex-col gap-4 bg-white p-6 rounded-md w-11/12 md:w-9/12 max-w-[450px]">
                     <Input
-                        label="Email"
+                        label="Phone No."
                         value={email}
                         onChange={val => setEmail(val.trim())}
                         error={(error.field == 'email' && error.msg?.length > 0) ? error.msg : ''}
-                        name="email"
-                        placeholder="eg., example@email.com" />
+                        name="phone"
+                        placeholder="Enter You Phone Number" />
                     <div className="flex flex-col gap-1">
                         <PasswordInput
                             label="Password"

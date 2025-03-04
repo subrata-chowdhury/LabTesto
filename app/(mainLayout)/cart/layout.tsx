@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 
 const Layout = async ({ children }: { children: ReactNode }) => {
     const token = (await cookies()).get('token')?.value;
-    const isValid = await verifyToken<{ id: string }>(token);
+    const isValid = await verifyToken<{ id: string }>(token, 'user');
 
     if (!isValid) {
         redirect('/login?redirect=/cart'); // Redirect to login if the token is invalid
