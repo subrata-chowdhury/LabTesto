@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
         await dbConnect();
 
         if (filter.email) {
-            filter.email = { $regex: `^${filter.email}`, $options: 'i' };
+            filter.email = { $regex: `${filter.email}`, $options: 'i' };
         } else {
             delete filter.email;
         }

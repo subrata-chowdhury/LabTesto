@@ -4,8 +4,8 @@ import Cart from '@/models/Cart';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
-    const id = await req.cookies.get('userId')?.value;
-
+    const id = await req.headers.get('x-user');
+    
     if (!id) {
         return new NextResponse('User ID is required', { status: 400 });
     }

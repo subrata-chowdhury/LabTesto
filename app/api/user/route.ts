@@ -4,7 +4,7 @@ import User from '@/models/User';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
-    const id = await req.cookies.get('userId')?.value;
+    const id = await req.headers.get('x-user');
 
     if (!id) {
         return new NextResponse('User ID is required', { status: 400 });
@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-    const id = await req.cookies.get('userId')?.value;
+    const id = await req.headers.get('x-user');
     const reqBody = await req.json();
 
     if (!id) {

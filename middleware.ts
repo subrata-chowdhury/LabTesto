@@ -38,20 +38,26 @@ export async function middleware(request: NextRequest) {
         if (!user) {
             return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
         }
+        const requestHeaders = new Headers(request.headers);
+        requestHeaders.set('x-user', user.id);
+
+        return NextResponse.next({
+            request: { headers: requestHeaders }
+        });
     } else {
         return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
-    const response = NextResponse.next();
-    if (user && user.id) {
-        response.cookies.set('userId', String(user.id), {
-            httpOnly: true, // Prevent access from client-side JavaScript
-            // secure: process.env.NODE_ENV === 'production', // Send cookie only over HTTPS in production
-            sameSite: 'strict', // Prevent cross-site request forgery
-            path: '/', // Cookie is available for all routes
-        });
-    }
-    return response;
+    // return NextResponse.next();
+    // if (user && user.id) {
+    //     response.cookies.set('userId', String(user.id), {
+    //         httpOnly: true, // Prevent access from client-side JavaScript
+    //         // secure: process.env.NODE_ENV === 'production', // Send cookie only over HTTPS in production
+    //         sameSite: 'strict', // Prevent cross-site request forgery
+    //         path: '/', // Cookie is available for all routes
+    //     });
+    // }
+    // return response;
 }
 
 export const config = {

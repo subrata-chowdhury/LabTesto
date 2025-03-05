@@ -1,5 +1,6 @@
 import dbConnect from "@/config/db";
 import Order from "@/models/Order";
+import { isValidObjectId } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -11,24 +12,44 @@ export async function GET(req: NextRequest) {
 
         await dbConnect();
 
+        if (filter.name) {
+            if (isValidObjectId(filter.name)) {
+                filter._id = filter.name
+            } else {
+                const totalOrders = await Order.countDocuments(filter);
+                const totalPages = Math.ceil(totalOrders / limit);
+                return NextResponse.json({
+                    orders: [],
+                    pagination: {
+                        totalOrders,
+                        totalPages,
+                        currentPage: page,
+                        pageSize: limit,
+                    },
+                });
+            }
+        }
+        delete filter.name;
+
         const orders = await Order.find(filter)
             .limit(limit)
             .skip((page - 1) * limit);
 
-        const totalCarts = await Order.countDocuments(filter);
-        const totalPages = Math.ceil(totalCarts / limit);
+        const totalOrders = await Order.countDocuments(filter);
+        const totalPages = Math.ceil(totalOrders / limit);
 
         return NextResponse.json({
             orders,
             pagination: {
-                totalCarts,
+                totalOrders,
                 totalPages,
                 currentPage: page,
                 pageSize: limit,
             },
         });
-    } catch {
-        return new NextResponse('Error fetching carts', { status: 500 });
+    } catch (e) {
+        console.log(e)
+        return new NextResponse('Error fetching Orders', { status: 500 });
     }
 }
 

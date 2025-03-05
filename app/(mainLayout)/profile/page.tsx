@@ -77,7 +77,7 @@ const ProfilePage = () => {
                     </div>
                 </div>
             </section>
-            <section className='px-20 pt-2 mt-2'>
+            <section className='px-10 md:px-20 pt-2 mt-2'>
                 <div className='font-semibold text-lg'>Address Details</div>
                 <div className='flex gap-2 mt-2 text-sm text-white'>
                     {user?.address?.map((address, i) => (
@@ -97,10 +97,10 @@ const ProfilePage = () => {
                     </div>
                 </div>
             </section>
-            {isDirty && <div className='px-20 pt-8 pb-10 flex'>
+            {isDirty && <div className='px-10 md:px-20 pt-8 pb-10 flex'>
                 <button className='bg-primary text-white py-2 px-4 rounded ms-auto' onClick={async () => await updateUser()}>Save</button>
             </div>}
-            <div className='px-20 pt-8 pb-10 flex'>
+            <div className='px-10 md:px-20 pt-8 pb-10 flex'>
                 <button className='bg-primary text-white py-2 px-4 rounded-md'>Delete Your Account</button>
             </div>
             {showPatientPopup?.patientIndex != null &&

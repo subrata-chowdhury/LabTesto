@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
         await dbConnect();
 
         if (filter.name) {
-            filter.name = { $regex: `^${filter.name}`, $options: 'i' };
+            filter.name = { $regex: `${filter.name}`, $options: 'i' };
         } else {
             delete filter.name;
         }

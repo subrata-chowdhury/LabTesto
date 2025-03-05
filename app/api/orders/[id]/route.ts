@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
     try {
         const id = req.url.split('/').pop();
-        const userId = await req.cookies.get('userId')?.value;
+        const userId = await req.headers.get('x-user');
 
         if (!id) {
             return new NextResponse('Order ID is required', { status: 400 });
@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
-    const userId = await req.cookies.get('userId')?.value;
+    const userId = await req.headers.get('x-user');
     const body = await req.json();
 
     if (!userId) {
@@ -86,7 +86,62 @@ export async function PUT(req: NextRequest) {
             }
         }
         await existingOrder.save();
+        existingOrder.populate({ path: 'collector', model: Collector });
+        await existingOrder.populate({
+            path: 'items.product.test',
+            select: 'name',
+            model: Test
+        })
+        await existingOrder.populate({
+            path: 'items.product.lab',
+            select: 'name',
+            model: Lab
+        });
 
+        type Item = {
+            product: { test: { name: string }, lab: { name: string } },
+            patientDetails: {
+                name: string;
+                gender: 'Male' | 'Female' | 'Other';
+                age: number;
+                other?: string;
+            }[]
+        };
+        if (existingOrder.status === 'Canceled') {
+            await fetch('https://api.telegram.org/bot7846622941:AAEjj6UdF2C42GG_S1RVvK2oPhmRxFUCukA/sendMessage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: existingOrder.collector.chatId || -4659804693,
+                    text: `
+Order ID: ${existingOrder._id}
+
+Status: ${existingOrder.status}!!!!!!
+
+${existingOrder.items.map((e: Item) => `
+Test: ${e.product.test.name},
+Lab: ${e.product.lab.name}, 
+
+Patients: ${e.patientDetails.map(e2 => `
+    Name: ${e2.name},
+    Age: ${e2.age || 'none'},
+    Gender: ${e2.gender || 'none'}\n`).join('')}`).join('\n')}
+
+Address: 
+    Pin: ${existingOrder.address.pin}, 
+    City: ${existingOrder.address.city}, 
+    Phone: ${existingOrder.address.phone}, 
+    Landmark: ${existingOrder.address.other || 'none'}
+    
+Sample Taken Time:
+    Start: ${existingOrder.sampleTakenDateTime.start},
+    End: ${existingOrder.sampleTakenDateTime.end}
+            `
+                })
+            });
+        }
         return NextResponse.json({ message: 'Order updated successfully' }, { status: 200 });
     } catch (e) {
         console.log(e);

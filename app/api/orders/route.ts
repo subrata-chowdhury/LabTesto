@@ -9,7 +9,7 @@ import Collector from '@/models/Collector';
 
 export async function GET(req: NextRequest) {
     try {
-        const id = await req.cookies.get('userId')?.value;
+        const id = await req.headers.get('x-user');
 
         if (!id) {
             return new NextResponse('User ID is required', { status: 400 });
@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
     try {
-        const userId = await req.cookies.get('userId')?.value;
+        const userId = await req.headers.get('x-user');
         if (!userId) {
             return new NextResponse('User not authenticated', { status: 401 });
         }
