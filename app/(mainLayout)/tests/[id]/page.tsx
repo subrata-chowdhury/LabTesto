@@ -353,7 +353,7 @@ function Test() {
                                 </div>
                                 <div className='absolute bottom-0 w-full h-full z-10 -translate-x-[10%] translate-y-1/2 bg-gradient-to-t from-gray-400 to-transparent transform rotate-[20deg]'></div>
                             </div>
-                            <div className='tiptap border-0 p-5' style={{ padding: 0, border: 0 }} dangerouslySetInnerHTML={{ __html: lab.description.replace(/<p>/g, '').replace(/<\/p>/g, '<br/>') }}></div>
+                            <div className='tiptap border-0 p-5' style={{ border: 0 }} dangerouslySetInnerHTML={{ __html: lab.description.replace(/<p>/g, '').replace(/<\/p>/g, '<br/>') }}></div>
                         </div>
                     </div>
                 </section>

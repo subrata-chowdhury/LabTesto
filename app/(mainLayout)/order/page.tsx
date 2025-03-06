@@ -111,7 +111,10 @@ export type Order = {
         phone: string;
     };
 
-    user: string;
+    user: {
+        email: string;
+        name: string;
+    };
     collector?: {
         name: string;
         email: string;

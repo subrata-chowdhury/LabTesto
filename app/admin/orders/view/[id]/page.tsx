@@ -1,6 +1,6 @@
 'use client'
 import React, { useCallback, useEffect, useState } from 'react'
-import { Order } from '../page';
+// import { Order } from '../page';
 import fetcher from '@/lib/fetcher';
 import { PatientDetails } from '@/app/components/popups/PatientDetailsPopup';
 import Model from '@/components/Model';
@@ -19,7 +19,7 @@ function OrderPage() {
 
     const fetchOrderDetails = useCallback(async () => {
         try {
-            const response = await fetcher.get<Order>('/orders/' + id);
+            const response = await fetcher.get<Order>('/admin/orders/' + id);
             if (response.status !== 200) {
                 throw new Error('Failed to fetch order');
             }
@@ -41,7 +41,7 @@ function OrderPage() {
     if (!order) return <Loading />
 
     return (
-        <div className='flex-1 flex flex-col gap-4 bg-gray-100 px-5 py-4'>
+        <div className='flex-1 flex flex-col gap-4 pt-2'>
             <div className='text-sm'>Order ID: {order?._id.toUpperCase()}</div>
             {order?.items.map((item, index) => (
                 <div className='bg-white rounded shadow-md' key={index}>
@@ -52,24 +52,6 @@ function OrderPage() {
                                 <div className='text-sm'>{item.product.lab.name}, {item.product.lab.location.address.pin}</div>
                             </div>
                             <div className='mt-auto font-medium text-xl'>₹{(item.product.price || 0) * item.quantity}</div>
-                        </div>
-                        <div className='flex flex-col gap-2 items-center justify-center text-sm'>
-                            <div className='flex gap-2'>
-                                <div>Quantity:</div>
-                                <div>{item.quantity}</div>
-                            </div>
-                            {(order.status === 'Report Delivered') && <button
-                                className="bg-primary text-white px-4 py-2 rounded"
-                                onClick={async () => {
-                                    setShowReviewModel({
-                                        orderId: order._id,
-                                        item: {
-                                            test: item.product.test._id,
-                                            lab: item.product.lab._id
-                                        },
-                                        index: index
-                                    })
-                                }}>Review</button>}
                         </div>
                     </div>
                     <div className='bg-[rgba(57,134,186,0.08)] flex gap-2 p-2 text-xs'>
@@ -87,21 +69,6 @@ function OrderPage() {
                     </div>
                 </div>
             ))}
-            <div className='flex justify-end'>
-                {(order.status === 'Ordered') && <button
-                    className="bg-orange-600 text-white px-4 py-2 rounded"
-                    onClick={() => {
-                        setShowConfirmPopup(true)
-                    }}>Cancel Order</button>}
-                {(order.status === 'Report Generated') && <button
-                    className="bg-orange-600 text-white px-4 py-2 rounded"
-                    onClick={async () => {
-                        const res = await fetcher.put<{ status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' }, { message: string } | string>("/orders/" + order._id, {
-                            status: 'Report Delivered'
-                        })
-                        if (res.status === 200) setOrder(await fetchOrderDetails())
-                    }}>Delivered</button>}
-            </div>
             <div className='bg-white px-6 py-4 rounded'>
                 <div className='text-lg font-semibold'>Sample Taken Time </div>
                 <div><span className='font-medium'>Start:</span> {new Date(order?.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
@@ -186,4 +153,61 @@ function ReviewModel({ reviewDetails, onClose = () => { }, onSave = () => { } }:
             <ReviewForm reviewDetails={reviewDetails} onSave={onSave} />
         </Model>
     )
+}
+
+export type Order = {
+    _id: string;
+    items: {
+        product: {
+            test: { name: string, _id: string };
+            lab: { name: string, _id: string, location: { address: { pin: string } } };
+            price: number;
+        };
+        patientDetails: {
+            name: string;
+            // phone: string;
+            gender: 'Male' | 'Female' | 'Other';
+            age: number;
+            other?: string;
+        }[];
+        quantity: number;
+        date?: Date;
+    }[];
+    address: {
+        pin: number;
+        city: string;
+        district: string;
+        other?: string; // road details
+        phone: string;
+    };
+
+    user: {
+        email: string;
+        name: string;
+    };
+    collector?: {
+        name: string;
+        email: string;
+        // password: string;
+        phone?: string;
+    };
+    status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
+    sampleTakenDateTime: {
+        start?: string;
+        end?: string;
+    };
+    reportDeliverTime: {
+        start?: string;
+        end?: string;
+    };
+    review: {
+        test: string;
+        lab: string;
+        labRating: number,
+        collectorRating: number,
+        platformRating: number,
+        reviewText: string
+    }[];
+    createdAt: string;
+    updatedAt: string;
 }

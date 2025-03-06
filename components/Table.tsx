@@ -34,17 +34,19 @@ type Props<T> = {
         height?: number,
         // showPopupAtTop?: boolean,
     }
+    loading?: boolean
 }
 
-function Table<T>({ name, table, pagination, limit, onSearch, tag, dropdown }: Props<T>) {
+function Table<T>({ name, table, pagination, limit, onSearch, tag, dropdown, loading = false }: Props<T>) {
     return (
         <div className='border-2 rounded-md bg-white'>
             <h3 className='p-3 border-b-2 text-xl font-semibold'>{name}</h3>
             <div className='p-3 flex justify-between items-center md:flex-row flex-col gap-2'>
-                <TableTags tags={tag?.tags || []} onActiveTagChange={tag?.onTagChange} />
+                <TableTags loading={loading} tags={tag?.tags || []} onActiveTagChange={tag?.onTagChange} />
                 <div className='flex gap-2 items-center'>
-                    <SearchBar onSearch={onSearch} />
+                    {onSearch && <SearchBar onSearch={val => !loading ? onSearch(val) : ''} />}
                     {dropdown && <Dropdown
+                        loading={loading}
                         options={dropdown?.options || []}
                         value={dropdown?.value || ''}
                         onChange={val => dropdown?.onChange(val.value)}
@@ -52,14 +54,14 @@ function Table<T>({ name, table, pagination, limit, onSearch, tag, dropdown }: P
                         height={dropdown?.height} />}
                 </div>
             </div>
-            <MainTable<T> {...table} />
+            <MainTable<T> loading={loading} {...table} />
             <div className='flex flex-col gap-2 md:flex-row md:gap-0 justify-between items-center p-4'>
                 <div className='flex gap-2 items-center'>
                     <p className='text-sm text-gray-600'>Showing</p>
-                    <Dropdown options={limit.options || [5, 10, 15]} value={limit.limit} onChange={(val) => limit.onLimitChange(val.value)} showPopupAtTop={true} height={38} />
+                    <Dropdown loading={loading} options={limit.options || [5, 10, 15]} value={limit.limit} onChange={(val) => limit.onLimitChange(val.value)} showPopupAtTop={true} height={38} />
                     <p className='text-sm text-gray-600 text-nowrap'>Out of {pagination.totalPages}</p>
                 </div>
-                <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} onChange={pagination.onPageChange} />
+                <Pagination loading={loading} currentPage={pagination.currentPage} totalPages={pagination.totalPages} onChange={pagination.onPageChange} />
             </div>
         </div>
     )
@@ -72,12 +74,14 @@ interface MainTableProps<T> {
     config: { heading: string, selector?: keyof T, hideAble?: boolean, component?: React.FC<{ data: T, index: number }> }[],
     data: T[],
     className?: string,
+    loading?: boolean
 }
 
 export function MainTable<T>({
     config = [],
     data = [],
-    className = ''
+    className = '',
+    loading = false
 }: MainTableProps<T>) {
     if (!config.length) return <div>Invalid Data</div>
     return (
@@ -85,32 +89,44 @@ export function MainTable<T>({
             <thead>
                 <tr style={{ height: 48 }} className='bg-gray-200'>
                     {config.map((configObj, index) => (
-                        <th key={index} className={`text-start pl-4 font-normal ${configObj.hideAble ? "hide-able" : ""}`}>{configObj.heading}</th>
+                        <th key={index} className={`text-start pl-4 font-normal ${configObj.hideAble ? "hidden md:flex min-h-12 items-center" : ""}`}>{configObj.heading}</th>
                     ))}
                 </tr>
             </thead>
             <tbody>
-                {data?.length > 0 && data.map((obj, index) => (
+                {!loading && data?.length > 0 && data.map((obj, index) => (
                     <tr key={index} className='border-t' style={{ height: 48 }}>
                         {config.map((configObj, innerIndex) => (
                             // @ts-expect-error: Type 'keyof T' cannot be used as an index type.
-                            <td key={innerIndex} className={`pl-4 ${configObj.hideAble ? "hide-able" : ""}`} >{configObj.component ? React.createElement(configObj.component, { data: obj, index }) : obj[configObj.selector || ""]}</td>
+                            <td key={innerIndex} className={`pl-4 ${configObj.hideAble ? "hidden md:flex min-h-12 items-center" : ""}`} >{configObj.component ? React.createElement(configObj.component, { data: obj, index }) : obj[configObj.selector || ""]}</td>
                         ))}
                     </tr>
                 ))}
-                {(!data || data?.length <= 0) && <tr><td className='text-center h-12 text-red-500 font-medium' colSpan={config.length}>No Data Found</td></tr>}
+                {loading && <tr><td className='text-center h-12 text-red-500 font-medium' colSpan={config.length}>
+                    <div className="flex justify-center items-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-2 border-b-transparent border-gray-900"></div>
+                    </div>
+                </td></tr>}
+                {!loading && (!data || data?.length <= 0) && <tr><td className='text-center h-12 text-red-500 font-medium' colSpan={config.length}>No Data Found</td></tr>}
             </tbody>
         </table>
     )
 }
 
-function TableTags({ tags = [], onActiveTagChange = () => { } }: { tags: string[], onActiveTagChange?: (tag: string) => void }) {
+function TableTags({ tags = [], onActiveTagChange = () => { }, loading = false }: { tags: string[], onActiveTagChange?: (tag: string) => void, loading?: boolean }) {
     const [activeTag, setActiveTag] = useState(tags[0]);
 
     return (
         <div className='inline-flex gap-2'>
             {tags.map((tag, index) => (
-                <div key={index} className={`cursor-pointer p-2 px-4 rounded border-2 ${activeTag === tag ? 'border-blue-300 text-blue-500 bg-blue-50' : 'bg-white'}`} onClick={() => { setActiveTag(tag); onActiveTagChange(tag) }}>{tag}</div>
+                <div
+                    key={index}
+                    className={`cursor-pointer p-2 px-4 rounded border-2 ${activeTag === tag ? 'border-blue-300 text-blue-500 bg-blue-50' : 'bg-white'}`}
+                    onClick={() => {
+                        if (loading) return
+                        setActiveTag(tag);
+                        onActiveTagChange(tag);
+                    }}>{tag}</div>
             ))}
         </div>
     )

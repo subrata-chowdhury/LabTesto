@@ -20,6 +20,8 @@ const Tests = () => {
 
     const [name, setName] = useState('');
 
+    const [loading, setLoading] = useState(false);
+
     const navigate = useRouter();
 
     const [totalPages, setTotalPages] = useState(0);
@@ -29,6 +31,7 @@ const Tests = () => {
     }, [])
 
     const fetchTests = useCallback(async () => {
+        setLoading(true);
         const filterData: { department?: string, sampleType?: string, name?: string } = { department: branch, sampleType: type, name: name };
         if (branch === 'All') delete filterData.department;
         if (type === 'All') delete filterData.sampleType;
@@ -42,6 +45,7 @@ const Tests = () => {
             setCurrentPage(res.body.pagination.currentPage);
             setLimit(res.body.pagination.pageSize);
         }
+        setLoading(false);
     }, [branch, type, name, currentPage, limit])
 
     useEffect(() => {
@@ -62,7 +66,7 @@ const Tests = () => {
     }
 
     async function deleteTest(id: string) {
-        if(!window.confirm('Are you sure you want to delete this test?')) return;
+        if (!window.confirm('Are you sure you want to delete this test?')) return;
         const res = await fetcher.delete(`/admin/tests/${id}`);
         if (res.status !== 200) return;
         await fetchTests();
@@ -83,6 +87,7 @@ const Tests = () => {
                 </div>
                 <Table<Test>
                     name='Tests'
+                    loading={loading}
                     table={{
                         config: [
                             { heading: 'Name', selector: 'name' },

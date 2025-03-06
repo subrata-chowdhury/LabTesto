@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
         } else {
             delete filter.name;
         }
-        const tests = await Test.find(filter, 'name tubeType otherTerms sampleType fastingRequired')
+        const tests = await Test.find(filter, 'name tubeType otherTerms sampleType fastingRequired createdAt')
             .limit(limit)
             .skip((page - 1) * limit);
 

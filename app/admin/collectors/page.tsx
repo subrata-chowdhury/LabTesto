@@ -20,11 +20,14 @@ const Collectors = () => {
 
     const [name, setName] = useState('');
 
+    const [loading, setLoading] = useState(false);
+
     const navigate = useRouter();
 
     const [totalPages, setTotalPages] = useState(0);
 
     const fetchCollectors = useCallback(async () => {
+        setLoading(true);
         const filterData: { sampleType?: string, name?: string } = { sampleType: type, name: name };
         // if (branch === 'All') delete filterData.department;
         if (type === 'All') delete filterData.sampleType;
@@ -39,6 +42,7 @@ const Collectors = () => {
             setLimit(res.body.pagination.pageSize);
             setAnalytics({ total: res.body.pagination.totalCollectors })
         }
+        setLoading(false);
     }, [type, name, currentPage, limit])
 
     useEffect(() => {
@@ -67,6 +71,7 @@ const Collectors = () => {
                 </div>
                 <Table<Collector>
                     name='Collectors'
+                    loading={loading}
                     table={{
                         config: [
                             { heading: 'Name', selector: 'name' },

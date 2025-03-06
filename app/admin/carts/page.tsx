@@ -20,11 +20,14 @@ const Carts = () => {
 
     const [name, setName] = useState('');
 
+    const [loading, setLoading] = useState(false);
+
     const navigate = useRouter();
 
     const [totalPages, setTotalPages] = useState(0);
 
     const fetchCarts = useCallback(async () => {
+        setLoading(true);
         const filterData: { department?: string, sampleType?: string, name?: string } = { department: branch, sampleType: type, name: name };
         if (branch === 'All') delete filterData.department;
         if (type === 'All') delete filterData.sampleType;
@@ -39,6 +42,7 @@ const Carts = () => {
             setLimit(res.body.pagination.pageSize);
             setAnalytics({ totalCarts: res.body.pagination.totalCarts });
         }
+        setLoading(false);
     }, [branch, type, name, currentPage, limit])
 
     useEffect(() => {
@@ -76,6 +80,7 @@ const Carts = () => {
                 </div> */}
                 <Table<Cart>
                     name='Carts'
+                    loading={loading}
                     table={{
                         config: [
                             { heading: 'User ID', selector: 'user' },

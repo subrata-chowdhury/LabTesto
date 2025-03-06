@@ -17,7 +17,7 @@ function Menubar() {
     const currentPath = usePathname();
 
     return (
-        <div className='absolute sm:relative bg-white flex flex-col gap-2 z-20 px-4 py-6 shadow h-full transition-all' onMouseEnter={() => setMenubarHovered(true)} onMouseLeave={() => setMenubarHovered(false)}>
+        <div className='relative bg-white flex flex-col gap-2 z-20 px-2 sm:px-4 py-4 sm:py-6 shadow h-full transition-all' onMouseEnter={() => setMenubarHovered(true)} onMouseLeave={() => setMenubarHovered(false)}>
             <div className='flex flex-col gap-2 flex-1 transition-all'>
                 <Menu name='Dashboard' image={dashboard} link='/collector' active={currentPath === '/collector'} menubarHovered={menubarHovered} />
                 {/* <Menu name='Tests' image={form} link='/admin/tests' active={currentPath.includes('/admin/tests')} menubarHovered={menubarHovered} /> */}
@@ -29,10 +29,9 @@ function Menubar() {
             </div>
             <div className=''>
                 <div
-                    className={`cursor-pointer flex justify-start gap-3 p-3 items-center rounded-lg`}
+                    className={`cursor-pointer flex justify-start gap-3 p-2 sm:p-3 items-center rounded-lg`}
                     onClick={() => {
-                        document.cookie = 'adminToken=; Max-Age=0; path=/;';
-                        document.cookie = 'token=; Max-Age=0; path=/;';
+                        document.cookie = 'collectorToken=; Max-Age=0; path=/;';
                         window.location.href = '/';
                     }}>
                     <Image src={logout} alt='' width={20} height={20} style={{ width: 20, height: 20 }} />
@@ -61,8 +60,8 @@ interface MenuProps {
 const Menu: React.FC<MenuProps> = ({ name, link, active, image, menubarHovered }) => {
     return (
         <Link href={link}>
-            <div className={`flex justify-start gap-3 p-3 items-center rounded-lg transition-all ${active ? 'bg-blue-200' : ''}`}>
-                <Image src={image} alt='' width={24} height={24} style={{ width: 24, height: 24 }} />
+            <div className={`flex justify-start gap-3 p-2 sm:p-3 items-center rounded-lg transition-all ${active ? 'bg-blue-200' : ''}`}>
+                <Image src={image} alt='' width={24} height={24} className='w-5 h-5 sm:w-6 sm:h-6 ' />
                 {menubarHovered && <p>{name}</p>}
             </div>
             {/* <div className={'p-2 px-4 rounded' + (active ? ' bg-blue-500 text-white' : '')}>{name}</div> */}

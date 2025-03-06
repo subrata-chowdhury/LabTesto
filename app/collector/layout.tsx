@@ -14,7 +14,7 @@ async function layout({ children }: { children: ReactNode }) {
         <>
             <div className="flex h-screen transition-all">
                 <Menubar />
-                <div className='w-full h-full flex-1 overflow-y-auto p-6 pt-1 transition-all bg-[rgba(239,246,255,0.5)]'>
+                <div className='w-full h-full flex-1 overflow-y-auto p-2 sm:p-6 pt-1 transition-all bg-[rgba(239,246,255,0.5)]'>
                     {children}
                 </div>
             </div>

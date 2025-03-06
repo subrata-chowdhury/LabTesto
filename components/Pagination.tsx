@@ -4,9 +4,10 @@ type Props = {
     currentPage: number,
     totalPages: number,
     onChange: (page: number) => void,
+    loading?: boolean
 }
 
-const Pagination = ({ currentPage, totalPages, onChange }: Props) => {
+const Pagination = ({ currentPage, totalPages, onChange, loading = false }: Props) => {
     const handlePageChange = (page: number) => {
         if (page >= 1 && page <= totalPages) {
             onChange(page);
@@ -24,6 +25,7 @@ const Pagination = ({ currentPage, totalPages, onChange }: Props) => {
                     <button
                         key={i}
                         onClick={() => handlePageChange(i)}
+                        disabled={loading}
                         className={`mx-1 px-3 py-1 border-2 min-w-10 rounded ${currentPage === i ? 'bg-gray-200 text-black' : 'bg-white text-black hover:bg-gray-100'}`}
                     >{i}</button>
                 );
@@ -38,6 +40,7 @@ const Pagination = ({ currentPage, totalPages, onChange }: Props) => {
                 <button
                     key={1}
                     onClick={() => handlePageChange(1)}
+                    disabled={loading}
                     className={`mx-1 px-3 py-1 border-2 min-w-10 rounded ${currentPage === 1 ? 'bg-gray-200 text-black' : 'bg-white text-black hover:bg-gray-100'}`}
                 >1</button>
             );
@@ -69,6 +72,7 @@ const Pagination = ({ currentPage, totalPages, onChange }: Props) => {
                     <button
                         key={i}
                         onClick={() => handlePageChange(i)}
+                        disabled={loading}
                         className={`mx-1 px-3 py-1 border-2 min-w-10 rounded ${currentPage === i ? 'bg-gray-200 text-black' : 'bg-white text-black hover:bg-gray-100'}`}
                     >{i}</button>
                 );
@@ -88,6 +92,7 @@ const Pagination = ({ currentPage, totalPages, onChange }: Props) => {
                 <button
                     key={totalPages}
                     onClick={() => handlePageChange(totalPages)}
+                    disabled={loading}
                     className={`mx-1 px-3 py-1 border-2 min-w-10 rounded ${currentPage === totalPages ? 'bg-gray-200 text-black' : 'bg-white text-black hover:bg-gray-100'}`}
                 >{totalPages}</button>
             );
@@ -100,13 +105,13 @@ const Pagination = ({ currentPage, totalPages, onChange }: Props) => {
         <div className="flex justify-center items-center">
             <button
                 onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
+                disabled={loading || (currentPage === 1)}
                 className={`mx-1 px-3 py-1 min-w-10 rounded text-sm text-gray-600 transition ${currentPage === 1 ? 'cursor-not-allowed text-gray-400' : 'bg-white hover:text-gray-800'}`}
             >Prev</button>
             {renderPageNumbers()}
             <button
                 onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
+                disabled={loading || (currentPage === totalPages)}
                 className={`mx-1 px-3 py-1 min-w-10 rounded text-sm text-gray-600 transition ${currentPage === totalPages ? 'cursor-not-allowed text-gray-400' : 'bg-white hover:text-gray-800'}`}
             >Next</button>
         </div>

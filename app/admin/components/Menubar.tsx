@@ -17,7 +17,7 @@ function Menubar() {
     const currentPath = usePathname();
 
     return (
-        <div className='absolute sm:relative bg-white flex flex-col gap-2 z-20 px-4 py-6 shadow h-full transition-all' onMouseEnter={() => setMenubarHovered(true)} onMouseLeave={() => setMenubarHovered(false)}>
+        <div className='relative bg-white flex flex-col gap-2 z-20 px-4 py-6 shadow h-full transition-all' onMouseEnter={() => setMenubarHovered(true)} onMouseLeave={() => setMenubarHovered(false)}>
             <div className='flex flex-col gap-2 flex-1 transition-all'>
                 <Menu name='Dashboard' image={dashboard} link='/admin' active={currentPath === '/admin'} menubarHovered={menubarHovered} />
                 <Menu name='Tests' image={form} link='/admin/tests' active={currentPath.includes('/admin/tests')} menubarHovered={menubarHovered} />

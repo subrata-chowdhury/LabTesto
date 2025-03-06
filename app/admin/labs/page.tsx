@@ -17,6 +17,8 @@ const Labs = () => {
 
     const [location, setLocation] = useState('All');
     const [name, setName] = useState('');
+    
+    const [loading, setLoading] = useState(false);
 
     const navigate = useRouter();
 
@@ -27,6 +29,7 @@ const Labs = () => {
     // }, [])
 
     const fetchLabs = useCallback(async () => {
+        setLoading(true);
         const filterData: { location?: string, name?: string } = { location: location, name: name };
         if (location === 'All') delete filterData.location;
         if (name === '') delete filterData.name;
@@ -40,6 +43,7 @@ const Labs = () => {
             setLimit(res.body.pagination.pageSize);
             setAnalytics({ totalLabs: res.body.pagination.totalLabs });
         }
+        setLoading(false);
     }, [location, name, currentPage, limit])
 
     useEffect(() => {
@@ -75,6 +79,7 @@ const Labs = () => {
                 </div>
                 <Table<Lab>
                     name='Labs'
+                    loading={loading}
                     table={{
                         config: [
                             { heading: 'Name', selector: 'name' },

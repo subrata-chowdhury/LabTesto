@@ -1,7 +1,9 @@
 import dbConnect from "@/config/db";
+import Collector from "@/models/Collector";
 import Lab from "@/models/Lab";
 import Order from "@/models/Order";
 import Test from "@/models/Test";
+import User from "@/models/User";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -16,7 +18,11 @@ export async function GET(req: NextRequest) {
         await dbConnect();
 
         try {
-            const order = await Order.findOne({ _id: id, collector: userId }).populate({ path: 'items.product.test', model: Test }).populate({ path: 'items.product.lab', model: Lab });
+            const order = await Order.findOne({ _id: id, collector: userId })
+                .populate({ path: 'items.product.test', model: Test })
+                .populate({ path: 'items.product.lab', model: Lab })
+                .populate({ path: 'user', model: User })
+                .populate({ path: 'collector', model: Collector });
 
             return NextResponse.json(order, { status: 200 });
         } catch (e) {

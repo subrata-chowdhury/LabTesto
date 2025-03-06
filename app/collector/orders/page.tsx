@@ -18,6 +18,8 @@ const Orders = () => {
 
     const [name, setName] = useState('');
 
+    const [loading, setLoading] = useState(false);
+
     const navigate = useRouter();
 
     const [totalPages, setTotalPages] = useState(0);
@@ -27,6 +29,7 @@ const Orders = () => {
     }, [])
 
     const fetchOrders = useCallback(async () => {
+        setLoading(true);
         const filterData: { status?: string, sampleType?: string, name?: string } = { status: branch, sampleType: type, name: name };
         if (branch === 'All') delete filterData.status;
         if (type === 'All') delete filterData.sampleType;
@@ -41,6 +44,7 @@ const Orders = () => {
             setLimit(res.body.pagination.pageSize);
             setAnalytics(prevVal => ({ ...prevVal, totalOrders: res.body ? res.body.pagination.totalOrders : 0 }))
         }
+        setLoading(false);
     }, [branch, type, name, currentPage, limit])
 
     useEffect(() => {
@@ -82,15 +86,16 @@ const Orders = () => {
                 </div> */}
                 <Table<Order>
                     name='Orders'
+                    loading={loading}
                     table={{
                         config: [
                             { heading: 'User', selector: 'user' },
                             // { heading: 'Collector', selector: 'collector', component: ({ data }) => <div>{data.collector || 'Not Assigned'}</div> },
-                            { heading: 'Status', selector: 'status', component: ({ data }) => <ColoredStatus data={data} /> },
+                            { heading: 'Status', selector: 'status', hideAble: true , component: ({ data }) => <ColoredStatus data={data} /> },
                             {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
-                                    {/* <button className='text-blue-500' onClick={() => navigate.push('/admin/orders/view/' + data._id)}>View</button>| */}
-                                    <button className='text-blue-500' onClick={() => navigate.push(`/admin/orders/edit/${data._id}`)} >Edit</button>
+                                    <button className='text-blue-500' onClick={() => navigate.push('/collector/orders/view/' + data._id)}>View</button>|
+                                    <button className='text-blue-500' onClick={() => navigate.push(`/collector/orders/edit/${data._id}`)} >Edit</button>
                                     {/* <button className='text-red-500' onClick={() => deleteOrder(data._id as string)} ><Image src={trashBin} alt="" width={20} height={20} /></button> */}
                                 </div>
                             }
