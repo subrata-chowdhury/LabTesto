@@ -32,9 +32,10 @@ const Orders = () => {
 
     const fetchOrders = useCallback(async () => {
         setLoading(true);
-        const filterData: { status?: string, sampleType?: string, name?: string } = { status: branch, sampleType: type, name: name };
+        const filterData: { status?: string, date?: string, name?: string } = { status: branch, date: type, name: name };
         if (branch === 'All') delete filterData.status;
-        if (type === 'All') delete filterData.sampleType;
+        if (type === 'All') delete filterData.date;
+        if (type === 'Today') filterData.date = new Date().toISOString();
         if (name === '') delete filterData.name;
 
         const res = await fetcher.get<{ orders: Order[], pagination: { currentPage: number, pageSize: number, totalPages: number } }>(`/admin/orders?filter=${JSON.stringify(filterData)}&limit=${limit}&page=${currentPage}`);
@@ -66,7 +67,7 @@ const Orders = () => {
     }
 
     async function deleteOrder(id: string) {
-        if(!window.confirm('Are you sure you want to delete this order?')) return;
+        if (!window.confirm('Are you sure you want to delete this order?')) return;
         const res = await fetcher.delete(`/admin/orders/${id}`);
         if (res.status !== 200) return;
         await fetchOrders();
@@ -90,8 +91,18 @@ const Orders = () => {
                     loading={loading}
                     table={{
                         config: [
-                            { heading: 'User', selector: 'user' },
-                            { heading: 'Collector', selector: 'collector', component: ({ data }) => <div>{data.collector || 'Not Assigned'}</div> },
+                            {
+                                heading: 'User', selector: 'user', component: ({ data }) => <div>
+                                    <div className='text-sm'>{data.user.name}</div>
+                                    <div className='text-xs text-gray-500'>{data.user.email}</div>
+                                </div>
+                            },
+                            {
+                                heading: 'Collector', selector: 'collector', component: ({ data }) => <div>
+                                    <div className='text-sm'>{data.collector?.name || 'Not Assigned'}</div>
+                                    <div className='text-xs text-gray-500'>{data.collector?.email}</div>
+                                </div>
+                            },
                             { heading: 'Status', selector: 'status', component: ({ data }) => <ColoredStatus data={data} /> },
                             {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
@@ -115,12 +126,12 @@ const Orders = () => {
 
 export default Orders;
 
-function ColoredStatus({data}:{data:Order}){
-    if(data.status === 'Ordered') return <div className='text-blue-500'>{data.status}</div>
-    if(data.status === 'Sample Collected') return <div className='text-yellow-500'>{data.status}</div>
-    if(data.status === 'Report Generated') return <div className='text-green-500'>{data.status}</div>
-    if(data.status === 'Report Delivered') return <div className='text-green-500'>{data.status}</div>
-    if(data.status === 'Canceled') return <div className='text-red-500'>{data.status}</div>
+function ColoredStatus({ data }: { data: Order }) {
+    if (data.status === 'Ordered') return <div className='text-blue-500'>{data.status}</div>
+    if (data.status === 'Sample Collected') return <div className='text-yellow-500'>{data.status}</div>
+    if (data.status === 'Report Generated') return <div className='text-green-500'>{data.status}</div>
+    if (data.status === 'Report Delivered') return <div className='text-green-500'>{data.status}</div>
+    if (data.status === 'Canceled') return <div className='text-red-500'>{data.status}</div>
 }
 
 
@@ -144,8 +155,16 @@ type Order = {
         quantity: number;
         date?: Date;
     }[];
-    user: string;
-    collector?: string;
+    user: {
+        _id: string;
+        name: string;
+        email: string;
+    };
+    collector?: {
+        _id: string;
+        name: string;
+        email: string;
+    };
     status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
     sampleTakenDateTime: {
         date: {

@@ -4,19 +4,23 @@ import AdminUser from '@/models/AdminUser';
 import Collector from '@/models/Collector';
 import Test from '@/models/Test';
 import Lab from '@/models/Lab';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import Order from '@/models/Order';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
     try {
         await dbConnect();
+        const { searchParams } = new URL(request.url);
+        const year = searchParams.get('year');
 
-        const totalUsers = await User.countDocuments();
-        const totalAdmins = await AdminUser.countDocuments();
-        const totalCollectors = await Collector.countDocuments();
-        const totalTests = await Test.countDocuments();
-        const totalLabs = await Lab.countDocuments();
-        const totalOrders = await Order.countDocuments();
+        const match = year ? { createdAt: { $gte: new Date(`${year}-01-01`), $lt: new Date(`${year}-12-31`) } } : {};
+
+        const totalUsers = await User.countDocuments(match);
+        const totalAdmins = await AdminUser.countDocuments(match);
+        const totalCollectors = await Collector.countDocuments(match);
+        const totalTests = await Test.countDocuments(match);
+        const totalLabs = await Lab.countDocuments(match);
+        const totalOrders = await Order.countDocuments(match);
 
         const analytics = {
             totalTests,

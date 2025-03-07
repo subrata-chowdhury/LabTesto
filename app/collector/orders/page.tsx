@@ -13,7 +13,7 @@ const Orders = () => {
     const [limit, setLimit] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
 
-    const [branch, setBranch] = useState('Ordered');
+    const [branch, setBranch] = useState('All');
     const [type, setType] = useState('All');
 
     const [name, setName] = useState('');
@@ -30,9 +30,10 @@ const Orders = () => {
 
     const fetchOrders = useCallback(async () => {
         setLoading(true);
-        const filterData: { status?: string, sampleType?: string, name?: string } = { status: branch, sampleType: type, name: name };
+        const filterData: { status?: string, date?: string, name?: string } = { status: branch, date: type, name: name };
         if (branch === 'All') delete filterData.status;
-        if (type === 'All') delete filterData.sampleType;
+        if (type === 'All') delete filterData.date;
+        if (type === 'Today') filterData.date = new Date().toISOString();
         if (name === '') delete filterData.name;
 
         const res = await fetcher.get<{ orders: Order[], pagination: { totalOrders: number, currentPage: number, pageSize: number, totalPages: number } }>(`/collector/orders?filter=${JSON.stringify(filterData)}&limit=${limit}&page=${currentPage}`);
@@ -89,9 +90,14 @@ const Orders = () => {
                     loading={loading}
                     table={{
                         config: [
-                            { heading: 'User', selector: 'user' },
+                            {
+                                heading: 'User', selector: 'user', component: ({ data }) => <div>
+                                    <div className='text-sm'>{data.user.name}</div>
+                                    <div className='text-xs text-gray-500'>{data.user.email}</div>
+                                </div>
+                            },
                             // { heading: 'Collector', selector: 'collector', component: ({ data }) => <div>{data.collector || 'Not Assigned'}</div> },
-                            { heading: 'Status', selector: 'status', hideAble: true , component: ({ data }) => <ColoredStatus data={data} /> },
+                            { heading: 'Status', selector: 'status', hideAble: true, component: ({ data }) => <ColoredStatus data={data} /> },
                             {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
                                     <button className='text-blue-500' onClick={() => navigate.push('/collector/orders/view/' + data._id)}>View</button>|
@@ -143,7 +149,11 @@ type Order = {
         quantity: number;
         date?: Date;
     }[];
-    user: string;
+    user: {
+        _id: string;
+        name: string;
+        email: string;
+    };
     collector?: string;
     status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
     sampleTakenDateTime: {

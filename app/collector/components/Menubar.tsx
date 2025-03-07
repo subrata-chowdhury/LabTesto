@@ -60,7 +60,7 @@ interface MenuProps {
 const Menu: React.FC<MenuProps> = ({ name, link, active, image, menubarHovered }) => {
     return (
         <Link href={link}>
-            <div className={`flex justify-start gap-3 p-2 sm:p-3 items-center rounded-lg transition-all ${active ? 'bg-blue-200' : ''}`}>
+            <div className={`flex justify-start gap-3 p-2 sm:p-3 items-center rounded-lg transition-all text-sm sm:text-base ${active ? 'bg-blue-200' : ''}`}>
                 <Image src={image} alt='' width={24} height={24} className='w-5 h-5 sm:w-6 sm:h-6 ' />
                 {menubarHovered && <p>{name}</p>}
             </div>

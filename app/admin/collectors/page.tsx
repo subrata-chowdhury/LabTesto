@@ -74,7 +74,12 @@ const Collectors = () => {
                     loading={loading}
                     table={{
                         config: [
-                            { heading: 'Name', selector: 'name' },
+                            {
+                                heading: 'Name', selector: 'name', component: ({ data }) => <div>
+                                    <div className='text-sm'>{data.name}</div>
+                                    <div className='text-xs text-gray-500'>{data.email}</div>
+                                </div>
+                            },
                             { heading: 'Experience', selector: 'experience' },
                             { heading: 'Rating', selector: 'rating' },
                             { heading: 'Rated', selector: 'rated' },

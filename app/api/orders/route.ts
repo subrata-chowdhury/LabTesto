@@ -68,51 +68,6 @@ export async function POST(req: NextRequest) {
         //     }
         // }
 
-        interface Product {
-            test: string;
-            lab: string;
-        }
-
-        interface CartItem {
-            product: Product;
-            patientDetails: {
-                name: string;
-                gender: 'Male' | 'Female' | 'Other';
-                age: number;
-                other?: string;
-            }[];
-        }
-
-        interface LabPrice {
-            test: string;
-            price: number;
-            offer: number;
-            expenses?: number;
-        }
-
-        interface OrderItem {
-            product: {
-                test: string;
-                lab: string;
-                price: number;
-                expenses: number;
-            };
-            patientDetails: {
-                name: string;
-                gender: 'Male' | 'Female' | 'Other';
-                age: number;
-                other?: string;
-            }[];
-            quantity: number;
-            date: Date;
-            address: {
-                pin: string;
-                city: string;
-                phone: string;
-                other?: string;
-            };
-        }
-
         const orderItems: OrderItem[] = await Promise.all(body.items.map(async (item: { product: Product; quantity: number; address: { pin: string; city: string; phone: string; other?: string; } }) => {
             const cartItemIndex = cart.items.findIndex((cartItem: CartItem) =>
                 cartItem.product.test.toString() === item.product.test &&
@@ -224,4 +179,50 @@ Sample Taken Time:
         console.error(error);
         return new NextResponse('Error processing order', { status: 500 });
     }
+}
+
+
+interface Product {
+    test: string;
+    lab: string;
+}
+
+interface CartItem {
+    product: Product;
+    patientDetails: {
+        name: string;
+        gender: 'Male' | 'Female' | 'Other';
+        age: number;
+        other?: string;
+    }[];
+}
+
+interface LabPrice {
+    test: string;
+    price: number;
+    offer: number;
+    expenses?: number;
+}
+
+interface OrderItem {
+    product: {
+        test: string;
+        lab: string;
+        price: number;
+        expenses: number;
+    };
+    patientDetails: {
+        name: string;
+        gender: 'Male' | 'Female' | 'Other';
+        age: number;
+        other?: string;
+    }[];
+    quantity: number;
+    date: Date;
+    address: {
+        pin: string;
+        city: string;
+        phone: string;
+        other?: string;
+    };
 }

@@ -46,6 +46,7 @@ export interface IOrder extends Document {
         reviewText: string
     }[];
     paid: number;
+    exceptCollectors: mongoose.Schema.Types.ObjectId[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -102,6 +103,7 @@ const OrderSchema: Schema = new Schema({
         }], require: false, default: []
     },
     paid: { type: Number, required: false, default: 0 },
+    exceptCollectors: { type: [mongoose.Schema.Types.ObjectId], required: false, default: [] }
 }, { collection: 'orders', timestamps: true });
 
 const Order = mongoose.models.Order || mongoose.model<IOrder>('Order', OrderSchema);
