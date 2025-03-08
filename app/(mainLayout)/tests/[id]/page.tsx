@@ -20,6 +20,7 @@ import star from '@/assets/star.svg'
 import filledStar from '@/assets/star-fill.svg'
 import cross from '@/assets/cross.svg'
 import { CartPage } from '../../cart/component/CartPage'
+import locationIcon from '@/assets/location.svg'
 
 function Test() {
     const [testDetails, setTestDetails] = useState<TestDetails>({
@@ -39,7 +40,7 @@ function Test() {
         packagesInclude: [],
         ranges: [{}]
     })
-    const [lab, setLab] = useState<{ _id: string, name: string, description: string, rating: number, prices: { test: string, price: number, offer: number }[] }>({ name: '', description: '', rating: 0, _id: '', prices: [] })
+    const [lab, setLab] = useState<Lab>({ name: '', description: '', rating: 0, _id: '', prices: [] })
     const [labs, setLabs] = useState<LabDetails[]>([]);
     const [loading, setLoading] = useState(false);
     const [booking, setBooking] = useState(false);
@@ -342,7 +343,11 @@ function Test() {
                         </button>
                         <div className='overflow-y-scroll h-screen'>
                             <div className='bg-blue-200 relative min-h-52 overflow-hidden p-4'>
-                                <p className='font-bold text-2xl bottom-10 absolute z-20 text-white'>{lab.name}</p>
+                                <h2 className='font-bold text-2xl bottom-16 absolute z-20 text-white'>{lab.name}</h2>
+                                <p className='font-medium flex gap-1 bottom-10 absolute z-20 text-white'>
+                                    <Image src={locationIcon} alt="" width={20} height={20} />
+                                    {lab.location?.address?.city}, {lab.location?.address?.district}
+                                    </p>
                                 <div className='flex gap-2 absolute bottom-4 z-20'>
                                     {Array.from({ length: Math.floor(lab.rating) }).map((_, i) => (
                                         <Image key={i} src={filledStar} alt='' width={20} height={20} />
@@ -404,4 +409,24 @@ type LabDetails = {
     prices: { test: string, price: number, offer: number }[],
     packagesInclude: { test: string, packages: string[] }[],
     ranges: { test: string, ranges: { [key: string]: string }[] }[]
+}
+
+type Lab = {
+    _id: string,
+    name: string,
+    description: string,
+    location?: {
+        address: {
+            pin: string,
+            city: string,
+            district: string,
+            other: string
+        }
+    },
+    rating: number,
+    prices: {
+        test: string,
+        price: number,
+        offer: number
+    }[]
 }

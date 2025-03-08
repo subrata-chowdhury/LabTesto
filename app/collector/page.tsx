@@ -3,6 +3,7 @@ import fetcher from '@/lib/fetcher';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
+import Loading from '../loading';
 
 const CollectorDashboard = () => {
     const [orderData, setOrderData] = useState<Order[]>([]);
@@ -24,6 +25,8 @@ const CollectorDashboard = () => {
         fetchOrders();
     }, [])
 
+    if (loading) return <Loading />
+
     return (
         <div>
             <div className='flex flex-col gap-2 mx-4'>
@@ -37,8 +40,8 @@ const CollectorDashboard = () => {
                                 <button
                                     className='px-2.5 py-1 bg-orange-500 text-white rounded text-sm font-medium'
                                     onClick={async () => {
-                                        const res = await fetcher.put<{}, Order>(`/collector/orders/${order._id}`, {});
-                                        if(res.body && res.status === 200) {
+                                        const res = await fetcher.put<{ id: string }, Order>(`/collector/orders/${order._id}`, { id: order._id });
+                                        if (res.body && res.status === 200) {
                                             setOrderData(prev => prev.filter(o => o._id !== order._id));
                                             toast.success('Order Passed to another collector');
                                         }
