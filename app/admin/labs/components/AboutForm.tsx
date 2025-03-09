@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Model from '@/components/Model'
 import plusIcon from '@/assets/blue-plus.svg'
 import RichTextEditor from '@/app/components/RichTextEditor'
+import UploadToCloudinary from '@/app/components/ImageInput'
 
 type Props = {
     labDetails: LabAboutDetails,
@@ -28,6 +29,10 @@ const AboutForm = ({ labDetails, loading, onChange = () => { }, onSave = async (
             <div className='pb-4 font-semibold'>Lab Information</div>
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
                 <Input label='Name *' name='name' placeholder='Enter name' value={labDetails.name} onChange={(val) => onChange({ ...labDetails, name: val })} labelClass='font-medium' containerClass='flex-1' />
+                <div className={"flex flex-col gap-1 "}>
+                    <div>Image</div>
+                    <UploadToCloudinary imgUrl={labDetails.image} apiPath='/api/admin/labs/upload' onUpload={url => onChange({ ...labDetails, image: url })} />
+                </div>
             </div>
             <div className='pb-4 font-semibold mt-6 pt-5 border-t-2'>Address Information</div>
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-sm pb-4'>
@@ -109,6 +114,7 @@ export type LabAboutDetails = {
     name: string,
     description?: string,
     tempDescription?: string,
+    image?: string,
     location: {
         address: {
             pin: string,

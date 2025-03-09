@@ -22,6 +22,7 @@ export async function POST(req: NextRequest) {
     const labData: Partial<{
         name: string;
         description: string;
+        image: string;
         location: string;
         certification: {
             organization: string;
@@ -47,6 +48,7 @@ export async function POST(req: NextRequest) {
     }> = {};
 
     if (body.name) labData.name = body.name;
+    if (body.image) labData.image = body.image;
     if (body.location) labData.location = body.location;
     if (body.certification) labData.certification = body.certification;
     if (body.prices) labData.prices = body.prices;

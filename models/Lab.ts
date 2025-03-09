@@ -3,6 +3,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 interface ILab extends Document {
     name: string;
     description?: string;
+    image?: string;
     location: {
         address: {
             pin: string,
@@ -49,6 +50,7 @@ interface ILab extends Document {
 const LabSchema: Schema = new Schema({
     name: { type: String, required: true },
     description: { type: String, required: false },
+    image: { type: String, required: false },
     location: {
         type: {
             address: {
