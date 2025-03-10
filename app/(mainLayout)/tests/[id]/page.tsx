@@ -48,13 +48,6 @@ function Test() {
     const [loadingLabs, setLoadingLabs] = useState(true);
     const [limit, setLimit] = useState<number>(10);
     const [showLabDetails, setShowLabDetails] = useState(false);
-    const [seeMore, setSeeMore] = useState({
-        packagesInclude: false,
-        overview: false,
-        description: false,
-        testResultInterpretation: false,
-        riskAssesment: false
-    });
     const [showOrderPopup, setShowOrderPopup] = useState(false);
     const isItemFound = useRef(false)
 
@@ -119,6 +112,52 @@ function Test() {
         }
     }
 
+    const onBook = () => {
+        const cartItem = {
+            product: {
+                test: id,
+                lab: lab._id,
+                price: (labBaseDetails.price - (labBaseDetails.price * (labBaseDetails.offer / 100))).toFixed(2)
+            },
+            quantity: 1
+        };
+        setBooking(true);
+        fetcher.post('/cart', cartItem).then(res => {
+            if (res.status === 200) {
+                setShowOrderPopup(true);
+            } else if (res.status === 401) {
+                toast.error('Please login to add test to cart');
+                navigate.push('/login?redirect=/tests/' + id);
+            } else {
+                toast.error('Failed to add test to cart please try again');
+            }
+            setBooking(false);
+        });
+    }
+
+    const onAddToCart = () => {
+        const cartItem = {
+            product: {
+                test: id,
+                lab: lab._id,
+                price: (labBaseDetails.price - (labBaseDetails.price * (labBaseDetails.offer / 100))).toFixed(2)
+            },
+            quantity: 1
+        };
+        setLoading(true);
+        fetcher.post('/cart', cartItem).then(res => {
+            if (res.status === 200) {
+                toast.success('Test added to cart successfully');
+            } else if (res.status === 401) {
+                toast.error('Please login to add test to cart');
+                navigate.push('/login?redirect=/tests/' + id);
+            } else {
+                toast.error('Failed to add test to cart please try again');
+            }
+            setLoading(false);
+        });
+    }
+
     if (loadingTest) return <Loading />
 
     return (
@@ -174,50 +213,8 @@ function Test() {
                         </>)}
                     </div>
                     <div className='flex gap-3'>
-                        {(!loadingLabs && !loadingTest && labs.length > 0) && <button disabled={loading} className='px-5 py-2 rounded-md bg-primary text-white font-medium' onClick={() => {
-                            const cartItem = {
-                                product: {
-                                    test: id,
-                                    lab: lab._id,
-                                    price: (labBaseDetails.price - (labBaseDetails.price * (labBaseDetails.offer / 100))).toFixed(2)
-                                },
-                                quantity: 1
-                            };
-                            setBooking(true);
-                            fetcher.post('/cart', cartItem).then(res => {
-                                if (res.status === 200) {
-                                    setShowOrderPopup(true);
-                                } else if (res.status === 401) {
-                                    toast.error('Please login to add test to cart');
-                                    navigate.push('/login?redirect=/tests/' + id);
-                                } else {
-                                    toast.error('Failed to add test to cart please try again');
-                                }
-                                setBooking(false);
-                            });
-                        }}>{booking ? 'Booking..' : 'Book'}</button>}
-                        {(!loadingLabs && !loadingTest && labs.length > 0) && <button disabled={loading} className='px-5 py-2 rounded-md bg-primary text-white font-medium text-nowrap' onClick={() => {
-                            const cartItem = {
-                                product: {
-                                    test: id,
-                                    lab: lab._id,
-                                    price: (labBaseDetails.price - (labBaseDetails.price * (labBaseDetails.offer / 100))).toFixed(2)
-                                },
-                                quantity: 1
-                            };
-                            setLoading(true);
-                            fetcher.post('/cart', cartItem).then(res => {
-                                if (res.status === 200) {
-                                    toast.success('Test added to cart successfully');
-                                } else if (res.status === 401) {
-                                    toast.error('Please login to add test to cart');
-                                    navigate.push('/login?redirect=/tests/' + id);
-                                } else {
-                                    toast.error('Failed to add test to cart please try again');
-                                }
-                                setLoading(false);
-                            });
-                        }}>{loading ? 'Adding to Cart..' : 'Add to Cart'}</button>}
+                        {(!loadingLabs && !loadingTest && labs.length > 0) && <button disabled={loading} className='px-5 py-2 rounded-md bg-primary text-white font-medium' onClick={onBook}>{booking ? 'Booking..' : 'Book'}</button>}
+                        {(!loadingLabs && !loadingTest && labs.length > 0) && <button disabled={loading} className='px-5 py-2 rounded-md bg-primary text-white font-medium text-nowrap' onClick={onAddToCart}>{loading ? 'Adding to Cart..' : 'Add to Cart'}</button>}
                     </div>
                 </div>
             </section>
@@ -258,129 +255,26 @@ function Test() {
                     </button>
                 </div>
             )}
-            <section className='mt-1 md:mt-4 py-8 px-8 rounded-lg border-2 bg-white '>
-                <div className='flex flex-col gap-5' style={{ padding: 0, border: 0 }}>
-                    {labBaseDetails.packagesInclude.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
-                        <PackageIcon />
-                        <div className='flex flex-col gap-1 w-full'>
-                            <h2 className='font-semibold text-xl w-full'>Packages Include</h2>
-                            <ul className={'list-disc list-inside relative w-full ' + (!seeMore.packagesInclude ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, packagesInclude: !seeMore.packagesInclude })}>
-                                {
-                                    labBaseDetails.packagesInclude.map(e => (
-                                        <li key={e}>{e}</li>
-                                    ))
-                                }
-                            </ul>
-                            {labBaseDetails.packagesInclude.length > 5 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, packagesInclude: !seeMore.packagesInclude })}>See {!seeMore.packagesInclude ? 'More' : 'Less'}</div>}
-                        </div>
-                    </div>}
-                    {testDetails?.overview?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
-                        <DescriptionIcon />
-                        <div className='flex flex-col gap-1'>
-                            <h2 className='font-semibold text-xl flex gap-2'>Overview</h2>
-                            <div className={'text-gray-500 relative ' + (!seeMore.overview ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, overview: !seeMore.overview })}>
-                                <div className='tiptap' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.overview }}></div>
-                            </div>
-                            {testDetails.overview.length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, overview: !seeMore.overview })}>See {!seeMore.overview ? 'More' : 'Less'}</div>}
-                        </div>
-                    </div>}
-                    {testDetails.description.replace(/<br\/>/g, '').length > 0 && <div className='flex justify-start gap-2'>
-                        <DescriptionIcon />
-                        <div className='flex-1 flex flex-col gap-1'>
-                            <h2 className='font-semibold text-xl'>Description</h2>
-                            <div className={'text-gray-500 relative ' + (!seeMore.description ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, description: !seeMore.description })}>
-                                <div className='tiptap text-gray-500' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.description }}></div>
-                            </div>
-                            {testDetails.description.length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, description: !seeMore.description })}>See {!seeMore.description ? 'More' : 'Less'}</div>}
-                        </div>
-                    </div>}
-                    {testDetails?.testResultInterpretation?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
-                        <DescriptionIcon />
-                        <div className='flex flex-col gap-1'>
-                            <h2 className='font-semibold text-xl flex gap-2'>Test Result Interpretation</h2>
-                            <div className={'text-gray-500 relative ' + (!seeMore.testResultInterpretation ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, testResultInterpretation: !seeMore.testResultInterpretation })}>
-                                <div className='tiptap text-gray-500' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.testResultInterpretation }}></div>
-                            </div>
-                            {testDetails.testResultInterpretation.length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, testResultInterpretation: !seeMore.testResultInterpretation })}>See {!seeMore.testResultInterpretation ? 'More' : 'Less'}</div>}
-                        </div>
-                    </div>}
-                    {testDetails?.riskAssesment?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
-                        <DescriptionIcon />
-                        <div className='flex flex-col gap-1'>
-                            <h2 className='font-semibold text-xl flex gap-2'>Risk Assessment</h2>
-                            <div className={'text-gray-500 relative ' + (!seeMore.riskAssesment ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, riskAssesment: !seeMore.riskAssesment })}>
-                                <div className='tiptap text-gray-500' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.riskAssesment }}></div>
-                            </div>
-                            {testDetails.riskAssesment.length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, riskAssesment: !seeMore.riskAssesment })}>See {!seeMore.riskAssesment ? 'More' : 'Less'}</div>}
-                        </div>
-                    </div>}
+            <DetailsSection labBaseDetails={labBaseDetails} testDetails={testDetails} />
+
+
+            {showLabDetails && <LabDetailsSidePopup lab={lab} onClose={() => setShowLabDetails(false)} />}
+            {showOrderPopup && <section className='w-screen h-screen z-20 flex flex-col fixed top-0 left-0 bg-gray-100'>
+                <div className='ms-auto mr-6 mt-7 cursor-pointer' onClick={() => setShowOrderPopup(false)}>
+                    <Image src={cross} alt=""></Image>
                 </div>
-                {labBaseDetails.ranges.length > 0 && <div className='mt-1 md:mt-4 flex flex-col gap-5 rounded-lg bg-white'>
-                    {labBaseDetails.ranges.length > 0 && <div className='flex gap-2'>
-                        <DescriptionIcon />
-                        <div className='flex flex-1 flex-col gap-1'>
-                            <h2 className='font-semibold text-xl flex gap-2'>Ranges</h2>
-                            <div>
-                                <MainTable
-                                    config={Object.keys(labBaseDetails.ranges[0] || {}).map(e => ({ heading: e, selector: e }))}
-                                    data={labBaseDetails.ranges}
-                                    className='border-2'
-                                />
-                            </div>
-                        </div>
-                    </div>}
-                </div>}
-            </section>
-
-
-
-            {
-                showLabDetails &&
-                <section className='fixed w-screen h-screen top-0 left-0 bg-black bg-opacity-20 z-50' onClick={() => setShowLabDetails(false)}>
-                    <div className='fixed left-0 top-0 w-[90vw] sm:w-[70vw] bg-white shadow-2xl' onClick={e => e.stopPropagation()}>
-                        <button className='flex justify-end p-2 absolute right-0 top-0 translate-x-full bg-white rounded-e-md border-2' onClick={() => setShowLabDetails(false)}>
-                            <Image src={cross} alt='' />
-                        </button>
-                        <div className='overflow-y-scroll h-screen'>
-                            <div className='bg-blue-200 relative min-h-52 overflow-hidden p-4'>
-                                <h2 className='font-bold text-2xl bottom-16 absolute z-20 text-white'>{lab.name}</h2>
-                                <p className='font-medium flex gap-1 bottom-10 absolute z-20 text-white'>
-                                    <Image src={locationIcon} alt="" width={20} height={20} />
-                                    {lab.location?.address?.city}, {lab.location?.address?.district}
-                                    </p>
-                                <div className='flex gap-2 absolute bottom-4 z-20'>
-                                    {Array.from({ length: Math.floor(lab.rating) }).map((_, i) => (
-                                        <Image key={i} src={filledStar} alt='' width={20} height={20} />
-                                    ))}
-                                    {Array.from({ length: 5 - Math.floor(lab.rating) }).map((_, i) => (
-                                        <Image key={i} src={star} alt='' width={20} height={20} />
-                                    ))}
-                                </div>
-                                <div className='absolute bottom-0 w-full h-full z-10 -translate-x-[10%] translate-y-1/2 bg-gradient-to-t from-gray-400 to-transparent transform rotate-[20deg]'></div>
-                            </div>
-                            <div className='tiptap border-0 p-5' style={{ border: 0 }} dangerouslySetInnerHTML={{ __html: lab.description.replace(/<p>/g, '').replace(/<\/p>/g, '<br/>') }}></div>
-                        </div>
-                    </div>
-                </section>
-            }
-            {
-                showOrderPopup && <section className='w-screen h-screen z-20 flex flex-col fixed top-0 left-0 bg-gray-100'>
-                    <div className='ms-auto mr-6 mt-7 cursor-pointer' onClick={() => setShowOrderPopup(false)}>
-                        <Image src={cross} alt=""></Image>
-                    </div>
-                    <CartPage
-                        showRemoveBtn={false}
-                        onFetchedCart={() => { isItemFound.current = false }}
-                        filterCartFunc={(item) => {
-                            if (isItemFound.current) return false;
-                            if (item.product.test._id === id && item.product.lab._id === lab._id) {
-                                isItemFound.current = true;
-                                return true;
-                            }
-                            return false
-                        }} />
-                </section>
-            }
+                <CartPage
+                    showRemoveBtn={false}
+                    onFetchedCart={() => { isItemFound.current = false }}
+                    filterCartFunc={(item) => {
+                        if (isItemFound.current) return false;
+                        if (item.product.test._id === id && item.product.lab._id === lab._id) {
+                            isItemFound.current = true;
+                            return true;
+                        }
+                        return false
+                    }} />
+            </section>}
         </div>
     )
 }
@@ -405,7 +299,6 @@ type LabDetails = {
     description: string,
     rating: number,
     name: string,
-    sampleType: string,
     prices: { test: string, price: number, offer: number }[],
     packagesInclude: { test: string, packages: string[] }[],
     ranges: { test: string, ranges: { [key: string]: string }[] }[]
@@ -429,4 +322,129 @@ type Lab = {
         price: number,
         offer: number
     }[]
+}
+
+function DetailsSection({ labBaseDetails, testDetails }: {
+    labBaseDetails: {
+        price: number,
+        offer: number,
+        packagesInclude: string[],
+        ranges: { [key: string]: string }[]
+    },
+    testDetails: TestDetails
+}) {
+    const [seeMore, setSeeMore] = useState({
+        packagesInclude: false,
+        overview: false,
+        description: false,
+        testResultInterpretation: false,
+        riskAssesment: false
+    });
+
+    return (
+        <section className='mt-1 md:mt-4 py-8 px-8 rounded-lg border-2 bg-white '>
+            <div className='flex flex-col gap-5' style={{ padding: 0, border: 0 }}>
+                {labBaseDetails.packagesInclude.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
+                    <PackageIcon />
+                    <div className='flex flex-col gap-1 w-full'>
+                        <h2 className='font-semibold text-xl w-full'>Packages Include</h2>
+                        <ul className={'list-disc list-inside relative w-full ' + (!seeMore.packagesInclude ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, packagesInclude: !seeMore.packagesInclude })}>
+                            {
+                                labBaseDetails.packagesInclude.map(e => (
+                                    <li key={e}>{e}</li>
+                                ))
+                            }
+                        </ul>
+                        {labBaseDetails.packagesInclude.length > 5 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, packagesInclude: !seeMore.packagesInclude })}>See {!seeMore.packagesInclude ? 'More' : 'Less'}</div>}
+                    </div>
+                </div>}
+                {testDetails?.overview?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
+                    <DescriptionIcon />
+                    <div className='flex flex-col gap-1'>
+                        <h2 className='font-semibold text-xl flex gap-2'>Overview</h2>
+                        <div className={'text-gray-500 relative ' + (!seeMore.overview ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, overview: !seeMore.overview })}>
+                            <div className='tiptap' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.overview }}></div>
+                        </div>
+                        {testDetails.overview.length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, overview: !seeMore.overview })}>See {!seeMore.overview ? 'More' : 'Less'}</div>}
+                    </div>
+                </div>}
+                {testDetails.description.replace(/<br\/>/g, '').length > 0 && <div className='flex justify-start gap-2'>
+                    <DescriptionIcon />
+                    <div className='flex-1 flex flex-col gap-1'>
+                        <h2 className='font-semibold text-xl'>Description</h2>
+                        <div className={'text-gray-500 relative ' + (!seeMore.description ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, description: !seeMore.description })}>
+                            <div className='tiptap text-gray-500' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.description }}></div>
+                        </div>
+                        {testDetails.description.length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, description: !seeMore.description })}>See {!seeMore.description ? 'More' : 'Less'}</div>}
+                    </div>
+                </div>}
+                {testDetails?.testResultInterpretation?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
+                    <DescriptionIcon />
+                    <div className='flex flex-col gap-1'>
+                        <h2 className='font-semibold text-xl flex gap-2'>Test Result Interpretation</h2>
+                        <div className={'text-gray-500 relative ' + (!seeMore.testResultInterpretation ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, testResultInterpretation: !seeMore.testResultInterpretation })}>
+                            <div className='tiptap text-gray-500' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.testResultInterpretation }}></div>
+                        </div>
+                        {testDetails.testResultInterpretation.length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, testResultInterpretation: !seeMore.testResultInterpretation })}>See {!seeMore.testResultInterpretation ? 'More' : 'Less'}</div>}
+                    </div>
+                </div>}
+                {testDetails?.riskAssesment?.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
+                    <DescriptionIcon />
+                    <div className='flex flex-col gap-1'>
+                        <h2 className='font-semibold text-xl flex gap-2'>Risk Assessment</h2>
+                        <div className={'text-gray-500 relative ' + (!seeMore.riskAssesment ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, riskAssesment: !seeMore.riskAssesment })}>
+                            <div className='tiptap text-gray-500' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.riskAssesment }}></div>
+                        </div>
+                        {testDetails.riskAssesment.length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, riskAssesment: !seeMore.riskAssesment })}>See {!seeMore.riskAssesment ? 'More' : 'Less'}</div>}
+                    </div>
+                </div>}
+            </div>
+            {labBaseDetails.ranges.length > 0 && <div className='mt-1 md:mt-4 flex flex-col gap-5 rounded-lg bg-white'>
+                {labBaseDetails.ranges.length > 0 && <div className='flex gap-2'>
+                    <DescriptionIcon />
+                    <div className='flex flex-1 flex-col gap-1'>
+                        <h2 className='font-semibold text-xl flex gap-2'>Ranges</h2>
+                        <div>
+                            <MainTable
+                                config={Object.keys(labBaseDetails.ranges[0] || {}).map(e => ({ heading: e, selector: e }))}
+                                data={labBaseDetails.ranges}
+                                className='border-2'
+                            />
+                        </div>
+                    </div>
+                </div>}
+            </div>}
+        </section>
+    )
+}
+
+function LabDetailsSidePopup({ lab, onClose }: { lab: Lab, onClose: () => void }) {
+    return (
+        <section className='fixed w-screen h-screen top-0 left-0 bg-black bg-opacity-20 z-50' onClick={() => onClose()}>
+            <div className='fixed left-0 top-0 w-[90vw] sm:w-[70vw] bg-white shadow-2xl' onClick={e => e.stopPropagation()}>
+                <button className='flex justify-end p-2 absolute right-0 top-0 translate-x-full bg-white rounded-e-md border-2' onClick={() => onClose()}>
+                    <Image src={cross} alt='' />
+                </button>
+                <div className='overflow-y-scroll h-screen'>
+                    <div className='bg-blue-200 relative min-h-52 overflow-hidden p-4'>
+                        <h2 className='font-bold text-2xl bottom-16 absolute z-20 text-white'>{lab.name}</h2>
+                        <p className='font-medium flex gap-1 bottom-10 absolute z-20 text-white'>
+                            <Image src={locationIcon} alt="" width={18} height={18} />
+                            {lab.location?.address?.city}, {lab.location?.address?.district}
+                        </p>
+                        <div className='flex gap-2 absolute bottom-4 z-20'>
+                            {Array.from({ length: Math.floor(lab.rating) }).map((_, i) => (
+                                <Image key={i} src={filledStar} alt='' width={20} height={20} />
+                            ))}
+                            {Array.from({ length: 5 - Math.floor(lab.rating) }).map((_, i) => (
+                                <Image key={i} src={star} alt='' width={20} height={20} />
+                            ))}
+                        </div>
+                        <div className='absolute bottom-0 w-full h-full z-10 -translate-x-[10%] translate-y-1/2 bg-gradient-to-t from-gray-400 to-transparent transform rotate-[20deg]'></div>
+                    </div>
+                    <div className='tiptap border-0 p-5' style={{ border: 0 }} dangerouslySetInnerHTML={{ __html: lab.description.replace(/<p>/g, '').replace(/<\/p>/g, '<br/>') }}></div>
+                </div>
+            </div>
+        </section>
+    )
 }
