@@ -47,15 +47,35 @@ export async function POST(req: NextRequest) {
         await dbConnect();
 
         try {
-            const order = await Order.findOneAndUpdate(
-                { _id: id, collector: userId },
-                { status, paid },
-                { new: true }
-            );
+            const order = await Order.findOne({ _id: id, collector: userId });
 
             if (!order) {
                 return new NextResponse('Order not found', { status: 404 });
             }
+
+            // const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+
+            // if (order.updatedAt > oneHourAgo) {
+            //     return new NextResponse('Order was updated less than an hour ago', { status: 400 });
+            // }
+
+            const validStatusTransitions = {
+                'Ordered': 'Sample Collected',
+                'Sample Collected': 'Report Generated',
+                'Report Generated': 'Report Delivered'
+            };
+
+            const canChangeStatus = validStatusTransitions[order.status as keyof typeof validStatusTransitions] === status || status === 'Canceled';
+
+            if (!canChangeStatus) {
+                return new NextResponse('Invalid status change', { status: 400 });
+            }
+
+            order.status = status;
+            order.paid = paid;
+            await order.save();
+
+            return NextResponse.json(order, { status: 200 });
 
             return NextResponse.json(order, { status: 200 });
         } catch (e) {

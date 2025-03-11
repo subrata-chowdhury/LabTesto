@@ -34,7 +34,7 @@ const CollectorDashboard = () => {
                     orderData.map(order => (
                         <div key={order._id} className='flex justify-between gap-2 rounded-md border-2 bg-white p-2 px-3'>
                             {/* <div>{order._id}</div> */}
-                            <div>{order.status}</div>
+                            <div className='text-sm flex items-center justify-center font-medium text-gray-600'>{order._id.toUpperCase()}</div>
                             <div className='flex gap-2'>
                                 <Link className='px-2.5 py-1 bg-primary text-white rounded text-sm font-medium' href={('/collector/orders/view/' + order._id)}>View</Link>
                                 <button
