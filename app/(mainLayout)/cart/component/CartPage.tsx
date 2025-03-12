@@ -129,6 +129,10 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
             toast.warning('Please select a valid address');
             return false;
         }
+        if(selectedAddress.pin !== '722202') {
+            toast.warning('We are currently serving only in Barjora, West Bengal');
+            return false;
+        }
         if (!sampleTakenDateTime) {
             toast.warning('Please select sample taken date and time');
             setShowScheduleOrderTimesModel(true);
@@ -292,7 +296,7 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
 };
 
 type Address = {
-    pin: number;
+    pin: string;
     city: string;
     district: string;
     other?: string;

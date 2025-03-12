@@ -40,7 +40,7 @@ const Menubar = () => {
                     <Link href="/tests" className="text-[#3987ba] menu">Book</Link>
                     <Link href="#" className="text-[#3987ba] menu">About</Link>
                     <Link href="/order" className="text-[#3987ba] menu">Orders</Link>
-                    <Link href="#" className="text-[#3987ba] menu">Contact</Link>
+                    <Link href="/contact" className="text-[#3987ba] menu">Contact</Link>
                 </div>
                 <div className='hidden ms-6 md:block mr-5'>
                     <SearchBar onSelect={(test) => navigate.push('/tests/' + test._id)} active={true} />
@@ -71,7 +71,7 @@ const Menubar = () => {
                     <Link href="/tests" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>Book a Test</Link>
                     <Link href="#" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>About</Link>
                     <Link href="/order" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>Orders</Link>
-                    <Link href="#" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>Contact</Link>
+                    <Link href="/contact" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>Contact</Link>
                     <div
                         className={`cursor-pointer flex justify-start gap-3 p-3 px-0 mt-40 items-center rounded-lg text-primary`}
                         onClick={() => {

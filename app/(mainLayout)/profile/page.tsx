@@ -52,9 +52,9 @@ const ProfilePage = () => {
                 <div className='font-semibold text-lg'>Account Details</div>
                 <div className='mt-2 grid gap-6 grid-cols-1 md:grid-cols-2'>
                     <Input label='Name' value={user.name} onChange={(val) => { setUser({ ...user, name: val }); setIsDirty(true) }} />
-                    <Input label='Email' value={user.email} onChange={(val) => { setUser({ ...user, email: val }); setIsDirty(true) }} />
+                    <Input label='Email / Phone' value={user.email} onChange={(val) => { setUser({ ...user, email: val }); setIsDirty(true) }} />
                     {/* <Input label='Password' value={user.password} onChange={(val) => { setUser({ ...user, password: val }); setIsDirty(true) }} /> */}
-                    <Input label='Phone' value={user.phone || ''} onChange={(val) => { setUser({ ...user, phone: val }); setIsDirty(true) }} />
+                    <Input label='Alternate Email / Phone' value={user.phone || ''} onChange={(val) => { setUser({ ...user, phone: val }); setIsDirty(true) }} />
                 </div>
             </section>
             <section className='px-10 md:px-20 pt-2'>
@@ -166,7 +166,7 @@ export type User = {
         other?: string;
     }[];
     address: {
-        pin: number;
+        pin: string;
         city: string;
         district: string;
         other?: string;

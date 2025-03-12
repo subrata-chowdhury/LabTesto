@@ -98,7 +98,7 @@ export function SelectLocation({ selectedAddress, onChange }: { selectedAddress?
 }
 
 type Address = {
-    pin: number;
+    pin: string;
     city: string;
     district: string;
     other?: string;

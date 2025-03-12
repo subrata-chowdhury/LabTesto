@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function AddressDetailsPopup({ addressDetails, onSave, onRemove, onClose }: { addressDetails?: AddressDetails, onSave: (patientDetails: AddressDetails) => void, onRemove: () => void, onClose: () => void }) {
     const [values, setValues] = useState<AddressDetails>(addressDetails || {
-        pin: 0,
+        pin: '',
         city: '',
         district: '',
         other: '',
@@ -23,7 +23,7 @@ export default function AddressDetailsPopup({ addressDetails, onSave, onRemove, 
                         <Dropdown options={['Male', 'Female', 'Other']} width={'100%'} value={'Male'} onChange={({ value }) => setValues({ ...values, gender: value as 'Male' | 'Female' | 'Other' })} />
                     </div> */}
                     <Input label='District *' value={values.district} error={errors.district} onChange={val => setValues({ ...values, district: val })} />
-                    <Input label='Pin *' value={values.pin?.toString()} type="number" error={errors.pin} onChange={val => setValues({ ...values, pin: Number(val) })} />
+                    <Input label='Pin *' value={values.pin?.toString()} type="number" error={errors.pin} onChange={val => setValues({ ...values, pin: val })} />
                     <Input label='Phone *' value={values.phone} error={errors.phone} onChange={val => setValues({ ...values, phone: val })} />
                 </div>
                 <div className='text-sm flex flex-col gap-1 pt-2'>
@@ -51,7 +51,7 @@ export default function AddressDetailsPopup({ addressDetails, onSave, onRemove, 
 }
 
 type AddressDetails = {
-    pin: number;
+    pin: string;
     city: string;
     district: string;
     other?: string;
