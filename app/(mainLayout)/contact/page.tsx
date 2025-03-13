@@ -19,6 +19,12 @@ function ContactPage() {
         const res = await fetcher.post('/contact', formData);
         if(res.status === 200) {
             toast.success('Details are send successfully');
+            setFormData({
+                name: '',
+                email: '',
+                subject: '',
+                message: ''
+            });
         }
     }
 
