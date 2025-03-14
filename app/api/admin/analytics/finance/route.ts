@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
             {
                 $match: {
                     'items.date': { $gte: startDate, $lte: endDate },
-                    'paid': { $gt: 0 }
+                    // 'paid': { $gt: 0 }
                 }
             },
             {

@@ -19,12 +19,14 @@ export default function Home() {
         <>
             <div className="flex-1 p-2 pt-3">
                 <SearchBar className="md:hidden" active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
-                <section className="mx-2">
+                <section className="mx-2 mb-4">
                     <Slide slides={3} />
                 </section>
                 <section className="mx-auto md:w-[95%] 2xl:w-fit pt-0 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
-                    <h1 className="text-xl font-semibold translate-y-full ml-2 bg-white w-fit px-2">Frequently Required Tests</h1>
-                    <div className="mt-4 p-3 md:p-5 border-2 border-primary border-opacity-40 border-dashed rounded-md bg-white w-full">
+                    <h1 className="text-2xl font-semibold">Frequently Required Tests</h1>
+                    {/* <h1 className="text-xl font-semibold translate-y-full ml-2 bg-white w-fit px-2">Frequently Required Tests</h1> */}
+                    <div className="mt-4 rounded-md bg-white w-full">
+                    {/* <div className="mt-4 p-3 md:p-5 border-2 border-primary border-opacity-40 border-dashed rounded-md bg-white w-full"> */}
                         <div className="w-full overflow-x-auto hide-scroll flex gap-2">
                             <Card label="CBC" subText="Blood" description="Check Your Overall Health" />
                             <Card label="CBC" subText="Blood" description="Check Your Overall Health" />
@@ -36,8 +38,9 @@ export default function Home() {
                     </div>
                 </section>
                 <section className="mx-auto md:w-[95%] 2xl:w-fit pt-0 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
-                    <h1 className="text-xl font-semibold translate-y-full ml-2 bg-white w-fit px-2">Our Promise</h1>
-                    <div className="mt-4 p-3 md:p-5 border-2 border-primary border-opacity-40 border-dashed rounded-md bg-white w-full">
+                    <h1 className="text-2xl font-semibold">Our Promise</h1>
+                    <div className="mt-4 rounded-md bg-white w-full">
+                    {/* <div className="mt-4 p-3 md:p-5 border-2 border-primary border-opacity-40 border-dashed rounded-md bg-white w-full"> */}
                         <div className="w-full overflow-x-auto hide-scroll flex gap-2">
                             <CardType2 label="NABL Certified Lab Test" icon={nablcertiIcon} />
                             <CardType2 label="On Time Sample Collection by Expert" icon={ontimeIcon} />
@@ -49,7 +52,8 @@ export default function Home() {
                     </div>
                 </section>
                 <section className=" mx-auto md:w-[95%] pt-0 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
-                    <ul className=" grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                    <h1 className="text-2xl font-semibold w-fit">Our Services</h1>
+                    <ul className="mt-2 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                         <CardType3 label="Cardiology" link="/tests/cardiology" />
                         <CardType3 label="Dentistry" link="/tests/dentistry" />
                         <CardType3 label="Dermatology" link="/tests/dermatology" />
@@ -71,8 +75,8 @@ export default function Home() {
                     </ul>
                 </section>
                 <section className="mx-auto md:w-[95%] pt-0 mt-5 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
-                    <h1 className="text-2xl font-semibold bg-white w-fit">Our Achivements</h1>
-                    <div className="mt-4 bg-white w-full grid gap-1 md:gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+                    <h1 className="text-2xl font-semibold w-fit">Our Achivements</h1>
+                    <div className="mt-4 bg-white w-full grid gap-1 sm:gap-2 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
                         {/* <CardType4 label="1000+" subText="" /> */}
                         <CardType4 label="100+" subText="Labs" />
                         <CardType4 label="8000+" subText="Tests" />
@@ -89,10 +93,10 @@ export default function Home() {
 
 function Card({ label = "CBC", subText, description, icon }: { label: string, subText?: string, description?: string, icon?: StaticImageData }) {
     return (
-        <div className="bg-[#97c7e762] rounded-md shadow-md border-2 border-[#3987ba] text-[#3987ba] p-4 min-w-52">
+        <div className="bg-[#97c7e762] rounded-md shadow-md border-2 border-primary border-opacity-35 text-primary p-4 min-w-52">
             <div className="flex gap-2">
                 <div className="">
-                    <h1 className="text-lg font-semibold">{label}</h1>
+                    <h1 className="text-xl font-semibold">{label}</h1>
                     {subText && <p className="text-sm text-primary text-opacity-65">{subText}</p>}
                     {description && <p className="text-sm">{description}</p>}
                     {icon && <Image src={icon} alt="" style={{ width: 120 }} />}
@@ -107,7 +111,7 @@ function Card({ label = "CBC", subText, description, icon }: { label: string, su
 
 function CardType2({ label = "CBC", subText, description, icon }: { label: string, subText?: string, description?: string, icon?: StaticImageData }) {
     return (
-        <div className="bg-[#9bc6e260] rounded-md shadow-md border-2 border-[#3987ba] text-[#3987ba] p-4 min-w-52 w-[209px]">
+        <div className="bg-[#9bc6e260] rounded-md shadow-md border-2 border-primary border-opacity-35 text-primary p-4 min-w-52 w-[209px]">
             <div className="flex flex-col gap-3">
                 {icon && <Image src={icon} alt="" className="mx-auto" width={120} />}
                 <h1 className="text-lg font-medium text-center">{label}</h1>
@@ -123,7 +127,7 @@ function CardType2({ label = "CBC", subText, description, icon }: { label: strin
 
 function CardType3({ label = "Cardiology", link = "#" }: { label: string, link?: string, icon?: StaticImageData }) {
     return (
-        <li className="shadow-md shadow-indigo-100 bg-white rounded-md p-2 py-6">
+        <li className="shadow-md shadow-indigo-100 bg-white rounded-md p-2 py-6 border border-opacity-30 border-primary">
             <a href={link} className="flex flex-col items-center">
                 <figure>
                     <Image

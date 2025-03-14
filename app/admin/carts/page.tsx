@@ -4,7 +4,7 @@ import Table from '@/components/Table';
 import React, { useCallback, useEffect, useState } from 'react'
 // import plusIcon from '@/assets/plus.svg'
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import fetcher from '@/lib/fetcher';
 import trashBin from '@/assets/trash-bin.svg'
 
@@ -22,7 +22,7 @@ const Carts = () => {
 
     const [loading, setLoading] = useState(false);
 
-    const navigate = useRouter();
+    // const navigate = useRouter();
 
     const [totalPages, setTotalPages] = useState(0);
 
@@ -92,8 +92,8 @@ const Carts = () => {
                             { heading: 'Created At', selector: 'createdAt', component: ({ data }) => <div>{new Date(data.createdAt).toDateString()}</div> },
                             {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
-                                    <button className='text-blue-500' onClick={() => navigate.push('/carts/' + data._id)}>View</button>|
-                                    <button className='text-blue-500' onClick={() => navigate.push(`/admin/carts/edit/${data._id}`)} >Edit</button>|
+                                    {/* <button className='text-blue-500' onClick={() => navigate.push('/carts/' + data._id)}>View</button>| */}
+                                    {/* <button className='text-blue-500' onClick={() => navigate.push(`/admin/carts/edit/${data._id}`)} >Edit</button>| */}
                                     <button className='text-red-500' onClick={() => deleteCart(data._id as string)} ><Image src={trashBin} alt="" width={20} height={20} /></button>
                                 </div>
                             }
