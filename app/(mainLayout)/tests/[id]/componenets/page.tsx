@@ -21,6 +21,7 @@ import filledStar from '@/assets/star-fill.svg'
 import cross from '@/assets/cross.svg'
 import { CartPage } from '../../../cart/component/CartPage'
 import locationIcon from '@/assets/location.svg'
+import { useItemCountContext } from '@/app/contexts/ItemCountContext'
 
 type Props = {
     test: TestDetails
@@ -42,6 +43,7 @@ function MainTestPage({ test }: Props) {
     const [limit, setLimit] = useState<number>(10);
     const [showLabDetails, setShowLabDetails] = useState(false);
     const [showOrderPopup, setShowOrderPopup] = useState(false);
+    const { setItemCount } = useItemCountContext();
     const isItemFound = useRef(false)
 
     const { id } = useParams<{ id: string }>();
@@ -121,6 +123,11 @@ function MainTestPage({ test }: Props) {
         fetcher.post('/cart', cartItem).then(res => {
             if (res.status === 200) {
                 toast.success('Test added to cart successfully');
+                fetcher.get<{ items: number }>('/cart/count').then(res => {
+                    if (res.status === 200 && res.body) {
+                        setItemCount(res.body.items || 0)
+                    };
+                })
             } else if (res.status === 401) {
                 toast.error('Please login to add test to cart');
                 navigate.push('/login?redirect=/tests/' + id);

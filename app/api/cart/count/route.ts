@@ -1,11 +1,16 @@
 // url /api/cart
 import dbConnect from '@/config/db';
+import verifyToken from '@/lib/tokenVerify';
 import Cart from '@/models/Cart';
-import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest) {
-    const id = await req.headers.get('x-user');
-    
+export async function GET() {
+    const user = await verifyToken<{ id: string, institution: string, type: string }>((await cookies()).get('token')?.value, 'user');
+    if (!user) {
+        return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+    }
+    const id = user?.id;
     if (!id) {
         return new NextResponse('User ID is required', { status: 400 });
     }

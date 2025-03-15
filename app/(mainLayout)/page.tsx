@@ -22,10 +22,10 @@ export default function Home() {
                 <section className="mx-2 mb-4">
                     <Slide slides={3} />
                 </section>
-                <section className="mx-auto md:w-[95%] 2xl:w-fit pt-0 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
+                <section className="mx-auto md:w-[95%] 2xl:w-fit pt-0 sm:pt-0 md:pt-0 p-4">
                     <h1 className="text-2xl font-semibold">Frequently Required Tests</h1>
                     {/* <h1 className="text-xl font-semibold translate-y-full ml-2 bg-white w-fit px-2">Frequently Required Tests</h1> */}
-                    <div className="mt-4 rounded-md bg-white w-full">
+                    <div className="mt-2 rounded-md bg-white w-full">
                     {/* <div className="mt-4 p-3 md:p-5 border-2 border-primary border-opacity-40 border-dashed rounded-md bg-white w-full"> */}
                         <div className="w-full overflow-x-auto hide-scroll flex gap-2">
                             <Card label="CBC" subText="Blood" description="Check Your Overall Health" />
@@ -37,9 +37,9 @@ export default function Home() {
                         </div>
                     </div>
                 </section>
-                <section className="mx-auto md:w-[95%] 2xl:w-fit pt-0 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
+                <section className="mx-auto md:w-[95%] 2xl:w-fit pt-0 sm:pt-0 md:pt-0 p-4">
                     <h1 className="text-2xl font-semibold">Our Promise</h1>
-                    <div className="mt-4 rounded-md bg-white w-full">
+                    <div className="mt-2 rounded-md bg-white w-full">
                     {/* <div className="mt-4 p-3 md:p-5 border-2 border-primary border-opacity-40 border-dashed rounded-md bg-white w-full"> */}
                         <div className="w-full overflow-x-auto hide-scroll flex gap-2">
                             <CardType2 label="NABL Certified Lab Test" icon={nablcertiIcon} />
@@ -51,7 +51,7 @@ export default function Home() {
                         </div>
                     </div>
                 </section>
-                <section className=" mx-auto md:w-[95%] pt-0 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
+                <section className=" mx-auto md:w-[95%] pt-0 sm:pt-0 md:pt-0 p-4">
                     <h1 className="text-2xl font-semibold w-fit">Our Services</h1>
                     <ul className="mt-2 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                         <CardType3 label="Cardiology" link="/tests/cardiology" />
@@ -96,9 +96,9 @@ function Card({ label = "CBC", subText, description, icon }: { label: string, su
         <div className="bg-[#97c7e762] rounded-md shadow-md border-2 border-primary border-opacity-35 text-primary p-4 min-w-52">
             <div className="flex gap-2">
                 <div className="">
-                    <h1 className="text-xl font-semibold">{label}</h1>
-                    {subText && <p className="text-sm text-primary text-opacity-65">{subText}</p>}
-                    {description && <p className="text-sm">{description}</p>}
+                    <h1 className="text-2xl font-bold">{label}</h1>
+                    {subText && <p className="text-sm font-semibold text-primary text-opacity-80">{subText}</p>}
+                    {description && <p className="text-base">{description}</p>}
                     {icon && <Image src={icon} alt="" style={{ width: 120 }} />}
                 </div>
                 {/* <div className="w-1/2">
@@ -146,7 +146,7 @@ function CardType3({ label = "Cardiology", link = "#" }: { label: string, link?:
 
 function CardType4({ label = "CBC", subText, icon }: { label: string, subText?: string, description?: string, icon?: StaticImageData }) {
     return (
-        <div className="inline-flex w-full h-32 mr-3 mb-3 flex-col items-center justify-center rounded-lg border-2 border-[#3987ba] bg-[#9bc6e260]">
+        <div className="inline-flex w-full h-32 mr-3 mb-3 flex-col items-center justify-center rounded-lg border-2 border-primary border-opacity-35 bg-primary bg-opacity-25">
             {icon && <figure>
                 <Image
                     src={icon}

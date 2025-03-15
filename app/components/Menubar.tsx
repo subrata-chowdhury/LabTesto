@@ -9,16 +9,17 @@ import { useRouter } from 'next/navigation';
 import CartIcon from '@/assets/cart.svg'
 import fetcher from '@/lib/fetcher';
 import logout from '@/assets/Menubar/logout.svg'
+import { useItemCountContext } from '../contexts/ItemCountContext';
 
 const Menubar = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [itemsCount, setItemsCount] = useState<number | null>(null);
+    const { itemCount, setItemCount } = useItemCountContext();
     const navigate = useRouter();
 
     useEffect(() => {
         fetcher.get<{ items: number }>('/cart/count').then(res => {
             if (res.status === 200 && res.body) {
-                setItemsCount(res.body.items || 0)
+                setItemCount(res.body.items || 0)
             };
         })
     }, [])
@@ -51,7 +52,7 @@ const Menubar = () => {
                     onClick={() => setIsOpen(false)}
                     aria-label="View Cart"
                 >
-                    {(itemsCount || 0) > 0 && <div className='absolute -right-1 -top-1 px-[6px] py-[2px] rounded-full text-xs text-white font-medium bg-primary'>{(itemsCount || 0) > 9 ? '9+' : itemsCount}</div>}
+                    {(itemCount || 0) > 0 && <div className='absolute -right-1 -top-1 px-[6px] py-[2px] rounded-full text-xs text-white font-medium bg-primary'>{(itemCount || 0) > 9 ? '9+' : itemCount}</div>}
                     <Image
                         src={CartIcon}
                         alt="Cart Icon"

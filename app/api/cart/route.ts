@@ -168,7 +168,7 @@ export async function DELETE(req: NextRequest) {
             return new NextResponse('Cart not found', { status: 404 });
         }
 
-        const itemIndex = cart.items.findIndex((item: { product: { test: string, lab: string } }) => (item.product.test.toString() === productDetails.test && item.product.lab.toString() === productDetails.lab));
+        const itemIndex = cart.items.findIndex((item: { product: { test: string, lab: string }, quantity: number }) => (item.product.test.toString() === productDetails.test && item.product.lab.toString() === productDetails.lab && item.quantity === productDetails.quantity));
 
         if (itemIndex === -1) {
             return new NextResponse('Item not found in cart', { status: 404 });

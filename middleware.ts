@@ -30,7 +30,6 @@ export async function middleware(request: NextRequest) {
             token = (await cookies()).get('token')?.value;
             break;
     }
-    console.log(userType, "Token: ", token)
 
     let user: { id: string, institution: string, type: string } | boolean = false;
     if (token) {

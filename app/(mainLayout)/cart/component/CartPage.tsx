@@ -11,6 +11,7 @@ import OrderTimeSelector from './OrderTimeSelector';
 import ConfirmationModel from '@/app/components/popups/ConfirmationModel';
 import { User } from '../../profile/page';
 import CheckBox from '@/components/Inputs/CheckBox';
+import { useItemCountContext } from '@/app/contexts/ItemCountContext';
 
 export type CartItem = {
     product: {
@@ -46,6 +47,8 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
     const [showConfirmPopup, setShowConfirmPopup] = useState<{ item: CartItem, index: number } | null>(null);
     const [patientDetails, setPatientDetails] = useState<PatientDetails[]>([]);
     const [isPatientDetailsRequired, setIsPatientDetailsRequired] = useState(true);
+    const { setItemCount } = useItemCountContext();
+
     const navigate = useRouter();
 
     useEffect(() => {
@@ -74,6 +77,7 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
                         item.product.price = labPrice;
                     }
                 });
+                setItemCount(response.body.items.length || 0)
                 setCart(response.body); // Assuming you want the first cart
                 if (onFetchedCart) onFetchedCart()
             }
@@ -115,7 +119,12 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
         if (res.status === 200) {
             // await fetcher.delete('/cart');
             // fetchCart();
-            toast.success('Your orders has been placed')
+            toast.success('Your orders has been placed');
+            await fetcher.get<{ items: number }>('/cart/count').then(res => {
+                if (res.status === 200 && res.body) {
+                    setItemCount(res.body.items || 0)
+                };
+            })
             navigate.push('/order');
         }
     }
@@ -129,7 +138,7 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
             toast.warning('Please select a valid address');
             return false;
         }
-        if(selectedAddress.pin !== '722202') {
+        if (selectedAddress.pin !== '722202') {
             toast.warning('We are currently serving only in Barjora, West Bengal');
             return false;
         }

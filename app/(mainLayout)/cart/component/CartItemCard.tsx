@@ -33,9 +33,10 @@ export default function CartItemCard({ item, isPatientDetailsRequired = false, o
                     {onRemove && <button
                         className="border-primary border-2 text-primary px-2 py-1 rounded"
                         onClick={async () => {
-                            const res = await fetcher.delete<{ test: string, lab: string }, { message: string } | string>("/cart", {
+                            const res = await fetcher.delete<{ test: string, lab: string, quantity: number }, { message: string } | string>("/cart", {
                                 test: item.product.test._id,
-                                lab: item.product.lab._id
+                                lab: item.product.lab._id,
+                                quantity: item.quantity
                             })
                             if (res.status === 200) onRemove()
                         }}>Remove</button>}
