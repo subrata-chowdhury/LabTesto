@@ -8,7 +8,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
     const user = await verifyToken<{ id: string, institution: string, type: string }>((await cookies()).get('token')?.value, 'user');
     if (!user) {
-        return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+        return new NextResponse('User ID is required', { status: 400 });
     }
     const id = user?.id;
     if (!id) {
