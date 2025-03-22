@@ -7,6 +7,7 @@ import Loading from '../loading';
 
 const CollectorDashboard = () => {
     const [orderData, setOrderData] = useState<Order[]>([]);
+    const [orderReportDeliveryData, setOrderReportDeliveryData] = useState<Order[]>([]);
     const [loading, setLoading] = useState(false);
 
     const fetchOrders = useCallback(async () => {
@@ -21,37 +22,76 @@ const CollectorDashboard = () => {
         setLoading(false);
     }, [])
 
+    const fetchReportDeliveryOrders = useCallback(async () => {
+        setLoading(true);
+        const filterData: { status?: string, date?: string, name?: string } = { status: 'Report Generated' };
+
+        const res = await fetcher.get<{ orders: Order[], pagination: { totalOrders: number, currentPage: number, pageSize: number, totalPages: number } }>(`/collector/orders?filter=${JSON.stringify(filterData)}&limit=999&page=1`);
+        if (res.status !== 200) return;
+        if (res.body) {
+            setOrderReportDeliveryData(res.body.orders);
+        }
+        setLoading(false);
+    }, [])
+
     useEffect(() => {
         fetchOrders();
+        fetchReportDeliveryOrders();
     }, [])
 
     if (loading) return <Loading />
 
     return (
-        <div>
-            <div className='flex flex-col gap-2 mx-4'>
-                {
-                    orderData.map(order => (
-                        <div key={order._id} className='flex justify-between gap-2 rounded-md border-2 bg-white p-2 px-3'>
-                            {/* <div>{order._id}</div> */}
-                            <div className='text-sm flex items-center justify-center font-medium text-gray-600'>{order._id.toUpperCase()}</div>
-                            <div className='flex gap-2'>
-                                <Link className='px-2.5 py-1 bg-primary text-white rounded text-sm font-medium' href={('/collector/orders/view/' + order._id)}>View</Link>
-                                <button
-                                    className='px-2.5 py-1 bg-orange-500 text-white rounded text-sm font-medium'
-                                    onClick={async () => {
-                                        const res = await fetcher.put<{ id: string }, Order>(`/collector/orders/${order._id}`, { id: order._id });
-                                        if (res.body && res.status === 200) {
-                                            setOrderData(prev => prev.filter(o => o._id !== order._id));
-                                            toast.success('Order Passed to another collector');
-                                        }
-                                    }}>Pass</button>
+        <div className='grid grid-rows-2 h-full mx-4'>
+            {orderData.length > 0 && <div>
+                <h2 className='text-xl mb-2 font-medium'>Orders</h2>
+                <div className='flex flex-col gap-2'>
+                    {
+                        orderData.map(order => (
+                            <div key={order._id} className='flex justify-between items-center gap-2 rounded-md border-2 bg-white p-2 px-3'>
+                                {/* <div>{order._id}</div> */}
+                                <div className='text-xs flex flex-col font-medium text-gray-600'>
+                                    <div>{order._id.toUpperCase()}</div>
+                                    <div className='text-sm text-gray-800'>{order.sampleTakenDateTime?.start?.split('T')[0]} at {new Date(order.sampleTakenDateTime?.start || '').toTimeString()}</div>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <Link className='px-2.5 py-1 bg-primary text-white rounded text-sm font-medium' href={('/collector/orders/view/' + order._id)}>View</Link>
+                                    <button
+                                        className='px-2.5 py-1 bg-orange-500 text-white rounded text-sm font-medium'
+                                        onClick={async () => {
+                                            const res = await fetcher.put<{ id: string }, Order>(`/collector/orders/${order._id}`, { id: order._id });
+                                            if (res.body && res.status === 200) {
+                                                setOrderData(prev => prev.filter(o => o._id !== order._id));
+                                                toast.success('Order Passed to another collector');
+                                            }
+                                        }}>Pass</button>
+                                </div>
+                                {/* <h3>{order.sampleTakenDateTime.date.start}</h3> */}
                             </div>
-                            {/* <h3>{order.sampleTakenDateTime.date.start}</h3> */}
-                        </div>
-                    ))
-                }
-            </div>
+                        ))
+                    }
+                </div>
+            </div>}
+            {orderReportDeliveryData.length > 0 && <div>
+                <h2 className='text-xl mb-2 font-medium'>Report to be Delivered</h2>
+                <div className='flex flex-col gap-2'>
+                    {
+                        orderReportDeliveryData.map(order => (
+                            <div key={order._id} className='flex justify-between items-center gap-2 rounded-md border-2 bg-white p-2 px-3'>
+                                {/* <div>{order._id}</div> */}
+                                <div className='text-xs flex flex-col font-medium text-gray-600'>
+                                    <div>{order._id.toUpperCase()}</div>
+                                    <div className='text-sm text-gray-800'>{order.sampleTakenDateTime?.start?.split('T')[0]} at {new Date(order.sampleTakenDateTime?.start || '').toTimeString()}</div>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <Link className='px-2.5 py-1 bg-primary text-white rounded text-sm font-medium' href={('/collector/orders/view/' + order._id)}>View</Link>
+                                </div>
+                                {/* <h3>{order.sampleTakenDateTime.date.start}</h3> */}
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>}
         </div>
     )
 }
@@ -83,10 +123,8 @@ type Order = {
     collector?: string;
     status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
     sampleTakenDateTime: {
-        date: {
-            start?: Date;
-            end?: Date;
-        };
+        start?: string;
+        end?: string;
     };
     reportDeliverTime: {
         date: {

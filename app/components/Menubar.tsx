@@ -25,7 +25,7 @@ const Menubar = () => {
     }, [])
 
     return (
-        <nav className="bg-[#fff] shadow-md shadow-[#3986ba16] p-4 px-6" role="navigation" aria-label="Main Navigation">
+        <nav className="bg-[#fff] shadow-md shadow-[#3986ba16] p-3 px-6" role="navigation" aria-label="Main Navigation">
             <div className="mx-auto flex justify-between items-center">
                 <div className="md:hidden flex items-center">
                     <button onClick={() => setIsOpen(!isOpen)} className="text-[#3987ba] menu focus:outline-none" aria-label="Toggle Menu">
