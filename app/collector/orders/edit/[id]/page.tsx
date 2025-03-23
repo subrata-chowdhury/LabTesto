@@ -86,7 +86,7 @@ const Page = () => {
             <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
                 Payment Information
             </div>
-            <Input label='Paid *' value={orderDetails?.paid?.toString() || '0'} min={0} max={maxPrice} type='number' onChange={val => setOrderDetails({ ...orderDetails, paid: Math.min(Number(val), maxPrice) })} />
+            <Input label='Paid' value={orderDetails?.paid?.toString() || '0'} min={0} max={maxPrice} type='number' onChange={val => setOrderDetails({ ...orderDetails, paid: Math.min(Number(val), maxPrice) })} />
             <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
                 Total Amount: ₹{maxPrice}
             </div>

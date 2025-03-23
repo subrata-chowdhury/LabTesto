@@ -42,57 +42,65 @@ const CollectorDashboard = () => {
     if (loading) return <Loading />
 
     return (
-        <div className='grid grid-rows-2 h-full mx-4'>
-            {orderData.length > 0 && <div>
-                <h2 className='text-xl mb-2 font-medium'>Orders</h2>
-                <div className='flex flex-col gap-2'>
-                    {
-                        orderData.map(order => (
-                            <div key={order._id} className='flex justify-between items-center gap-2 rounded-md border-2 bg-white p-2 px-3'>
-                                {/* <div>{order._id}</div> */}
-                                <div className='text-xs flex flex-col font-medium text-gray-600'>
-                                    <div>{order._id.toUpperCase()}</div>
-                                    <div className='text-sm text-gray-800'>{order.sampleTakenDateTime?.start?.split('T')[0]} at {new Date(order.sampleTakenDateTime?.start || '').toTimeString()}</div>
-                                </div>
-                                <div className='flex gap-2'>
-                                    <Link className='px-2.5 py-1 bg-primary text-white rounded text-sm font-medium' href={('/collector/orders/view/' + order._id)}>View</Link>
-                                    <button
-                                        className='px-2.5 py-1 bg-orange-500 text-white rounded text-sm font-medium'
-                                        onClick={async () => {
-                                            const res = await fetcher.put<{ id: string }, Order>(`/collector/orders/${order._id}`, { id: order._id });
-                                            if (res.body && res.status === 200) {
-                                                setOrderData(prev => prev.filter(o => o._id !== order._id));
-                                                toast.success('Order Passed to another collector');
-                                            }
-                                        }}>Pass</button>
-                                </div>
-                                {/* <h3>{order.sampleTakenDateTime.date.start}</h3> */}
-                            </div>
-                        ))
-                    }
-                </div>
+        <>
+            <h1 className='text-xl font-semibold mx-4 mb-2'>Notifications</h1>
+            {orderData.length <= 0 && orderReportDeliveryData.length <= 0 && <div className='flex justify-center items-center h-32'>
+                <h2 className='text-lg text-gray-500 my-auto'>No Notifications</h2>
             </div>}
-            {orderReportDeliveryData.length > 0 && <div>
-                <h2 className='text-xl mb-2 font-medium'>Report to be Delivered</h2>
-                <div className='flex flex-col gap-2'>
-                    {
-                        orderReportDeliveryData.map(order => (
-                            <div key={order._id} className='flex justify-between items-center gap-2 rounded-md border-2 bg-white p-2 px-3'>
-                                {/* <div>{order._id}</div> */}
-                                <div className='text-xs flex flex-col font-medium text-gray-600'>
-                                    <div>{order._id.toUpperCase()}</div>
-                                    <div className='text-sm text-gray-800'>{order.sampleTakenDateTime?.start?.split('T')[0]} at {new Date(order.sampleTakenDateTime?.start || '').toTimeString()}</div>
+            <div className='grid grid-rows-2 h-full mx-4'>
+                {orderData.length > 0 && <div>
+                    <h2 className='text-lg mb-1.5 font-medium'>Orders</h2>
+                    <div className='flex flex-col gap-2'>
+                        {
+                            orderData.map(order => (
+                                <div key={order._id} className='flex justify-between items-center flex-col sm:flex-row gap-2 rounded-md border-2 bg-white p-2 px-3'>
+                                    {/* <div>{order._id}</div> */}
+                                    <div className='text-xs flex flex-col font-medium text-gray-600'>
+                                        <div>{order._id.toUpperCase()}</div>
+                                        <div className='text-sm text-gray-800'>{new Date(order.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
+                                    </div>
+                                    <div className='flex gap-2'>
+                                        <Link className='px-2.5 py-1 bg-primary text-white rounded text-sm font-medium' href={('/collector/orders/view/' + order._id)}>View</Link>
+                                        <Link className='px-2.5 py-1 bg-primary text-white rounded text-sm font-medium' href={('/collector/orders/edit/' + order._id)}>Edit</Link>
+                                        <button
+                                            className='px-2.5 py-1 bg-orange-500 text-white rounded text-sm font-medium'
+                                            onClick={async () => {
+                                                const res = await fetcher.put<{ id: string }, Order>(`/collector/orders/${order._id}`, { id: order._id });
+                                                if (res.body && res.status === 200) {
+                                                    setOrderData(prev => prev.filter(o => o._id !== order._id));
+                                                    toast.success('Order Passed to another collector');
+                                                }
+                                            }}>Pass</button>
+                                    </div>
+                                    {/* <h3>{order.sampleTakenDateTime.date.start}</h3> */}
                                 </div>
-                                <div className='flex gap-2'>
-                                    <Link className='px-2.5 py-1 bg-primary text-white rounded text-sm font-medium' href={('/collector/orders/view/' + order._id)}>View</Link>
+                            ))
+                        }
+                    </div>
+                </div>}
+                {orderReportDeliveryData.length > 0 && <div>
+                    <h2 className='text-lg mb-1.5 font-medium'>Report to be Delivered</h2>
+                    <div className='flex flex-col gap-2'>
+                        {
+                            orderReportDeliveryData.map(order => (
+                                <div key={order._id} className='flex justify-between items-center flex-col sm:flex-row gap-2 rounded-md border-2 bg-white p-2 px-3'>
+                                    {/* <div>{order._id}</div> */}
+                                    <div className='text-xs flex flex-col font-medium text-gray-600'>
+                                        <div>{order._id.toUpperCase()}</div>
+                                        <div className='text-sm text-gray-800'>{new Date(order.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
+                                    </div>
+                                    <div className='flex gap-2'>
+                                        <Link className='px-2.5 py-1 bg-primary text-white rounded text-sm font-medium' href={('/collector/orders/view/' + order._id)}>View</Link>
+                                        <Link className='px-2.5 py-1 bg-primary text-white rounded text-sm font-medium' href={('/collector/orders/edit/' + order._id)}>Edit</Link>
+                                    </div>
+                                    {/* <h3>{order.sampleTakenDateTime.date.start}</h3> */}
                                 </div>
-                                {/* <h3>{order.sampleTakenDateTime.date.start}</h3> */}
-                            </div>
-                        ))
-                    }
-                </div>
-            </div>}
-        </div>
+                            ))
+                        }
+                    </div>
+                </div>}
+            </div>
+        </>
     )
 }
 

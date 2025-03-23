@@ -97,6 +97,7 @@ const Orders = () => {
                                 </div>
                             },
                             // { heading: 'Collector', selector: 'collector', component: ({ data }) => <div>{data.collector || 'Not Assigned'}</div> },
+                            { heading: 'Order ID', selector: '_id', component: ({ data }) => <div className='text-xs sm:text-sm flex flex-col sm:flex-row truncate'><p>{data._id.slice(0, 12).toUpperCase()}</p><p>{data._id.slice(12).toUpperCase()}</p></div> },
                             { heading: 'Status', selector: 'status', hideAble: true, component: ({ data }) => <ColoredStatus data={data} /> },
                             {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>

@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import React, { useState } from 'react'
 import Image, { StaticImageData } from 'next/image';
 
+import user from '@/assets/user.png';
 import logout from '@/assets/Menubar/logout.svg'
 // import teachers from '@/assets/Menubar/teachers.svg'
 import dashboard from '@/assets/Menubar/dashboard.svg'
@@ -27,6 +28,10 @@ function Menubar() {
                 <Menu name='Orders' image={form} link='/collector/orders' active={currentPath.includes('/collector/orders')} menubarHovered={menubarHovered} />
                 {/* <Menu name='Data Misses' image={form} link='/admin/warnings' active={currentPath.includes('/admin/warnings')} menubarHovered={menubarHovered} /> */}
             </div>
+            <Link className={"cursor-pointer flex justify-start gap-3 items-center mb-2 rounded-lg" + (menubarHovered ? " mx-1.5" : " mx-auto")} href='/collector/profile' aria-label="View Profile">
+                <Image src={user} alt="User Avatar" width={40} height={40} className="rounded-full p-2 bg-primary bg-opacity-20" />
+                {menubarHovered && <p>Profile</p>}
+            </Link>
             <div className=''>
                 <div
                     className={`cursor-pointer flex justify-start gap-3 p-2 sm:p-3 items-center rounded-lg`}

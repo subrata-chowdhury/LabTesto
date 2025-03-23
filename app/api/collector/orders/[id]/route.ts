@@ -71,11 +71,9 @@ export async function POST(req: NextRequest) {
                 return new NextResponse('Invalid status change', { status: 400 });
             }
 
-            order.status = status;
-            order.paid = paid;
+            if (status) order.status = status;
+            if (paid && paid >= 0) order.paid = paid;
             await order.save();
-
-            return NextResponse.json(order, { status: 200 });
 
             return NextResponse.json(order, { status: 200 });
         } catch (e) {

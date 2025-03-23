@@ -28,13 +28,13 @@ const ProfilePage = () => {
     }, [])
 
     async function fetchUser() {
-        const res = await fetcher.get<User>('/user');
+        const res = await fetcher.get<User>('/collector/user');
         if (res.status === 200 && res.body)
             setUser(res.body)
     }
 
     async function updateUser() {
-        const res = await fetcher.post<User, User>('/user', user);
+        const res = await fetcher.post<User, User>('/collector/user', user);
         if (res.status === 200 && res.body) {
             setUser(res.body)
             setIsDirty(false)
@@ -49,7 +49,7 @@ const ProfilePage = () => {
                     <Image src={userIcon} alt="profile picture" width={118} height={118} className='w-[118px] h-[118px] p-2 border-4 border-[rgb(57,134,186)] shadow-lg shadow-[rgba(57,134,186,0.2)] rounded-full bg-white' />
                 </div>
             </div>
-            <section className='p-20 pb-2 px-10 md:px-20'>
+            <section className='p-20 pb-2 px-10 md:px-12'>
                 <div className='font-semibold text-lg'>Account Details</div>
                 <div className='mt-2 grid gap-6 grid-cols-1 md:grid-cols-2'>
                     <Input label='Name' value={user.name} onChange={(val) => { setUser({ ...user, name: val }); setIsDirty(true) }} />
@@ -58,51 +58,11 @@ const ProfilePage = () => {
                     <Input label='Alternate Email / Phone' value={user.phone || ''} onChange={(val) => { setUser({ ...user, phone: val }); setIsDirty(true) }} />
                 </div>
             </section>
-            <section className='px-10 md:px-20 pt-2'>
-                <div className='font-semibold text-lg'>Patient Details</div>
-                <div className='flex gap-2 mt-2 text-sm text-white'>
-                    {user?.patientDetails?.map((patientDetail, i) => (
-                        <div
-                            key={i}
-                            className='bg-[rgba(57,134,186,0.7)] px-4 py-2 rounded-full cursor-pointer'
-                            onClick={() =>
-                                setShowPatientPopup({ patientIndex: i })}>
-                            {patientDetail.name}
-                        </div>
-                    ))}
-                    <div
-                        className='bg-[rgba(57,134,186,0.7)] px-4 py-2 rounded-full cursor-pointer'
-                        onClick={() =>
-                            setShowPatientPopup({ patientIndex: user.patientDetails?.length || 0 })}>
-                        Add +
-                    </div>
-                </div>
-            </section>
-            <section className='px-10 md:px-20 pt-2 mt-2'>
-                <div className='font-semibold text-lg'>Address Details</div>
-                <div className='flex gap-2 mt-2 text-sm text-white'>
-                    {user?.address?.map((address, i) => (
-                        <div
-                            key={i}
-                            className='bg-[rgba(57,134,186,0.7)] px-4 py-2 rounded-full cursor-pointer'
-                            onClick={() =>
-                                setShowAddressPopup({ addressIndex: i })}>
-                            {address.pin}
-                        </div>
-                    ))}
-                    <div
-                        className='bg-[rgba(57,134,186,0.7)] px-4 py-2 rounded-full cursor-pointer'
-                        onClick={() =>
-                            setShowAddressPopup({ addressIndex: user.address?.length || 0 })}>
-                        Add +
-                    </div>
-                </div>
-            </section>
-            {isDirty && <div className='px-10 md:px-20 pt-8 pb-10 flex'>
+            {isDirty && <div className='px-10 md:px-12 pt-8 pb-10 flex'>
                 <button className='bg-primary text-white py-2 px-4 rounded ms-auto' onClick={async () => await updateUser()}>Save</button>
             </div>}
-            <div className='px-10 md:px-20 pt-8 pb-10 flex'>
-                <button className='bg-primary text-white py-2 px-4 rounded-md'>Delete Your Account</button>
+            <div className='px-10 md:px-12 pt-8 pb-10 flex'>
+                <button className='bg-primary text-white py-2 px-4 rounded-md'>Delete Your Account / Resign</button>
             </div>
             {showPatientPopup?.patientIndex != null &&
                 <PatientDetailsPopup
