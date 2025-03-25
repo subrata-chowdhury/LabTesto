@@ -48,7 +48,7 @@ const Page = () => {
 
     async function saveLab() {
         setLoading(true);
-        let newLabDetails: SaveLabDetails = {
+        const newLabDetails: SaveLabDetails = {
             prices: {},
             resultTimes: {},
             packagesInclude: {},

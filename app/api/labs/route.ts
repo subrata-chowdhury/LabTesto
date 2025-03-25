@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
 
         if (test)
             labs.forEach((lab) => {
-                let priceDetails = lab.prices[test];
+                const priceDetails = lab.prices[test];
                 delete priceDetails.expenses;
                 lab.prices = { [test]: priceDetails };
                 lab.packagesInclude = { [test]: (lab.packagesInclude || {})[test] };

@@ -12,7 +12,7 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-4">
                     <div className='mr-4'>
                         <h1 className="text-xl font-bold mb-2"><span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></h1>
-                        <p className="text-sm">A wellknown trusted blood collection website to book any tests from any lab by user's choice.</p>
+                        <p className="text-sm">A wellknown trusted blood collection website to book any tests from any lab by user&#39;s choice.</p>
                         <div className='flex gap-3 mt-4'>
                             <Link href='#' aria-label="Facebook">
                                 <FacebookIcon />
