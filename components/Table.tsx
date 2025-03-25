@@ -87,7 +87,7 @@ export function MainTable<T>({
     return (
         <table className={'text-start overflow-hidden border-y-2 w-full ' + className} cellPadding={0} cellSpacing={0}>
             <thead>
-                <tr style={{ height: 48 }} className='bg-gray-200'>
+                <tr style={{ height: 48 }} className='bg-gray-200  dark:bg-gray-500'>
                     {config.map((configObj, index) => (
                         <th key={index} className={`text-start pl-4 font-normal min-h-12 items-center ${configObj.hideAble ? "hidden md:flex" : ""}`}>{configObj.heading}</th>
                     ))}

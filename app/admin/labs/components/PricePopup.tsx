@@ -16,6 +16,8 @@ export default function PricePopup({ priceDetails, onClose = () => { }, onSave =
         <Model heading='Add Price' onClose={onClose}>
             <div className='px-7 py-4 pb-2'>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
+                    <Input label='Price *' name='price' placeholder='Enter price' type='number' value={priceData.price.toString()} onChange={(val) => { setPriceData(prevVal => ({ ...prevVal, price: Number(val) })) }} labelClass='font-medium' containerClass='flex-1' />
+                    <Input label='Offer *' name='offer' placeholder='Enter offer' type='number' value={priceData.offer.toString()} onChange={(val) => { setPriceData(prevVal => ({ ...prevVal, offer: Number(val) })) }} labelClass='font-medium' containerClass='flex-1' />
                     <label className="flex flex-col gap-1">
                         Test *
                         <SelectTest
@@ -25,8 +27,6 @@ export default function PricePopup({ priceDetails, onClose = () => { }, onSave =
                             }} />
                         {/* {(error.field == 'institute' && error.msg?.length > 0) && <p className="text-red-500 text-xs font-medium">{error.msg}</p>} */}
                     </label>
-                    <Input label='Price *' name='price' placeholder='Enter price' type='number' value={priceData.price.toString()} onChange={(val) => { setPriceData(prevVal => ({ ...prevVal, price: Number(val) })) }} labelClass='font-medium' containerClass='flex-1' />
-                    <Input label='Offer *' name='offer' placeholder='Enter offer' type='number' value={priceData.offer.toString()} onChange={(val) => { setPriceData(prevVal => ({ ...prevVal, offer: Number(val) })) }} labelClass='font-medium' containerClass='flex-1' />
                     <Input label='Expenses *' name='expenses' placeholder='Enter expenses' type='number' value={(priceData.expenses || 0).toString()} onChange={(val) => { setPriceData(prevVal => ({ ...prevVal, expenses: Number(val) })) }} labelClass='font-medium' containerClass='flex-1' />
                 </div>
                 <div className='p-5 px-0 ms-auto justify-end items-end flex gap-4'>

@@ -70,13 +70,13 @@ export default function Signup() {
 
     return (
         <div className="flex flex-col md:flex-row h-screen gap-0">
-            <div className="md:w-1/2 flex flex-col gap-4 justify-center items-center bg-gray-200 w-full h-full">
+            <div className="md:w-1/2 flex flex-col gap-4 justify-center items-center bg-gray-200 dark:bg-[#0A192F] w-full h-full">
                 <h1 className="text-2xl font-semibold">Welcome to <span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></h1>
                 <div>Your wellness which makes us Happy</div>
             </div>
             <div className="md:w-1/2 md:h-auto flex flex-col justify-center absolute md:relative items-center w-full h-full">
                 <h1 className="md:pl-6 ps-0 pb-3 md:pb-0 w-11/12 md:w-9/12 max-w-[450px] text-center md:text-start text-2xl font-semibold">Sign Up to <span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></h1>
-                <form className="flex flex-col gap-4 bg-white p-6 rounded-md w-11/12 md:w-9/12 max-w-[450px]" onSubmit={signup}>
+                <form className="flex flex-col gap-4 bg-transparent p-6 rounded-md w-11/12 md:w-9/12 max-w-[450px]" onSubmit={signup}>
                     <Input
                         label="Full Name"
                         value={name}
@@ -111,7 +111,7 @@ export default function Signup() {
                     </div> */}
                     <button type="submit" className="bg-blue-500 text-white rounded p-2" disabled={loading}>{loading ? 'Signing Up...' : 'Sign Up'}</button>
                     <div className="flex flex-col">
-                        <div className="text-[0.9rem] text-center text-slate-500">Already have an account?</div>
+                        <div className="text-[0.9rem] text-center text-slate-500 dark:text-gray-400">Already have an account?</div>
                         <Link href="/login" className="bg-gray-300 text-center text-slate-700 rounded p-2 border-2 border-gray-300">Log In</Link>
                     </div>
                 </form>

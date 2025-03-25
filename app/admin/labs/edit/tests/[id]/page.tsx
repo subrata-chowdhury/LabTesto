@@ -23,12 +23,13 @@ const Page = () => {
             if (res.status === 200 && res.body) {
                 const labDetails: LabTestDetails = {
                     prices: [],
-                    name: res.body.name
+                    name: res.body.name || ''
                 };
-                labDetails.prices = res.body.prices.map(e => ({ test: e.test._id, name: e.test.name, offer: e.offer, price: e.price, expenses: e.expenses }))
-                labDetails.packagesInclude = res.body.packagesInclude?.map(e => ({ test: e.test._id, name: e.test.name, packages: e.packages }))
-                labDetails.ranges = res.body.ranges?.map(e => ({ test: e.test._id, name: e.test.name, ranges: e.ranges }))
-                labDetails.resultTimes = res.body.resultTimes?.map(e => ({ test: e.test._id, name: e.test.name, resultTime: e.resultTime }))
+
+                labDetails.prices = res.body.prices ? Object.values(res.body.prices).map(e => ({ test: e.test._id, name: e.test.name, offer: e.offer, price: e.price, expenses: e.expenses })) : [];
+                labDetails.packagesInclude = res.body.packagesInclude ? Object.values(res.body.packagesInclude).map(e => ({ test: e.test._id, name: e.test.name, packages: e.packages })) : [];
+                labDetails.ranges = res.body.ranges ? Object.values(res.body.ranges).map(e => ({ test: e.test._id, name: e.test.name, ranges: e.ranges })) : [];
+                labDetails.resultTimes = res.body.resultTimes ? Object.values(res.body.resultTimes).map(e => ({ test: e.test._id, name: e.test.name, resultTime: e.resultTime })) : [];
                 setLabDetails(labDetails);
             }
         })
@@ -47,7 +48,43 @@ const Page = () => {
 
     async function saveLab() {
         setLoading(true);
-        const res = await fetcher.post<LabTestDetails, { messege: string }>(`/admin/labs/${id}`, labDetails);
+        let newLabDetails: SaveLabDetails = {
+            prices: {},
+            resultTimes: {},
+            packagesInclude: {},
+            ranges: {}
+        };
+        if (labDetails.prices)
+            for (let index = 0; index < (labDetails.prices || []).length; index++) {
+                newLabDetails.prices[labDetails.prices[index].test] = {
+                    test: labDetails.prices[index].test,
+                    price: labDetails.prices[index].price,
+                    offer: labDetails.prices[index].offer,
+                    expenses: labDetails.prices[index].expenses
+                };
+            }
+        if (labDetails.resultTimes)
+            for (let index = 0; index < (labDetails.resultTimes || []).length; index++) {
+                newLabDetails.resultTimes[labDetails.resultTimes[index].test] = {
+                    test: labDetails.resultTimes[index].test,
+                    resultTime: labDetails.resultTimes[index].resultTime
+                };
+            }
+        if (labDetails.packagesInclude)
+            for (let index = 0; index < (labDetails.packagesInclude || []).length; index++) {
+                newLabDetails.packagesInclude[labDetails.packagesInclude[index].test] = {
+                    test: labDetails.packagesInclude[index].test,
+                    packages: labDetails.packagesInclude[index].packages
+                };
+            }
+        if (labDetails.ranges)
+            for (let index = 0; index < (labDetails.ranges || []).length; index++) {
+                newLabDetails.ranges[labDetails.ranges[index].test] = {
+                    test: labDetails.ranges[index].test,
+                    ranges: labDetails.ranges[index].ranges
+                };
+            }
+        const res = await fetcher.post<SaveLabDetails, { messege: string }>(`/admin/labs/${id}`, newLabDetails);
         if (res.status === 200) {
             toast.success('Lab saved successfully');
         } else {
@@ -86,10 +123,10 @@ const Page = () => {
 }
 
 type FetchedLabDetails = {
-    resultTimes?: ResultTime[],
-    prices: Price[],
-    packagesInclude?: PackageInclude[],
-    ranges?: Range[],
+    resultTimes?: { [key: string]: ResultTime },
+    prices?: { [key: string]: Price },
+    packagesInclude?: { [key: string]: PackageInclude },
+    ranges?: { [key: string]: Range },
     name?: string
 }
 
@@ -116,6 +153,40 @@ type PackageInclude = {
 type Range = {
     name?: string,
     test: { _id: string, name: string },
+    ranges: { [key: string]: string }[]
+}
+
+
+type SaveLabDetails = {
+    resultTimes: { [key: string]: SaveResultTime },
+    prices: { [key: string]: SavePrice },
+    packagesInclude: { [key: string]: SavePackageInclude },
+    ranges: { [key: string]: SaveRange }
+}
+
+type SaveResultTime = {
+    name?: string,
+    test: string,
+    resultTime: string,
+}
+
+type SavePrice = {
+    name?: string,
+    test: string,
+    price: number,
+    offer: number,
+    expenses: number
+}
+
+type SavePackageInclude = {
+    name?: string,
+    test: string,
+    packages: string[]
+}
+
+type SaveRange = {
+    name?: string,
+    test: string,
     ranges: { [key: string]: string }[]
 }
 

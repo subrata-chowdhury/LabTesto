@@ -19,6 +19,32 @@ export async function POST(req: NextRequest) {
     //     return new NextResponse('Certification organization is required', { status: 400 });
     // }
 
+    type SaveResultTime = {
+        name?: string,
+        test: string,
+        resultTime: string,
+    }
+
+    type SavePrice = {
+        name?: string,
+        test: string,
+        price: number,
+        offer: number,
+        expenses: number
+    }
+
+    type SavePackageInclude = {
+        name?: string,
+        test: string,
+        packages: string[]
+    }
+
+    type SaveRange = {
+        name?: string,
+        test: string,
+        ranges: { [key: string]: string }[]
+    }
+
     const labData: Partial<{
         name: string;
         description: string;
@@ -28,22 +54,10 @@ export async function POST(req: NextRequest) {
             organization: string;
             date: Date;
         };
-        prices: Array<{
-            test: string;
-            price: number;
-        }>;
-        packagesInclude: Array<{
-            test: string;
-            included: boolean;
-        }>;
-        ranges: Array<{
-            test: string;
-            range: string;
-        }>;
-        resultTimes: Array<{
-            test: string;
-            range: string;
-        }>;
+        prices: { [key: string]: SavePrice };
+        packagesInclude: { [key: string]: SavePackageInclude };
+        ranges: { [key: string]: SaveRange };
+        resultTimes: { [key: string]: SaveResultTime };
         rating: number;
     }> = {};
 
@@ -59,7 +73,7 @@ export async function POST(req: NextRequest) {
     if (body.rating) labData.rating = body.rating;
 
     try {
-        const updatedLab = await Lab.findByIdAndUpdate(id, labData, { new: true, runValidators: true });
+        const updatedLab = await Lab.findByIdAndUpdate(id, { $set: labData }, { new: true, runValidators: true });
 
         if (!updatedLab) {
             return new NextResponse('Lab not found', { status: 404 });

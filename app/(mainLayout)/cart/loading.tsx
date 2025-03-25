@@ -2,7 +2,7 @@ import React from 'react'
 
 const Loading = () => {
     return (
-        <div className='flex-1 flex flex-col p-4 bg-gray-100 min-h-screen'>
+        <div className='flex-1 flex flex-col p-4 bg-gray-100 dark:bg-[#0A192F] min-h-screen'>
             <AddressLoader />
             <CartLoader />
         </div>
@@ -11,7 +11,7 @@ const Loading = () => {
 
 export function AddressLoader() {
     return (
-        <div className='mb-5 w-full flex justify-between items-center py-3 px-4 min-h-16 rounded bg-white'>
+        <div className='mb-5 w-full flex justify-between items-center py-3 px-4 min-h-16 rounded bg-white dark:bg-[#172A46]'>
             <div>
                 <div className='w-52 h-6 rounded bg-gray-300 animate-pulse mb-1'></div>
                 <div className='w-32 h-5 rounded bg-gray-300 animate-pulse'></div>
@@ -25,7 +25,7 @@ export function CartLoader() {
     return (
         <ul className="space-y-4 flex-1 max-h-[70vh] overflow-y-scroll pb-5">
             {Array(3).fill(0).map((_, index) => (
-                <li key={index} className="bg-white rounded shadow-md flex flex-col">
+                <li key={index} className="bg-white dark:bg-[#172A46] rounded shadow-md flex flex-col">
                     <div className='p-4 flex justify-between items-center'>
                         <div className='flex flex-col gap-4 justify-between h-full'>
                             <div>

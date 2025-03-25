@@ -167,9 +167,9 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
     }
 
     return (
-        <div className="flex-1 flex flex-col p-4 bg-gray-100 min-h-screen">
+        <div className="flex-1 flex flex-col p-4 bg-gray-100 dark:bg-[#0A192F] min-h-screen">
             <SelectLocation selectedAddress={selectedAddress} onChange={address => setSelectedAddress(address)} />
-            <div className='w-full flex gap-4 justify-between items-center py-3 px-4 bg-white rounded shadow mb-5 font-medium'>
+            <div className='w-full flex gap-4 justify-between items-center py-3 px-4 bg-white dark:bg-[#172A46] rounded shadow mb-5 font-medium'>
                 <CheckBox label="Take the details at my location" value={!isPatientDetailsRequired} onChange={() => setIsPatientDetailsRequired(val => !val)} />
             </div>
             {/* <div className='w-full flex gap-4 justify-between items-center py-3 px-4 bg-white rounded shadow mb-5 text-sm'>
@@ -200,8 +200,8 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
                         />
                     ))}
                 </ul>
-                <div className='p-4 fixed bottom-0 left-0 w-screen flex justify-between items-center bg-white'>
-                    <div>Total: <div className="text-2xl font-semibold">₹{cart.items.reduce((total, item) => total + (item.product.price || 0) * item.quantity, 0).toFixed(2)}</div> <div className='text-gray-500'>+ ₹0 Delivery Charges</div></div>
+                <div className='p-4 fixed bottom-0 left-0 w-screen flex justify-between items-center bg-white dark:bg-[#172A46]'>
+                    <div>Total: <div className="text-2xl font-semibold">₹{cart.items.reduce((total, item) => total + (item.product.price || 0) * item.quantity, 0).toFixed(2)}</div> <div className='text-gray-500 dark:text-gray-300'>+ ₹0 Delivery Charges</div></div>
                     <button className="bg-primary text-white px-5 py-2 rounded-sm" onClick={async () => {
                         // verification
                         if (cart?.items?.length <= 0) toast.warning("Cart is empty");

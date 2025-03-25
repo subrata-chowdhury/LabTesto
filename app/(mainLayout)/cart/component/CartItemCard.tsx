@@ -6,7 +6,7 @@ import { CartItem } from "./CartPage";
 
 export default function CartItemCard({ item, isPatientDetailsRequired = false, onQuantityChange, onRemove, onOrder, onPatientClick }: { item: CartItem, isPatientDetailsRequired?: boolean, onQuantityChange: (quantity: number) => void, onRemove?: () => void, onOrder: () => void, onPatientClick: (index: number) => void }) {
     return (
-        <li className="bg-white rounded shadow-md flex flex-col">
+        <li className="bg-white dark:bg-[#172A46] rounded shadow-md flex flex-col">
             <div className='p-4 flex justify-between items-center'>
                 <div className='flex flex-col gap-3 justify-between h-full'>
                     <Link href={'/tests/' + item.product.test._id}>
@@ -17,17 +17,17 @@ export default function CartItemCard({ item, isPatientDetailsRequired = false, o
                 </div>
                 <div className='flex flex-col gap-2 text-sm'>
                     <div className='flex gap-2 justify-center items-center'>
-                        <button className='text-lg py-1 px-1 rounded-md cursor-pointer hover:bg-gray-100 border-2' disabled={item.quantity <= 1} onClick={async () => await onQuantityChange(item.quantity - 1)}>
-                            <Minus size={18} fill='black' />
+                        <button className='text-lg py-1 px-1 rounded-md cursor-pointer dark:text-white hover:bg-gray-100 border-2' disabled={item.quantity <= 1} onClick={async () => await onQuantityChange(item.quantity - 1)}>
+                            <Minus size={18} />
                         </button>
-                        <input type='text' min={1} value={item.quantity} className='w-12 text-center' onChange={async (e) => {
+                        <input type='text' min={1} value={item.quantity} className='w-12 text-center bg-transparent' onChange={async (e) => {
                             let number = Number(e.target.value.trim());
                             if (number < 1) number = 1;
                             if (number > 50) number = 50;
                             await onQuantityChange(number);
                         }} />
-                        <button className='text-lg py-1 px-1 rounded-md cursor-pointer hover:bg-gray-100 border-2' onClick={async () => await onQuantityChange(item.quantity + 1)}>
-                            <Plus size={18} fill='black' />
+                        <button className='text-lg py-1 px-1 rounded-md cursor-pointer dark:text-white hover:bg-gray-100 border-2' onClick={async () => await onQuantityChange(item.quantity + 1)}>
+                            <Plus size={18} />
                         </button>
                     </div>
                     {onRemove && <button

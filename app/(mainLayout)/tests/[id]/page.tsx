@@ -1,5 +1,5 @@
 import React from 'react'
-import MainTestPage from './componenets/page'
+import MainTestPage from './componenets/MainTestPage'
 
 interface TestPageProps {
     params: Promise<{ id: string }>; // Accessing the dynamic id from URL

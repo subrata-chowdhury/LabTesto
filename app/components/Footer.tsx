@@ -1,10 +1,9 @@
-import Image from 'next/image';
 import React from 'react'
-import facebookIcon from '@/assets/Footer/facebook.png'
-import instagramIcon from '@/assets/Footer/social.png'
-import linkedinIcon from '@/assets/Footer/linkedin.png'
-import youtubeIcon from '@/assets/Footer/youtube.png'
 import Link from 'next/link';
+import FacebookIcon from '@/assets/reactIcon/footer/Facebook';
+import InstagramIcon from '@/assets/reactIcon/footer/Instagram';
+import LinkedinIcon from '@/assets/reactIcon/footer/Linkedin';
+import YoutubeIcon from '@/assets/reactIcon/footer/Youtube';
 
 const Footer = () => {
     return (
@@ -13,19 +12,19 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-4">
                     <div className='mr-4'>
                         <h1 className="text-xl font-bold mb-2"><span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></h1>
-                        <p className="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.</p>
+                        <p className="text-sm">A wellknown trusted blood collection website to book any tests from any lab by user's choice.</p>
                         <div className='flex gap-3 mt-4'>
                             <Link href='#' aria-label="Facebook">
-                                <Image src={facebookIcon} width={24} height={24} alt="Facebook" />
+                                <FacebookIcon />
                             </Link>
                             <Link href='#' aria-label="Instagram">
-                                <Image src={instagramIcon} width={24} height={24} alt="Instagram" />
+                                <InstagramIcon />
                             </Link>
                             <Link href='#' aria-label="LinkedIn">
-                                <Image src={linkedinIcon} width={24} height={24} alt="LinkedIn" />
+                                <LinkedinIcon />
                             </Link>
                             <Link href='#' aria-label="YouTube">
-                                <Image src={youtubeIcon} width={24} height={24} alt="YouTube" />
+                                <YoutubeIcon />
                             </Link>
                         </div>
                     </div>

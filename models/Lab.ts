@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-interface ILab extends Document {
+export interface ILab extends Document {
     name: string;
     description?: string;
     image?: string;
@@ -22,23 +22,31 @@ interface ILab extends Document {
         imageUrl?: string;
     }[];
     resultTimes: {
-        test: mongoose.Schema.Types.ObjectId;
-        resultTime: string;
-    }[];
+        [key: string]: {
+            test: mongoose.Schema.Types.ObjectId;
+            resultTime: string;
+        };
+    }
     prices: {
-        test: mongoose.Schema.Types.ObjectId;
-        price: number;
-        offer?: number;
-        expenses?: number;
-    }[];
+        [key: string]: {
+            test: mongoose.Schema.Types.ObjectId;
+            price: number;
+            offer?: number;
+            expenses?: number;
+        }
+    };
     packagesInclude?: {
-        test: mongoose.Schema.Types.ObjectId;
-        packages: string[];
-    }[];
+        [key: string]: {
+            test: mongoose.Schema.Types.ObjectId;
+            packages: string[];
+        }
+    };
     ranges?: {
-        test: mongoose.Schema.Types.ObjectId;
-        ranges: object[];
-    }[];
+        [key: string]: {
+            test: mongoose.Schema.Types.ObjectId;
+            ranges: object[];
+        }
+    };
     rating: number;
     rated: number;
     contractDetails?: {
@@ -46,6 +54,14 @@ interface ILab extends Document {
         phone?: string[]
     }
 }
+
+
+const PriceSchema = new Schema({
+    test: { type: Schema.Types.ObjectId, ref: 'Test', required: true },
+    price: { type: Number, required: true },
+    offer: { type: Number, required: false, default: 0 },
+    expenses: { type: Number, required: false, default: 0 }
+});
 
 const LabSchema: Schema = new Schema({
     name: { type: String, required: true },
@@ -70,36 +86,33 @@ const LabSchema: Schema = new Schema({
         }], required: false
     },
     resultTimes: {
-        type: [{
+        type: Map,
+        to: {
             test: { type: Schema.Types.ObjectId, ref: 'Test', required: true },
             resultTime: { type: String, require: true }
-        }], required: false, default: []
+        },
+        require: false,
     },
     prices: {
-        type: [{
-            test: { type: Schema.Types.ObjectId, ref: 'Test', required: true },
-            price: { type: Number, require: true },
-            offer: { type: Number, require: false, default: 0 },
-            expenses: { type: Number, require: false, default: 0 }
-        }],
+        type: Map,
+        of: PriceSchema,
         required: false,
-        default: []
     },
     packagesInclude: {
-        type: [{
+        type: Map,
+        of: {
             test: { type: Schema.Types.ObjectId, ref: 'Test', required: true },
             packages: [String]
-        }],
+        },
         required: false,
-        default: []
     },
     ranges: {
-        type: [{
+        type: Map,
+        of: {
             test: { type: Schema.Types.ObjectId, ref: 'Test', required: true },
             ranges: [Object]
-        }],
+        },
         required: false,
-        default: []
     },
     rating: { type: Number, require: false, default: 0 },
     rated: { type: Number, require: false, default: 0 },

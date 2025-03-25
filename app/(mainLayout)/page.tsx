@@ -17,7 +17,7 @@ export default function Home() {
 
     return (
         <>
-            <div className="flex-1 p-2 pt-3">
+            <div className="flex-1 p-2 pt-3 dark:bg-[#0A192F]">
                 <SearchBar className="md:hidden" active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
                 <section className="mx-2 mb-4">
                     <Slide slides={3} />
@@ -25,7 +25,7 @@ export default function Home() {
                 <section className="mx-auto md:w-[95%] 2xl:w-fit pt-0 sm:pt-0 md:pt-0 p-4">
                     <h1 className="text-2xl font-semibold">Frequently Required Tests</h1>
                     {/* <h1 className="text-xl font-semibold translate-y-full ml-2 bg-white w-fit px-2">Frequently Required Tests</h1> */}
-                    <div className="mt-2 rounded-md bg-white w-full">
+                    <div className="mt-2 rounded-md w-full">
                     {/* <div className="mt-4 p-3 md:p-5 border-2 border-primary border-opacity-40 border-dashed rounded-md bg-white w-full"> */}
                         <div className="w-full overflow-x-auto hide-scroll flex gap-2">
                             <Card label="CBC" subText="Blood" description="Check Your Overall Health" />
@@ -39,7 +39,7 @@ export default function Home() {
                 </section>
                 <section className="mx-auto md:w-[95%] 2xl:w-fit pt-0 sm:pt-0 md:pt-0 p-4">
                     <h1 className="text-2xl font-semibold">Our Promise</h1>
-                    <div className="mt-2 rounded-md bg-white w-full">
+                    <div className="mt-2 rounded-md w-full">
                     {/* <div className="mt-4 p-3 md:p-5 border-2 border-primary border-opacity-40 border-dashed rounded-md bg-white w-full"> */}
                         <div className="w-full overflow-x-auto hide-scroll flex gap-2">
                             <CardType2 label="NABL Certified Lab Test" icon={nablcertiIcon} />
@@ -76,7 +76,7 @@ export default function Home() {
                 </section>
                 <section className="mx-auto md:w-[95%] pt-0 mt-5 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4">
                     <h1 className="text-2xl font-semibold w-fit">Our Achivements</h1>
-                    <div className="mt-4 bg-white w-full grid gap-1 sm:gap-2 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="mt-4 w-full grid gap-1 sm:gap-2 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
                         {/* <CardType4 label="1000+" subText="" /> */}
                         <CardType4 label="100+" subText="Labs" />
                         <CardType4 label="8000+" subText="Tests" />
@@ -93,7 +93,7 @@ export default function Home() {
 
 function Card({ label = "CBC", subText, description, icon }: { label: string, subText?: string, description?: string, icon?: StaticImageData }) {
     return (
-        <div className="bg-[#97c7e762] rounded-md shadow-md border-2 border-primary border-opacity-35 text-primary p-4 min-w-52">
+        <div className="bg-[#97c7e762] dark:bg-[#172A46] dark:shadow-md rounded-md shadow-md border-2 border-primary border-opacity-35 text-primary p-4 min-w-52">
             <div className="flex gap-2">
                 <div className="">
                     <h1 className="text-2xl font-bold">{label}</h1>
@@ -111,7 +111,7 @@ function Card({ label = "CBC", subText, description, icon }: { label: string, su
 
 function CardType2({ label = "CBC", subText, description, icon }: { label: string, subText?: string, description?: string, icon?: StaticImageData }) {
     return (
-        <div className="bg-[#9bc6e260] rounded-md shadow-md border-2 border-primary border-opacity-35 text-primary p-4 min-w-52 w-[209px]">
+        <div className="bg-[#9bc6e260] dark:bg-[#172A46] dark:shadow-md rounded-md shadow-md border-2 border-primary border-opacity-35 text-primary p-4 min-w-52 w-[209px]">
             <div className="flex flex-col gap-3">
                 {icon && <Image src={icon} alt="" className="mx-auto" width={120} />}
                 <h1 className="text-lg font-medium text-center">{label}</h1>
@@ -127,7 +127,7 @@ function CardType2({ label = "CBC", subText, description, icon }: { label: strin
 
 function CardType3({ label = "Cardiology", link = "#" }: { label: string, link?: string, icon?: StaticImageData }) {
     return (
-        <li className="shadow-md shadow-indigo-100 bg-white rounded-md p-2 py-6 border border-opacity-30 border-primary">
+        <li className="shadow-md shadow-indigo-100 bg-white dark:bg-[#172A46] dark:shadow-black rounded-md p-2 py-6 border border-opacity-30 border-primary">
             <a href={link} className="flex flex-col items-center">
                 <figure>
                     <Image
@@ -146,7 +146,7 @@ function CardType3({ label = "Cardiology", link = "#" }: { label: string, link?:
 
 function CardType4({ label = "CBC", subText, icon }: { label: string, subText?: string, description?: string, icon?: StaticImageData }) {
     return (
-        <div className="inline-flex w-full h-32 mr-3 mb-3 flex-col items-center justify-center rounded-lg border-2 border-primary border-opacity-35 bg-primary bg-opacity-25">
+        <div className="inline-flex dark:bg-[#172A46] dark:shadow-md w-full h-32 mr-3 mb-3 flex-col items-center justify-center rounded-lg border-2 border-primary border-opacity-35 bg-primary bg-opacity-25">
             {icon && <figure>
                 <Image
                     src={icon}

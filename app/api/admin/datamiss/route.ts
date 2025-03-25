@@ -15,12 +15,18 @@ export async function GET(req: NextRequest) {
         const labs = await Lab.find(labId ? { _id: new ObjectId(labId) } : {}).limit(parseInt(limit, 10));
         const tests = await Test.find();
 
+        const testMap = new Map(tests.map(test => [test._id.toString(), test.name]));
         const labsWithMissingPrices = labs.map(lab => {
-            const testIdsWithPrices = lab.prices.map((price: { test: string }) => price.test.toString());
-            const missingTests = tests.filter(test => !testIdsWithPrices.includes(test._id.toString()));
+            const testIdsWithPrices = new Set(Object.keys(lab.prices?.toJSON() || {}));
+            const missingTests = [];
+            for (const [testId, testName] of testMap) {
+                if (!testIdsWithPrices.has(testId)) {
+                    missingTests.push({ test: { _id: new ObjectId(testId) }, testName });
+                }
+            }
             return {
                 lab: lab,
-                missingTests: missingTests.map(test => ({ test: test, testName: test.name }))
+                missingTests: missingTests
             };
         }).filter(lab => lab.missingTests.length > 0);
 

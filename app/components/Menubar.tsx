@@ -25,7 +25,7 @@ const Menubar = () => {
     }, [])
 
     return (
-        <nav className="bg-[#fff] shadow-md shadow-[#3986ba16] p-3 px-6" role="navigation" aria-label="Main Navigation">
+        <nav className="bg-white dark:bg-[#09192F] shadow-md shadow-sky-100 dark:shadow-black dark:shadow-md p-3 px-6 z-10" role="navigation" aria-label="Main Navigation">
             <div className="mx-auto flex justify-between items-center">
                 <div className="md:hidden flex items-center">
                     <button onClick={() => setIsOpen(!isOpen)} className="text-[#3987ba] menu focus:outline-none" aria-label="Toggle Menu">
@@ -101,7 +101,7 @@ export function SearchBar({ active = false, className = '', onSelect = () => { }
                 onSelect={onSelect}
                 optionElement={(option, index, onClick) => (
                     <Link href={'/tests/' + option._id} key={index}>
-                        <div key={index} className='px-3 py-2 border-b-2 hover:bg-gray-100' onClick={() => { onClick(); onSelect(option) }}>
+                        <div key={index} className='px-3 py-2 border-b-2 dark:bg-[#172A46] hover:bg-gray-100' onClick={() => { onClick(); onSelect(option) }}>
                             <div className='text-base font-medium'>{option.name}</div>
                             <div className='text-xs'>{option.sampleType}</div>
                         </div>

@@ -50,14 +50,14 @@ const OrderPage = () => {
     }
 
     return (
-        <div className="flex-1 flex flex-col p-4 bg-gray-100 min-h-screen">
+        <div className="flex-1 flex flex-col p-4 bg-gray-100 dark:bg-[#0A192F] min-h-screen">
             <h1 className="text-2xl font-bold mb-4">Ordered Items</h1>
             <ul className="space-y-3 flex-1 overflow-y-scroll">
                 {orders.map((order, outerIndex) => (
                     <li
                         key={outerIndex}
                         onClick={() => navigate.push('/order/' + order._id)}
-                        className="bg-white rounded drop-shadow-md cursor-pointer p-3 px-4 flex justify-between items-center">
+                        className="bg-white dark:bg-[#172A46] rounded drop-shadow-md cursor-pointer p-3 px-4 flex justify-between items-center">
                         <div>
                             <div className="text-lg font-semibold">{order.items.map(e => e.product.test.name).join(', ')}</div>
                             <div><span className={order.status === "Canceled" ? 'text-red-500' : (order.status === 'Report Delivered' ? 'text-green-600' : '')}>{order.status}</span>, {new Date(order.updatedAt).toDateString()}</div>

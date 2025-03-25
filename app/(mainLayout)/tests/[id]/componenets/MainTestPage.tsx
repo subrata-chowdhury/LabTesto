@@ -1,7 +1,6 @@
 'use client'
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
-import labIcon from '@/assets/lab.png'
 import Image from 'next/image'
 import fetcher from '@/lib/fetcher'
 import SampleTypeIcon from '@/assets/reactIcon/test/SampleType'
@@ -22,6 +21,7 @@ import cross from '@/assets/cross.svg'
 import { CartPage } from '../../../cart/component/CartPage'
 import locationIcon from '@/assets/location.svg'
 import { useItemCountContext } from '@/app/contexts/ItemCountContext'
+import LabIcon from '@/assets/reactIcon/test/Lab'
 
 type Props = {
     test: TestDetails
@@ -35,7 +35,7 @@ function MainTestPage({ test }: Props) {
         packagesInclude: [],
         ranges: []
     })
-    const [lab, setLab] = useState<Lab>({ name: '', description: '', rating: 0, _id: '', prices: [] })
+    const [lab, setLab] = useState<Lab>({ name: '', description: '', rating: 0, _id: '', prices: {} })
     const [labs, setLabs] = useState<LabDetails[]>([]);
     const [loading, setLoading] = useState(false);
     const [booking, setBooking] = useState(false);
@@ -53,14 +53,14 @@ function MainTestPage({ test }: Props) {
         getLabs(id, 10)
     }, [id])
 
-    const onLabSelect = async (lab: LabDetails, testId: string) => {
+    const onLabSelect = async (lab: LabDetails) => {
         const selectedLab = lab;
         if (selectedLab) {
             // console.log(selectedLab);
             setLab(selectedLab);
-            const testPrice = selectedLab.prices.find(p => p.test === testId);
-            const packagesInclude = selectedLab.packagesInclude.find(p => p.test === testId);
-            const ranges = selectedLab.ranges.find(p => p.test === testId);
+            const testPrice = selectedLab.prices[id];
+            const packagesInclude = (selectedLab?.packagesInclude || {})[id];
+            const ranges = (selectedLab.ranges || {})[id];
             setLabBaseDetails({
                 price: testPrice?.price || 0,
                 offer: testPrice?.offer || 0,
@@ -71,17 +71,17 @@ function MainTestPage({ test }: Props) {
     }
 
     async function getLabs(id: string, limit: number = 10) {
-        const filter = { 'prices.test': id };
+        const filter = { test: id };
         await fetcher.get<{ labs: LabDetails[] }>(`/labs?filter=${JSON.stringify(filter)}&limit=${limit}`).then(res => {
             if (res.body && res.status === 200) {
                 res.body.labs.forEach(lab => {
-                    lab.prices = lab.prices.filter(p => p.test === id);
-                    lab.packagesInclude = lab.packagesInclude.filter(p => p.test === id);
-                    lab.ranges = lab.ranges.filter(p => p.test === id);
+                    lab.prices = { [id]: lab.prices[id] };
+                    lab.packagesInclude = { [id]: (lab.packagesInclude || {})[id] };
+                    lab.ranges = { [id]: (lab.ranges || {})[id] };
                 });
                 setLabs(res.body.labs);
                 setLab(res.body.labs[0]);
-                onLabSelect(res.body.labs[0], id);
+                onLabSelect(res.body.labs[0]);
                 setLoadingLabs(false)
             }
         })
@@ -139,8 +139,8 @@ function MainTestPage({ test }: Props) {
     }
 
     return (
-        <div className='bg-blue-50 p-1 md:py-9 md:px-10'>
-            <section className='bg-white border-2 p-7 px-8 flex flex-col rounded-lg'>
+        <div className='bg-blue-50 dark:bg-[#0A192F] p-1 md:py-9 md:px-10'>
+            <section className='bg-white dark:bg-[#0A192F] border-2 dark:border-[#172A46] p-7 px-8 flex flex-col rounded-lg'>
                 <h1 className='text-2xl font-bold text-primary'>{testDetails.name}</h1>
                 {(testDetails?.otherTerms || []).length > 0 && <div className='text-sm text-gray-500 pt-2'>
                     <strong className='font-normal'>Also known as:</strong> <span className='text-black font-medium'>{testDetails?.otherTerms?.join(', ')}</span>
@@ -151,28 +151,28 @@ function MainTestPage({ test }: Props) {
                             <SampleTypeIcon />
                             Sample Type
                         </p>
-                        <p className='text-gray-500'>{testDetails.sampleType}</p>
+                        <p className='text-gray-500 dark:text-gray-400'>{testDetails.sampleType}</p>
                     </div>
                     <div className='flex gap-4'>
                         <p className='font-medium flex gap-2'>
                             <TubeIcon />
                             {testDetails.tubeType.includes('Tube') ? 'Tube' : 'Container'} Type
                         </p>
-                        <p className='text-gray-500'>{testDetails.tubeType}</p>
+                        <p className='text-gray-500 dark:text-gray-400'>{testDetails.tubeType}</p>
                     </div>
                     {testDetails.fastingRequired?.length > 0 && <div className='flex gap-4'>
                         <p className='font-medium flex gap-2'>
                             <FoodIcon />
                             Fasting Required
                         </p>
-                        <p className='text-gray-500'>{testDetails.fastingRequired}</p>
+                        <p className='text-gray-500 dark:text-gray-400'>{testDetails.fastingRequired}</p>
                     </div>}
                     {labs.length > 0 && <div className='flex gap-4 items-center'>
-                        <p className='font-medium flex gap-2'>
-                            <Image src={labIcon} alt='Lab Icon' width={24} height={24} />
+                        <p className='font-medium dark:text-white flex gap-2'>
+                            <LabIcon />
                             Lab
                         </p>
-                        <p className='text-gray-500'>{lab.name}</p>
+                        <p className='text-gray-500 dark:text-gray-400'>{lab.name}</p>
                         <Title title={<p className='text-nowrap font-medium'>See lab Details</p>} onClick={() => setShowLabDetails(true)} titleClass='bg-white text-primary'>
                             <Image src={informationIcon} alt="Information Icon" width={20} height={20} />
                         </Title>
@@ -186,7 +186,7 @@ function MainTestPage({ test }: Props) {
                             </div>
                         ) : (labs.length > 0 && <>
                             <div className='text-2xl font-semibold'>₹{(labBaseDetails.offer).toFixed(2)}</div>
-                            <div className='text-base line-through text-gray-500'>₹{labBaseDetails.price}</div>
+                            <div className='text-base line-through text-gray-500 dark:text-gray-400'>₹{labBaseDetails.price}</div>
                             <div className='text-sm font-semibold text-red-400'>{(((labBaseDetails.price - labBaseDetails.offer) / labBaseDetails.price) * 100).toFixed(2)}% OFF</div>
                         </>)}
                     </div>
@@ -199,23 +199,23 @@ function MainTestPage({ test }: Props) {
             <section className='mt-1 md:mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 md:gap-5 rounded-lg'>
                 {loadingLabs === true && <LabLoader />}
                 {loadingLabs === false && labs.length > 0 && labs.map((labObj, i) => (
-                    <div key={i} className='border-2 p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white' onClick={() => onLabSelect(labs[i], id)}>
+                    <div key={i} className='border-2 dark:border-[#172A46] p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white dark:bg-[#172A46]' onClick={() => onLabSelect(labs[i])}>
                         <div className='flex items-center gap-3'>
                             <div className='w-14 h-14 bg-[rgba(57,134,186,0.2)] rounded-md flex items-center justify-center'>
                             </div>
                             <div>
                                 <div className='font-semibold text-primary'>{labObj.name}</div>
                                 <div className='flex items-center gap-2'>
-                                    <div className='text-lg font-semibold'>₹{labObj.prices[0].offer}</div>
-                                    <div className='text-base line-through text-gray-500'>₹{labObj.prices[0].price}</div>
-                                    <div className='text-sm font-semibold text-red-400'>{(((labObj.prices[0].price - labObj.prices[0].offer) / labObj.prices[0].price) * 100).toFixed(2)}% OFF</div>
+                                    <div className='text-lg font-semibold'>₹{labObj.prices[id].offer}</div>
+                                    <div className='text-base line-through text-gray-500 dark:text-gray-400'>₹{labObj.prices[id].price}</div>
+                                    <div className='text-sm font-semibold text-red-400'>{(((labObj.prices[id].price - (labObj.prices[id]?.offer || 0)) / labObj.prices[id].price) * 100).toFixed(2)}% OFF</div>
                                 </div>
                             </div>
                         </div>
                         <CheckBox
                             value={lab._id === labObj._id}
                             label=""
-                            onChange={() => onLabSelect(labs[i], id)}
+                            onChange={() => onLabSelect(labs[i])}
                         />
                     </div>
                 ))}
@@ -275,9 +275,26 @@ type LabDetails = {
     description: string,
     rating: number,
     name: string,
-    prices: { test: string, price: number, offer: number }[],
-    packagesInclude: { test: string, packages: string[] }[],
-    ranges: { test: string, ranges: { [key: string]: string }[] }[]
+    prices: {
+        [key: string]: {
+            test: string;
+            price: number;
+            offer?: number;
+            expenses?: number;
+        }
+    },
+    packagesInclude?: {
+        [key: string]: {
+            test: string;
+            packages: string[];
+        }
+    };
+    ranges?: {
+        [key: string]: {
+            test: string;
+            ranges: { [key: string]: string }[];
+        }
+    };
 }
 
 type Lab = {
@@ -294,10 +311,13 @@ type Lab = {
     },
     rating: number,
     prices: {
-        test: string,
-        price: number,
-        offer: number
-    }[]
+        [key: string]: {
+            test: string;
+            price: number;
+            offer?: number;
+            expenses?: number;
+        }
+    }
 }
 
 function DetailsSection({ labBaseDetails, testDetails }: {
@@ -318,7 +338,7 @@ function DetailsSection({ labBaseDetails, testDetails }: {
     });
 
     return (
-        <section className='mt-1 md:mt-4 py-8 px-8 rounded-lg border-2 bg-white '>
+        <section className='mt-1 md:mt-4 py-8 px-8 rounded-lg border-2 dark:border-[#172A46] bg-white dark:bg-[#172A46]'>
             <div className='flex flex-col gap-5' style={{ padding: 0, border: 0 }}>
                 {labBaseDetails.packagesInclude.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
                     <PackageIcon />
@@ -338,7 +358,7 @@ function DetailsSection({ labBaseDetails, testDetails }: {
                     <DescriptionIcon />
                     <div className='flex flex-col gap-1'>
                         <h2 className='font-semibold text-xl flex gap-2'>Overview</h2>
-                        <div className={'text-gray-500 relative ' + (!seeMore.overview ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, overview: !seeMore.overview })}>
+                        <div className={'text-gray-500 dark:text-gray-300 relative ' + (!seeMore.overview ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, overview: !seeMore.overview })}>
                             <div className='tiptap' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.overview }}></div>
                         </div>
                         {testDetails.overview.length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, overview: !seeMore.overview })}>See {!seeMore.overview ? 'More' : 'Less'}</div>}
@@ -348,8 +368,8 @@ function DetailsSection({ labBaseDetails, testDetails }: {
                     <DescriptionIcon />
                     <div className='flex-1 flex flex-col gap-1'>
                         <h2 className='font-semibold text-xl'>Description</h2>
-                        <div className={'text-gray-500 relative ' + (!seeMore.description ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, description: !seeMore.description })}>
-                            <div className='tiptap text-gray-500' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.description }}></div>
+                        <div className={'text-gray-500 dark:text-gray-300 relative ' + (!seeMore.description ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, description: !seeMore.description })}>
+                            <div className='tiptap text-gray-500 dark:text-gray-300' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.description }}></div>
                         </div>
                         {testDetails.description.length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, description: !seeMore.description })}>See {!seeMore.description ? 'More' : 'Less'}</div>}
                     </div>
@@ -358,8 +378,8 @@ function DetailsSection({ labBaseDetails, testDetails }: {
                     <DescriptionIcon />
                     <div className='flex flex-col gap-1'>
                         <h2 className='font-semibold text-xl flex gap-2'>Test Result Interpretation</h2>
-                        <div className={'text-gray-500 relative ' + (!seeMore.testResultInterpretation ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, testResultInterpretation: !seeMore.testResultInterpretation })}>
-                            <div className='tiptap text-gray-500' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.testResultInterpretation }}></div>
+                        <div className={'text-gray-500 dark:text-gray-300 relative ' + (!seeMore.testResultInterpretation ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, testResultInterpretation: !seeMore.testResultInterpretation })}>
+                            <div className='tiptap text-gray-500 dark:text-gray-300' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.testResultInterpretation }}></div>
                         </div>
                         {testDetails.testResultInterpretation.length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, testResultInterpretation: !seeMore.testResultInterpretation })}>See {!seeMore.testResultInterpretation ? 'More' : 'Less'}</div>}
                     </div>
@@ -368,14 +388,14 @@ function DetailsSection({ labBaseDetails, testDetails }: {
                     <DescriptionIcon />
                     <div className='flex flex-col gap-1'>
                         <h2 className='font-semibold text-xl flex gap-2'>Risk Assessment</h2>
-                        <div className={'text-gray-500 relative ' + (!seeMore.riskAssesment ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, riskAssesment: !seeMore.riskAssesment })}>
-                            <div className='tiptap text-gray-500' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.riskAssesment }}></div>
+                        <div className={'text-gray-500 dark:text-gray-300 relative ' + (!seeMore.riskAssesment ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, riskAssesment: !seeMore.riskAssesment })}>
+                            <div className='tiptap text-gray-500 dark:text-gray-300' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.riskAssesment }}></div>
                         </div>
                         {testDetails.riskAssesment.length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, riskAssesment: !seeMore.riskAssesment })}>See {!seeMore.riskAssesment ? 'More' : 'Less'}</div>}
                     </div>
                 </div>}
             </div>
-            {labBaseDetails.ranges.length > 0 && <div className='mt-1 md:mt-4 flex flex-col gap-5 rounded-lg bg-white'>
+            {labBaseDetails.ranges.length > 0 && <div className='mt-1 md:mt-4 flex flex-col gap-5 rounded-lg'>
                 {labBaseDetails.ranges.length > 0 && <div className='flex gap-2'>
                     <DescriptionIcon />
                     <div className='flex flex-1 flex-col gap-1'>
