@@ -62,11 +62,11 @@ export function SelectLocation({ selectedAddress, onChange }: { selectedAddress?
                 <div className='px-7 py-4 pt-6 min-w-80'>
                     <div className='grid grid-cols-1 gap-2 sm:gap-4 text-sm pb-4'>
                         {user.address.map((address, index) => (
-                            <div key={index} className='bg-white p-3 flex gap-3 rounded-md border-2 border-gray-200 cursor-pointer' onClick={() => { onChange(address); setShowAddressesPopup(false) }}>
+                            <div key={index} className='bg-white dark:bg-[#172A46] p-3 flex gap-3 rounded-md border-2 border-gray-200 dark:border-gray-400 cursor-pointer' onClick={() => { onChange(address); setShowAddressesPopup(false) }}>
                                 <CheckBox value={(address.pin === selectedAddress?.pin && address.city === selectedAddress.city && address.district === selectedAddress.district && address.other === selectedAddress.other && address.phone === selectedAddress.phone)} onChange={() => { }} />
                                 <div>
                                     <div className='font-medium'>{address.city}, {address.pin}</div>
-                                    <div className='text-sm text-gray-600'>{address.other} | {address.phone}</div>
+                                    <div className='text-sm text-gray-600 dark:text-gray-400'>{address.other} | {address.phone}</div>
                                 </div>
                                 <div className="px-2 py-1 my-auto ms-auto rounded cursor-pointer text-primary font-medium border-2 border-primary" onClick={() => setShowAddAddressDetailsPopup({ index })}>Edit</div>
                             </div>

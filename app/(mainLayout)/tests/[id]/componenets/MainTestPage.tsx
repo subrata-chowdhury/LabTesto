@@ -22,6 +22,7 @@ import { CartPage } from '../../../cart/component/CartPage'
 import locationIcon from '@/assets/location.svg'
 import { useItemCountContext } from '@/app/contexts/ItemCountContext'
 import LabIcon from '@/assets/reactIcon/test/Lab'
+import { CrossIcon } from '@/assets/reactIcon/Cross'
 
 type Props = {
     test: TestDetails
@@ -417,12 +418,12 @@ function DetailsSection({ labBaseDetails, testDetails }: {
 function LabDetailsSidePopup({ lab, onClose }: { lab: Lab, onClose: () => void }) {
     return (
         <section className='fixed w-screen h-screen top-0 left-0 bg-black bg-opacity-20 z-50' onClick={() => onClose()}>
-            <div className='fixed left-0 top-0 w-[90vw] sm:w-[70vw] bg-white shadow-2xl' onClick={e => e.stopPropagation()}>
-                <button className='flex justify-end p-2 absolute right-0 top-0 translate-x-full bg-white rounded-e-md border-2' onClick={() => onClose()}>
-                    <Image src={cross} alt='' />
+            <div className='fixed left-0 top-0 w-[90vw] sm:w-[70vw] bg-white dark:bg-[#0A192F] shadow-2xl' onClick={e => e.stopPropagation()}>
+                <button className='flex justify-end p-2 absolute right-0 top-0 translate-x-full bg-white dark:text-white dark:bg-[#0A192F] rounded-e-md border-2 dark:border-gray-600' onClick={() => onClose()}>
+                    <CrossIcon />
                 </button>
                 <div className='overflow-y-scroll h-screen'>
-                    <div className='bg-blue-200 relative min-h-52 overflow-hidden p-4'>
+                    <div className='bg-blue-200 dark:bg-[#172A46] relative min-h-52 overflow-hidden p-4'>
                         <h2 className='font-bold text-2xl bottom-16 absolute z-20 text-white'>{lab.name}</h2>
                         <p className='font-medium flex gap-1 bottom-10 absolute z-20 text-white'>
                             <Image src={locationIcon} alt="" width={18} height={18} />
@@ -436,7 +437,7 @@ function LabDetailsSidePopup({ lab, onClose }: { lab: Lab, onClose: () => void }
                                 <Image key={i} src={star} alt='' width={20} height={20} />
                             ))}
                         </div>
-                        <div className='absolute bottom-0 w-full h-full z-10 -translate-x-[10%] translate-y-1/2 bg-gradient-to-t from-gray-400 to-transparent transform rotate-[20deg]'></div>
+                        <div className='absolute bottom-0 w-full h-full z-10 -translate-x-[10%] translate-y-1/2 bg-gradient-to-t from-gray-400 dark:from-black to-transparent transform rotate-[20deg]'></div>
                     </div>
                     <div className='tiptap border-0 p-5' style={{ border: 0 }} dangerouslySetInnerHTML={{ __html: lab.description.replace(/<p>/g, '').replace(/<\/p>/g, '<br/>') }}></div>
                 </div>

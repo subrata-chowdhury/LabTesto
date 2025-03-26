@@ -69,10 +69,10 @@ const Page = () => {
 
     return (
 
-        <div className='bg-white mt-4 p-8 px-10'>
+        <div className='bg-white dark:bg-[#172A46] mt-4 p-8 px-10'>
             <div className='text-xl flex gap-3 items-center font-bold pb-6'>
                 Order Form
-                <Title title={<p className='text-nowrap font-medium'>You can only change status on 1 hour interval</p>}>
+                <Title title={<p className='text-nowrap font-medium dark:text-black'>You can only change status on 1 hour interval</p>}>
                     <Image src={informationIcon} alt="" width={20} height={20} />
                 </Title>
             </div>

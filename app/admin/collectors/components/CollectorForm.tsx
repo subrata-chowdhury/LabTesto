@@ -9,7 +9,7 @@ import informationIcon from '@/assets/information.svg'
 import { MainTable } from '@/components/Table'
 import plusIcon from '@/assets/blue-plus.svg'
 import Model from '@/components/Model'
-import trashBin from '@/assets/trash-bin.svg'
+import TrashBinIcon from '@/assets/reactIcon/TrashBin'
 
 type Props = {
     collectorDetails: CollectorDetails,
@@ -70,7 +70,7 @@ const CollectorForm = ({ collectorDetails, error, onChange, onSave = () => { } }
                                             newQualifications.splice(index, 1);
                                             onChange.collectorDetails({ ...collectorDetails, qualification: newQualifications });
                                         }}>
-                                            <Image src={trashBin} alt="" width={20} height={20} />
+                                            <TrashBinIcon />
                                         </button>
                                     </div>
                                 )

@@ -1,12 +1,12 @@
 import Input from '@/components/Inputs/Input'
 import { MainTable } from '@/components/Table'
-import trashBin from '@/assets/trash-bin.svg'
 import React, { useState } from 'react'
 import Image from 'next/image'
 import Model from '@/components/Model'
 import plusIcon from '@/assets/blue-plus.svg'
 import RichTextEditor from '@/app/components/RichTextEditor'
 import UploadToCloudinary from '@/app/components/ImageInput'
+import TrashBinIcon from '@/assets/reactIcon/TrashBin'
 
 type Props = {
     labDetails: LabAboutDetails,
@@ -74,7 +74,7 @@ const AboutForm = ({ labDetails, loading, onChange = () => { }, onSave = async (
                                         const newCertification = [...(labDetails.certification || [])];
                                         newCertification.splice(index, 1);
                                         onChange({ ...labDetails, certification: newCertification });
-                                    }}><Image src={trashBin} alt="" width={20} height={20} /></button>
+                                    }}><TrashBinIcon /></button>
                             </div>)
                         }
                     ]}

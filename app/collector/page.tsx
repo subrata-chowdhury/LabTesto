@@ -53,11 +53,11 @@ const CollectorDashboard = () => {
                     <div className='flex flex-col gap-2'>
                         {
                             orderData.map(order => (
-                                <div key={order._id} className='flex justify-between items-center flex-col sm:flex-row gap-2 rounded-md border-2 bg-white p-2 px-3'>
+                                <div key={order._id} className='flex justify-between items-center flex-col sm:flex-row gap-2 rounded-md border-2 dark:border-gray-600 bg-white dark:bg-[#172A46] dark:shadow-md dark:shadow-black p-2 px-3'>
                                     {/* <div>{order._id}</div> */}
                                     <div className='text-xs flex flex-col font-medium text-gray-600'>
-                                        <div>{order._id.toUpperCase()}</div>
-                                        <div className='text-sm text-gray-800'>{new Date(order.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
+                                        <div className='dark:text-gray-400'>{order._id.toUpperCase()}</div>
+                                        <div className='text-sm text-gray-800 dark:text-gray-200'>{new Date(order.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
                                     </div>
                                     <div className='flex gap-2'>
                                         <Link className='px-2.5 py-1 bg-primary text-white rounded text-sm font-medium' href={('/collector/orders/view/' + order._id)}>View</Link>

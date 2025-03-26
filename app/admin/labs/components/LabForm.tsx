@@ -2,11 +2,11 @@ import { MainTable } from '@/components/Table'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import plusIcon from '@/assets/blue-plus.svg'
-import trashBin from '@/assets/trash-bin.svg'
 import PricePopup from './PricePopup'
 import PackageIncludePopup from './PackageIncludePopup'
 import RangePopup from './RangePopup'
 import ResultTimePopup from './ResultTimePopup'
+import TrashBinIcon from '@/assets/reactIcon/TrashBin'
 
 type Props = {
     labDetails: LabTestDetails,
@@ -54,7 +54,7 @@ const LabForm = ({ labDetails, loading, onChange, onSave = () => { } }: Props) =
                                         const newResultTimes = [...(labDetails.resultTimes || [])];
                                         newResultTimes.splice(index, 1);
                                         onChange.labDetails({ ...labDetails, resultTimes: newResultTimes });
-                                    }}><Image src={trashBin} alt="" width={20} height={20} /></button>
+                                    }}><TrashBinIcon /></button>
                             </div>)
                         }
                     ]}
@@ -99,7 +99,7 @@ const LabForm = ({ labDetails, loading, onChange, onSave = () => { } }: Props) =
                                         const newPrices = [...(labDetails.prices || [])];
                                         newPrices.splice(index, 1);
                                         onChange.labDetails({ ...labDetails, prices: newPrices });
-                                    }}><Image src={trashBin} alt="" width={20} height={20} /></button>
+                                    }}><TrashBinIcon /></button>
                             </div>)
                         }
                     ]}
@@ -141,7 +141,7 @@ const LabForm = ({ labDetails, loading, onChange, onSave = () => { } }: Props) =
                                         const newPackagesInclude = [...(labDetails.packagesInclude || [])];
                                         newPackagesInclude.splice(index, 1);
                                         onChange.labDetails({ ...labDetails, packagesInclude: newPackagesInclude });
-                                    }}><Image src={trashBin} alt="" width={20} height={20} /></button>
+                                    }}><TrashBinIcon /></button>
                             </div>)
                         }
                     ]}
@@ -183,7 +183,7 @@ const LabForm = ({ labDetails, loading, onChange, onSave = () => { } }: Props) =
                                         const newRanges = [...(labDetails.ranges || [])];
                                         newRanges.splice(index, 1);
                                         onChange.labDetails({ ...labDetails, ranges: newRanges });
-                                    }}><Image src={trashBin} alt="" width={20} height={20} /></button>
+                                    }}><TrashBinIcon /></button>
                             </div>)
                         }
                     ]}

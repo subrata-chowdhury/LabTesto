@@ -21,8 +21,8 @@ const PasswordInput = ({ label = "", value = "", placeholder = "", name = "", on
         <label className="flex flex-col gap-1">
             <p className={labelClass}>{label}</p>
             <div className="flex">
-                <input type={isPassword ? "password" : 'text'} placeholder={placeholder} name={name} value={value} onChange={e => onChange(e.target.value)} className="px-3 py-2 border-2 rounded-l outline-none flex-1 bg-transparent" />
-                <div className="px-3 py-2 cursor-pointer flex justify-center items-center border-2 border-l-0 rounded-r" onClick={() => setIsPassword(prevVal => !prevVal)}>
+                <input type={isPassword ? "password" : 'text'} placeholder={placeholder} name={name} value={value} onChange={e => onChange(e.target.value)} className="px-3 py-2 border-2 dark:border-gray-400 rounded-l outline-none flex-1 bg-transparent" />
+                <div className="px-3 py-2 cursor-pointer flex justify-center items-center border-2 dark:border-gray-400 border-l-0 rounded-r" onClick={() => setIsPassword(prevVal => !prevVal)}>
                     <Image width={iconSize} height={iconSize} src={isPassword ? eye : eyeClosed} alt="" />
                 </div>
             </div>

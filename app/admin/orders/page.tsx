@@ -6,7 +6,7 @@ import plusIcon from '@/assets/plus.svg'
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import fetcher from '@/lib/fetcher';
-import trashBin from '@/assets/trash-bin.svg'
+import TrashBinIcon from '@/assets/reactIcon/TrashBin';
 
 const Orders = () => {
     const [testData, setOrderData] = useState<Order[]>([]);
@@ -92,15 +92,19 @@ const Orders = () => {
                     table={{
                         config: [
                             {
-                                heading: 'User', selector: 'user', component: ({ data }) => <div>
+                                heading: 'User', 
+                                selector: 'user', 
+                                component: ({ data }) => <div>
                                     <div className='text-sm'>{data.user.name}</div>
-                                    <div className='text-xs text-gray-500'>{data.user.email}</div>
+                                    <div className='text-xs text-gray-500 dark:text-gray-400'>{data.user.email}</div>
                                 </div>
                             },
                             {
-                                heading: 'Collector', selector: 'collector', component: ({ data }) => <div>
+                                heading: 'Collector', 
+                                selector: 'collector', 
+                                component: ({ data }) => <div>
                                     <div className='text-sm'>{data.collector?.name || 'Not Assigned'}</div>
-                                    <div className='text-xs text-gray-500'>{data.collector?.email}</div>
+                                    <div className='text-xs text-gray-500 dark:text-gray-400'>{data.collector?.email}</div>
                                 </div>
                             },
                             { heading: 'Status', selector: 'status', component: ({ data }) => <ColoredStatus data={data} /> },
@@ -108,7 +112,7 @@ const Orders = () => {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
                                     <button className='text-blue-500' onClick={() => navigate.push('/admin/orders/view/' + data._id)}>View</button>|
                                     <button className='text-blue-500' onClick={() => navigate.push(`/admin/orders/edit/${data._id}`)} >Edit</button>|
-                                    <button className='text-red-500' onClick={() => deleteOrder(data._id as string)} ><Image src={trashBin} alt="" width={20} height={20} /></button>
+                                    <button className='text-[#ff5d76]' onClick={() => deleteOrder(data._id as string)} ><TrashBinIcon /></button>
                                 </div>
                             }
                         ],

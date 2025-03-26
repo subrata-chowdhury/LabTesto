@@ -6,7 +6,7 @@ import plusIcon from '@/assets/plus.svg'
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import fetcher from '@/lib/fetcher';
-import trashBin from '@/assets/trash-bin.svg'
+import TrashBinIcon from '@/assets/reactIcon/TrashBin';
 
 const Collectors = () => {
     const [collectorData, setCollectorData] = useState<Collector[]>([]);
@@ -75,9 +75,11 @@ const Collectors = () => {
                     table={{
                         config: [
                             {
-                                heading: 'Name', selector: 'name', component: ({ data }) => <div>
+                                heading: 'Name', 
+                                selector: 'name', 
+                                component: ({ data }) => <div>
                                     <div className='text-sm'>{data.name}</div>
-                                    <div className='text-xs text-gray-500'>{data.email}</div>
+                                    <div className='text-xs text-gray-500 dark:text-gray-400'>{data.email}</div>
                                 </div>
                             },
                             { heading: 'Experience', selector: 'experience' },
@@ -87,7 +89,7 @@ const Collectors = () => {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
                                     <button className='text-blue-500' onClick={() => navigate.push('/collectors/' + data._id)}>View</button>|
                                     <button className='text-blue-500' onClick={() => navigate.push(`/admin/collectors/edit/${data._id}`)} >Edit</button>|
-                                    <button className='text-red-500' onClick={() => deleteCollector(data._id as string)} ><Image src={trashBin} alt="" width={20} height={20} /></button>
+                                    <button className='text-[#ff5d76]' onClick={() => deleteCollector(data._id as string)} ><TrashBinIcon /></button>
                                 </div>
                             }
                         ],

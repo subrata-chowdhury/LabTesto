@@ -8,11 +8,11 @@ import Title from '@/components/Title'
 import informationIcon from '@/assets/information.svg'
 import { MainTable } from '@/components/Table'
 import plusIcon from '@/assets/blue-plus.svg'
-import trashBin from '@/assets/trash-bin.svg'
 import SelectCollector from '@/app/components/SelectCollector'
 import SelectUser from '@/app/components/SelectUser'
 import DateInput from '@/components/Inputs/DateInput'
 import OrderPopup from './OrderPopup'
+import TrashBinIcon from '@/assets/reactIcon/TrashBin'
 
 type Props = {
     orderDetails: OrderDetails,
@@ -108,7 +108,7 @@ const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props)
                                         const newItems = [...orderDetails.items];
                                         newItems.splice(index, 1);
                                         onChange.orderDetails({ ...orderDetails, items: newItems });
-                                    }}><Image src={trashBin} alt="" width={20} height={20} />
+                                    }}><TrashBinIcon />
                                 </button>
                             </div>)
                         }

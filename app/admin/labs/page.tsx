@@ -6,7 +6,7 @@ import plusIcon from '@/assets/plus.svg'
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import fetcher from '@/lib/fetcher';
-import trashBin from '@/assets/trash-bin.svg'
+import TrashBinIcon from '@/assets/reactIcon/TrashBin';
 
 const Labs = () => {
     const [labData, setLabData] = useState<Lab[]>([]);
@@ -17,7 +17,7 @@ const Labs = () => {
 
     const [location, setLocation] = useState('All');
     const [name, setName] = useState('');
-    
+
     const [loading, setLoading] = useState(false);
 
     const navigate = useRouter();
@@ -61,7 +61,7 @@ const Labs = () => {
     // }
 
     async function deleteLab(id: string) {
-        if(!window.confirm('Are you sure you want to delete this lab?')) return;
+        if (!window.confirm('Are you sure you want to delete this lab?')) return;
         const res = await fetcher.delete(`/admin/labs/${id}`);
         if (res.status !== 200) return;
         await fetchLabs();
@@ -90,7 +90,7 @@ const Labs = () => {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
                                     <button className='text-blue-500' onClick={() => navigate.push(`/admin/labs/edit/tests/${data._id}`)} >Edit Tests</button>|
                                     <button className='text-blue-500' onClick={() => navigate.push('/admin/labs/edit/about/' + data._id)}>Edit About</button>|
-                                    <button className='text-red-500' onClick={() => deleteLab(data._id as string)} ><Image src={trashBin} alt="" width={20} height={20} /></button>
+                                    <button className='text-[#ff5d76]' onClick={() => deleteLab(data._id as string)} ><TrashBinIcon /></button>
                                 </div>
                             }
                         ],
@@ -100,7 +100,7 @@ const Labs = () => {
                     limit={{ limit, options: [5, 10, 15], onLimitChange: (val) => setLimit(val as number) }}
                     onSearch={(val) => setName(val)}
                     tag={{ tags: ['All', 'Today'], onTagChange: (tag) => { setLocation(tag) } }} />
-                    {/* dropdown={{ options: ['All', 'Location1', 'Location2', 'Location3'], value: location || 'All', onChange: (value) => { setLocation(value as string) }, width: 100 }} /> */}
+                {/* dropdown={{ options: ['All', 'Location1', 'Location2', 'Location3'], value: location || 'All', onChange: (value) => { setLocation(value as string) }, width: 100 }} /> */}
             </div>
         </>
     )

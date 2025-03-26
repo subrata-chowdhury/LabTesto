@@ -3,8 +3,8 @@ import Image from "next/image";
 import React, { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import eyeIcon from '@/assets/eye.svg';
-import deleteIcon from '@/assets/trash-bin.svg';
 import attachIcon from '@/assets/attach.svg'
+import TrashBinIcon from "@/assets/reactIcon/TrashBin";
 
 const UploadToCloudinary = ({ imgUrl, apiPath, onUpload }: { imgUrl?: string, apiPath: string, onUpload: (url: string) => void }) => {
     const [loading, setLoading] = useState(false);
@@ -81,7 +81,7 @@ const UploadToCloudinary = ({ imgUrl, apiPath, onUpload }: { imgUrl?: string, ap
                     className="text-red-500 cursor-pointer turncate"
                     onClick={() => deleteFile()}
                 >
-                    <Image src={deleteIcon} alt="" />
+                    <TrashBinIcon />
                 </span>
             )}
         </div>

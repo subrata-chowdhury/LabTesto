@@ -44,7 +44,7 @@ function OrderPage() {
         <div className='flex-1 flex flex-col gap-4 pt-2'>
             <div className='text-sm'>Order ID: {order?._id.toUpperCase()}</div>
             {order?.items.map((item, index) => (
-                <div className='bg-white rounded shadow-md' key={index}>
+                <div className='bg-white dark:bg-[#172A46] rounded shadow-md' key={index}>
                     <div className='flex justify-between p-3 px-4'>
                         <div className='flex flex-col gap-2 justify-between h-full'>
                             <div>
@@ -69,18 +69,18 @@ function OrderPage() {
                     </div>
                 </div>
             ))}
-            <div className='bg-white px-6 py-4 rounded'>
+            <div className='bg-white dark:bg-[#172A46] px-6 py-4 rounded'>
                 <div className='text-lg font-semibold'>Sample Taken Time </div>
                 <div><span className='font-medium'>Start:</span> {new Date(order?.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
                 <div><span className='font-medium'>End:</span> {new Date(order?.sampleTakenDateTime?.end || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.end || '').toTimeString().split(' ')[0]}</div>
             </div>
-            {!(order.status === 'Report Delivered' || order.status === 'Canceled') && <div className='bg-white px-6 py-4 rounded'>
+            {!(order.status === 'Report Delivered' || order.status === 'Canceled') && <div className='bg-white dark:bg-[#172A46] px-6 py-4 rounded'>
                 <div className='text-lg font-semibold'>Collector Details</div>
                 <div><span className='font-medium'>Name:</span> {order?.collector?.name}</div>
                 <div><span className='font-medium'>Email:</span> {order?.collector?.email}</div>
                 <div><span className='font-medium'>Phone Number:</span> {order?.collector?.phone}</div>
             </div>}
-            <div className='bg-white px-6 py-4 rounded'>
+            <div className='bg-white dark:bg-[#172A46] px-6 py-4 rounded'>
                 <div className='text-lg font-semibold'>Report Delivery Address</div>
                 <div><span className='font-medium'>City:</span> {order?.address?.city}</div>
                 <div><span className='font-medium'>District:</span> {order?.address?.district}</div>

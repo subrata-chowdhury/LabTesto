@@ -4,10 +4,9 @@ import Table from '@/components/Table';
 import React, { useCallback, useEffect, useState } from 'react'
 import plusIcon from '@/assets/plus.svg'
 import Image from 'next/image';
-// import { useRouter } from 'next/navigation';
 import fetcher from '@/lib/fetcher';
-import trashBin from '@/assets/trash-bin.svg'
 import { toast } from 'react-toastify';
+import TrashBinIcon from '@/assets/reactIcon/TrashBin';
 
 const Users = () => {
     const [userData, setUserData] = useState<User[]>([]);
@@ -104,7 +103,7 @@ const Users = () => {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
                                     <button className='text-blue-500' onClick={() => toast.warn('Feature not available yet')}>View</button>|
                                     <button className='text-blue-500' onClick={() => toast.warn('Feature not available yet')} >Edit</button>|
-                                    <button className='text-red-500' onClick={() => deleteUser(data._id as string)} ><Image src={trashBin} alt="" width={20} height={20} /></button>
+                                    <button className='text-[#ff5d76]' onClick={() => deleteUser(data._id as string)} ><TrashBinIcon /></button>
                                 </div>
                             }
                         ],

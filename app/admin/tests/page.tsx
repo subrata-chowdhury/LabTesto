@@ -6,7 +6,7 @@ import plusIcon from '@/assets/plus.svg'
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import fetcher from '@/lib/fetcher';
-import trashBin from '@/assets/trash-bin.svg'
+import TrashBinIcon from '@/assets/reactIcon/TrashBin';
 
 const Tests = () => {
     const [testData, setTestData] = useState<Test[]>([]);
@@ -97,7 +97,7 @@ const Tests = () => {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
                                     <button className='text-blue-500' onClick={() => navigate.push('/tests/' + data._id)}>View</button>|
                                     <button className='text-blue-500' onClick={() => navigate.push(`/admin/tests/edit/${data._id}`)} >Edit</button>|
-                                    <button className='text-red-500' onClick={() => deleteTest(data._id as string)} ><Image src={trashBin} alt="" width={20} height={20} /></button>
+                                    <button className='text-[#ff5d76]' onClick={() => deleteTest(data._id as string)} ><TrashBinIcon /></button>
                                 </div>
                             }
                         ],

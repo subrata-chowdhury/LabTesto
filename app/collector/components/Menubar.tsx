@@ -33,7 +33,7 @@ function Menubar() {
                     </svg>
                 </button>
             </div>
-            {isOpen && <div className='sm:relative shadow-2xl sm:shadow fixed left-0 top-0 bg-white flex flex-col gap-2 z-20 px-2 sm:px-4 py-4 sm:py-6 h-full transition-all' onMouseEnter={() => setMenubarHovered(true)} onMouseLeave={() => { if (window.innerWidth > 640) setMenubarHovered(false) }}>
+            {isOpen && <div className='sm:relative shadow-2xl sm:shadow fixed left-0 top-0 bg-white dark:bg-[#172A46] flex flex-col gap-2 z-20 px-2 sm:px-4 py-4 sm:py-6 h-full transition-all' onMouseEnter={() => setMenubarHovered(true)} onMouseLeave={() => { if (window.innerWidth > 640) setMenubarHovered(false) }}>
                 <div className='flex flex-col gap-2 flex-1 transition-all'>
                     <Menu name='Dashboard' image={dashboard} link='/collector' active={currentPath === '/collector'} menubarHovered={menubarHovered} />
                     <Menu name='Orders' image={form} link='/collector/orders' active={currentPath.includes('/collector/orders')} menubarHovered={menubarHovered} />
@@ -71,7 +71,7 @@ interface MenuProps {
 const Menu: React.FC<MenuProps> = ({ name, link, active, image, menubarHovered }) => {
     return (
         <Link href={link}>
-            <div className={`flex justify-start gap-3 p-3 items-center rounded-lg transition-all ${active ? 'bg-blue-200' : ''}`}>
+            <div className={`flex justify-start gap-3 p-3 items-center rounded-lg transition-all ${active ? 'bg-blue-200 dark:text-black' : ''}`}>
                 <Image src={image} alt='' width={24} height={24} className='w-5 h-5 sm:w-6 sm:h-6 ' />
                 {menubarHovered && <p>{name}</p>}
             </div>

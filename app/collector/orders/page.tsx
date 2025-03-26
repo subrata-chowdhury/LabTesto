@@ -91,16 +91,27 @@ const Orders = () => {
                     table={{
                         config: [
                             {
-                                heading: 'User', selector: 'user', component: ({ data }) => <div>
+                                heading: 'User',
+                                selector: 'user',
+                                component: ({ data }) => <div>
                                     <div className='text-sm'>{data.user.name}</div>
-                                    <div className='text-xs text-gray-500'>{data.user.email}</div>
+                                    <div className='text-xs text-gray-500 dark:text-gray-400'>{data.user.email}</div>
                                 </div>
                             },
                             // { heading: 'Collector', selector: 'collector', component: ({ data }) => <div>{data.collector || 'Not Assigned'}</div> },
-                            { heading: 'Order ID', selector: '_id', component: ({ data }) => <div className='text-xs sm:text-sm flex flex-col sm:flex-row truncate'><p>{data._id.slice(0, 12).toUpperCase()}</p><p>{data._id.slice(12).toUpperCase()}</p></div> },
+                            {
+                                heading: 'Order ID',
+                                selector: '_id',
+                                component: ({ data }) =>
+                                    <div className='text-xs sm:text-sm flex flex-col sm:flex-row truncate'>
+                                        <p>{data._id.slice(0, 12).toUpperCase()}</p>
+                                        <p>{data._id.slice(12).toUpperCase()}</p>
+                                    </div>
+                            },
                             { heading: 'Status', selector: 'status', hideAble: true, component: ({ data }) => <ColoredStatus data={data} /> },
                             {
-                                heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
+                                heading: 'Actions',
+                                component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
                                     <button className='text-blue-500' onClick={() => navigate.push('/collector/orders/view/' + data._id)}>View</button>|
                                     <button className='text-blue-500' onClick={() => navigate.push(`/collector/orders/edit/${data._id}`)} >Edit</button>
                                     {/* <button className='text-red-500' onClick={() => deleteOrder(data._id as string)} ><Image src={trashBin} alt="" width={20} height={20} /></button> */}

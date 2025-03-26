@@ -12,7 +12,7 @@ type Props = {
 
 function Card({ label = '', value = 0, className = '', colors = { lineColor: '#274E63', iconBgColor: 'rgba(219, 234, 254, 1)' } }: Props) {
     return (
-        <div className={`inline-flex border-2 rounded pl-4 pr-6 py-5 w-full md:w-fit h-fit gap-3 bg-white ${className}`}>
+        <div className={`inline-flex border-2 rounded pl-4 pr-6 py-5 w-full md:w-fit h-fit gap-3 bg-white dark:bg-[#172A46] dark:border-gray-500 ${className}`}>
             <svg xmlns="http://www.w3.org/2000/svg" width="2" height="58" viewBox="0 0 2 58" fill="none">
                 <path d="M1 1L1 57" stroke={colors.lineColor} strokeWidth="2" strokeLinecap="round" />
             </svg>

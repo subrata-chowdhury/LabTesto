@@ -8,7 +8,7 @@ import Image from 'next/image'
 import Input from '@/components/Inputs/Input'
 import { MainTable } from '@/components/Table';
 import plusIcon from '@/assets/blue-plus.svg'
-import trashBin from '@/assets/trash-bin.svg'
+import TrashBinIcon from '@/assets/reactIcon/TrashBin';
 
 export default function OrderPopup({ item, onSave, onClose }: { item: Item, onSave: (item: Item) => void, onClose: () => void }) {
     const [itemData, setItemData] = useState<Item>(item || { product: { test: '', lab: '', price: 0 }, patientDetails: [], quantity: 1 });
@@ -70,7 +70,7 @@ export default function OrderPopup({ item, onSave, onClose }: { item: Item, onSa
                                             const newPatients = [...itemData.patientDetails];
                                             newPatients.splice(index, 1);
                                             setItemData({ ...itemData, patientDetails: newPatients });
-                                        }}><Image src={trashBin} alt="" width={20} height={20} /></button>
+                                        }}><TrashBinIcon /></button>
                                     </div>
                                 )
                             }

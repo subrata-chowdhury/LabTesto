@@ -1,8 +1,8 @@
 // url /api/cart
 import dbConnect from '@/config/db';
-import Cart from '@/models/Cart';
+import Cart, { ICart } from '@/models/Cart';
 import { NextRequest, NextResponse } from 'next/server';
-import Lab from '@/models/Lab';
+import Lab, { ILab } from '@/models/Lab';
 import Test from '@/models/Test';
 import User from '@/models/User';
 
@@ -16,7 +16,12 @@ export async function GET(req: NextRequest) {
     await dbConnect();
 
     try {
-        const cart = await Cart.findOne({ user: id }).populate({ path: 'items.product.test', model: Test }).populate({ path: 'items.product.lab', model: Lab }).populate({ path: 'user', model: User });
+        const cart = await Cart.findOne({ user: id }).populate({ path: 'items.product.test', model: Test }).populate({ path: 'items.product.lab', model: Lab }).populate({ path: 'user', model: User }).lean() as unknown as ICart;
+        cart.items.map((item => {
+            const priceDetails = (item.product.lab as unknown as ILab).prices[item.product.test._id.toString()];
+            delete priceDetails.expenses;
+            (item.product.lab as unknown as ILab).prices = { [item.product.test._id.toString()]: priceDetails };
+        }));
 
         if (!cart) {
             const cartData = {
@@ -28,7 +33,7 @@ export async function GET(req: NextRequest) {
 
             try {
                 await cart.save();
-                return NextResponse.json([], { status: 200 });
+                return NextResponse.json(cart, { status: 200 });
             } catch (e) {
                 console.log(e);
                 return new NextResponse('Error creating cart', { status: 500 });
