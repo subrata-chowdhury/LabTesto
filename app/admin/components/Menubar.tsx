@@ -38,11 +38,6 @@ function Menubar() {
                     <Image src={logout} alt='' width={20} height={20} style={{ width: 20, height: 20 }} />
                     {menubarHovered && <p>Log Out</p>}
                 </div>
-                {/* <button
-                    onClick={() => {
-                        localStorage.removeItem('token');
-                        window.location.href = '/login';
-                    }}>Log Out</button> */}
             </div>
         </div>
     )

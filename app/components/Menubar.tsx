@@ -13,6 +13,7 @@ import { useItemCountContext } from '../contexts/ItemCountContext';
 
 const Menubar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const { itemCount, setItemCount } = useItemCountContext();
     const navigate = useRouter();
 
@@ -20,6 +21,7 @@ const Menubar = () => {
         fetcher.get<{ items: number }>('/cart/count').then(res => {
             if (res.status === 200 && res.body) {
                 setItemCount(res.body.items || 0)
+                setIsLoggedIn(JSON.parse(localStorage.getItem('isLoggedIn') || 'false'))
             };
         })
     }, [])
@@ -46,7 +48,7 @@ const Menubar = () => {
                 <div className='hidden ms-6 md:block mr-5'>
                     <SearchBar onSelect={(test) => navigate.push('/tests/' + test._id)} active={true} />
                 </div>
-                {JSON.parse(localStorage.getItem('isLoggedIn') || 'false') === true ?
+                {isLoggedIn ?
                     <>
                         <Link
                             className='relative mr-0 md:mr-4 cursor-pointer'

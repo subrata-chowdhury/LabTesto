@@ -13,7 +13,6 @@ import Slide from "../components/Slide";
 import Footer from "../components/Footer";
 import { LinkArrowIcon } from "@/assets/reactIcon/LinkArrow";
 import Link from "next/link";
-import waveBg from '@/assets/wave.svg'
 
 export default function Home() {
     const navigate = useRouter();

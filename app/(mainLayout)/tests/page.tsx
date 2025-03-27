@@ -90,7 +90,7 @@ const Tests = () => {
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-5'>
                 {
                     tests.map(test => (
-                        <div className="shadow-indigo-100 flex flex-col bg-white dark:bg-[#172A46] dark:shadow-md rounded-md shadow-md border border-primary border-opacity-35 text-primary min-w-52">
+                        <div key={test._id} className="shadow-indigo-100 flex flex-col bg-white dark:bg-[#172A46] dark:shadow-md rounded-md shadow-md border border-primary border-opacity-35 text-primary min-w-52">
                             <div className="p-4 pb-2">
                                 <h1 className="text-xl font-semibold mb-1.5">{test.name}</h1>
                                 <p className="text-sm font-semibold text-primary mb-2.5 bg-blue-100 px-4 py-1.5 w-fit rounded-full text-opacity-80">{test.sampleType}</p>
