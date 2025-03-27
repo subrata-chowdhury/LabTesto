@@ -20,7 +20,9 @@ export default function Home() {
     return (
         <>
             <div className="flex-1 pt-3 dark:bg-[#0A192F]">
+                <div className="px-4 pt-2">
                 <SearchBar className="md:hidden" active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
+                </div>
                 <section className="mx-4 mb-4">
                     <Slide slides={3} />
                 </section>
@@ -106,7 +108,7 @@ export default function Home() {
                     <h1 className="text-3xl font-semibold mx-auto mt-4">Our Achivements</h1>
                     <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-3"></div>
                     {/* <h1 className="text-2xl font-semibold w-fit">Our Achivements</h1> */}
-                    <div className="mt-4 w-full grid gap-1 sm:gap-2 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="mt-4 px-4 w-full grid gap-1 sm:gap-2 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
                         {/* <CardType4 label="1000+" subText="" /> */}
                         <CardType4 label="100+" subText="Labs" />
                         <CardType4 label="8000+" subText="Tests" />
@@ -166,7 +168,7 @@ function CardType3({ label = "Cardiology", link = "#" }: { label: string, link?:
                         height={50}
                     />
                 </figure>
-                <span className="text-primary">{label}</span>
+                <span className="text-primary text-center">{label}</span>
             </li>
         </a>
     )

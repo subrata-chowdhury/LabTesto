@@ -68,7 +68,7 @@ const Menubar = () => {
                         </Link>
                     </> :
                     <>
-                        <Link href={'/signup'} className='px-5 py-1.5 text-white font-medium bg-primary rounded-md'>Register</Link>
+                        <Link href={'/signup'} className='px-3 sm:px-5 py-1 sm:py-1.5 text-white font-medium bg-primary rounded-md'>Register</Link>
                     </>}
             </div>
             {isOpen && (
