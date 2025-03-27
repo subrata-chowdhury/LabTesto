@@ -49,15 +49,13 @@ export async function POST(req: NextRequest) {
     // Assuming you have a function to generate a token
     const token = await new SignJWT({
         id: user._id,
-        type: user.type,
         verified: user.verified,
-        institution: user.institution || '',
     })
         .setProtectedHeader({ alg: 'HS256' })
         .setExpirationTime('1h')
         .sign(new TextEncoder().encode(process.env.JWT_SECRET));
 
-    return NextResponse.json({ message: 'Login successful', user: { type: user.type, verified: user.verified, institution: user.institution || '' }, token });
+    return NextResponse.json({ message: 'Login successful', user: { verified: user.verified }, token });
 }
 
 export async function PUT() {

@@ -5,6 +5,7 @@ import Link from "next/link";
 import PasswordInput from "@/components/Inputs/PasswordInput";
 import Input from "@/components/Inputs/Input";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
     const [loading, setLoading] = useState(false);
@@ -14,6 +15,8 @@ export default function Login() {
     });
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const navigate = useRouter();
 
     async function login(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
@@ -36,7 +39,7 @@ export default function Login() {
             return;
         }
         setLoading(true);
-        await fetcher.post<{ email: string, password: string }, { user: { verified: boolean, institution: string, type: string }, token: string }>('/auth/login', { email, password }).then(async (res) => {
+        await fetcher.post<{ email: string, password: string }, { user: { verified: boolean }, token: string }>('/auth/login', { email, password }).then(async (res) => {
             if (res.status !== 200) {
                 toast.error(res.error || 'Error signing up');
                 return;
@@ -46,8 +49,8 @@ export default function Login() {
                 document.cookie = `token=${res.body.token}; path=/; secure; samesite=strict`;
                 const urlParams = new URLSearchParams(window.location.search);
                 const redirectUrl = urlParams.get('redirect') || '/';
-                await fetcher.get('/cart/count');
-                setTimeout(() => window.location.replace(redirectUrl), 300)
+                localStorage.setItem('isLoggedIn', JSON.stringify(true));
+                setTimeout(() => navigate.replace(redirectUrl), 300);
             }
         });
         setLoading(false);
@@ -55,7 +58,7 @@ export default function Login() {
 
     return (
         <div className="flex flex-col md:flex-row h-screen gap-0">
-            <div className="md:w-1/2 flex flex-col gap-4 justify-center items-center bg-gray-200 dark:bg-[#0A192F] w-full h-full">
+            <div className="md:w-1/2 hidden md:flex flex-col gap-4 justify-center items-center bg-gray-200 dark:bg-[#0A192F] w-full h-full">
                 <h1 className="text-2xl font-semibold">Welcome Back to <span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></h1>
                 <div>Your wellness which makes us Happy</div>
             </div>
@@ -81,7 +84,7 @@ export default function Login() {
                             <Link href="/">Forgot Password</Link>
                         </div>
                     </div>
-                    <button className="bg-blue-500 text-white rounded p-2" onClick={login} disabled={loading}>{loading ? 'Loading...' : 'Login'}</button>
+                    <button className="bg-primary text-white rounded p-2" onClick={login} disabled={loading}>{loading ? 'Loading...' : 'Login'}</button>
                     <div className="flex flex-col">
                         <div className="text-[0.9rem] text-center text-slate-500 dark:text-gray-400">Don&#39;t have an account?</div>
                         <Link href="/signup" className="bg-gray-300 text-center text-slate-700 rounded p-2 border-2 border-gray-300">Sign In</Link>

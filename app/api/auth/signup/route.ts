@@ -50,13 +50,13 @@ export async function POST(request: NextRequest) {
 
     const token = await new SignJWT({
         id: newUser._id,
-        type: newUser.type
+        verified: newUser.verified,
     })
         .setProtectedHeader({ alg: 'HS256' })
         .setExpirationTime('1h')
         .sign(new TextEncoder().encode(process.env.JWT_SECRET));
 
-    return NextResponse.json({ message: 'User signed up successfully', user: { type: 'admin', verified: false }, token });
+    return NextResponse.json({ message: 'User signed up successfully', user: { verified: false }, token });
 }
 
 export async function PUT() {

@@ -4,6 +4,7 @@ import fetcher from '@/lib/fetcher';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import Loading from './loading';
+import { LinkArrowIcon } from '@/assets/reactIcon/LinkArrow';
 
 type Test = {
     _id: string;
@@ -29,7 +30,7 @@ const Tests = () => {
     const [limit, setLimit] = useState(6);
     const [loading, setLoading] = useState(false);
     const [totalPages, setTotalPages] = useState(1);
-    
+
     async function onSeach(filter: { name: string, sampleType?: 'All' | 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other' | 'Other Body Fluid' }, limit: number) {
         setLoading(true)
         if (filter?.sampleType === 'All') {
@@ -54,9 +55,9 @@ const Tests = () => {
         <div className='p-5'>
             <h1 className='text-xl font-medium'>Tests</h1>
             <div className='flex flex-col sm:flex-row gap-4 mt-4'>
-                <div className={"px-4 py-2 flex gap-3 justify-between border-primary border-opacity-50 border-2 rounded-full"}>
+                <div className={"px-4 py-2 flex gap-3 justify-between border-primary border-opacity-50 border bg-gray-500 bg-opacity-5 rounded-full"}>
                     <input
-                        className="flex-1 outline-none"
+                        className="flex-1 outline-none bg-transparent"
                         type="text"
                         value={filter.name}
                         placeholder='Search for tests'
@@ -89,11 +90,13 @@ const Tests = () => {
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-5'>
                 {
                     tests.map(test => (
-                        <div key={test._id} className='flex flex-col border-2 border-primary border-opacity-60 rounded-lg px-3 py-2'>
-                            <div className='text-lg font-semibold'>{test.name}</div>
-                            <div className='text-gray-600'><span className='text-black font-medium'>Type:</span> {test.sampleType}</div>
-                            <div className='text-gray-600'><span className='text-black font-medium'>Tube:</span> {test.tubeType}</div>
-                            <Link href={'/tests/' + test._id} className='px-4 py-2 mt-auto mb-1 ms-auto bg-primary rounded-md text-white w-fit'>View</Link>
+                        <div className="shadow-indigo-100 flex flex-col bg-white dark:bg-[#172A46] dark:shadow-md rounded-md shadow-md border border-primary border-opacity-35 text-primary min-w-52">
+                            <div className="p-4 pb-2">
+                                <h1 className="text-xl font-semibold mb-1.5">{test.name}</h1>
+                                <p className="text-sm font-semibold text-primary mb-2.5 bg-blue-100 px-4 py-1.5 w-fit rounded-full text-opacity-80">{test.sampleType}</p>
+                                <p className="text-sm opacity-80">Fasting: {test.fastingRequired} | Tube Type: {test.tubeType}</p>
+                            </div>
+                            <Link href={'/tests/' + test._id} className="border-t mt-auto p-4 pb-3 pt-1.5 border-primary text-sm flex items-center gap-2">{'View'}<LinkArrowIcon size={12} /></Link>
                         </div>
                     ))
                 }

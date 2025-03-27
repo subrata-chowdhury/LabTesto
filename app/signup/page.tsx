@@ -61,8 +61,11 @@ export default function Signup() {
                 return
             }
             if (res.body) {
-                localStorage.setItem('token', res.body.token);
-                navigate.push('/login');
+                document.cookie = `token=${res.body.token}; path=/; secure; samesite=strict`;
+                const urlParams = new URLSearchParams(window.location.search);
+                const redirectUrl = urlParams.get('redirect') || '/';
+                localStorage.setItem('isLoggedIn', JSON.stringify(true));
+                setTimeout(() => navigate.replace(redirectUrl), 300);
             }
         });
         setLoading(false);
@@ -70,7 +73,7 @@ export default function Signup() {
 
     return (
         <div className="flex flex-col md:flex-row h-screen gap-0">
-            <div className="md:w-1/2 flex flex-col gap-4 justify-center items-center bg-gray-200 dark:bg-[#0A192F] w-full h-full">
+            <div className="md:w-1/2 hidden md:flex flex-col gap-4 justify-center items-center bg-gray-200 dark:bg-[#0A192F] w-full h-full">
                 <h1 className="text-2xl font-semibold">Welcome to <span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></h1>
                 <div>Your wellness which makes us Happy</div>
             </div>
@@ -109,7 +112,7 @@ export default function Signup() {
                             name="confirmpassword"
                             placeholder="Confirm Password" />
                     </div> */}
-                    <button type="submit" className="bg-blue-500 text-white rounded p-2" disabled={loading}>{loading ? 'Signing Up...' : 'Sign Up'}</button>
+                    <button type="submit" className="bg-primary text-white rounded p-2" disabled={loading}>{loading ? 'Signing Up...' : 'Sign Up'}</button>
                     <div className="flex flex-col">
                         <div className="text-[0.9rem] text-center text-slate-500 dark:text-gray-400">Already have an account?</div>
                         <Link href="/login" className="bg-gray-300 text-center text-slate-700 rounded p-2 border-2 border-gray-300">Log In</Link>

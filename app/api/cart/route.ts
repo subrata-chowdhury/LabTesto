@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
 
     try {
         const cart = await Cart.findOne({ user: id }).populate({ path: 'items.product.test', model: Test }).populate({ path: 'items.product.lab', model: Lab }).populate({ path: 'user', model: User }).lean() as unknown as ICart;
+        console.log(cart.items)
         cart.items.map((item => {
             const priceDetails = (item.product.lab as unknown as ILab).prices[item.product.test._id.toString()];
             delete priceDetails.expenses;

@@ -28,7 +28,7 @@ const Menubar = () => {
         <nav className="bg-white dark:bg-[#09192F] shadow-md shadow-sky-100 dark:shadow-black dark:shadow-md p-3 px-6 z-10" role="navigation" aria-label="Main Navigation">
             <div className="mx-auto flex justify-between items-center">
                 <div className="md:hidden flex items-center">
-                    <button onClick={() => setIsOpen(!isOpen)} className="text-[#3987ba] menu focus:outline-none" aria-label="Toggle Menu">
+                    <button onClick={() => setIsOpen(!isOpen)} className="text-primary menu focus:outline-none" aria-label="Toggle Menu">
                         <svg className="w-6 h-6 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"}></path>
                         </svg>
@@ -38,41 +38,47 @@ const Menubar = () => {
                     <Link href={'/'} onClick={() => setIsOpen(false)} className=''><span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></Link>
                 </div>
                 <div className="hidden md:flex space-x-6 mr-auto">
-                    <Link href="/tests" className="text-[#3987ba] menu">Book</Link>
-                    <Link href="#" className="text-[#3987ba] menu">About</Link>
-                    <Link href="/order" className="text-[#3987ba] menu">Orders</Link>
-                    <Link href="/contact" className="text-[#3987ba] menu">Contact</Link>
+                    <Link href="/tests" className="text-primary menu">Book</Link>
+                    <Link href="#" className="text-primary menu">About</Link>
+                    <Link href="/order" className="text-primary menu">Orders</Link>
+                    <Link href="/contact" className="text-primary menu">Contact</Link>
                 </div>
                 <div className='hidden ms-6 md:block mr-5'>
                     <SearchBar onSelect={(test) => navigate.push('/tests/' + test._id)} active={true} />
                 </div>
-                <Link
-                    className='relative mr-0 md:mr-4 cursor-pointer'
-                    href={'/cart'}
-                    onClick={() => setIsOpen(false)}
-                    aria-label="View Cart"
-                >
-                    {(itemCount || 0) > 0 && <div className='absolute -right-1 -top-1 px-[6px] py-[2px] rounded-full text-xs text-white font-medium bg-primary'>{(itemCount || 0) > 9 ? '9+' : itemCount}</div>}
-                    <Image
-                        src={CartIcon}
-                        alt="Cart Icon"
-                        width={28}
-                        height={28} />
-                </Link>
-                <Link className="hidden md:flex items-center space-x-4 cursor-pointer" href='/profile' aria-label="View Profile">
-                    <Image src={user} alt="User Avatar" width={40} height={40} className="rounded-full p-2 bg-primary bg-opacity-20" />
-                </Link>
+                {JSON.parse(localStorage.getItem('isLoggedIn') || 'false') === true ?
+                    <>
+                        <Link
+                            className='relative mr-0 md:mr-4 cursor-pointer'
+                            href={'/cart'}
+                            onClick={() => setIsOpen(false)}
+                            aria-label="View Cart"
+                        >
+                            {(itemCount || 0) > 0 && <div className='absolute -right-1 -top-1 px-[6px] py-[2px] rounded-full text-xs text-white font-medium bg-primary'>{(itemCount || 0) > 9 ? '9+' : itemCount}</div>}
+                            <Image
+                                src={CartIcon}
+                                alt="Cart Icon"
+                                width={28}
+                                height={28} />
+                        </Link>
+                        <Link className="hidden md:flex items-center space-x-4 cursor-pointer" href='/profile' aria-label="View Profile">
+                            <Image src={user} alt="User Avatar" width={40} height={40} className="rounded-full p-2 bg-primary bg-opacity-20" />
+                        </Link>
+                    </> :
+                    <>
+                        <Link href={'/signup'} className='px-5 py-1.5 text-white font-medium bg-primary rounded-md'>Register</Link>
+                    </>}
             </div>
             {isOpen && (
-                <div className="md:hidden fixed left-0 top-14 w-full text-lg sm:w-2/5 px-10 z-20 bg-white h-screen">
+                <div className="md:hidden fixed left-0 top-12 w-full text-lg sm:w-2/5 px-10 z-20 bg-white h-screen">
                     <Link className="flex flex-col gap-2 justify-center items-center cursor-pointer py-5 pb-7" href={'/profile'} onClick={() => setIsOpen(false)} aria-label="View Profile">
                         <Image src={user} alt="User Avatar" width={80} height={80} className="rounded-full p-4 bg-primary bg-opacity-20" />
-                        <div className="text-[#3987ba] menu">Profile</div>
+                        <div className="text-primary menu">Profile</div>
                     </Link>
-                    <Link href="/tests" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>Book a Test</Link>
-                    <Link href="#" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>About</Link>
-                    <Link href="/order" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>Orders</Link>
-                    <Link href="/contact" className="block text-[#3987ba] menu py-2" onClick={() => setIsOpen(false)}>Contact</Link>
+                    <Link href="/tests" className="block text-primary menu py-2" onClick={() => setIsOpen(false)}>Book a Test</Link>
+                    <Link href="#" className="block text-primary menu py-2" onClick={() => setIsOpen(false)}>About</Link>
+                    <Link href="/order" className="block text-primary menu py-2" onClick={() => setIsOpen(false)}>Orders</Link>
+                    <Link href="/contact" className="block text-primary menu py-2" onClick={() => setIsOpen(false)}>Contact</Link>
                     <div
                         className={`cursor-pointer flex justify-start gap-3 p-3 px-0 mt-40 items-center rounded-lg text-primary`}
                         onClick={() => {
@@ -96,7 +102,7 @@ export function SearchBar({ active = false, className = '', onSelect = () => { }
     const [showSearchBar, setShowSearchBar] = useState(active);
 
     return (
-        <div className={"relative text-sm text-primary z-10 flex gap-3 items-center justify-between px-4 py-2 border-primary border-opacity-50 border-2 outline-none w-full rounded-full " + className}>
+        <div className={"relative text-sm text-primary flex gap-3 items-center justify-between px-4 py-2 border-primary bg-gray-500 bg-opacity-5 border-opacity-50 border outline-none w-full rounded-full " + className}>
             {showSearchBar && <SelectTest
                 onSelect={onSelect}
                 optionElement={(option, index, onClick) => (

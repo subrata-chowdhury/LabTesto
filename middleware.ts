@@ -31,9 +31,9 @@ export async function middleware(request: NextRequest) {
             break;
     }
 
-    let user: { id: string, institution: string, type: string } | boolean = false;
+    let user: { id: string, verified: string } | boolean = false;
     if (token) {
-        user = await verifyToken<{ id: string, institution: string, type: string }>(token, userType);
+        user = await verifyToken<{ id: string, verified: string }>(token, userType);
         if (!user) {
             return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
         }
