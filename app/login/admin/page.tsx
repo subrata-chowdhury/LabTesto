@@ -5,6 +5,7 @@ import Link from "next/link";
 import PasswordInput from "@/components/Inputs/PasswordInput";
 import Input from "@/components/Inputs/Input";
 import { toast } from "react-toastify";
+import { encryptData } from "@/lib/encryption";
 
 export default function AdminLogin() {
     const [loading, setLoading] = useState(false);
@@ -28,7 +29,7 @@ export default function AdminLogin() {
             return;
         }
         setLoading(true);
-        await fetcher.post<{ email: string, password: string }, { user: { verified: boolean, institution: string, type: string }, token: string }>('/admin/auth/login', { email, password }).then(async (res) => {
+        await fetcher.post<{ email: string, password: string }, { user: { verified: boolean, institution: string, type: string }, token: string }>('/admin/auth/login', { email, password: await encryptData(password) }).then(async (res) => {
             if (res.status !== 200) {
                 toast.error(res.error || 'Error signing up');
                 return;

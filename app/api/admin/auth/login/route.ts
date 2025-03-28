@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import { SignJWT } from 'jose';
 import dbConnect from '@/config/db';
 import AdminUser from '@/models/AdminUser';
+import crypto from 'crypto';
 
 export async function GET() {
     return NextResponse.json({ message: 'GET request received' });
@@ -41,7 +42,13 @@ export async function POST(req: NextRequest) {
             return new NextResponse('Invalid email or password', { status: 406 });
         }
 
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+        const buffer = Buffer.from(password, 'base64');
+        if (!process.env.PRIVATE_KEY) {
+            throw new Error('PRIVATE_KEY is not defined in environment variables');
+        }
+        const decryptedPassword = crypto.privateDecrypt(process.env.PRIVATE_KEY, buffer).toString('utf8');
+
+        const isPasswordValid = await bcrypt.compare(decryptedPassword, user.password);
 
         if (!isPasswordValid) {
             return new NextResponse('Invalid email or password', { status: 406 });

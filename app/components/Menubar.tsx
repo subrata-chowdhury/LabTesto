@@ -6,10 +6,10 @@ import user from '@/assets/user.png';
 import Link from 'next/link';
 import SelectTest from './SelectTest';
 import { useRouter } from 'next/navigation';
-import CartIcon from '@/assets/cart.svg'
 import fetcher from '@/lib/fetcher';
 import logout from '@/assets/Menubar/logout.svg'
 import { useItemCountContext } from '../contexts/ItemCountContext';
+import { CartIcon } from '@/assets/reactIcon/Cart';
 
 const Menubar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +27,7 @@ const Menubar = () => {
     }, [])
 
     return (
-        <nav className="bg-white dark:bg-[#09192F] shadow-md shadow-sky-100 dark:shadow-black dark:shadow-md p-3 px-6 z-10" role="navigation" aria-label="Main Navigation">
+        <nav className="bg-white dark:bg-[#09192F] shadow-md shadow-sky-100 dark:shadow-black dark:shadow-md p-3 px-6 z-20" role="navigation" aria-label="Main Navigation">
             <div className="mx-auto flex justify-between items-center">
                 <div className="md:hidden flex items-center">
                     <button onClick={() => setIsOpen(!isOpen)} className="text-primary menu focus:outline-none" aria-label="Toggle Menu">
@@ -51,17 +51,13 @@ const Menubar = () => {
                 {isLoggedIn ?
                     <>
                         <Link
-                            className='relative mr-0 md:mr-4 cursor-pointer'
+                            className='relative mr-0 md:mr-4 cursor-pointer text-primary'
                             href={'/cart'}
                             onClick={() => setIsOpen(false)}
                             aria-label="View Cart"
                         >
                             {(itemCount || 0) > 0 && <div className='absolute -right-1 -top-1 px-[6px] py-[2px] rounded-full text-xs text-white font-medium bg-primary'>{(itemCount || 0) > 9 ? '9+' : itemCount}</div>}
-                            <Image
-                                src={CartIcon}
-                                alt="Cart Icon"
-                                width={28}
-                                height={28} />
+                            <CartIcon size={28} />
                         </Link>
                         <Link className="hidden md:flex items-center space-x-4 cursor-pointer" href='/profile' aria-label="View Profile">
                             <Image src={user} alt="User Avatar" width={40} height={40} className="rounded-full p-2 bg-primary bg-opacity-20" />
@@ -104,7 +100,7 @@ export function SearchBar({ active = false, className = '', onSelect = () => { }
     const [showSearchBar, setShowSearchBar] = useState(active);
 
     return (
-        <div className={"relative text-sm text-primary flex gap-3 items-center justify-between px-4 py-2 border-primary bg-gray-500 bg-opacity-5 border-opacity-50 border outline-none w-full rounded-full " + className}>
+        <div className={"relative text-sm z-10 text-primary flex gap-3 items-center justify-between px-4 py-2 border-primary bg-gray-500 bg-opacity-5 border-opacity-50 border outline-none w-full rounded-full " + className}>
             {showSearchBar && <SelectTest
                 onSelect={onSelect}
                 optionElement={(option, index, onClick) => (

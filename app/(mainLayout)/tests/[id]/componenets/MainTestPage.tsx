@@ -202,8 +202,7 @@ function MainTestPage({ test }: Props) {
                 {loadingLabs === false && labs.length > 0 && labs.map((labObj, i) => (
                     <div key={i} className='border-2 dark:border-[#172A46] p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white dark:bg-[#172A46]' onClick={() => onLabSelect(labs[i])}>
                         <div className='flex items-center gap-3'>
-                            <div className='w-14 h-14 bg-[rgba(57,134,186,0.2)] rounded-md flex items-center justify-center'>
-                            </div>
+                            <div className='w-14 h-14 bg-primary bg-opacity-20 rounded-md flex items-center justify-center'></div>
                             <div>
                                 <div className='font-semibold text-primary'>{labObj.name}</div>
                                 <div className='flex items-center gap-2'>

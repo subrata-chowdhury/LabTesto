@@ -95,6 +95,22 @@ body {
   }
 }
 
+.top-to-bottom {
+  animation: 0.2s top-to-bottom linear;
+}
+
+@keyframes top-to-bottom {
+  0% {
+    transform: translateY(-100%);
+    background: transparent;
+    /* scale: 0.2; */
+  }
+  100% {
+    transform: translateY(0%);
+    /* scale: 1; */
+  }
+}
+
 /* Basic editor styles */
 .tiptap {
   /* List styles */

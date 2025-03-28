@@ -21,13 +21,13 @@ export default function Home() {
         <>
             <div className="flex-1 pt-3 dark:bg-[#0A192F]">
                 <div className="px-4 pt-2">
-                <SearchBar className="md:hidden" active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
+                <SearchBar className="md:hidden px-5 py-3" active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
                 </div>
                 <section className="mx-4 mb-4">
                     <Slide slides={3} />
                 </section>
                 <section className="mx-auto flex flex-col">
-                    <h1 className="text-3xl font-semibold mx-auto mt-4">Frequently Required Tests</h1>
+                    <h1 className="text-3xl font-semibold text-center mx-auto mt-4">Frequently Required Tests</h1>
                     <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-4"></div>
                     {/* <h1 className="text-2xl font-semibold">Frequently Required Tests</h1> */}
                     {/* <h1 className="text-xl font-semibold translate-y-full ml-2 bg-white w-fit px-2">Frequently Required Tests</h1> */}
@@ -78,7 +78,7 @@ export default function Home() {
                     </div>
                 </section>
                 <section className="mx-auto md:w-[95%] pt-0 sm:pt-0 md:pt-0 p-4 flex flex-col">
-                    <h1 className="text-3xl font-semibold mx-auto mt-4">Our Promise</h1>
+                    <h1 className="text-3xl font-semibold text-center mx-auto mt-4">Our Promise</h1>
                     <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-3"></div>
                     <div className="mt-2 rounded-md w-full">
                         {/* <div className="mt-4 p-3 md:p-5 border-2 border-primary border-opacity-40 border-dashed rounded-md bg-white w-full"> */}
@@ -93,7 +93,7 @@ export default function Home() {
                     </div>
                 </section>
                 <section className=" mx-auto md:w-[95%] pt-0 sm:pt-0 md:pt-0 p-4 flex flex-col">
-                    <h1 className="text-3xl font-semibold mx-auto mt-4">Our Popular Packages</h1>
+                    <h1 className="text-3xl font-semibold text-center mx-auto mt-4">Our Popular Packages</h1>
                     <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-3"></div>
                     {/* <h1 className="text-2xl font-semibold w-fit">Our Services</h1> */}
                     <ul className="mt-2 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
@@ -105,7 +105,7 @@ export default function Home() {
                     </ul>
                 </section>
                 <section className="mx-auto md:w-[95%] pt-0 mt-5 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4 flex flex-col">
-                    <h1 className="text-3xl font-semibold mx-auto mt-4">Our Achivements</h1>
+                    <h1 className="text-3xl font-semibold text-center mx-auto mt-4">Our Achivements</h1>
                     <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-3"></div>
                     {/* <h1 className="text-2xl font-semibold w-fit">Our Achivements</h1> */}
                     <div className="mt-4 px-4 w-full grid gap-1 sm:gap-2 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">

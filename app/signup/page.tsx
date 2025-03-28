@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import PasswordInput from "@/components/Inputs/PasswordInput";
 import Input from "@/components/Inputs/Input";
 import { toast } from "react-toastify";
+import { encryptData } from "@/lib/encryption";
 
 export default function Signup() {
     const [loading, setLoading] = useState(false);
@@ -55,7 +56,7 @@ export default function Signup() {
 
         // submit logic
         setLoading(true);
-        await fetcher.post<{ name: string, email: string, password: string }, { token: string }>('/auth/signup', { name: name, email: email, password: password }).then((res) => {
+        await fetcher.post<{ name: string, email: string, password: string }, { token: string }>('/auth/signup', { name: name, email: email, password: await encryptData(password) }).then((res) => {
             if (res.status !== 200) {
                 toast.error(res.error || 'Error signing up');
                 return

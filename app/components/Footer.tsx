@@ -44,7 +44,7 @@ const Footer = () => {
                         <div className='inline-flex flex-col'>
                             <h2 className="text-base font-semibold mb-2">Group 2</h2>
                             <ul>
-                                {['Link 4', 'Link 5', 'Link 6'].map((link, index) => (
+                                {['Link 4', 'Link 5', 'Link 6', 'Link 6', 'Link 6'].map((link, index) => (
                                     <li key={index} className="mb-1 text-sm">
                                         <a href="#" className="hover:text-gray-400">
                                             {link}

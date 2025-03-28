@@ -66,7 +66,7 @@ export function BasicTestDetailsLoader() {
                         <div className='h-8 w-32 bg-gray-300 rounded'></div>
                     </div>
                 </div>
-                <div className='bg-[rgba(57,134,186,0.8)] rounded-md animate-pulse w-20 h-10'></div>
+                <div className='bg-primary rounded-md animate-pulse w-20 h-10'></div>
             </div>
         </div>
     )
@@ -76,7 +76,7 @@ export function LabLoader() {
     return Array(4).fill(0).map((_, i) => (
         <div key={i} className='border-2 dark:border-[#172A46] p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white dark:bg-[#172A46]'>
             <div className='flex items-center gap-3'>
-                <div className='w-14 h-14 bg-[rgba(57,134,186,0.2)] animate-pulse rounded-md flex items-center justify-center'>
+                <div className='w-14 h-14 bg-primary bg-opacity-20 animate-pulse rounded-md flex items-center justify-center'>
                     {/* <Image src='/download.png' alt='' width={115} height={50} /> */}
                 </div>
                 <div className='animate-pulse'>

@@ -44,9 +44,9 @@ const ProfilePage = () => {
 
     return (
         <div className='flex-1 dark:bg-[#0A192F]'>
-            <div className='h-40 bg-[rgba(57,134,186,0.1)]'>
-                <div className='w-32 h-32 flex justify-center items-center top-full translate-x-1/2 -translate-y-1/2 bg-white dark:bg-[#172A46] rounded-full relative'>
-                    <Image src={userIcon} alt="profile picture" width={118} height={118} className='w-[118px] h-[118px] p-2 border-4 border-[rgb(57,134,186)] shadow-lg shadow-[rgba(57,134,186,0.2)] rounded-full bg-white dark:bg-[#172A46]' />
+            <div className='h-40 bg-primary bg-opacity-15'>
+                <div className='w-32 h-32 flex justify-center items-center top-full translate-x-1/2 -translate-y-1/2 bg-white dark:bg-[rgb(23,42,70)] rounded-full relative'>
+                    <Image src={userIcon} alt="profile picture" width={118} height={118} className='w-[118px] h-[118px] p-2 border-4 border-primary shadow-lg shadow-[rgba(57,134,186,0.2)] rounded-full bg-white dark:bg-[#172A46]' />
                 </div>
             </div>
             <section className='p-20 pb-2 px-10 md:px-20'>
@@ -64,14 +64,14 @@ const ProfilePage = () => {
                     {user?.patientDetails?.map((patientDetail, i) => (
                         <div
                             key={i}
-                            className='bg-[rgba(57,134,186,0.7)] px-4 py-2 rounded-full cursor-pointer'
+                            className='bg-primary bg-opacity-75 px-4 py-2 rounded-full cursor-pointer'
                             onClick={() =>
                                 setShowPatientPopup({ patientIndex: i })}>
                             {patientDetail.name}
                         </div>
                     ))}
                     <div
-                        className='bg-[rgba(57,134,186,0.7)] px-4 py-2 rounded-full cursor-pointer'
+                        className='bg-primary bg-opacity-75 px-4 py-2 rounded-full cursor-pointer'
                         onClick={() =>
                             setShowPatientPopup({ patientIndex: user.patientDetails?.length || 0 })}>
                         Add +
@@ -84,14 +84,14 @@ const ProfilePage = () => {
                     {user?.address?.map((address, i) => (
                         <div
                             key={i}
-                            className='bg-[rgba(57,134,186,0.7)] px-4 py-2 rounded-full cursor-pointer'
+                            className='bg-primary bg-opacity-75 px-4 py-2 rounded-full cursor-pointer'
                             onClick={() =>
                                 setShowAddressPopup({ addressIndex: i })}>
                             {address.pin}
                         </div>
                     ))}
                     <div
-                        className='bg-[rgba(57,134,186,0.7)] px-4 py-2 rounded-full cursor-pointer'
+                        className='bg-primary bg-opacity-75 px-4 py-2 rounded-full cursor-pointer'
                         onClick={() =>
                             setShowAddressPopup({ addressIndex: user.address?.length || 0 })}>
                         Add +
