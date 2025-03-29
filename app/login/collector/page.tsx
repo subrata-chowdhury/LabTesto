@@ -48,7 +48,7 @@ export default function AdminLogin() {
 
     return (
         <div className="flex flex-col md:flex-row h-screen gap-0">
-            <div className="md:w-1/2 flex flex-col gap-4 justify-center items-center bg-gray-200 dark:bg-[#0A192F] w-full h-full">
+            <div className="md:w-1/2 hidden md:flex flex-col gap-4 justify-center items-center bg-gray-200 dark:bg-[#0A192F] w-full h-full">
                 <h1 className="text-2xl font-semibold">Welcome Back Collector</h1>
                 <div>Your ability which make us reach the sky</div>
             </div>

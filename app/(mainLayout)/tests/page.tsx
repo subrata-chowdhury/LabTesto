@@ -2,9 +2,10 @@
 import Dropdown from '@/components/Dropdown';
 import fetcher from '@/lib/fetcher';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Loading from './loading';
 import { LinkArrowIcon } from '@/assets/reactIcon/LinkArrow';
+import debounce from '@/lib/debouncer';
 
 type Test = {
     _id: string;
@@ -31,7 +32,7 @@ const Tests = () => {
     const [loading, setLoading] = useState(false);
     const [totalPages, setTotalPages] = useState(1);
 
-    async function onSeach(filter: { name: string, sampleType?: 'All' | 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other' | 'Other Body Fluid' }, limit: number) {
+    const onSeach = useCallback(debounce(async function (filter: { name: string, sampleType?: 'All' | 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other' | 'Other Body Fluid' }, limit: number) {
         setLoading(true)
         if (filter?.sampleType === 'All') {
             delete filter.sampleType;
@@ -45,7 +46,7 @@ const Tests = () => {
             setTotalPages(res.body.pagination.totalPages);
         }
         setLoading(false)
-    }
+    }, 300), []);
 
     useEffect(() => {
         onSeach({ name: '' }, 6);

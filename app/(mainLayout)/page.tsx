@@ -21,7 +21,7 @@ export default function Home() {
         <>
             <div className="flex-1 pt-3 dark:bg-[#0A192F]">
                 <div className="px-4 pt-2">
-                <SearchBar className="md:hidden px-5 py-3" active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
+                    <SearchBar className="md:hidden px-5 py-3" active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
                 </div>
                 <section className="mx-4 mb-4">
                     <Slide slides={3} />
@@ -32,9 +32,12 @@ export default function Home() {
                     {/* <h1 className="text-2xl font-semibold">Frequently Required Tests</h1> */}
                     {/* <h1 className="text-xl font-semibold translate-y-full ml-2 bg-white w-fit px-2">Frequently Required Tests</h1> */}
                     <div className="mt-2 relative rounded-md w-full">
-                        <div className="absolute -z-10 -top-64 md:-top-32 opacity-70 blur-sm w-full flex flex-col">
-                            <div style={{ backgroundImage: `url(/wave.svg)` }} className="w-full h-[100vh] md:h-[55vh] bg-no-repeat bg-cover bg-center" />
-                            <div style={{ backgroundImage: `url(/wave.svg)` }} className="w-full h-[100vh] md:h-[55vh] bg-no-repeat bg-cover bg-center rotate-180" />
+                        <div className="absolute -z-10 -top-64 md:-top-32 opacity-30 blur-sm w-full flex flex-col">
+                            <Image src={'/wave.svg'} width={960} height={540} alt="" className='w-full object-cover h-[100vh] md:h-[55vh] -z-10 top-0 bg-transparent' />
+                            <Image src={'/wave.svg'} width={960} height={540} alt="" className='w-full object-cover h-[100vh] md:h-[55vh] rotate-180 -z-10 top-0 bg-transparent' />
+
+                            {/* <div style={{ backgroundImage: `url(/wave.svg)` }} className="w-full h-[100vh] md:h-[55vh] object-cover bg-no-repeat bg-cover bg-center" />
+                            <div style={{ backgroundImage: `url(/wave.svg)` }} className="w-full h-[100vh] md:h-[55vh] object-cover bg-no-repeat bg-cover bg-center rotate-180" /> */}
                         </div>
                         {/* <div className="mt-4 p-3 md:p-5 border-2 border-primary border-opacity-40 border-dashed rounded-md bg-white w-full"> */}
                         <div className="w-full md:w-[95%] mx-auto pt-0 sm:pt-0 md:pt-0 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
@@ -125,14 +128,14 @@ export default function Home() {
 
 function Card({ label = "CBC", subText, description, footer, icon }: { label: string, subText?: string, description?: string, footer?: string, icon?: StaticImageData }) {
     return (
-        <div className="shadow-indigo-100 bg-white dark:bg-[#172A46] rounded-md shadow-lg dark:shadow-black border border-primary border-opacity-35 min-w-52">
+        <div className="shadow-indigo-100 flex flex-col bg-white dark:bg-[#172A46] rounded-md shadow-lg dark:shadow-black border border-primary border-opacity-35 min-w-52">
             <div className="p-4 pb-2">
                 <h1 className="text-2xl font-semibold mb-1.5 text-primary">{label}</h1>
                 {subText && <p className="text-sm font-semibold text-primary mb-2.5 bg-primary bg-opacity-20 px-4 py-1.5 w-fit rounded-full">{subText}</p>}
                 {description && <p className="text-sm opacity-70">{description}</p>}
                 {icon && <Image src={icon} alt="" style={{ width: 120 }} />}
-                <Link href={'#'} className="border-t border-gray-400 mt-2 pb-1.5 pt-2.5 text-primary text-sm flex items-center gap-2">{footer}<LinkArrowIcon size={12} /></Link>
             </div>
+            <Link href={'#'} className="border-t border-gray-400 mt-auto p-4 pb-3 pt-1.5 text-primary text-sm flex items-center gap-2">{footer}<LinkArrowIcon size={12} /></Link>
         </div>
     )
 }

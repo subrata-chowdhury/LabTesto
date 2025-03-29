@@ -39,7 +39,7 @@ const Menubar = () => {
                 <div className="text-white text-lg font-bold mr-0 md:mr-16">
                     <Link href={'/'} onClick={() => setIsOpen(false)} className=''><span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></Link>
                 </div>
-                <div className="hidden md:flex space-x-6 mr-auto">
+                <div className="hidden md:flex gap-6 lg:gap-8 xl:gap-10 xl:ml-5 mr-auto">
                     <Link href="/tests" className="text-primary menu">Book</Link>
                     <Link href="#" className="text-primary menu">About</Link>
                     <Link href="/order" className="text-primary menu">Orders</Link>

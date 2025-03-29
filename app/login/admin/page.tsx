@@ -48,7 +48,7 @@ export default function AdminLogin() {
 
     return (
         <div className="flex flex-col md:flex-row h-screen gap-0">
-            <div className="md:w-1/2 flex flex-col gap-4 justify-center items-center bg-gray-200 w-full h-full">
+            <div className="md:w-1/2 hidden md:flex flex-col gap-4 justify-center items-center bg-gray-200 w-full h-full">
                 <h1 className="text-2xl font-semibold">Welcome Back to <span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span> Admin</h1>
                 <div>Your wellness which makes us Happy</div>
             </div>
