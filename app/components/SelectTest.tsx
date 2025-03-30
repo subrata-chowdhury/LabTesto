@@ -16,6 +16,18 @@ type Test = {
     name: string;
     _id: string;
     sampleType: string;
+    labsDetails?: {
+        [key: string]: {
+            name: string;
+            lab: string;
+            price: number;
+            offer?: number;
+            expenses?: number;
+            resultTime: string;
+            packages?: string[];
+            ranges?: Map<string, string>;
+        }
+    };
 }
 
 const SelectTest: React.FC<SelectInstituteProps> = ({
@@ -57,7 +69,7 @@ const SelectTest: React.FC<SelectInstituteProps> = ({
                 }}
                 ref={inputRef} />
             {
-                open && tests.length > 0 && <div className="absolute top-12 left-0 w-full bg-white border-2 dark:border-[#172A46] rounded-md cursor-pointer drop-shadow-lg">
+                open && <div className="absolute top-12 left-0 w-full bg-white border-2 dark:border-[#172A46] rounded-md cursor-pointer drop-shadow-lg">
                     <div className=" max-h-[150px] overflow-y-auto">
                         {!optionElement && tests.map(e => (
                             <div

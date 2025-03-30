@@ -12,6 +12,18 @@ import TrashBinIcon from '@/assets/reactIcon/TrashBin';
 
 export default function OrderPopup({ item, onSave, onClose }: { item: Item, onSave: (item: Item) => void, onClose: () => void }) {
     const [itemData, setItemData] = useState<Item>(item || { product: { test: '', lab: '', price: 0 }, patientDetails: [], quantity: 1 });
+    const [priceDetails, setPriceDetails] = useState<{
+        [key: string]: {
+            name: string;
+            lab: string;
+            price: number;
+            offer?: number;
+            expenses?: number;
+            resultTime: string;
+            packages?: string[];
+            ranges?: Map<string, string>;
+        }
+    }>()
     const [showPatientPopup, setShowPatientPopup] = useState<boolean>(false);
     const [patientIndex, setPatientIndex] = useState<number | null>(null);
 
@@ -21,15 +33,18 @@ export default function OrderPopup({ item, onSave, onClose }: { item: Item, onSa
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
                     <div className='flex flex-col gap-1'>
                         <label className='font-medium'>Test</label>
-                        <SelectTest onSelect={val => setItemData({ ...itemData, product: { ...itemData?.product, test: val } })} />
+                        <SelectTest onSelect={val => {
+                            setItemData({ ...itemData, product: { ...itemData?.product, test: val } })
+                            console.log(val.labsDetails)
+                            setPriceDetails(val.labsDetails)
+                        }} />
                     </div>
                     <div className='flex flex-col gap-1'>
                         <label className='font-medium'>Lab</label>
                         <SelectLab onSelect={val => {
                             // price calculation
-                            const selectedTest = itemData.product.test;
                             const selectedLab = val as Lab;
-                            const testPrice = selectedLab.prices.find(price => price.test === selectedTest._id)?.price || 0;
+                            const testPrice = (priceDetails || {})[selectedLab._id].price || 0;
                             setItemData({ ...itemData, product: { ...itemData.product, lab: val, price: testPrice } });
                         }} />
                     </div>

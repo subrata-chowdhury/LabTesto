@@ -54,7 +54,7 @@ export default function AdminLogin() {
             </div>
             <div className="md:w-1/2 md:h-auto flex flex-col justify-center absolute md:relative items-center w-full h-full">
                 <h1 className="md:pl-6 ps-0 pb-3 md:pb-0 w-11/12 md:w-9/12 max-w-[450px] text-center md:text-start text-2xl font-semibold">Log In to <span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span> Admin</h1>
-                <form className="flex flex-col gap-4 bg-white p-6 rounded-md w-11/12 md:w-9/12 max-w-[450px]">
+                <form className="flex flex-col gap-4 bg-transparent p-6 rounded-md w-11/12 md:w-9/12 max-w-[450px]">
                     <Input
                         label="Email"
                         value={email}

@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
         verified: newUser.verified,
     })
         .setProtectedHeader({ alg: 'HS256' })
-        .setExpirationTime('1h')
+        .setExpirationTime('4380h') // 6 months in hours
         .sign(new TextEncoder().encode(process.env.JWT_SECRET));
 
     return NextResponse.json({ message: 'User signed up successfully', user: { verified: false }, token });

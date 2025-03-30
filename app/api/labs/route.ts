@@ -8,7 +8,6 @@ export async function GET(req: NextRequest) {
         const filter = await JSON.parse(searchParams.get('filter') || '{}');
         const limit = parseInt(searchParams.get('limit') || '10', 10);
         const page = parseInt(searchParams.get('page') || '1', 10);
-        const test: string = filter.test;
 
         await dbConnect();
 
@@ -17,23 +16,10 @@ export async function GET(req: NextRequest) {
         } else {
             delete filter.name;
         }
-        if (filter.test) {
-            filter[`prices.${filter.test}`] = { $exists: true };
-            delete filter.test;
-        }
 
         const labs = await Lab.find(filter)
             .limit(limit)
             .skip((page - 1) * limit).lean();
-
-        if (test)
-            labs.forEach((lab) => {
-                const priceDetails = lab.prices[test];
-                delete priceDetails.expenses;
-                lab.prices = { [test]: priceDetails };
-                lab.packagesInclude = { [test]: (lab.packagesInclude || {})[test] };
-                lab.ranges = { [test]: (lab.ranges || {})[test] };
-            });
 
         const totalLabs = await Lab.countDocuments(filter);
         const totalPages = Math.ceil(totalLabs / limit);

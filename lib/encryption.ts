@@ -12,6 +12,5 @@ DpYWKqG5v63XPjelrdUOkU6GrnrqshyuIQIDAQAB
 
 export function encryptData(data: string) {
     const encryptedData = crypto.publicEncrypt(publicKey, Buffer.from(data)).toString('base64');
-    console.log(encryptedData.length);
     return encryptedData;
 }

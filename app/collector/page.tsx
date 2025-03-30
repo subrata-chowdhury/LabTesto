@@ -2,8 +2,8 @@
 import fetcher from '@/lib/fetcher';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react'
-import { toast } from 'react-toastify';
 import Loading from '../loading';
+import { OrderDetailsCard } from './components/OrderDetailsCard';
 
 const CollectorDashboard = () => {
     const [upComingOrderData, setUpComingOrderData] = useState<Order[]>([]);
@@ -82,7 +82,7 @@ const CollectorDashboard = () => {
                 </div>
             </>}
             {todaysOrderData.length > 0 && <>
-                <h1 className='text-xl font-semibold mx-4 mb-2 mt-4'>Today's</h1>
+                <h1 className='text-xl font-semibold mx-4 mb-2 mt-4'>Today&#39;s</h1>
                 <div className='flex flex-col gap-2 mx-4'>
                     {
                         todaysOrderData.map(order => (
@@ -143,48 +143,7 @@ const CollectorDashboard = () => {
 
 export default CollectorDashboard;
 
-
-export function OrderDetailsCard({ order, onPass }: { order: Order, onPass: (order: Order) => void }) {
-    return (
-        <div key={order._id} className='flex justify-between items-center flex-col sm:flex-row gap-2 rounded-md border-2 dark:border-gray-600 bg-white dark:bg-[#172A46] dark:shadow-md dark:shadow-black p-2 px-3'>
-            {/* <div>{order._id}</div> */}
-            <div className='text-xs flex flex-col font-medium text-gray-600'>
-                <div className='dark:text-gray-400'>{order._id.toUpperCase()}</div>
-                <div className={`text-sm text-gray-800 dark:text-gray-200 ${getColorBasedOnDateTime(new Date(order.sampleTakenDateTime?.start || ''))}`}>{new Date(order.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
-            </div>
-            <div className='flex gap-2'>
-                <Link className='px-2.5 py-1 bg-primary text-white rounded text-sm font-medium' href={('/collector/orders/view/' + order._id)}>View</Link>
-                <Link className='px-2.5 py-1 bg-primary text-white rounded text-sm font-medium' href={('/collector/orders/edit/' + order._id)}>Edit</Link>
-                <button
-                    className='px-2.5 py-1 bg-orange-500 text-white rounded text-sm font-medium'
-                    onClick={async () => {
-                        const res = await fetcher.put<{ id: string }, Order>(`/collector/orders/${order._id}`, { id: order._id });
-                        if (res.body && res.status === 200) {
-                            onPass(order);
-                            toast.success('Order Passed to another collector');
-                        }
-                    }}>Pass</button>
-            </div>
-            {/* <h3>{order.sampleTakenDateTime.date.start}</h3> */}
-        </div>
-    )
-}
-
-function getColorBasedOnDateTime(date: Date) {
-    const today = new Date();
-    const startOfDay = new Date(today.setHours(0, 0, 0, 0));
-    const endOfDay = new Date(today.setHours(23, 59, 59, 999));
-
-    if (date < startOfDay) return 'text-red-500';
-    if (date >= startOfDay && date <= endOfDay) {
-        const currentTime = new Date();
-        if (date < currentTime) return 'text-yellow-500'; // Light color for passed time
-        return 'text-gray-400'; // Yellow for upcoming time today
-    }
-    return 'text-green-600';
-}
-
-type Order = {
+export type Order = {
     items: {
         product: {
             test: string;

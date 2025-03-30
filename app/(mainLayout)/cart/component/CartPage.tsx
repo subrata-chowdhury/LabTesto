@@ -15,8 +15,8 @@ import { useItemCountContext } from '@/app/contexts/ItemCountContext';
 
 export type CartItem = {
     product: {
-        test: { name: string, _id: string };
-        lab: { name: string, _id: string, location: { address: Address }, prices: { [key: string]: { test: string, offer: number } } };
+        test: { name: string, _id: string, labsDetails: { [key: string]: { lab: string, offer: number } } };
+        lab: { name: string, _id: string, location: { address: Address } };
         price: number;
     };
     patientDetails: PatientDetails[];
@@ -72,7 +72,7 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
             if (response.body) {
                 response.body.items = response.body.items.filter(item => filterCartFunc(item));
                 response.body.items.forEach(item => {
-                    const labPrice = item.product.lab.prices[item.product.test._id].offer;
+                    const labPrice = item.product.test.labsDetails[item.product.lab._id].offer;
                     if (labPrice) {
                         item.product.price = labPrice;
                     }

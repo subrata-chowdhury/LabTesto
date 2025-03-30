@@ -2,8 +2,8 @@
 import dbConnect from '@/config/db';
 import Cart, { ICart } from '@/models/Cart';
 import { NextRequest, NextResponse } from 'next/server';
-import Lab, { ILab } from '@/models/Lab';
-import Test from '@/models/Test';
+import Lab from '@/models/Lab';
+import Test, { ITest } from '@/models/Test';
 import User from '@/models/User';
 
 export async function GET(req: NextRequest) {
@@ -17,11 +17,12 @@ export async function GET(req: NextRequest) {
 
     try {
         const cart = await Cart.findOne({ user: id }).populate({ path: 'items.product.test', model: Test }).populate({ path: 'items.product.lab', model: Lab }).populate({ path: 'user', model: User }).lean() as unknown as ICart;
-        console.log(cart.items)
         cart.items.map((item => {
-            const priceDetails = (item.product.lab as unknown as ILab).prices[item.product.test._id.toString()];
-            delete priceDetails.expenses;
-            (item.product.lab as unknown as ILab).prices = { [item.product.test._id.toString()]: priceDetails };
+            const priceDetails = ((item.product.test as unknown as ITest)?.labsDetails?.[item.product.lab?._id?.toString()]);
+            if (priceDetails) {
+                delete priceDetails.expenses;
+                (item.product.test as unknown as ITest).labsDetails = { [item.product.lab?._id?.toString()]: priceDetails };
+            }
         }));
 
         if (!cart) {

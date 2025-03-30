@@ -3,10 +3,9 @@ import dbConnect from '@/config/db';
 import Order from '@/models/Order';
 import { NextRequest, NextResponse } from 'next/server';
 import Cart from '@/models/Cart';
-import Test from '@/models/Test';
-import Lab, { ILab } from '@/models/Lab';
+import Test, { ITest } from '@/models/Test';
+import Lab from '@/models/Lab';
 import Collector from '@/models/Collector';
-import { ObjectId } from 'mongoose';
 
 export async function GET(req: NextRequest) {
     try {
@@ -87,12 +86,12 @@ export async function POST(req: NextRequest) {
                 throw new Error('Cart item not found');
             }
 
-            const lab = await Lab.findById(item.product.lab).lean() as unknown as ILab;
-            if (!lab) {
-                throw new Error('Lab not found');
+            const test = await Test.findById(item.product.test).select('labsDetails').lean() as unknown as ITest;
+            if (!test) {
+                throw new Error('Test not found');
             }
 
-            const priceDetails: LabPrice = lab.prices[item.product.test];
+            const priceDetails = (test.labsDetails || {})[item.product.lab];
             if (!priceDetails) {
                 throw new Error('Price details not found for the test in the lab');
             }
@@ -101,7 +100,7 @@ export async function POST(req: NextRequest) {
                 product: {
                     test: cartItem.product.test,
                     lab: cartItem.product.lab,
-                    price: await lab.prices[item.product.test].offer || 0,
+                    price: priceDetails.price || 0,
                     expenses: priceDetails.expenses || 0
                 },
                 patientDetails: cartItem.patientDetails,
@@ -196,13 +195,6 @@ interface CartItem {
         age: number;
         other?: string;
     }[];
-}
-
-interface LabPrice {
-    test: ObjectId;
-    price: number;
-    offer?: number;
-    expenses?: number;
 }
 
 interface OrderItem {

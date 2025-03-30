@@ -87,6 +87,11 @@ function OrderPage() {
                 <div><span className='font-medium'>Pin:</span> {order?.address?.pin}</div>
                 <div><span className='font-medium'>Phone:</span> {order?.address?.phone}</div>
             </div>
+            <div className='bg-white dark:bg-[#172A46] px-6 py-4 rounded'>
+                <div className='text-lg font-semibold'>User Details</div>
+                <div><span className='font-medium'>Name:</span> {order?.user?.name}</div>
+                <div><span className='font-medium'>Email / Phone:</span> {order?.user?.email}</div>
+            </div>
             {(showPatientPopup?.itemIndex != null) &&
                 <PatientDetailsPopup
                     patientDetails={order?.items[showPatientPopup?.itemIndex || 0].patientDetails[showPatientPopup.patientIndex]}
@@ -176,7 +181,11 @@ export type Order = {
         phone: string;
     };
 
-    user: string;
+    user: {
+        name: string;
+        email: string;
+        // password: string;
+    };
     collector?: {
         name: string;
         email: string;

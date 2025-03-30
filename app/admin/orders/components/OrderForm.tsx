@@ -218,24 +218,6 @@ export type Lab = {
         year?: number;
         imageUrl?: string;
     }[];
-    resultTimes: {
-        test: string;
-        resultTime: string;
-    }[];
-    prices: {
-        test: string;
-        price: number;
-        offer?: number;
-        expenses?: number;
-    }[];
-    packagesInclude?: {
-        test: string;
-        packages: string[];
-    }[];
-    ranges?: {
-        test: string;
-        ranges: object[];
-    }[];
     rating: number;
     rated: number;
     contractDetails?: {

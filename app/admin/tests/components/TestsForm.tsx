@@ -84,7 +84,7 @@ const TestForm = ({ testDetails, loading, error, onChange, onSave = () => { } }:
                     <Dropdown options={['Clot Tube', 'Fluoride Tube', 'EDTA Tube', 'Citrate Tube', 'Sterile Container', 'Non-Sterile Container']} value={testDetails.tubeType} onChange={(val) => onChange.testDetails({ ...testDetails, tubeType: val.value as 'Clot Tube' | 'Fluoride Tube' | 'EDTA Tube' | 'Citrate Tube' | 'Sterile Container' | 'Non-Sterile Container' })} width={'100%'} ref={tubeTypeInputRef} />
                     {(error?.tubeType && error?.tubeType?.length > 0) && <p className="text-red-500 text-xs font-medium">{error.tubeType}</p>}
                 </div>
-                <Input label='Fasting Required' name='fastingRequired' placeholder='Enter fasting requirement' value={testDetails.fastingRequired} onChange={(val) => onChange.testDetails({ ...testDetails, fastingRequired: val })} labelClass='font-medium' containerClass='flex-1' error={error?.fastingRequired ? error.fastingRequired : ""} ref={fastingInputRef} />
+                <Input label='Fasting Required' name='fastingRequired' placeholder='Enter fasting requirement' value={testDetails.fastingRequired || ''} onChange={(val) => onChange.testDetails({ ...testDetails, fastingRequired: val })} labelClass='font-medium' containerClass='flex-1' error={error?.fastingRequired ? error.fastingRequired : ""} ref={fastingInputRef} />
             </div>
             <div className='flex flex-col gap-1 mt-4'>
                 <p className='font-medium text-sm'>Other Terms / Tags</p>
@@ -92,24 +92,24 @@ const TestForm = ({ testDetails, loading, error, onChange, onSave = () => { } }:
             </div>
             <div className='text-sm flex flex-col gap-1 pt-4' ref={overviewInputRef}>
                 <label className='font-medium'>Overview *</label>
-                <RichTextEditor value={testDetails.overview} onChange={(val) => onChange.testDetails({ ...testDetails, tempOverview: val })} />
+                <RichTextEditor value={testDetails.overview || ''} onChange={(val) => onChange.testDetails({ ...testDetails, tempOverview: val })} />
                 {/* <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Overview' value={testDetails.overview} onChange={(e) => onChange.testDetails({ ...testDetails, overview: e.target.value })}></textarea> */}
                 {(error?.overview && error?.overview?.length > 0) && <p className="text-red-500 text-xs font-medium">{error.overview}</p>}
             </div>
             <div className='text-sm flex flex-col gap-1 pt-4' ref={testResultInputRef}>
                 <label className='font-medium'>Test Result Interpretation *</label>
-                <RichTextEditor value={testDetails.testResultInterpretation} onChange={(val) => onChange.testDetails({ ...testDetails, tempTestResultInterpretation: val })} />
+                <RichTextEditor value={testDetails.testResultInterpretation || ''} onChange={(val) => onChange.testDetails({ ...testDetails, tempTestResultInterpretation: val })} />
                 {/* <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Test Result Interpretation' value={testDetails.testResultInterpretation} onChange={(e) => onChange.testDetails({ ...testDetails, testResultInterpretation: e.target.value })}></textarea> */}
                 {(error?.testResultInterpretation && error?.testResultInterpretation?.length > 0) && <p className="text-red-500 text-xs font-medium">{error.testResultInterpretation}</p>}
             </div>
             <div className='text-sm flex flex-col gap-1 pt-4'>
                 <label className='font-medium'>Risk Assessment</label>
-                <RichTextEditor value={testDetails.riskAssesment} onChange={(val) => onChange.testDetails({ ...testDetails, tempRiskAssesment: val })} />
+                <RichTextEditor value={testDetails.riskAssesment || ''} onChange={(val) => onChange.testDetails({ ...testDetails, tempRiskAssesment: val })} />
                 {/* <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Risk Assessment' value={testDetails.riskAssesment || ''} onChange={(e) => onChange.testDetails({ ...testDetails, riskAssesment: e.target.value })}></textarea> */}
             </div>
             <div className='text-sm flex flex-col gap-1 pt-4'>
                 <label className='font-medium'>Description</label>
-                <RichTextEditor value={testDetails.description} onChange={(val) => onChange.testDetails({ ...testDetails, tempDescription: val })} />
+                <RichTextEditor value={testDetails.description || ''} onChange={(val) => onChange.testDetails({ ...testDetails, tempDescription: val })} />
                 {/* <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Description' value={testDetails.description} onChange={(e) => onChange.testDetails({ ...testDetails, description: e.target.value })}></textarea> */}
             </div>
             <div className='p-5 px-0 ms-auto justify-end items-end flex gap-4'>
@@ -123,15 +123,25 @@ const TestForm = ({ testDetails, loading, error, onChange, onSave = () => { } }:
 export default TestForm;
 
 export type TestDetails = {
-    name: string,
-    otherTerms: string[],
-    sampleType: 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other Body Fluid',
-    tubeType: 'Clot Tube' | 'Fluoride Tube' | 'EDTA Tube' | 'Citrate Tube' | 'Sterile Container' | 'Non-Sterile Container',
-    fastingRequired: string,
-    description: string,
-    overview: string,
-    testResultInterpretation: string,
-    riskAssesment: string,
+    name: string;
+    otherTerms?: string[];
+    sampleType: 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other Body Fluid';
+    tubeType: 'Clot Tube' | 'Fluoride Tube' | 'EDTA Tube' | 'Citrate Tube' | 'Sterile Container' | 'Non-Sterile Container';
+    description?: string;
+    fastingRequired?: string;
+    overview?: string;
+    testResultInterpretation?: string;
+    riskAssesment?: string;
+    labsDetails?: {
+        lab: string;
+        name: string;
+        price: number;
+        offer?: number;
+        expenses?: number;
+        resultTime: string;
+        packages?: string[];
+        ranges?: Map<string, string>;
+    }[];
 
     tempDescription?: string,
     tempOverview?: string,

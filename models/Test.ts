@@ -1,18 +1,27 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-interface ITest extends Document {
+export interface ITest extends Document {
     name: string;
-    otherTerms: string[];
+    otherTerms?: string[];
     sampleType: 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other Body Fluid';
     tubeType: 'Clot Tube' | 'Fluoride Tube' | 'EDTA Tube' | 'Citrate Tube' | 'Sterile Container' | 'Non-Sterile Container';
-    description: string;
-    fastingRequired: string;
-    // tubeType: 'Red Color Cap' | 'Gray Color Cap' | 'Purple Color cap' | 'Blue Color Cap';
-    overview: string;
-    testResultInterpretation: string;
-    riskAssesment: string;
-    // resultTime: string;
-
+    description?: string;
+    fastingRequired?: string;
+    overview?: string;
+    testResultInterpretation?: string;
+    riskAssesment?: string;
+    labsDetails?: {
+        [key: string]: {
+            name: string;
+            lab: string;
+            price: number;
+            offer?: number;
+            expenses?: number;
+            resultTime: string;
+            packages?: string[];
+            ranges?: Map<string, string>;
+        }
+    };
     createdAt: Date;
     updatedAt: Date;
 }
@@ -22,7 +31,7 @@ const TestSchema: Schema = new Schema({
     otherTerms: { type: [String], required: false },
     sampleType: {
         type: String,
-        enum: ['Blood', 'Urine', 'Semen', 'Stool', 'Sputum', 'Other body fluid'],
+        enum: ['Blood', 'Urine', 'Semen', 'Stool', 'Sputum', 'Other Body Fluid'],
         required: true
     },
     tubeType: {
@@ -35,7 +44,22 @@ const TestSchema: Schema = new Schema({
     overview: { type: String, required: false },
     testResultInterpretation: { type: String, required: false },
     riskAssesment: { type: String, required: false },
-    // resultTime: { type: String, required: false },
+
+    labsDetails: {
+        type: Map,
+        to: {
+            lab: { type: Schema.Types.ObjectId, ref: 'Lab', required: true },
+            name: { type: String, required: true },
+            price: { type: Number, required: true },
+            offer: { type: Number, required: false, default: 0 },
+            expenses: { type: Number, required: false, default: 0 },
+            resultTime: { type: String, required: true },
+            packages: { type: [String], required: false },
+            ranges: { type: Map, of: String, required: false }
+        },
+        required: false,
+        default: {}
+    },
 }, { collection: 'tests', timestamps: true });
 
 const Test = mongoose.models.Test || mongoose.model<ITest>('Test', TestSchema);
