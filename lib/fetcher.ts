@@ -65,6 +65,8 @@ class Fetcher {
     private async handleResponse<T>(response: Response): Promise<{ body: T | null, status: number, error: string | null }> {
         if (response.status === 401) {
             localStorage.setItem('isLoggedIn', JSON.stringify(false));
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userEmail');
             if (window.location.href.includes('/admin')) window.location.href = '/login/admin?redirect=' + window.location.pathname;
             else if (window.location.href.includes('/collector')) window.location.href = '/login/collector?redirect=' + window.location.pathname;
             else if (!window.location.href.includes('/login')) window.location.href = '/login?redirect=' + window.location.pathname;
