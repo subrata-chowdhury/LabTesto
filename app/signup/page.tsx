@@ -56,7 +56,7 @@ export default function Signup() {
 
         // submit logic
         setLoading(true);
-        await fetcher.post<{ name: string, email: string, password: string }, { token: string }>('/auth/signup', { name: name, email: email, password: await encryptData(password) }).then((res) => {
+        await fetcher.post<{ name: string, email: string, password: string }, { user: { verified: boolean, name: string }, token: string }>('/auth/signup', { name: name, email: email, password: await encryptData(password) }).then((res) => {
             if (res.status !== 200) {
                 toast.error(res.error || 'Error signing up');
                 return
@@ -66,6 +66,7 @@ export default function Signup() {
                 const urlParams = new URLSearchParams(window.location.search);
                 const redirectUrl = urlParams.get('redirect') || '/';
                 localStorage.setItem('isLoggedIn', JSON.stringify(true));
+                localStorage.setItem('userName', res.body.user.name);
                 setTimeout(() => navigate.replace(redirectUrl), 300);
             }
         });

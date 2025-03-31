@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
         const user = await Collector.findById(id).select('-password -otp -otpExpiry');
 
         return NextResponse.json(user, { status: 200 });
-    } catch(e) {
+    } catch (e) {
         console.log(e)
         return new NextResponse('Error fetching user details', { status: 500 });
     }
@@ -39,11 +39,13 @@ export async function POST(req: NextRequest) {
             return new NextResponse('User not found', { status: 404 });
         }
 
-        user.name = reqBody.name || user.name;
-        user.email = reqBody.email || user.email;
-        user.phone = reqBody.phone || user.phone;
-        user.patientDetails = reqBody.patientDetails || user.patientDetails;
-        user.address = reqBody.address || user.address;
+        if (reqBody.name) user.name = reqBody.name || user.name;
+        if (reqBody.email) user.email = reqBody.email || user.email;
+        if (reqBody.phone) user.phone = reqBody.phone || user.phone;
+        // user.patientDetails = reqBody.patientDetails || user.patientDetails;
+        // user.address = reqBody.address || user.address;
+        if (reqBody.reachableAreas) user.reachableAreas = reqBody.reachableAreas || user.reachableAreas;
+        if (reqBody.reachableAreas) user.reachableAreas = reqBody.reachableAreas || user.reachableAreas;
 
         await user.save();
 

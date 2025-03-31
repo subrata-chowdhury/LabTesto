@@ -27,7 +27,7 @@ export default function Login() {
             setError({ field: 'email', msg: 'Phone number is required' });
             return;
         }
-        if(email.length !== 10) {
+        if (email.length !== 10) {
             setError({ field: 'email', msg: 'Invalid Phone number' });
             return;
         }
@@ -40,7 +40,7 @@ export default function Login() {
             return;
         }
         setLoading(true);
-        await fetcher.post<{ email: string, password: string }, { user: { verified: boolean }, token: string }>('/auth/login', { email, password: await encryptData(password) }).then(async (res) => {
+        await fetcher.post<{ email: string, password: string }, { user: { verified: boolean, name: string }, token: string }>('/auth/login', { email, password: await encryptData(password) }).then(async (res) => {
             if (res.status !== 200) {
                 toast.error(res.error || 'Error signing up');
                 return;
@@ -51,6 +51,7 @@ export default function Login() {
                 const urlParams = new URLSearchParams(window.location.search);
                 const redirectUrl = urlParams.get('redirect') || '/';
                 localStorage.setItem('isLoggedIn', JSON.stringify(true));
+                localStorage.setItem('userName', res.body.user.name);
                 setTimeout(() => navigate.replace(redirectUrl), 300);
             }
         });

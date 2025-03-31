@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-interface ICollector extends Document {
+export interface ICollector extends Document {
     name: string;
     email: string;
     password: string;
@@ -13,6 +13,8 @@ interface ICollector extends Document {
         college?: string;
         year?: number;
     }[];
+    reachableAreas: string[],
+    chatId: string,
 
     verified: boolean;
     otp?: string;
@@ -40,13 +42,15 @@ const CollectorSchema: Schema = new Schema({
             year: { type: Number, required: false },
         }], required: false, default: []
     },
+    reachableAreas: { type: [String], required: false, default: [] },
+    chatId: { type: String, required: false },
 
     verified: { type: Boolean, default: false },
     otp: { type: String, required: false },
     otpExpiry: { type: Date, required: false },
 
-    rating: { type: Number, require: false, default: 0 },
-    rated: { type: Number, require: false, default: 0 },
+    rating: { type: Number, required: false, default: 0 },
+    rated: { type: Number, required: false, default: 0 },
 }, { collection: 'collectors', timestamps: true });
 
 const Collector = mongoose.models.Collector || mongoose.model<ICollector>('Collector', CollectorSchema);

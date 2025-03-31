@@ -126,6 +126,8 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
                 };
             })
             navigate.push('/order');
+        } else {
+            toast.error(res.error || 'Unable to place the order currently')
         }
     }
 
@@ -136,10 +138,6 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
         }
         if (!selectedAddress.pin || !selectedAddress.city || !selectedAddress.district || !selectedAddress.phone) {
             toast.warning('Please select a valid address');
-            return false;
-        }
-        if (selectedAddress.pin !== '722202') {
-            toast.warning('We are currently serving only in Barjora, West Bengal');
             return false;
         }
         if (!sampleTakenDateTime) {

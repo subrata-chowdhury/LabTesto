@@ -1,12 +1,11 @@
 'use client'
 import Input from '@/components/Inputs/Input'
 import React, { useEffect, useState } from 'react'
-import PatientDetailsPopup from '../../components/popups/PatientDetailsPopup'
 import fetcher from '@/lib/fetcher'
 import Image from 'next/image'
 import userIcon from '@/assets/user.png';
 import { toast } from 'react-toastify'
-import AddressDetailsPopup from '@/app/components/popups/AddressDetailsPopup'
+import TagInput from '@/components/Inputs/TagInput'
 
 const ProfilePage = () => {
     const [user, setUser] = useState<User>({
@@ -14,14 +13,10 @@ const ProfilePage = () => {
         email: '',
         password: '',
         verified: false,
-        patientDetails: [],
-        address: [],
-        createdAt: new Date(),
-        updatedAt: new Date()
+        reachableAreas: [],
+        chatId: ''
     })
     const [isDirty, setIsDirty] = useState(false);
-    const [showPatientPopup, setShowPatientPopup] = useState<{ patientIndex: number } | null>(null);
-    const [showAddressPopup, setShowAddressPopup] = useState<{ addressIndex: number } | null>(null);
 
     useEffect(() => {
         fetchUser();
@@ -51,12 +46,14 @@ const ProfilePage = () => {
             </div>
             <section className='p-20 pb-2 px-10 md:px-12'>
                 <div className='font-semibold text-lg'>Account Details</div>
-                <div className='mt-2 grid gap-6 grid-cols-1 md:grid-cols-2'>
-                    <Input label='Name' value={user.name} onChange={(val) => { setUser({ ...user, name: val }); setIsDirty(true) }} />
-                    <Input label='Email / Phone' value={user.email} onChange={(val) => { setUser({ ...user, email: val }); setIsDirty(true) }} />
+                <div className='mt-2 mb-6 grid gap-6 grid-cols-1 md:grid-cols-2'>
+                    <Input label='Name' value={user.name} onChange={(val) => { setUser({ ...user, name: val }); setIsDirty(true) }} labelClass='font-medium' />
+                    <Input label='Email / Phone' value={user.email} onChange={(val) => { setUser({ ...user, email: val }); setIsDirty(true) }} labelClass='font-medium' />
                     {/* <Input label='Password' value={user.password} onChange={(val) => { setUser({ ...user, password: val }); setIsDirty(true) }} /> */}
-                    <Input label='Alternate Email / Phone' value={user.phone || ''} onChange={(val) => { setUser({ ...user, phone: val }); setIsDirty(true) }} />
+                    <Input label='Alternate Email / Phone' value={user.phone || ''} onChange={(val) => { setUser({ ...user, phone: val }); setIsDirty(true) }} labelClass='font-medium' />
+                    <Input label='Chat ID' value={user.chatId} onChange={(val) => { setUser({ ...user, chatId: val }); setIsDirty(true) }} labelClass='font-medium' />
                 </div>
+                <TagInput label='Reachable Areas' values={user.reachableAreas} onChange={(tags) => { setUser({ ...user, reachableAreas: tags }); setIsDirty(true) }} />
             </section>
             {isDirty && <div className='px-10 md:px-12 pt-8 pb-10 flex'>
                 <button className='bg-primary text-white py-2 px-4 rounded ms-auto' onClick={async () => await updateUser()}>Save</button>
@@ -64,50 +61,6 @@ const ProfilePage = () => {
             <div className='px-10 md:px-12 pt-8 pb-10 flex'>
                 <button className='bg-primary text-white py-2 px-4 rounded-md'>Delete Your Account / Resign</button>
             </div>
-            {showPatientPopup?.patientIndex != null &&
-                <PatientDetailsPopup
-                    patientDetails={user.patientDetails?.[showPatientPopup.patientIndex]}
-                    onClose={() => setShowPatientPopup(null)}
-                    onSave={async values => {
-                        const updatedPatientDetails = [...(user.patientDetails || [])];
-                        updatedPatientDetails[showPatientPopup.patientIndex] = values;
-                        // console.log(updatedPatientDetails)
-                        setUser({ ...user, patientDetails: updatedPatientDetails });
-                        setIsDirty(true);
-                        // await updateUser();
-                        setShowPatientPopup(null);
-                    }}
-                    onRemove={() => {
-                        const updatedPatientDetails = [...(user.patientDetails || [])];
-                        updatedPatientDetails.splice(showPatientPopup.patientIndex, 1);
-                        setUser({ ...user, patientDetails: updatedPatientDetails });
-                        setIsDirty(true);
-                        // await updateUser();
-                        setShowPatientPopup(null);
-                    }} />}
-            {
-                showAddressPopup?.addressIndex != null &&
-                <AddressDetailsPopup
-                    addressDetails={user.address?.[showAddressPopup.addressIndex]}
-                    onClose={() => setShowAddressPopup(null)}
-                    onRemove={() => {
-                        const updatedAddressDetails = [...(user.address || [])];
-                        updatedAddressDetails.splice(showAddressPopup.addressIndex, 1);
-                        setUser({ ...user, address: updatedAddressDetails });
-                        setIsDirty(true);
-                        // await updateUser();
-                        setShowAddressPopup(null);
-                    }}
-                    onSave={async values => {
-                        const updatedAddressDetails = [...(user.address || [])];
-                        updatedAddressDetails[showAddressPopup.addressIndex] = values;
-                        // console.log(updatedPatientDetails)
-                        setUser({ ...user, address: updatedAddressDetails });
-                        setIsDirty(true);
-                        // await updateUser();
-                        setShowAddressPopup(null);
-                    }} />
-            }
         </div>
     )
 }
@@ -119,24 +72,9 @@ export type User = {
     email: string;
     password: string;
     phone?: string;
-    patientDetails: {
-        name: string;
-        gender: 'Male' | 'Female' | 'Other';
-        // phone: string;
-        age: number;
-        other?: string;
-    }[];
-    address: {
-        pin: string;
-        city: string;
-        district: string;
-        other?: string;
-        phone: string;
-    }[];
     verified: boolean;
     otp?: string;
     otpExpiry?: Date;
-
-    createdAt: Date;
-    updatedAt: Date;
+    reachableAreas: string[],
+    chatId: string
 }

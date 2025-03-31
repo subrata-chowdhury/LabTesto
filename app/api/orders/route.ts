@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Cart from '@/models/Cart';
 import Test, { ITest } from '@/models/Test';
 import Lab from '@/models/Lab';
-import Collector from '@/models/Collector';
+import Collector, { ICollector } from '@/models/Collector';
 
 export async function GET(req: NextRequest) {
     try {
@@ -110,11 +110,13 @@ export async function POST(req: NextRequest) {
             };
         }));
 
-        const collectors = await Collector.find({});
+
+        // Assign a collector to the order
+        const collectors = await Collector.find({ reachableAreas: { $in: [body.address.pin] } }).lean() as unknown as ICollector[];
         if (collectors.length === 0) {
             return new NextResponse('No verified collectors available', { status: 500 });
         }
-        const randomCollector = collectors[Math.floor(Math.random() * collectors.length)]._id;
+        const randomCollector = collectors[Math.floor(Math.random() * collectors.length)];
 
         const orderData = {
             items: orderItems,
@@ -123,7 +125,7 @@ export async function POST(req: NextRequest) {
             address: body.address,
             sampleTakenDateTime: body.sampleTakenDateTime || { start: new Date(), end: new Date() },
             reportDeliverTime: body.reportDeliverTime || { start: new Date(), end: new Date() },
-            collector: randomCollector
+            collector: randomCollector._id
         };
 
         const order = new Order(orderData);

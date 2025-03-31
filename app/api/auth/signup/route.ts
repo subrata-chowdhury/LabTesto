@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
         .setExpirationTime('4380h') // 6 months in hours
         .sign(new TextEncoder().encode(process.env.JWT_SECRET));
 
-    return NextResponse.json({ message: 'User signed up successfully', user: { verified: false }, token });
+    return NextResponse.json({ message: 'User signed up successfully', user: { verified: false, name: newUser.name }, token });
 }
 
 export async function PUT() {

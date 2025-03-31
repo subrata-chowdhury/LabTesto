@@ -10,10 +10,16 @@ import fetcher from '@/lib/fetcher';
 import logout from '@/assets/Menubar/logout.svg'
 import { useItemCountContext } from '../contexts/ItemCountContext';
 import { CartIcon } from '@/assets/reactIcon/Cart';
+import LabIcon from '@/assets/reactIcon/test/Lab';
+import { FilledCartIcon } from '@/assets/reactIcon/menubar/FilledCart';
+import { OrderIcon } from '@/assets/reactIcon/menubar/Orders';
+import { AboutIcon } from '@/assets/reactIcon/menubar/About';
+import { ContactIcon } from '@/assets/reactIcon/menubar/Contact';
 
 const Menubar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userName, setUserName] = useState('');
     const { itemCount, setItemCount } = useItemCountContext();
     const navigate = useRouter();
 
@@ -22,6 +28,11 @@ const Menubar = () => {
             if (res.status === 200 && res.body) {
                 setItemCount(res.body.items || 0)
                 setIsLoggedIn(JSON.parse(localStorage.getItem('isLoggedIn') || 'false'))
+                setUserName(localStorage.getItem('userName') || '')
+            } else if (res.status === 400) {
+                localStorage.setItem('isLoggedIn', 'false');
+                localStorage.removeItem('userName');
+                setIsLoggedIn(false);
             };
         })
     }, [])
@@ -64,30 +75,43 @@ const Menubar = () => {
                         </Link>
                     </> :
                     <>
-                        <Link href={'/signup'} className='px-3 sm:px-5 py-1 sm:py-1.5 text-white font-medium bg-primary rounded-md'>Register</Link>
+                        <Link href={'/signup'} className='px-3 sm:px-5 py-1.5 text-white font-medium bg-primary rounded-md text-sm sm:text-base'>Register</Link>
                     </>}
             </div>
             {isOpen && (
-                <div className="md:hidden fixed left-0 top-12 w-full text-lg sm:w-2/5 px-10 z-20 bg-white h-screen">
-                    <Link className="flex flex-col gap-2 justify-center items-center cursor-pointer py-5 pb-7" href={'/profile'} onClick={() => setIsOpen(false)} aria-label="View Profile">
+                <div className="md:hidden flex flex-col gap-2 fixed left-0 top-12 w-full text-base sm:w-2/5 px-10 z-20 bg-white h-screen">
+                    <Link className="flex flex-col gap-2 justify-center items-center cursor-pointer py-5 pb-8" href={'/profile'} onClick={() => setIsOpen(false)} aria-label="View Profile">
                         <Image src={user} alt="User Avatar" width={80} height={80} className="rounded-full p-4 bg-primary bg-opacity-20" />
-                        <div className="text-primary menu">Profile</div>
+                        <div className="text-primary text-lg font-bold menu">{userName ? userName : 'Profile'}</div>
                     </Link>
-                    <Link href="/tests" className="block text-primary menu py-2" onClick={() => setIsOpen(false)}>Book a Test</Link>
-                    <Link href="#" className="block text-primary menu py-2" onClick={() => setIsOpen(false)}>About</Link>
-                    <Link href="/order" className="block text-primary menu py-2" onClick={() => setIsOpen(false)}>Orders</Link>
-                    <Link href="/contact" className="block text-primary menu py-2" onClick={() => setIsOpen(false)}>Contact</Link>
-                    <div
-                        className={`cursor-pointer flex justify-start gap-3 p-3 px-0 mt-40 items-center rounded-lg text-primary`}
+                    <Link href="/tests" className="flex justify-between bg-primary bg-opacity-10 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
+                        <span className='flex items-center gap-2'><LabIcon size={18} />Book a Test</span> <span>❯</span>
+                    </Link>
+                    <Link href="#" className="flex justify-between bg-primary bg-opacity-10 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
+                        <span className='flex items-center gap-2'><AboutIcon size={18} />About</span> <span>❯</span>
+                    </Link>
+                    <Link href="/cart" className="flex justify-between bg-primary bg-opacity-10 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
+                        <span className='flex items-center gap-2'><FilledCartIcon size={20} />Cart</span> <span>❯</span>
+                    </Link>
+                    <Link href="/order" className="flex justify-between bg-primary bg-opacity-10 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
+                        <span className='flex items-center gap-2'><OrderIcon size={18} />Orders</span> <span>❯</span>
+                    </Link>
+                    <Link href="/contact" className="flex justify-between bg-primary bg-opacity-10 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
+                        <span className='flex items-center gap-2'><ContactIcon size={16} />Contact</span> <span>❯</span>
+                    </Link>
+                    {isLoggedIn && <div
+                        className={`cursor-pointer flex justify-start gap-3 bg-primary bg-opacity-10 px-4 rounded-xl p-3 mt-40 items-center text-primary`}
                         onClick={() => {
                             document.cookie = 'token=; Max-Age=0; path=/;';
+                            localStorage.removeItem('isLoggedIn');
+                            localStorage.removeItem('userName');
                             window.location.href = '/';
                         }}
                         aria-label="Log Out"
                     >
-                        <Image src={logout} alt='Logout Icon' width={20} height={20} style={{ width: 20, height: 20 }} />
+                        <Image src={logout} alt='Logout Icon' width={18} height={18} style={{ width: 18, height: 18 }} />
                         <p>Log Out</p>
-                    </div>
+                    </div>}
                 </div>
             )}
         </nav>

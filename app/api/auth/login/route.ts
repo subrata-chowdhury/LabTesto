@@ -59,10 +59,10 @@ export async function POST(req: NextRequest) {
         verified: user.verified,
     })
         .setProtectedHeader({ alg: 'HS256' })
-        .setExpirationTime('4380h') // 6 months in hours
+        .setExpirationTime('6 months') // 6 months
         .sign(new TextEncoder().encode(process.env.JWT_SECRET));
 
-    return NextResponse.json({ message: 'Login successful', user: { verified: user.verified }, token });
+    return NextResponse.json({ message: 'Login successful', user: { verified: user.verified, name: user.name }, token });
 }
 
 export async function PUT() {
