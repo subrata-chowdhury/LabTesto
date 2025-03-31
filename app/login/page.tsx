@@ -40,7 +40,7 @@ export default function Login() {
             return;
         }
         setLoading(true);
-        await fetcher.post<{ email: string, password: string }, { user: { verified: boolean, name: string }, token: string }>('/auth/login', { email, password: await encryptData(password) }).then(async (res) => {
+        await fetcher.post<{ email: string, password: string }, { user: { verified: boolean, name: string, email: string }, token: string }>('/auth/login', { email, password: await encryptData(password) }).then(async (res) => {
             if (res.status !== 200) {
                 toast.error(res.error || 'Error signing up');
                 return;
@@ -52,6 +52,7 @@ export default function Login() {
                 const redirectUrl = urlParams.get('redirect') || '/';
                 localStorage.setItem('isLoggedIn', JSON.stringify(true));
                 localStorage.setItem('userName', res.body.user.name);
+                localStorage.setItem('userEmail', res.body.user.email);
                 setTimeout(() => navigate.replace(redirectUrl), 300);
             }
         });

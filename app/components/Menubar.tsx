@@ -20,18 +20,21 @@ const Menubar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userName, setUserName] = useState('');
+    const [userEmail, setUserEmail] = useState('');
     const { itemCount, setItemCount } = useItemCountContext();
     const navigate = useRouter();
 
     useEffect(() => {
         fetcher.get<{ items: number }>('/cart/count').then(res => {
             if (res.status === 200 && res.body) {
-                setItemCount(res.body.items || 0)
-                setIsLoggedIn(JSON.parse(localStorage.getItem('isLoggedIn') || 'false'))
-                setUserName(localStorage.getItem('userName') || '')
+                setItemCount(res.body.items || 0);
+                setIsLoggedIn(JSON.parse(localStorage.getItem('isLoggedIn') || 'false'));
+                setUserName(localStorage.getItem('userName') || '');
+                setUserEmail(localStorage.getItem('userEmail') || '');
             } else if (res.status === 400) {
                 localStorage.setItem('isLoggedIn', 'false');
                 localStorage.removeItem('userName');
+                localStorage.removeItem('userEmail');
                 setIsLoggedIn(false);
             };
         })
@@ -82,7 +85,10 @@ const Menubar = () => {
                 <div className="md:hidden flex flex-col gap-2 fixed left-0 top-12 w-full text-base sm:w-2/5 px-10 z-20 bg-white h-screen">
                     <Link className="flex flex-col gap-2 justify-center items-center cursor-pointer py-5 pb-8" href={'/profile'} onClick={() => setIsOpen(false)} aria-label="View Profile">
                         <Image src={user} alt="User Avatar" width={80} height={80} className="rounded-full p-4 bg-primary bg-opacity-20" />
-                        <div className="text-primary text-lg font-bold menu">{userName ? userName : 'Profile'}</div>
+                        <div className='text-center'>
+                            <div className="text-primary text-lg font-bold menu">{userName ? userName : 'Profile'}</div>
+                            <div className="text-primary text-xs font-medium menu">{userEmail ? userEmail : ''}</div>
+                        </div>
                     </Link>
                     <Link href="/tests" className="flex justify-between bg-primary bg-opacity-10 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
                         <span className='flex items-center gap-2'><LabIcon size={18} />Book a Test</span> <span>❯</span>
@@ -105,6 +111,7 @@ const Menubar = () => {
                             document.cookie = 'token=; Max-Age=0; path=/;';
                             localStorage.removeItem('isLoggedIn');
                             localStorage.removeItem('userName');
+                            localStorage.removeItem('userEmail');
                             window.location.href = '/';
                         }}
                         aria-label="Log Out"

@@ -6,10 +6,6 @@ import { SignJWT } from 'jose';
 import dbConnect from '@/config/db';
 import crypto from 'crypto';
 
-export async function GET() {
-    return NextResponse.json({ message: 'GET request received' });
-}
-
 export async function POST(req: NextRequest) {
     const { email, password } = await req.json();
 
@@ -59,16 +55,8 @@ export async function POST(req: NextRequest) {
         verified: user.verified,
     })
         .setProtectedHeader({ alg: 'HS256' })
-        .setExpirationTime('6 months') // 6 months
+        .setExpirationTime(Math.floor(Date.now() / 1000) + 3 * 30 * 24 * 60 * 60) // 6 months
         .sign(new TextEncoder().encode(process.env.JWT_SECRET));
 
-    return NextResponse.json({ message: 'Login successful', user: { verified: user.verified, name: user.name }, token });
-}
-
-export async function PUT() {
-    return NextResponse.json({ message: 'PUT request received' });
-}
-
-export async function DELETE() {
-    return NextResponse.json({ message: 'DELETE request received' });
+    return NextResponse.json({ message: 'Login successful', user: { verified: user.verified, name: user.name, email: user.email }, token });
 }

@@ -7,10 +7,6 @@ import dbConnect from '@/config/db';
 import Cart from '@/models/Cart';
 import crypto from 'crypto';
 
-export async function GET() {
-    return NextResponse.json({ message: 'GET request received' });
-}
-
 export async function POST(request: NextRequest) {
     const { name, email, password } = await request.json();
 
@@ -60,16 +56,8 @@ export async function POST(request: NextRequest) {
         verified: newUser.verified,
     })
         .setProtectedHeader({ alg: 'HS256' })
-        .setExpirationTime('4380h') // 6 months in hours
+        .setExpirationTime(Math.floor(Date.now() / 1000) + 3 * 30 * 24 * 60 * 60) // 6 months
         .sign(new TextEncoder().encode(process.env.JWT_SECRET));
 
-    return NextResponse.json({ message: 'User signed up successfully', user: { verified: false, name: newUser.name }, token });
-}
-
-export async function PUT() {
-    return NextResponse.json({ message: 'PUT request received' });
-}
-
-export async function DELETE() {
-    return NextResponse.json({ message: 'DELETE request received' });
+    return NextResponse.json({ message: 'User signed up successfully', user: { verified: false, name: newUser.name, email: newUser.email }, token });
 }
