@@ -62,7 +62,7 @@ const OrderPage = () => {
     return (
         <div className="flex-1 flex flex-col p-4 bg-gray-100 dark:bg-[#0A192F] min-h-screen">
             <h1 className="text-2xl font-bold">Ordered Items</h1>
-            <div className='flex flex-wrap gap-2 mb-4 mt-1.5 opacity-80'>
+            <div className='flex flex-wrap justify-center sm:justify-normal gap-2 mb-4 mt-3 opacity-80'>
                 {['All', 'Ordered', 'Out for Sample Collection', 'Sample Collected', 'Report Delivered to Lab', 'Report Generated', 'Out for Report Delivery', 'Report Delivered', 'Canceled'].map((e, index) => (
                     <button
                         key={index}
@@ -80,7 +80,7 @@ const OrderPage = () => {
                     <li
                         key={outerIndex}
                         onClick={() => navigate.push('/order/' + order._id)}
-                        className="bg-white dark:bg-[#172A46] border-2 dark:border-gray-500 rounded shadow-md shadow-indigo-100 dark:shadow-black cursor-pointer p-3 px-4 flex justify-between items-center">
+                        className="bg-white dark:bg-[#172A46] border-2 dark:border-gray-500 rounded-lg shadow-md shadow-indigo-100 dark:shadow-black cursor-pointer p-3 px-4 flex justify-between items-center">
                         <div>
                             <div className="text-lg font-semibold text-primary">{order.items.map(e => e.product.test.name).join(', ')}</div>
                             <div className='text-sm text-gray-800 dark:text-gray-300'><span className={order.status === "Canceled" ? 'text-red-500' : (order.status === 'Report Delivered' ? 'text-green-600' : '')}>{order.status}</span>, {new Date(order.updatedAt).toDateString()}</div>
@@ -163,6 +163,10 @@ export type Order = {
         collectorRating: number,
         platformRating: number,
         reviewText: string
+    }[];
+    statusRecords: {
+        status: 'Out for Sample Collection' | 'Sample Collected' | 'Report Delivered to Lab' | 'Report Generated' | 'Out for Report Delivery' | 'Report Delivered' | 'Canceled',
+        date: string
     }[];
     createdAt: string;
     updatedAt: string;

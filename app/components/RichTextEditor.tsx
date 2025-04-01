@@ -12,6 +12,7 @@ import TableRow from '@tiptap/extension-table-row'
 import TextAlign from '@tiptap/extension-text-align'
 import Link from '@tiptap/extension-link'
 import Image from 'next/image'
+import '@/styles/tiptap.css'
 
 //icons
 import italicIcon from '@/assets/TextEditor/italic.svg'

@@ -12,11 +12,12 @@ const CollectorDashboard = () => {
     const [orderReportDeliveryData, setOrderReportDeliveryData] = useState<Order[]>([]);
     const [outForSampleCollectionData, setOutForSampleCollectionData] = useState<Order[]>([]);
     const [outForReportDeliveryData, setOutForReportDeliveryData] = useState<Order[]>([]);
+    const [sampleCollectedData, setSampleCollectedData] = useState<Order[]>([]);
     const [loading, setLoading] = useState(false);
 
     const fetchOrders = useCallback(async () => {
         setLoading(true);
-        const filterData: { status?: string | { $in: string[] }, date?: string, name?: string } = { status: { $in: ['Ordered', 'Report Generated', 'Out for Sample Collection', 'Out for Report Delivery'] } };
+        const filterData: { status?: string | { $in: string[] }, date?: string, name?: string } = { status: { $in: ['Ordered', 'Report Generated', 'Sample Collected', 'Out for Sample Collection', 'Out for Report Delivery'] } };
 
         const res = await fetcher.get<{ orders: Order[], pagination: { totalOrders: number, currentPage: number, pageSize: number, totalPages: number } }>(`/collector/orders?filter=${JSON.stringify(filterData)}&limit=999&page=1`);
         if (res.status !== 200) return;
@@ -36,7 +37,6 @@ const CollectorDashboard = () => {
             const passedOrders = res.body.orders.filter(order => {
                 return order.status === 'Ordered' && new Date(order.sampleTakenDateTime?.start || '') < startOfDay;
             });
-            console.log(upcomingOrders, todaysOrders, passedOrders)
 
             setUpComingOrderData(upcomingOrders);
             setTodaysOrderData(todaysOrders);
@@ -50,6 +50,9 @@ const CollectorDashboard = () => {
             }));
             setOutForReportDeliveryData(res.body.orders.filter(order => {
                 return order.status === 'Out for Report Delivery';
+            }));
+            setSampleCollectedData(res.body.orders.filter(order => {
+                return order.status === 'Sample Collected';
             }));
         }
         setLoading(false);
@@ -89,6 +92,27 @@ const CollectorDashboard = () => {
                                 onPass={(order) => {
                                     setPassedOrderData(prev => prev.filter(o => o._id !== order._id));
                                 }} />
+                        ))
+                    }
+                </div>
+            </>}
+            {sampleCollectedData.length > 0 && <>
+                <h1 className='text-xl font-semibold mx-4 mb-2 mt-4'>Sample to be Delivered to Lab</h1>
+                <div className='flex flex-col gap-2 mx-4'>
+                    {
+                        sampleCollectedData.map(order => (
+                            <div key={order._id} className='flex justify-between items-center flex-col sm:flex-row gap-2 rounded-md border-2 bg-white p-2 px-3'>
+                                {/* <div>{order._id}</div> */}
+                                <div className='text-xs flex flex-col font-medium text-gray-600'>
+                                    <div>Order from <span className="text-black font-semibold dark:text-gray-200">{order.user.name}</span></div>
+                                    <div className='text-sm text-red-500'>{new Date(order.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <Link className='px-2.5 py-1 bg-primary text-white rounded text-sm font-medium' href={('/collector/orders/view/' + order._id)}>View</Link>
+                                    <Link className='px-2.5 py-1 bg-primary text-white rounded text-sm font-medium' href={('/collector/orders/edit/' + order._id)}>Edit</Link>
+                                </div>
+                                {/* <h3>{order.sampleTakenDateTime.date.start}</h3> */}
+                            </div>
                         ))
                     }
                 </div>
@@ -150,7 +174,7 @@ const CollectorDashboard = () => {
                                 <div key={order._id} className='flex justify-between items-center flex-col sm:flex-row gap-2 rounded-md border-2 bg-white p-2 px-3'>
                                     {/* <div>{order._id}</div> */}
                                     <div className='text-xs flex flex-col font-medium text-gray-600'>
-                                        <div>{order._id.toUpperCase()}</div>
+                                        <div>Order from <span className="text-black font-semibold dark:text-gray-200">{order.user.name}</span></div>
                                         <div className='text-sm text-gray-800'>{new Date(order.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
                                     </div>
                                     <div className='flex gap-2'>

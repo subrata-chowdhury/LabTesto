@@ -75,7 +75,7 @@ const Tests = () => {
                     </button>
                 </div>
             </div>
-            <div className='flex flex-wrap gap-3 mt-3.5 opacity-80'>
+            <div className='flex flex-wrap justify-center sm:justify-normal gap-3 mt-3.5 opacity-80'>
                 {['All', 'Blood', 'Urine', 'Semen', 'Stool', 'Sputum', 'Other'].map((sampleType, index) => (
                     <button
                         key={index}

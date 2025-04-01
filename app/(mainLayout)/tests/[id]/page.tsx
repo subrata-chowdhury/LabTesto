@@ -1,5 +1,6 @@
 import React from 'react'
 import MainTestPage from './componenets/MainTestPage'
+import '@/styles/tiptap.css'
 
 interface TestPageProps {
     params: Promise<{ id: string }>; // Accessing the dynamic id from URL

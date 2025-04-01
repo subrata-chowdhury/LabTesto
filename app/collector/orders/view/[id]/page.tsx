@@ -71,6 +71,28 @@ function OrderPage() {
                 </div>
             ))}
             <Link href={`/collector/orders/edit/${order._id}`} className='ms-auto px-4 py-2 bg-primary text-white rounded font-medium'>Edit Order</Link>
+            <div className='bg-white text-sm flex flex-col dark:bg-[#172A46] px-6 py-4 rounded'>
+                <div className='py-2.5 flex gap-2'>
+                    <div>
+                        1.
+                    </div>
+                    <div>
+                        <div className='font-semibold'>Ordered</div>
+                        {new Date(order.createdAt).toDateString()}, {new Date(order.createdAt).toTimeString()}
+                    </div>
+                </div>
+                {order.statusRecords.map((e, index) => (
+                    <div className='py-2.5 flex gap-2' key={e.date}>
+                        <div>
+                            {index + 2}.
+                        </div>
+                        <div>
+                            <div className='font-semibold'>{e.status}</div>
+                            {new Date(e.date).toDateString()}, {new Date(e.date).toTimeString()}
+                        </div>
+                    </div>
+                ))}
+            </div>
             <div className='bg-white dark:bg-[#172A46] px-6 py-4 rounded'>
                 <div className='text-lg font-semibold'>Sample Taken Time </div>
                 <div><span className='font-medium'>Start:</span> {new Date(order?.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
@@ -210,6 +232,10 @@ export type Order = {
         collectorRating: number,
         platformRating: number,
         reviewText: string
+    }[];
+    statusRecords: {
+        status: 'Out for Sample Collection' | 'Sample Collected' | 'Report Delivered to Lab' | 'Report Generated' | 'Out for Report Delivery' | 'Report Delivered' | 'Canceled',
+        date: string
     }[];
     createdAt: string;
     updatedAt: string;
