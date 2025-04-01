@@ -92,16 +92,16 @@ const Orders = () => {
                     table={{
                         config: [
                             {
-                                heading: 'User', 
-                                selector: 'user', 
+                                heading: 'User',
+                                selector: 'user',
                                 component: ({ data }) => <div>
                                     <div className='text-sm'>{data.user.name}</div>
                                     <div className='text-xs text-gray-500 dark:text-gray-400'>{data.user.email}</div>
                                 </div>
                             },
                             {
-                                heading: 'Collector', 
-                                selector: 'collector', 
+                                heading: 'Collector',
+                                selector: 'collector',
                                 component: ({ data }) => <div>
                                     <div className='text-sm'>{data.collector?.name || 'Not Assigned'}</div>
                                     <div className='text-xs text-gray-500 dark:text-gray-400'>{data.collector?.email}</div>
@@ -122,7 +122,7 @@ const Orders = () => {
                     limit={{ limit, options: [5, 10, 15], onLimitChange: (val) => setLimit(val as number) }}
                     onSearch={(val) => setName(val)}
                     tag={{ tags: ['All', 'Today'], onTagChange: (tag) => { setType(tag) } }}
-                    dropdown={{ options: ['All', 'Ordered', 'Sample Collected', 'Report Generated', 'Report Delivered', 'Canceled'], value: branch || 'All', onChange: (value) => { setBranch(value as string) }, width: 100 }} />
+                    dropdown={{ options: ['All', 'Ordered', 'Out for Sample Collection', 'Sample Collected', 'Report Delivered to Lab', 'Report Generated', 'Out for Report Delivery', 'Report Delivered', 'Canceled'], value: branch || 'All', onChange: (value) => { setBranch(value as string) }, width: 100 }} />
             </div>
         </>
     )
@@ -132,8 +132,11 @@ export default Orders;
 
 function ColoredStatus({ data }: { data: Order }) {
     if (data.status === 'Ordered') return <div className='text-blue-500'>{data.status}</div>
+    if (data.status === 'Out for Sample Collection') return <div className='text-purple-500'>{data.status}</div>
     if (data.status === 'Sample Collected') return <div className='text-yellow-500'>{data.status}</div>
+    if (data.status === 'Report Delivered to Lab') return <div className='text-orange-500'>{data.status}</div>
     if (data.status === 'Report Generated') return <div className='text-green-500'>{data.status}</div>
+    if (data.status === 'Out for Report Delivery') return <div className='text-teal-500'>{data.status}</div>
     if (data.status === 'Report Delivered') return <div className='text-green-500'>{data.status}</div>
     if (data.status === 'Canceled') return <div className='text-red-500'>{data.status}</div>
 }
@@ -169,7 +172,7 @@ type Order = {
         name: string;
         email: string;
     };
-    status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
+    status: 'Ordered' | 'Out for Sample Collection' | 'Sample Collected' | 'Report Delivered to Lab' | 'Report Generated' | 'Out for Report Delivery' | 'Report Delivered' | 'Canceled';
     sampleTakenDateTime: {
         date: {
             start?: Date;

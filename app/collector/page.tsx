@@ -10,11 +10,13 @@ const CollectorDashboard = () => {
     const [todaysOrderData, setTodaysOrderData] = useState<Order[]>([]);
     const [passedOrderData, setPassedOrderData] = useState<Order[]>([]);
     const [orderReportDeliveryData, setOrderReportDeliveryData] = useState<Order[]>([]);
+    const [outForSampleCollectionData, setOutForSampleCollectionData] = useState<Order[]>([]);
+    const [outForReportDeliveryData, setOutForReportDeliveryData] = useState<Order[]>([]);
     const [loading, setLoading] = useState(false);
 
     const fetchOrders = useCallback(async () => {
         setLoading(true);
-        const filterData: { status?: string, date?: string, name?: string } = { status: 'Ordered' };
+        const filterData: { status?: string | { $in: string[] }, date?: string, name?: string } = { status: { $in: ['Ordered', 'Report Generated', 'Out for Sample Collection', 'Out for Report Delivery'] } };
 
         const res = await fetcher.get<{ orders: Order[], pagination: { totalOrders: number, currentPage: number, pageSize: number, totalPages: number } }>(`/collector/orders?filter=${JSON.stringify(filterData)}&limit=999&page=1`);
         if (res.status !== 200) return;
@@ -24,50 +26,75 @@ const CollectorDashboard = () => {
             const endOfDay = new Date(today.setHours(23, 59, 59, 999));
 
             const upcomingOrders = res.body.orders.filter(order => {
-                const sampleStart = new Date(order.sampleTakenDateTime?.start || '');
-                return sampleStart > endOfDay;
+                return order.status === 'Ordered' && new Date(order.sampleTakenDateTime?.start || '') > endOfDay;
             });
 
             const todaysOrders = res.body.orders.filter(order => {
-                const sampleStart = new Date(order.sampleTakenDateTime?.start || '');
-                return sampleStart >= startOfDay && sampleStart <= endOfDay;
+                return order.status === 'Ordered' && new Date(order.sampleTakenDateTime?.start || '') >= startOfDay && new Date(order.sampleTakenDateTime?.start || '') <= endOfDay;
             });
 
             const passedOrders = res.body.orders.filter(order => {
-                const sampleStart = new Date(order.sampleTakenDateTime?.start || '');
-                return sampleStart < startOfDay;
+                return order.status === 'Ordered' && new Date(order.sampleTakenDateTime?.start || '') < startOfDay;
             });
+            console.log(upcomingOrders, todaysOrders, passedOrders)
 
             setUpComingOrderData(upcomingOrders);
             setTodaysOrderData(todaysOrders);
             setPassedOrderData(passedOrders);
-        }
-        setLoading(false);
-    }, [])
 
-    const fetchReportDeliveryOrders = useCallback(async () => {
-        setLoading(true);
-        const filterData: { status?: string, date?: string, name?: string } = { status: 'Report Generated' };
-
-        const res = await fetcher.get<{ orders: Order[], pagination: { totalOrders: number, currentPage: number, pageSize: number, totalPages: number } }>(`/collector/orders?filter=${JSON.stringify(filterData)}&limit=999&page=1`);
-        if (res.status !== 200) return;
-        if (res.body) {
-            setOrderReportDeliveryData(res.body.orders);
+            setOrderReportDeliveryData(res.body.orders.filter(order => {
+                return order.status === 'Report Generated' && new Date(order.reportDeliverTime.date.start || '') <= endOfDay;
+            }));
+            setOutForSampleCollectionData(res.body.orders.filter(order => {
+                return order.status === 'Out for Sample Collection';
+            }));
+            setOutForReportDeliveryData(res.body.orders.filter(order => {
+                return order.status === 'Out for Report Delivery';
+            }));
         }
         setLoading(false);
     }, [])
 
     useEffect(() => {
         fetchOrders();
-        fetchReportDeliveryOrders();
     }, [])
 
     if (loading) return <Loading />
 
     return (
         <>
+            {outForSampleCollectionData.length > 0 && <>
+                <h1 className='text-xl font-semibold mx-4 mb-2 mt-4'>Out For Sample Collection</h1>
+                <div className='flex flex-col gap-2 mx-4'>
+                    {
+                        outForSampleCollectionData.map(order => (
+                            <OrderDetailsCard
+                                key={order._id}
+                                order={order}
+                                onPass={(order) => {
+                                    setPassedOrderData(prev => prev.filter(o => o._id !== order._id));
+                                }} />
+                        ))
+                    }
+                </div>
+            </>}
+            {outForReportDeliveryData.length > 0 && <>
+                <h1 className='text-xl font-semibold mx-4 mb-2 mt-4'>Out For Report Delivery</h1>
+                <div className='flex flex-col gap-2 mx-4'>
+                    {
+                        outForReportDeliveryData.map(order => (
+                            <OrderDetailsCard
+                                key={order._id}
+                                order={order}
+                                onPass={(order) => {
+                                    setPassedOrderData(prev => prev.filter(o => o._id !== order._id));
+                                }} />
+                        ))
+                    }
+                </div>
+            </>}
             {passedOrderData.length > 0 && <>
-                <h1 className='text-xl font-semibold mx-4 mb-2'>Passed</h1>
+                <h1 className='text-xl font-semibold mx-4 mb-2 mt-4'>Passed</h1>
                 <div className='flex flex-col gap-2 mx-4'>
                     {
                         passedOrderData.map(order => (
@@ -163,9 +190,12 @@ export type Order = {
         quantity: number;
         date?: Date;
     }[];
-    user: string;
+    user: {
+        name: string;
+        email: string
+    };
     collector?: string;
-    status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
+    status: 'Ordered' | 'Out for Sample Collection' | 'Sample Collected' | 'Report Delivered to Lab' | 'Report Generated' | 'Out for Report Delivery' | 'Report Delivered' | 'Canceled';
     sampleTakenDateTime: {
         start?: string;
         end?: string;

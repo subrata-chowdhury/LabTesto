@@ -28,7 +28,7 @@ export interface IOrder extends Document {
 
     user: mongoose.Schema.Types.ObjectId;
     collector?: mongoose.Schema.Types.ObjectId;
-    status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
+    status: 'Ordered' | 'Out for Sample Collection' | 'Sample Collected' | 'Report Delivered to Lab' | 'Report Generated' | 'Out for Report Delivery' | 'Report Delivered' | 'Canceled';
     sampleTakenDateTime: {
         start?: Date;
         end?: Date;
@@ -47,6 +47,10 @@ export interface IOrder extends Document {
     }[];
     paid: number;
     exceptCollectors: mongoose.Schema.Types.ObjectId[];
+    statusRecords: {
+        status: 'Out for Sample Collection' | 'Sample Collected' | 'Report Delivered to Lab' | 'Report Generated' | 'Out for Report Delivery' | 'Report Delivered' | 'Canceled',
+        date: Date
+    }[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -83,7 +87,7 @@ const OrderSchema: Schema = new Schema({
 
     user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
     collector: { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'Collector' },
-    status: { type: String, enum: ['Ordered', 'Sample Collected', 'Report Generated', 'Report Delivered', 'Canceled'], default: 'Ordered' },
+    status: { type: String, enum: ['Ordered', 'Out for Sample Collection', 'Sample Collected', 'Report Delivered to Lab', 'Report Generated', 'Out for Report Delivery', 'Report Delivered', 'Canceled'], default: 'Ordered' },
     sampleTakenDateTime: {
         start: { type: Date, required: false, default: Date.now },
         end: { type: Date, required: false, default: Date.now }
@@ -96,14 +100,20 @@ const OrderSchema: Schema = new Schema({
         type: [{
             lab: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Lab' },
             test: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Test' },
-            labRating: { type: Number, require: false },
-            collectorRating: { type: Number, require: false },
-            platformRating: { type: Number, require: false },
-            reviewText: { type: String, require: false }
-        }], require: false, default: []
+            labRating: { type: Number, required: false },
+            collectorRating: { type: Number, required: false },
+            platformRating: { type: Number, required: false },
+            reviewText: { type: String, required: false }
+        }], required: false, default: []
     },
     paid: { type: Number, required: false, default: 0 },
-    exceptCollectors: { type: [mongoose.Schema.Types.ObjectId], required: false, default: [] }
+    exceptCollectors: { type: [mongoose.Schema.Types.ObjectId], required: false, ref: 'Collector', default: [] },
+    statusRecords: {
+        type: [{
+            status: { type: String, enum: ['Out for Sample Collection', 'Sample Collected', 'Report Delivered to Lab', 'Report Generated', 'Out for Report Delivery', 'Report Delivered', 'Canceled'], required: true },
+            date: { type: Date, required: false, default: Date.now }
+        }], require: false, default: []
+    }
 }, { collection: 'orders', timestamps: true });
 
 const Order = mongoose.models.Order || mongoose.model<IOrder>('Order', OrderSchema);

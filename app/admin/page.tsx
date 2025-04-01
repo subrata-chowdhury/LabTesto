@@ -2,7 +2,7 @@
 import Card from '@/components/Card'
 import fetcher from '@/lib/fetcher'
 import React, { useEffect, useState } from 'react'
-import { Bar, BarChart, Legend, Tooltip, XAxis, YAxis } from 'recharts'
+import { Bar, BarChart, Cell, Legend, Pie, PieChart, Tooltip, XAxis, YAxis } from 'recharts'
 
 function Page() {
     const [analytics, setAnalytics] = useState<Analytics>({
@@ -69,6 +69,7 @@ function Page() {
                         </BarChart>
                     </div>
                 </div>}
+                <HalfDonutChart />
             </div>
         </>
     )
@@ -84,3 +85,35 @@ type Analytics = {
     totalAdmins: number,
     totalOrders: number,
 }
+
+const data = [
+    { name: "Completed", value: 70 },
+    { name: "Remaining", value: 30 },
+];
+
+const COLORS = ["#00C49F", "#FFBB28"];
+
+const HalfDonutChart = () => {
+    return (
+        <div className="flex justify-center items-center">
+            <PieChart width={400} height={200}>
+                <Pie
+                    data={data}
+                    cx="50%"
+                    cy="100%"
+                    startAngle={180}
+                    endAngle={0}
+                    innerRadius={80}
+                    outerRadius={100}
+                    fill="#8884d8"
+                    dataKey="value"
+                    cornerRadius={10}
+                >
+                    {data.map((_, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                    ))}
+                </Pie>
+            </PieChart>
+        </div>
+    );
+};

@@ -1,5 +1,5 @@
 import dbConnect from "@/config/db";
-import Collector from "@/models/Collector";
+import Collector, { ICollector } from "@/models/Collector";
 import Lab from "@/models/Lab";
 import Order from "@/models/Order";
 import Test from "@/models/Test";
@@ -60,9 +60,12 @@ export async function POST(req: NextRequest) {
             // }
 
             const validStatusTransitions = {
-                'Ordered': 'Sample Collected',
-                'Sample Collected': 'Report Generated',
-                'Report Generated': 'Report Delivered'
+                'Ordered': 'Out for Sample Collection',
+                'Out for Sample Collection': 'Sample Collected',
+                'Sample Collected': 'Report Delivered to Lab',
+                'Report Delivered to Lab': 'Report Generated',
+                'Report Generated': 'Out for Report Delivery',
+                'Out for Report Delivery': 'Report Delivered'
             };
 
             const canChangeStatus = validStatusTransitions[order.status as keyof typeof validStatusTransitions] === status || status === 'Canceled';
@@ -73,6 +76,7 @@ export async function POST(req: NextRequest) {
 
             if (status) order.status = status;
             if (paid && paid >= 0) order.paid = paid;
+            if (status) order.statusRecords.push({ status, date: new Date() });
             await order.save();
 
             return NextResponse.json(order, { status: 200 });
@@ -100,21 +104,30 @@ export async function PUT(req: NextRequest) {
         try {
             const order = await Order.findOne({ _id: id, collector: userId, status: 'Ordered' });
 
+            if (!order) {
+                return new NextResponse('Order not found', { status: 404 });
+            }
+
             if (order.exceptCollectors && order.exceptCollectors.includes(userId)) {
                 return new NextResponse('Collector already excluded', { status: 400 });
             }
 
             order.exceptCollectors.push(userId);
 
-            const newCollector = await Collector.findOne({
-                _id: { $nin: order.exceptCollectors }
-            });
+            const newCollector = await Collector.find({
+                _id: { $nin: order.exceptCollectors },
+                reachableAreas: { $in: [order.address.pin] }
+            }).lean() as unknown as ICollector[];
+            if (newCollector.length === 0) {
+                return new NextResponse('No verified collectors available', { status: 500 });
+            }
+            const randomCollector = newCollector[Math.floor(Math.random() * newCollector.length)];
 
-            if (!newCollector) {
+            if (!randomCollector) {
                 return new NextResponse('No available collectors', { status: 404 });
             }
 
-            order.collector = newCollector._id;
+            order.collector = randomCollector._id;
             await order.save();
 
             if (!order) {

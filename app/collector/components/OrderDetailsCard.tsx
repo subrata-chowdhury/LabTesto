@@ -8,13 +8,13 @@ export const OrderDetailsCard = ({ order, onPass }: { order: Order, onPass: (ord
         <div key={order._id} className='flex justify-between items-center flex-col sm:flex-row gap-2 rounded-md border-2 dark:border-gray-600 bg-white dark:bg-[#172A46] dark:shadow-md dark:shadow-black p-2 px-3'>
             {/* <div>{order._id}</div> */}
             <div className='text-xs flex flex-col font-medium text-gray-600'>
-                <div className='dark:text-gray-400'>{order._id.toUpperCase()}</div>
+                <div className='dark:text-gray-400'>Order from <span className="text-black font-semibold dark:text-gray-200">{order.user.name}</span></div>
                 <div className={`text-sm text-gray-800 dark:text-gray-200 ${getColorBasedOnDateTime(new Date(order.sampleTakenDateTime?.start || ''))}`}>{new Date(order.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
             </div>
             <div className='flex gap-2'>
                 <Link className='px-2.5 py-1 bg-primary text-white rounded text-sm font-medium' href={('/collector/orders/view/' + order._id)}>View</Link>
                 <Link className='px-2.5 py-1 bg-primary text-white rounded text-sm font-medium' href={('/collector/orders/edit/' + order._id)}>Edit</Link>
-                <button
+                {order.status === 'Ordered' && <button
                     className='px-2.5 py-1 bg-orange-500 text-white rounded text-sm font-medium'
                     onClick={async () => {
                         const res = await fetcher.put<{ id: string }, Order>(`/collector/orders/${order._id}`, { id: order._id });
@@ -22,7 +22,7 @@ export const OrderDetailsCard = ({ order, onPass }: { order: Order, onPass: (ord
                             onPass(order);
                             toast.success('Order Passed to another collector');
                         }
-                    }}>Pass</button>
+                    }}>Pass</button>}
             </div>
             {/* <h3>{order.sampleTakenDateTime.date.start}</h3> */}
         </div>

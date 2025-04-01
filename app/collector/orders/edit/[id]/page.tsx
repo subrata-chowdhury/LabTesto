@@ -6,8 +6,8 @@ import { toast } from 'react-toastify';
 import Title from '@/components/Title';
 import Input from '@/components/Inputs/Input';
 import Image from 'next/image';
-import Dropdown from '@/components/Dropdown';
 import informationIcon from '@/assets/information.svg'
+import CheckBox from '@/components/Inputs/CheckBox';
 
 const Page = () => {
     const [orderDetails, setOrderDetails] = useState<OrderDetails>({
@@ -72,7 +72,7 @@ const Page = () => {
         <div className='bg-white dark:bg-[#172A46] mt-4 p-8 px-10'>
             <div className='text-xl flex gap-3 items-center font-bold pb-6'>
                 Order Form
-                <Title title={<p className='text-nowrap font-medium dark:text-black'>You can only change status on 1 hour interval</p>}>
+                <Title title={<p className='text-nowrap font-medium dark:text-black'>i. You can only change status on given order<br />ii. And one at a time</p>}>
                     <Image src={informationIcon} alt="" width={20} height={20} />
                 </Title>
             </div>
@@ -80,7 +80,26 @@ const Page = () => {
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
                 <div className='flex flex-col gap-1'>
                     <p className='font-medium'>Status</p>
-                    <Dropdown options={['Ordered', 'Sample Collected', 'Report Generated', 'Report Delivered', 'Canceled']} value={orderDetails.status} onChange={(val) => setOrderDetails({ ...orderDetails, status: val.value as 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' })} width={'100%'} />
+                    <div className='flex flex-col gap-2'>
+                        {['Ordered', 'Out for Sample Collection', 'Sample Collected', 'Report Delivered to Lab', 'Report Generated', 'Out for Report Delivery', 'Report Delivered'].map((status, index, statuses) => (
+                            <div className='flex gap-2' key={status}>
+                                <p className='w-5 ms-3'>{index + 1}.</p>
+                                <CheckBox
+                                    label={status}
+                                    value={statuses.indexOf(orderDetails.status) >= index}
+                                    onChange={() => {
+                                        // if (index === statuses.indexOf(orderDetails.status) + 1) {
+                                        setOrderDetails({ ...orderDetails, status: status as 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' });
+                                        // } else {
+                                        //     toast.error('You can only select the next status in order.');
+                                        // }
+                                    }}
+                                    disabled={statuses.indexOf(orderDetails.status) < index - 1}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    {/* <Dropdown options={['Ordered', 'Out for Sample Collection', 'Sample Collected', 'Report Delivered to Lab', 'Report Generated', 'Out for Report Delivery', 'Report Delivered', 'Canceled']} value={orderDetails.status} onChange={(val) => setOrderDetails({ ...orderDetails, status: val.value as 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' })} width={'100%'} /> */}
                 </div>
             </div>
             <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
@@ -91,8 +110,8 @@ const Page = () => {
                 Total Amount: ₹{maxPrice}
             </div>
             <div className='p-5 px-0 ms-auto justify-end items-end flex gap-4'>
-                <div className='font-medium text-blue-500 h-10 flex justify-center items-center px-4 border-2 border-blue-400 rounded cursor-pointer' onClick={() => { }}>Cancel</div>
-                <div className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => { await handleSave(); }}>Save</div>
+                <div className='font-medium text-primary h-10 flex justify-center items-center px-4 border-2 border-primary rounded cursor-pointer' onClick={() => { }}>Cancel</div>
+                <div className='bg-primary font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => { await handleSave(); }}>Save</div>
             </div>
         </div>
     )
@@ -102,7 +121,7 @@ export type OrderDetails = {
     items: Item[];
     user: { _id: string, name: string };
     collector?: { _id: string, name: string };
-    status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
+    status: 'Ordered' | 'Out for Sample Collection' | 'Sample Collected' | 'Report Delivered to Lab' | 'Report Generated' | 'Out for Report Delivery' | 'Report Delivered' | 'Canceled';
     sampleTakenDateTime: {
         start?: string;
         end?: string;

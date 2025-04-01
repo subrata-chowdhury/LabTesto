@@ -124,7 +124,7 @@ const Orders = () => {
                     limit={{ limit, options: [5, 10, 15], onLimitChange: (val) => setLimit(val as number) }}
                     onSearch={(val) => setName(val)}
                     tag={{ tags: ['All', 'Today'], onTagChange: (tag) => { setType(tag) } }}
-                    dropdown={{ options: ['All', 'Ordered', 'Sample Collected', 'Report Generated', 'Report Delivered', 'Canceled'], value: branch || 'All', onChange: (value) => { setBranch(value as string) }, width: 100 }} />
+                    dropdown={{ options: ['All', 'Ordered', 'Out for Sample Collection', 'Sample Collected', 'Report Delivered to Lab', 'Report Generated', 'Out for Report Delivery', 'Report Delivered', 'Canceled'], value: branch || 'All', onChange: (value) => { setBranch(value as string) }, width: 100 }} />
             </div>
         </>
     )

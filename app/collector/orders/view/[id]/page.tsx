@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import ReviewForm, { ReviewType } from '@/app/components/ReviewForm';
 import Loading from './loading';
 import ConfirmationModel from '@/app/components/popups/ConfirmationModel';
+import Link from 'next/link';
 
 function OrderPage() {
     const [order, setOrder] = useState<Order>();
@@ -69,6 +70,7 @@ function OrderPage() {
                     </div>
                 </div>
             ))}
+            <Link href={`/collector/orders/edit/${order._id}`} className='ms-auto px-4 py-2 bg-primary text-white rounded font-medium'>Edit Order</Link>
             <div className='bg-white dark:bg-[#172A46] px-6 py-4 rounded'>
                 <div className='text-lg font-semibold'>Sample Taken Time </div>
                 <div><span className='font-medium'>Start:</span> {new Date(order?.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
@@ -192,7 +194,7 @@ export type Order = {
         // password: string;
         phone?: string;
     };
-    status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
+    status: 'Ordered' | 'Out for Sample Collection' | 'Sample Collected' | 'Report Delivered to Lab' | 'Report Generated' | 'Out for Report Delivery' | 'Report Delivered' | 'Canceled';
     sampleTakenDateTime: {
         start?: string;
         end?: string;

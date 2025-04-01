@@ -5,27 +5,37 @@ import React, { useEffect, useState } from 'react'
 import ReviewForm, { ReviewType } from '../../components/ReviewForm';
 import { useRouter } from 'next/navigation';
 import OrdersLoading from './loading';
+import Pagination from '@/components/Pagination';
 
 const OrderPage = () => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [showReviewModel, setShowReviewModel] = useState<{ orderId: string, item: { test: string, lab: string } } | null>(null)
+    const [limit, setLimit] = useState(5);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
+    const [status, setStatus] = useState('All');
     const navigate = useRouter();
 
     useEffect(() => {
         fetchOrder();
-    }, []);
+    }, [status, currentPage]);
 
     async function fetchOrder() {
         try {
-            const response = await fetcher.get<Order[]>('/orders');
+            const filterData: { status?: string, date?: string, name?: string } = { status: status };
+            if (status === 'All') delete filterData.status;
+            const response = await fetcher.get<{ orders: Order[], pagination: { currentPage: number, pageSize: number, totalPages: number } }>(`/orders?filter=${JSON.stringify(filterData)}&limit=${limit}&page=${currentPage}`);
             if (response.status !== 200) {
                 throw new Error('Failed to fetch order');
             }
             if (response.body) {
-                const sortedOrders = response.body.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+                const sortedOrders = response.body.orders.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
                 setOrders(sortedOrders);
+                setTotalPages(response.body.pagination.totalPages || 1);
+                setCurrentPage(response.body.pagination.currentPage);
+                setLimit(response.body.pagination.pageSize);
             }
         } catch (err) {
             console.log(err)
@@ -51,16 +61,29 @@ const OrderPage = () => {
 
     return (
         <div className="flex-1 flex flex-col p-4 bg-gray-100 dark:bg-[#0A192F] min-h-screen">
-            <h1 className="text-2xl font-bold mb-4">Ordered Items</h1>
-            <ul className="space-y-3 flex-1 overflow-y-scroll">
+            <h1 className="text-2xl font-bold">Ordered Items</h1>
+            <div className='flex flex-wrap gap-2 mb-4 mt-1.5 opacity-80'>
+                {['All', 'Ordered', 'Out for Sample Collection', 'Sample Collected', 'Report Delivered to Lab', 'Report Generated', 'Out for Report Delivery', 'Report Delivered', 'Canceled'].map((e, index) => (
+                    <button
+                        key={index}
+                        className={`px-3.5 py-1 text-sm rounded-full font-medium ${status === e ? 'bg-opacity-80 bg-primary text-white' : 'border-2 border-primary bg-white dark:bg-[#172A46] text-primary'}`}
+                        onClick={() => {
+                            setStatus(e);
+                        }}
+                    >
+                        {e}
+                    </button>
+                ))}
+            </div>
+            <ul className="space-y-3 h-fit">
                 {orders.map((order, outerIndex) => (
                     <li
                         key={outerIndex}
                         onClick={() => navigate.push('/order/' + order._id)}
-                        className="bg-white dark:bg-[#172A46] border-2 rounded shadow-md shadow-indigo-100 cursor-pointer p-3 px-4 flex justify-between items-center">
+                        className="bg-white dark:bg-[#172A46] border-2 dark:border-gray-500 rounded shadow-md shadow-indigo-100 dark:shadow-black cursor-pointer p-3 px-4 flex justify-between items-center">
                         <div>
                             <div className="text-lg font-semibold text-primary">{order.items.map(e => e.product.test.name).join(', ')}</div>
-                            <div className='text-sm text-gray-800'><span className={order.status === "Canceled" ? 'text-red-500' : (order.status === 'Report Delivered' ? 'text-green-600' : '')}>{order.status}</span>, {new Date(order.updatedAt).toDateString()}</div>
+                            <div className='text-sm text-gray-800 dark:text-gray-300'><span className={order.status === "Canceled" ? 'text-red-500' : (order.status === 'Report Delivered' ? 'text-green-600' : '')}>{order.status}</span>, {new Date(order.updatedAt).toDateString()}</div>
                         </div>
                         <div>
                             ❯
@@ -68,6 +91,9 @@ const OrderPage = () => {
                     </li>
                 ))}
             </ul>
+            <div className='mt-4'>
+                <Pagination currentPage={currentPage} totalPages={totalPages} onChange={setCurrentPage} />
+            </div>
             {
                 showReviewModel && <ReviewModel
                     onSave={async review => {
@@ -121,7 +147,7 @@ export type Order = {
         // password: string;
         phone?: string;
     };
-    status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
+    status: 'Ordered' | 'Out for Sample Collection' | 'Sample Collected' | 'Report Delivered to Lab' | 'Report Generated' | 'Out for Report Delivery' | 'Report Delivered' | 'Canceled';
     sampleTakenDateTime: {
         start?: string;
         end?: string;

@@ -15,12 +15,46 @@ export async function GET(req: NextRequest) {
             return new NextResponse('User ID is required', { status: 400 });
         }
 
+        const { searchParams } = new URL(req.url);
+        const filter = await JSON.parse(searchParams.get('filter') || '{}');
+        const limit = parseInt(searchParams.get('limit') || '9999', 10);
+        const page = parseInt(searchParams.get('page') || '1', 10);
+
+        if (filter.date) {
+            const date = new Date(new Date(filter.date).setHours(0, 0, 0, 0));
+            const nextDay = new Date(date);
+            nextDay.setHours(23, 59, 59, 999);
+
+            filter.createdAt = {
+                $gte: date.toISOString(),
+                $lt: nextDay.toISOString(),
+            };
+            delete filter.date;
+        }
+
         await dbConnect();
 
         try {
-            const order = await Order.find({ user: id }).populate({ path: 'items.product.test', model: Test }).populate({ path: 'items.product.lab', model: Lab }).populate({ path: 'collector', model: Collector });
+            const order = await Order.find({ ...filter, user: id })
+                .limit(limit)
+                .skip((page - 1) * limit)
+                .populate({ path: 'items.product.test', model: Test })
+                .populate({ path: 'items.product.lab', model: Lab })
+                .sort({ createdAt: -1 }); // Sort by createdAt in descending order
 
-            return NextResponse.json(order, { status: 200 });
+
+            const totalOrders = await Order.countDocuments(filter);
+            const totalPages = Math.ceil(totalOrders / limit);
+
+            return NextResponse.json({
+                orders: order,
+                pagination: {
+                    totalOrders,
+                    totalPages,
+                    currentPage: page,
+                    pageSize: limit,
+                },
+            }, { status: 200 });
         } catch (e) {
             console.log(e)
             return new NextResponse('Error fetching order', { status: 500 });

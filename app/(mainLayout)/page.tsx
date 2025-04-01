@@ -135,7 +135,7 @@ function Card({ label = "CBC", subText, description, footer, icon }: { label: st
                 {description && <p className="text-sm opacity-70">{description}</p>}
                 {icon && <Image src={icon} alt="" style={{ width: 120 }} />}
             </div>
-            <Link href={'#'} className="border-t border-gray-400 mt-auto p-4 pb-3 pt-1.5 text-primary text-sm flex items-center gap-2">{footer}<LinkArrowIcon size={12} /></Link>
+            <Link href={'#'} className="border-t border-gray-400 mt-auto p-4 pb-3 pt-2.5 text-primary text-sm flex items-center gap-2">{footer}<LinkArrowIcon size={12} /></Link>
         </div>
     )
 }
