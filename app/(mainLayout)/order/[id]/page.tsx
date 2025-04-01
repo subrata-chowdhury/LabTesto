@@ -176,7 +176,7 @@ function OrderPage() {
                 }
                 onDecline={() => setShowConfirmPopup(false)}
                 onApprove={async () => {
-                    const res = await fetcher.put<{ status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' }, { message: string } | string>("/orders/" + order._id, {
+                    const res = await fetcher.put<{ status: 'Ordered' | 'Out for Sample Collection' | 'Sample Collected' | 'Report Delivered to Lab' | 'Report Generated' | 'Out for Report Delivery' | 'Report Delivered' | 'Canceled' }, { message: string } | string>("/orders/" + order._id, {
                         status: 'Canceled'
                     })
                     if (res.status === 200) {

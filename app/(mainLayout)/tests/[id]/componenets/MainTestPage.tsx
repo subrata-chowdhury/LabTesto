@@ -277,7 +277,7 @@ type Lab = {
     rating: number,
 }
 
-function DetailsSection({ labBaseDetails, testDetails }: {
+const DetailsSection = memo(({ labBaseDetails, testDetails }: {
     labBaseDetails: {
         price: number,
         offer: number,
@@ -285,7 +285,7 @@ function DetailsSection({ labBaseDetails, testDetails }: {
         ranges: { [key: string]: string }[]
     },
     testDetails: TestDetails
-}) {
+}) => {
     const [seeMore, setSeeMore] = useState({
         packagesInclude: false,
         overview: false,
@@ -318,7 +318,7 @@ function DetailsSection({ labBaseDetails, testDetails }: {
                         <div className={'text-gray-500 dark:text-gray-300 relative ' + (!seeMore.overview ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, overview: !seeMore.overview })}>
                             <div className='tiptap' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.overview || '' }}></div>
                         </div>
-                        {(testDetails?.overview || '').length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, overview: !seeMore.overview })}>See {!seeMore.overview ? 'More' : 'Less'}</div>}
+                        {(testDetails?.overview || '').replace(/<[^>]*>/g, '').length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, overview: !seeMore.overview })}>See {!seeMore.overview ? 'More' : 'Less'}</div>}
                     </div>
                 </div>}
                 {(testDetails?.description || '').replace(/<br\/>/g, '').length > 0 && <div className='flex justify-start gap-2'>
@@ -328,7 +328,7 @@ function DetailsSection({ labBaseDetails, testDetails }: {
                         <div className={'text-gray-500 dark:text-gray-300 relative ' + (!seeMore.description ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, description: !seeMore.description })}>
                             <div className='tiptap text-gray-500 dark:text-gray-300' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.description || '' }}></div>
                         </div>
-                        {(testDetails?.description || '').length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, description: !seeMore.description })}>See {!seeMore.description ? 'More' : 'Less'}</div>}
+                        {(testDetails?.description || '').replace(/<[^>]*>/g, '').length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, description: !seeMore.description })}>See {!seeMore.description ? 'More' : 'Less'}</div>}
                     </div>
                 </div>}
                 {(testDetails?.testResultInterpretation || '').length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
@@ -338,7 +338,7 @@ function DetailsSection({ labBaseDetails, testDetails }: {
                         <div className={'text-gray-500 dark:text-gray-300 relative ' + (!seeMore.testResultInterpretation ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, testResultInterpretation: !seeMore.testResultInterpretation })}>
                             <div className='tiptap text-gray-500 dark:text-gray-300' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.testResultInterpretation || '' }}></div>
                         </div>
-                        {(testDetails.testResultInterpretation || '').length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, testResultInterpretation: !seeMore.testResultInterpretation })}>See {!seeMore.testResultInterpretation ? 'More' : 'Less'}</div>}
+                        {(testDetails.testResultInterpretation || '').replace(/<[^>]*>/g, '').length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, testResultInterpretation: !seeMore.testResultInterpretation })}>See {!seeMore.testResultInterpretation ? 'More' : 'Less'}</div>}
                     </div>
                 </div>}
                 {(testDetails?.riskAssesment || '').length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
@@ -348,7 +348,7 @@ function DetailsSection({ labBaseDetails, testDetails }: {
                         <div className={'text-gray-500 dark:text-gray-300 relative ' + (!seeMore.riskAssesment ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, riskAssesment: !seeMore.riskAssesment })}>
                             <div className='tiptap text-gray-500 dark:text-gray-300' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.riskAssesment || '' }}></div>
                         </div>
-                        {(testDetails.riskAssesment || '').length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, riskAssesment: !seeMore.riskAssesment })}>See {!seeMore.riskAssesment ? 'More' : 'Less'}</div>}
+                        {(testDetails.riskAssesment || '').replace(/<[^>]*>/g, '').length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, riskAssesment: !seeMore.riskAssesment })}>See {!seeMore.riskAssesment ? 'More' : 'Less'}</div>}
                     </div>
                 </div>}
             </div>
@@ -369,7 +369,8 @@ function DetailsSection({ labBaseDetails, testDetails }: {
             </div>}
         </section>
     )
-}
+})
+DetailsSection.displayName = 'DetailsSection';
 
 const LabDetailsSidePopup = memo(({ labId, onClose }: { labId: string, onClose: () => void }) => {
     const [lab, setLab] = useState<Lab>();

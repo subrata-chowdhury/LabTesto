@@ -46,6 +46,10 @@ export async function PUT(req: NextRequest) {
             return new NextResponse('Order not found', { status: 404 });
         }
 
+        if (body.status === 'Canceled' && existingOrder.status !== 'Ordered') {
+            return new NextResponse('Order can not be canceled now', { status: 400 })
+        }
+
         existingOrder.status = body.status || existingOrder.status;
 
         if (body.review) {
