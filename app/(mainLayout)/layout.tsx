@@ -8,6 +8,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
         <>
             <ItemCountContextProvider>
                 <Menubar />
+                <div className='h-[74px]'></div>
                 {children}
                 {/* <Footer /> */}
             </ItemCountContextProvider>

@@ -23,6 +23,7 @@ const Menubar = () => {
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
     const [showProfilePopup, setShowProfilePopup] = useState(false);
+    const [active, setActive] = useState(false);
     const { itemCount, setItemCount } = useItemCountContext();
     const navigate = useRouter();
 
@@ -40,10 +41,17 @@ const Menubar = () => {
                 setIsLoggedIn(false);
             };
         })
+        window.addEventListener('wheel', (e) => {
+            if (e.deltaY > 0 && window.scrollY > 5) {
+                setActive(true);
+            } else if (window.scrollY <= 5) {
+                setActive(false);
+            }
+        })
     }, [])
 
     return (
-        <nav className="bg-white dark:bg-[#09192F] shadow-md shadow-sky-100 dark:shadow-black dark:shadow-md p-3 px-6 z-20" role="navigation" aria-label="Main Navigation">
+        <nav className={`bg-white dark:bg-[#09192F] px-6 z-20 fixed w-screen transition-all ${active ? 'p-3 shadow-md shadow-sky-100 dark:shadow-black dark:shadow-md' : 'p-4'}`} role="navigation" aria-label="Main Navigation">
             <div className="mx-auto flex justify-between items-center">
                 <div className="md:hidden flex items-center">
                     <button onClick={() => setIsOpen(!isOpen)} className="text-primary menu focus:outline-none" aria-label="Toggle Menu">
@@ -57,7 +65,7 @@ const Menubar = () => {
                 </div>
                 <div className="hidden md:flex gap-6 lg:gap-8 xl:gap-10 xl:ml-5 mr-auto">
                     <Link href="/tests" className="text-primary menu">Book</Link>
-                    <Link href="#" className="text-primary menu">About</Link>
+                    <Link href="/about" className="text-primary menu">About</Link>
                     <Link href="/order" className="text-primary menu">Orders</Link>
                     <Link href="/contact" className="text-primary menu">Contact</Link>
                 </div>

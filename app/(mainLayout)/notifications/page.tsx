@@ -3,7 +3,6 @@ import fetcher from '@/lib/fetcher';
 import React, { useEffect, useState, JSX } from 'react'
 import { useRouter } from 'next/navigation';
 import NotificationLoading from './loading';
-import { LinkArrowIcon } from '@/assets/reactIcon/LinkArrow';
 
 const NotificationPage = () => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -61,13 +60,13 @@ const NotificationPage = () => {
                     <li
                         key={outerIndex}
                         onClick={() => notification.link?.href ? navigate.push(notification.link.href) : ''}
-                        className={`bg-white dark:bg-[#172A46] border-2 ${notification.type === 'warning' ? 'border-orange-200' : (notification.type === 'success' ? 'border-green-400' : (notification.type === 'danger' ? 'border-red-400' : ''))} rounded-xl shadow-md shadow-indigo-100 dark:shadow-black ${notification.link?.href ? 'cursor-pointer' : ''} p-3 px-4 pr-5 flex justify-between items-center`}>
+                        className={`bg-white dark:bg-[#172A46] border ${notification.type === 'warning' ? 'border-orange-200' : (notification.type === 'success' ? 'border-green-400' : (notification.type === 'danger' ? 'border-red-400' : ''))} rounded-xl shadow-md shadow-indigo-100 dark:shadow-black ${notification.link?.href ? 'cursor-pointer' : ''} p-3 px-4 pr-5 flex justify-between items-center`}>
                         <div className='flex-1'>
                             <div className={`font-semibold ${notification.type === 'warning' ? 'text-orange-400' : (notification.type === 'success' ? 'text-green-400' : (notification.type === 'danger' ? 'text-red-400' : 'text-primary'))}`}>{notification.heading}</div>
                             <div className='text-sm font-medium text-gray-600 dark:text-gray-300'>{notification.subText}</div>
                         </div>
-                        <div className='text-primary flex gap-2 justify-center items-center'>
-                            View Order<LinkArrowIcon size={16} />
+                        <div className='bg-primary text-white text-sm rounded px-3.5 py-1.5 flex gap-2 justify-center items-center'>
+                            Details
                         </div>
                     </li>
                 ))}

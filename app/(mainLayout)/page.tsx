@@ -20,8 +20,8 @@ export default function Home() {
     return (
         <>
             <div className="flex-1 pt-3 dark:bg-[#0A192F]">
-                <div className="px-4 pt-2">
-                    <SearchBar className="md:hidden px-5 py-3" active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
+                <div className="md:hidden px-4 pt-2">
+                    <SearchBar className="px-5 py-3" active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
                 </div>
                 <section className="mx-4 mb-4">
                     <Slide slides={3} />
