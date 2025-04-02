@@ -154,7 +154,7 @@ const Menubar = () => {
                     <Link href="/contact" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
                         <span className='flex items-center gap-2'><ContactIcon size={16} />Contact</span> <span className='ml-12'>❯</span>
                     </Link>
-                    <Link href="#" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
+                    <Link href="/about" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
                         <span className='flex items-center gap-2'><AboutIcon size={18} />About</span> <span className='ml-12'>❯</span>
                     </Link>
                     {isLoggedIn && <div
