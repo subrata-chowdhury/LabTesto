@@ -16,6 +16,7 @@ import { OrderIcon } from '@/assets/reactIcon/menubar/Orders';
 import { AboutIcon } from '@/assets/reactIcon/menubar/About';
 import { ContactIcon } from '@/assets/reactIcon/menubar/Contact';
 import { NotificationIcon } from '@/assets/reactIcon/menubar/Notification';
+import userIcon from '@/assets/user.png';
 
 const Menubar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -41,13 +42,20 @@ const Menubar = () => {
                 setIsLoggedIn(false);
             };
         })
-        window.addEventListener('wheel', (e) => {
-            if (e.deltaY > 0 && window.scrollY > 5) {
+        const handleScroll = () => {
+            if (window.scrollY > 5) {
                 setActive(true);
             } else if (window.scrollY <= 5) {
                 setActive(false);
             }
-        })
+        }
+        window.addEventListener('wheel', handleScroll);
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('wheel', handleScroll);
+            window.removeEventListener('scroll', handleScroll);
+        };
     }, [])
 
     return (
@@ -87,14 +95,14 @@ const Menubar = () => {
                             {/* <Link href='/profile' aria-label="View Profile"> */}
                             <Image src={user} alt="User Avatar" onClick={() => setShowProfilePopup(val => !val)} width={40} height={40} className="rounded-full p-2 bg-primary bg-opacity-20" />
                             {/* </Link> */}
-                            {showProfilePopup && <div className='flex flex-col gap-1 px-5 py-4 rounded-lg bg-white dark:bg-[#09192F] shadow-md mt-5 border border-primary border-opacity-25 absolute top-full -right-3 text-primary'>
+                            {showProfilePopup && <div className='flex flex-col gap-1 px-5 py-4 rounded-lg bg-white dark:bg-[#09192F] shadow-md dark:shadow-black mt-5 border border-primary border-opacity-25 absolute top-full -right-3 text-primary'>
                                 <Image src={user} alt="User Avatar" onClick={() => setShowProfilePopup(val => !val)} width={80} height={80} className="rounded-full p-2 mx-auto bg-primary bg-opacity-20" />
                                 <div className='text-center mb-4'>
                                     <div className="text-primary text-lg font-bold menu text-nowrap px-2">{userName ? userName : 'Profile'}</div>
                                     <div className="text-primary text-xs mt-1 font-medium menu">{userEmail ? userEmail : ''}</div>
                                 </div>
                                 <Link href='/profile' onClickCapture={() => setShowProfilePopup(false)} aria-label="View Account" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
-                                    <span className='flex items-center gap-2'><ContactIcon size={16} />Account</span> <span className='ml-10'>❯</span>
+                                    <span className='flex items-center gap-2'><Image src={userIcon} alt='' width={16} height={16} />Account</span> <span className='ml-10'>❯</span>
                                 </Link>
                                 <Link href='/notifications' onClickCapture={() => setShowProfilePopup(false)} aria-label="View Notifications" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
                                     <span className='flex items-center gap-2'><NotificationIcon size={16} />Notification</span> <span className='ml-10'>❯</span>
@@ -121,7 +129,7 @@ const Menubar = () => {
                     </>}
             </div>
             {isOpen && (
-                <div className="md:hidden flex flex-col gap-2 fixed left-0 top-0 w-full text-base sm:w-auto px-10 z-20 bg-white h-screen">
+                <div className="md:hidden flex flex-col gap-2 fixed left-0 top-0 w-full text-base sm:w-auto px-10 z-20 bg-white dark:bg-[#0A192F] h-screen">
                     <div className='flex relative top-4 mb-6 justify-center items-center'>
                         <button onClick={() => setIsOpen(!isOpen)} className="text-primary absolute left-0 menu focus:outline-none">
                             <svg className="w-6 h-6 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -138,6 +146,9 @@ const Menubar = () => {
                             <div className="text-primary text-lg font-bold menu">{userName ? userName : 'Profile'}</div>
                             <div className="text-primary text-xs font-medium menu">{userEmail ? userEmail : ''}</div>
                         </div>
+                    </Link>
+                    <Link href="/profile" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary py-2" onClick={() => setIsOpen(false)}>
+                        <span className='flex items-center gap-2'><Image src={userIcon} alt="" width={18} height={18} />Account</span> <span className='ml-12'>❯</span>
                     </Link>
                     <Link href="/tests" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary py-2" onClick={() => setIsOpen(false)}>
                         <span className='flex items-center gap-2'><LabIcon size={18} />Book a Test</span> <span className='ml-12'>❯</span>

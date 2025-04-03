@@ -1,12 +1,10 @@
 'use client'
 import Input from '@/components/Inputs/Input'
 import React, { useEffect, useState } from 'react'
-import PatientDetailsPopup from '../../components/popups/PatientDetailsPopup'
 import fetcher from '@/lib/fetcher'
 import Image from 'next/image'
 import userIcon from '@/assets/user.png';
 import { toast } from 'react-toastify'
-import AddressDetailsPopup from '@/app/components/popups/AddressDetailsPopup'
 
 const ProfilePage = () => {
     const [user, setUser] = useState<User>({
@@ -20,8 +18,6 @@ const ProfilePage = () => {
         updatedAt: new Date()
     })
     const [isDirty, setIsDirty] = useState(false);
-    const [showPatientPopup, setShowPatientPopup] = useState<{ patientIndex: number } | null>(null);
-    const [showAddressPopup, setShowAddressPopup] = useState<{ addressIndex: number } | null>(null);
 
     useEffect(() => {
         fetchUser();
@@ -43,111 +39,35 @@ const ProfilePage = () => {
     }
 
     return (
-        <div className='flex-1 dark:bg-[#0A192F]'>
-            <div className='h-40 bg-primary bg-opacity-15'>
+        <div className='flex-1 text-sm sm:text-base'>
+            {/* <div className='h-40 bg-primary bg-opacity-15'>
                 <div className='w-32 h-32 flex justify-center items-center top-full translate-x-1/2 -translate-y-1/2 bg-white dark:bg-[rgb(23,42,70)] rounded-full relative'>
-                    <Image src={userIcon} alt="profile picture" width={118} height={118} className='w-[118px] h-[118px] p-2 border-4 border-primary shadow-lg shadow-[rgba(57,134,186,0.2)] rounded-full bg-white dark:bg-[#172A46]' />
                 </div>
-            </div>
-            <section className='p-20 pb-2 px-10 md:px-20'>
-                <div className='font-semibold text-lg'>Account Details</div>
+            </div> */}
+            <section className='pt-0 pb-2 sm:pb-4'>
+                <div className='border-2 bg-white dark:bg-[#172A46] dark:border-gray-500 relative flex flex-col sm:flex-row gap-4 items-center rounded-lg px-3 sm:px-5 py-3 sm:py-5'>
+                    <Image src={userIcon} alt="profile picture" width={120} height={120} className='w-16 h-16 md:w-20 md:h-20 p-4 bg-primary bg-opacity-20 dark:bg-opacity-30 rounded-full' />
+                    <div className='text-center sm:text-left'>
+                        <div className='text-base sm:text-lg md:text-xl font-bold'>{user.name}</div>
+                        <div className='text-sm font-medium text-gray-500 dark:text-gray-400'>{user.email}</div>
+                    </div>
+                </div>
+            </section>
+            <section className='pt-5 pb-2'>
+                <div className='font-semibold text-base sm:text-lg'>Account Details</div>
                 <div className='mt-2 grid gap-6 grid-cols-1 md:grid-cols-2'>
-                    <Input label='Name' value={user.name} onChange={(val) => { setUser({ ...user, name: val }); setIsDirty(true) }} />
-                    <Input label='Email / Phone' value={user.email} onChange={(val) => { setUser({ ...user, email: val }); setIsDirty(true) }} />
+                    <Input label='Name' labelClass='text-sm sm:text-base' value={user.name} onChange={(val) => { setUser({ ...user, name: val }); setIsDirty(true) }} />
+                    <Input label='Phone' labelClass='text-sm sm:text-base' value={user.email} onChange={(val) => { setUser({ ...user, email: val }); setIsDirty(true) }} />
                     {/* <Input label='Password' value={user.password} onChange={(val) => { setUser({ ...user, password: val }); setIsDirty(true) }} /> */}
-                    <Input label='Alternate Email / Phone' value={user.phone || ''} onChange={(val) => { setUser({ ...user, phone: val }); setIsDirty(true) }} />
+                    <Input label='Email / Alternate Phone' labelClass='text-sm sm:text-base' value={user.phone || ''} onChange={(val) => { setUser({ ...user, phone: val }); setIsDirty(true) }} />
                 </div>
             </section>
-            <section className='px-10 md:px-20 pt-2'>
-                <div className='font-semibold text-lg'>Patient Details</div>
-                <div className='flex gap-2 mt-2 text-sm text-white'>
-                    {user?.patientDetails?.map((patientDetail, i) => (
-                        <div
-                            key={i}
-                            className='bg-primary bg-opacity-75 px-4 py-2 rounded-full cursor-pointer'
-                            onClick={() =>
-                                setShowPatientPopup({ patientIndex: i })}>
-                            {patientDetail.name}
-                        </div>
-                    ))}
-                    <div
-                        className='bg-primary bg-opacity-75 px-4 py-2 rounded-full cursor-pointer'
-                        onClick={() =>
-                            setShowPatientPopup({ patientIndex: user.patientDetails?.length || 0 })}>
-                        Add +
-                    </div>
-                </div>
-            </section>
-            <section className='px-10 md:px-20 pt-2 mt-2'>
-                <div className='font-semibold text-lg'>Address Details</div>
-                <div className='flex gap-2 mt-2 text-sm text-white'>
-                    {user?.address?.map((address, i) => (
-                        <div
-                            key={i}
-                            className='bg-primary bg-opacity-75 px-4 py-2 rounded-full cursor-pointer'
-                            onClick={() =>
-                                setShowAddressPopup({ addressIndex: i })}>
-                            {address.pin}
-                        </div>
-                    ))}
-                    <div
-                        className='bg-primary bg-opacity-75 px-4 py-2 rounded-full cursor-pointer'
-                        onClick={() =>
-                            setShowAddressPopup({ addressIndex: user.address?.length || 0 })}>
-                        Add +
-                    </div>
-                </div>
-            </section>
-            {isDirty && <div className='px-10 md:px-20 pt-8 pb-10 flex'>
+            {isDirty && <div className='pt-8 pb-10 flex'>
                 <button className='bg-primary text-white py-2 px-4 rounded ms-auto' onClick={async () => await updateUser()}>Save</button>
             </div>}
-            <div className='px-10 md:px-20 pt-8 pb-10 flex'>
+            {/* <div className='pt-8 pb-10 flex'>
                 <button className='bg-primary text-white py-2 px-4 rounded-md'>Delete Your Account</button>
-            </div>
-            {showPatientPopup?.patientIndex != null &&
-                <PatientDetailsPopup
-                    patientDetails={user.patientDetails?.[showPatientPopup.patientIndex]}
-                    onClose={() => setShowPatientPopup(null)}
-                    onSave={async values => {
-                        const updatedPatientDetails = [...(user.patientDetails || [])];
-                        updatedPatientDetails[showPatientPopup.patientIndex] = values;
-                        // console.log(updatedPatientDetails)
-                        setUser({ ...user, patientDetails: updatedPatientDetails });
-                        setIsDirty(true);
-                        // await updateUser();
-                        setShowPatientPopup(null);
-                    }}
-                    onRemove={() => {
-                        const updatedPatientDetails = [...(user.patientDetails || [])];
-                        updatedPatientDetails.splice(showPatientPopup.patientIndex, 1);
-                        setUser({ ...user, patientDetails: updatedPatientDetails });
-                        setIsDirty(true);
-                        // await updateUser();
-                        setShowPatientPopup(null);
-                    }} />}
-            {
-                showAddressPopup?.addressIndex != null &&
-                <AddressDetailsPopup
-                    addressDetails={user.address?.[showAddressPopup.addressIndex]}
-                    onClose={() => setShowAddressPopup(null)}
-                    onRemove={() => {
-                        const updatedAddressDetails = [...(user.address || [])];
-                        updatedAddressDetails.splice(showAddressPopup.addressIndex, 1);
-                        setUser({ ...user, address: updatedAddressDetails });
-                        setIsDirty(true);
-                        // await updateUser();
-                        setShowAddressPopup(null);
-                    }}
-                    onSave={async values => {
-                        const updatedAddressDetails = [...(user.address || [])];
-                        updatedAddressDetails[showAddressPopup.addressIndex] = values;
-                        // console.log(updatedPatientDetails)
-                        setUser({ ...user, address: updatedAddressDetails });
-                        setIsDirty(true);
-                        // await updateUser();
-                        setShowAddressPopup(null);
-                    }} />
-            }
+            </div> */}
         </div>
     )
 }

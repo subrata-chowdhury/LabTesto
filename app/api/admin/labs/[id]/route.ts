@@ -1,6 +1,7 @@
 import dbConnect from "@/config/db";
 import Lab from "@/models/Lab";
 import { NextRequest, NextResponse } from "next/server";
+import Test from "@/models/Test";
 
 export async function POST(req: NextRequest) {
     const body = await req.json();
@@ -77,6 +78,14 @@ export async function POST(req: NextRequest) {
 
         if (!updatedLab) {
             return new NextResponse('Lab not found', { status: 404 });
+        }
+
+        if (body.name) {
+            // Update the lab name in Test's labsDetails field
+            await Test.updateMany(
+                { [`labsDetails.${id}`]: { $exists: true } },
+                { $set: { [`labsDetails.${id}.name`]: body.name } }
+            );
         }
 
         return NextResponse.json({ message: 'Lab updated successfully' }, { status: 200 });

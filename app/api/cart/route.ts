@@ -17,11 +17,16 @@ export async function GET(req: NextRequest) {
 
     try {
         const cart = await Cart.findOne({ user: id }).populate({ path: 'items.product.test', model: Test }).populate({ path: 'items.product.lab', model: Lab }).populate({ path: 'user', model: User }).lean() as unknown as ICart;
-        cart.items.map((item => {
+        const labs = cart.items.map((item) => item.product.lab._id.toString());
+
+        cart.items.forEach((item => {
+            (item.product.test as unknown as ITest).labsDetails = Object.fromEntries(
+                Object.entries((item.product.test as unknown as ITest)?.labsDetails || {}).filter(([key]) => labs.includes(key))
+            );
             const priceDetails = ((item.product.test as unknown as ITest)?.labsDetails?.[item.product.lab?._id?.toString()]);
             if (priceDetails) {
                 delete priceDetails.expenses;
-                (item.product.test as unknown as ITest).labsDetails = { [item.product.lab?._id?.toString()]: priceDetails };
+                // (item.product.test as unknown as ITest).labsDetails = { [item.product.lab?._id?.toString()]: priceDetails };
             }
         }));
 

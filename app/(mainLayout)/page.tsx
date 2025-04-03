@@ -27,7 +27,7 @@ export default function Home() {
                     <Slide slides={3} />
                 </section>
                 <section className="mx-auto flex flex-col">
-                    <h1 className="text-3xl font-semibold text-center mx-auto mt-4">Frequently Required Tests</h1>
+                    <h1 className="text-3xl font-semibold text-center px-4 mx-auto mt-4">Frequently Required Tests</h1>
                     <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-4"></div>
                     {/* <h1 className="text-2xl font-semibold">Frequently Required Tests</h1> */}
                     {/* <h1 className="text-xl font-semibold translate-y-full ml-2 bg-white w-fit px-2">Frequently Required Tests</h1> */}
@@ -80,21 +80,7 @@ export default function Home() {
                         </div>
                     </div>
                 </section>
-                <section className="mx-auto md:w-[95%] pt-0 sm:pt-0 md:pt-0 p-4 flex flex-col">
-                    <h1 className="text-3xl font-semibold text-center mx-auto mt-4">Our Promise</h1>
-                    <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-3"></div>
-                    <div className="mt-2 rounded-md w-full">
-                        {/* <div className="mt-4 p-3 md:p-5 border-2 border-primary border-opacity-40 border-dashed rounded-md bg-white w-full"> */}
-                        <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                            <CardType2 label={<span><span className="font-bold text-[#f59942]">NABL Certified</span><br /> Lab Test</span>} icon={nablcertiIcon} bgColor="rgba(245, 182, 66, 0.3)" />
-                            <CardType2 label={<span><span className="font-bold text-[rgba(245,96,66,1)]">On Time</span> Sample Collection by Expert</span>} icon={ontimeIcon} bgColor="rgba(245, 96, 66, 0.2)" />
-                            <CardType2 label={<span><span className="font-bold text-[rgba(3,24,255,0.7)]">Accurate Test</span><br /> Report</span>} icon={accuratelabtest} bgColor="rgba(3, 24, 255, 0.25)" />
-                            <CardType2 label={<span><span className="font-bold text-[rgba(8,145,178,0.8)]">Flexibility</span> to Schedule Test</span>} icon={flexdateandtime} bgColor="rgba(8, 145, 178, 0.2)" />
-                            <CardType2 label={<span><span className="font-bold text-[rgba(245,96,66,1)]">Free</span> Home Collection</span>} icon={deliveryIcon} bgColor="rgba(245, 96, 66, 0.2)" />
-                            <CardType2 label={<span><span className="font-bold text-[rgba(15,176,4,1)]">Cash On Delivery</span></span>} icon={cod} bgColor="rgba(15, 176, 4, 0.2)" />
-                        </div>
-                    </div>
-                </section>
+                <OurPromisesSection />
                 <section className=" mx-auto md:w-[95%] pt-0 sm:pt-0 md:pt-0 p-4 flex flex-col">
                     <h1 className="text-3xl font-semibold text-center mx-auto mt-4">Our Popular Packages</h1>
                     <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-3"></div>
@@ -125,6 +111,25 @@ export default function Home() {
     );
 }
 
+export function OurPromisesSection() {
+    return (
+        <section className="mx-auto md:w-[95%] pt-0 sm:pt-0 md:pt-0 p-4 flex flex-col">
+            <h1 className="text-3xl font-semibold text-center mx-auto mt-4">Our Promise</h1>
+            <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-3"></div>
+            <div className="mt-2 rounded-md w-full">
+                {/* <div className="mt-4 p-3 md:p-5 border-2 border-primary border-opacity-40 border-dashed rounded-md bg-white w-full"> */}
+                <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                    <CardType2 label={<span><span className="font-bold text-[#f59942]">NABL Certified</span><br /> Lab Test</span>} icon={nablcertiIcon} bgColor="rgba(245, 182, 66, 0.3)" />
+                    <CardType2 label={<span><span className="font-bold text-[rgba(245,96,66,1)]">On Time</span> Sample Collection by Expert</span>} icon={ontimeIcon} bgColor="rgba(245, 96, 66, 0.2)" />
+                    <CardType2 label={<span><span className="font-bold text-[rgba(3,24,255,0.7)]">Accurate Test</span><br /> Report</span>} icon={accuratelabtest} bgColor="rgba(3, 24, 255, 0.25)" />
+                    <CardType2 label={<span><span className="font-bold text-[rgba(8,145,178,0.8)]">Flexibility</span> to Schedule Test</span>} icon={flexdateandtime} bgColor="rgba(8, 145, 178, 0.2)" />
+                    <CardType2 label={<span><span className="font-bold text-[rgba(245,96,66,1)]">Free</span> Home Collection</span>} icon={deliveryIcon} bgColor="rgba(245, 96, 66, 0.2)" />
+                    <CardType2 label={<span><span className="font-bold text-[rgba(15,176,4,1)]">Cash On Delivery</span></span>} icon={cod} bgColor="rgba(15, 176, 4, 0.2)" />
+                </div>
+            </div>
+        </section>
+    )
+}
 
 function Card({ label = "CBC", subText, description, footer, icon }: { label: string, subText?: string, description?: string, footer?: string, icon?: StaticImageData }) {
     return (

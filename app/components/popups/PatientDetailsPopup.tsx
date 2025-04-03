@@ -27,7 +27,7 @@ export default function PatientDetailsPopup({ patientDetails, onSave = () => { }
                     <Input label='Age *' value={values.age?.toString()} type="number" error={errors.age} onChange={val => setValues({ ...values, age: Number(val) })} />
                 </div>
                 <div className='text-sm flex flex-col gap-1 pt-2'>
-                    <label className='font-medium'>Other Details</label>
+                    <label className='font-medium'>Other Details / Disability</label>
                     <textarea className='border-2 dark:border-gray-400 bg-transparent rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Other Details' value={values.other} onChange={(e) => setValues({ ...values, other: e.target.value })}></textarea>
                 </div>
                 <div className='p-5 pb-2 px-0 ms-auto justify-end items-end flex gap-4'>
