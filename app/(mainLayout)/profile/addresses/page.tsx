@@ -49,7 +49,7 @@ const AddressesPage = () => {
                         setShowAddressPopup({ addressIndex: user.address?.length || 0 })}>
                     Add +
                 </div>
-                <div className='flex gap-2 mt-2 text-sm text-white'>
+                <div className='flex flex-wrap gap-2 mt-2 text-sm text-white'>
                     {user?.address?.map((address, i) => (
                         <div
                             key={i}
