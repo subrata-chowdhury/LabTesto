@@ -44,7 +44,7 @@ const AddressesPage = () => {
             <section className='w-full'>
                 <div className='font-semibold text-lg mb-2'>Address Details</div>
                 <div
-                    className='border-2 border-primary text-primary font-semibold w-fit bg-opacity-75 px-3.5 py-1.5 rounded-lg cursor-pointer'
+                    className='border-2 border-primary text-primary text-sm sm:text-base font-semibold w-fit bg-opacity-75 px-3.5 py-1.5 rounded-lg cursor-pointer'
                     onClick={() =>
                         setShowAddressPopup({ addressIndex: user.address?.length || 0 })}>
                     Add +

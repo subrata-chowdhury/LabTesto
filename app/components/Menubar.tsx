@@ -2,7 +2,6 @@
 import Image from 'next/image';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import user from '@/assets/user.png';
 import Link from 'next/link';
 import SelectTest from './SelectTest';
 import { useRouter } from 'next/navigation';
@@ -17,6 +16,7 @@ import { AboutIcon } from '@/assets/reactIcon/menubar/About';
 import { ContactIcon } from '@/assets/reactIcon/menubar/Contact';
 import { NotificationIcon } from '@/assets/reactIcon/menubar/Notification';
 import userIcon from '@/assets/user.png';
+import UserIcon from '@/assets/reactIcon/User';
 
 const Menubar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -91,12 +91,12 @@ const Menubar = () => {
                             {(itemCount || 0) > 0 && <div className='absolute -right-1 -top-1 px-[6px] py-[2px] rounded-full text-xs text-white font-medium bg-primary'>{(itemCount || 0) > 9 ? '9+' : itemCount}</div>}
                             <CartIcon size={28} />
                         </Link>
-                        <div className="hidden relative md:flex items-center space-x-4 cursor-pointer">
+                        <div className="hidden relative md:flex items-center space-x-4 cursor-pointer text-primary">
                             {/* <Link href='/profile' aria-label="View Profile"> */}
-                            <Image src={user} alt="User Avatar" onClick={() => setShowProfilePopup(val => !val)} width={40} height={40} className="rounded-full p-2 bg-primary bg-opacity-20" />
+                            <UserIcon onClick={() => setShowProfilePopup(val => !val)} size={40} className="rounded-full p-2 bg-primary bg-opacity-20" />
                             {/* </Link> */}
                             {showProfilePopup && <div className='flex flex-col gap-1 px-5 py-4 rounded-lg bg-white dark:bg-[#09192F] shadow-md dark:shadow-black mt-5 border border-primary border-opacity-25 absolute top-full -right-3 text-primary'>
-                                <Image src={user} alt="User Avatar" onClick={() => setShowProfilePopup(val => !val)} width={80} height={80} className="rounded-full p-2 mx-auto bg-primary bg-opacity-20" />
+                                <UserIcon onClick={() => setShowProfilePopup(val => !val)} size={80} className="rounded-full p-4 mx-auto bg-primary bg-opacity-20" />
                                 <div className='text-center mb-4'>
                                     <div className="text-primary text-lg font-bold menu text-nowrap px-2">{userName ? userName : 'Profile'}</div>
                                     <div className="text-primary text-xs mt-1 font-medium menu">{userEmail ? userEmail : ''}</div>
@@ -140,15 +140,15 @@ const Menubar = () => {
                             <Link href={'/'} onClick={() => setIsOpen(false)} className=''><span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></Link>
                         </div>
                     </div>
-                    <Link className="flex flex-col gap-2 justify-center items-center cursor-pointer py-5 pb-8" href={'/profile'} onClick={() => setIsOpen(false)} aria-label="View Profile">
-                        <Image src={user} alt="User Avatar" width={80} height={80} className="rounded-full p-4 bg-primary bg-opacity-20" />
+                    <Link className="flex flex-col gap-2 justify-center items-center cursor-pointer py-5 pb-8 text-primary" href={'/profile'} onClick={() => setIsOpen(false)} aria-label="View Profile">
+                        <UserIcon size={80} className="rounded-full p-4 bg-primary bg-opacity-20" />
                         <div className='text-center'>
                             <div className="text-primary text-lg font-bold menu">{userName ? userName : 'Profile'}</div>
                             <div className="text-primary text-xs font-medium menu">{userEmail ? userEmail : ''}</div>
                         </div>
                     </Link>
                     <Link href="/profile" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary py-2" onClick={() => setIsOpen(false)}>
-                        <span className='flex items-center gap-2'><Image src={userIcon} alt="" width={18} height={18} />Account</span> <span className='ml-12'>❯</span>
+                        <span className='flex items-center gap-2'><UserIcon size={18} />Account</span> <span className='ml-12'>❯</span>
                     </Link>
                     <Link href="/tests" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary py-2" onClick={() => setIsOpen(false)}>
                         <span className='flex items-center gap-2'><LabIcon size={18} />Book a Test</span> <span className='ml-12'>❯</span>
