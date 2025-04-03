@@ -43,39 +43,39 @@ export default function Home() {
                         <div className="w-full md:w-[95%] mx-auto pt-0 sm:pt-0 md:pt-0 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                             <Card
                                 label="Complete Blood Count (CBC)"
-                                subText="Blood"
+                                tag="Blood"
                                 description="It measures red and white blood cells, hemoglobin, hematocrit, and platelets to assess overall health. It helps diagnose infections, anemia, and other blood disorders."
-                                footer="Book Now"
+                                link={{ label: "Book Now", href: '/tests/67a38ddca80c243e83d518ed' }}
                             />
                             <Card
                                 label="Fasting Blood Sugar (FBS)"
-                                subText="Blood"
-                                description="It measures red and white blood cells, hemoglobin, hematocrit, and platelets to assess overall health. It helps diagnose infections, anemia, and other blood disorders."
-                                footer="Book Now"
+                                tag="Blood"
+                                description="It's a blood test that measures glucose levels after an overnight fast. It helps diagnose diabetes, prediabetes, and monitor blood sugar control in diabetic patients."
+                                link={{ label: "Book Now", href: '/tests/67a44ab70daa8b678a7fa330' }}
                             />
                             <Card
                                 label="Thyroid Stimulating Hormone (TSH)"
-                                subText="Blood"
-                                description="It measures red and white blood cells, hemoglobin, hematocrit, and platelets to assess overall health. It helps diagnose infections, anemia, and other blood disorders."
-                                footer="Book Now"
+                                tag="Blood"
+                                description="It's a blood test that measures TSH levels to evaluate thyroid function. It helps diagnose hypothyroidism, hyperthyroidism, and monitor thyroid disorders."
+                                link={{ label: "Book Now", href: '/tests/67b9667ee39bde2a012634ca' }}
                             />
                             <Card
-                                label="Complete Blood Count (CBC)"
-                                subText="Blood"
-                                description="It measures red and white blood cells, hemoglobin, hematocrit, and platelets to assess overall health. It helps diagnose infections, anemia, and other blood disorders."
-                                footer="Book Now"
+                                label="Urine Examination (Routine)"
+                                tag="Urine"
+                                description="It analyzes urine for physical, chemical, and microscopic properties. It helps detect infections, kidney diseases, diabetes, and metabolic disorders."
+                                link={{ label: "Book Now", href: '/tests/67bd6412266fe37d1fb4e7a8' }}
                             />
                             <Card
-                                label="Complete Blood Count (CBC)"
-                                subText="Blood"
-                                description="It measures red and white blood cells, hemoglobin, hematocrit, and platelets to assess overall health. It helps diagnose infections, anemia, and other blood disorders."
-                                footer="Book Now"
+                                label="Random Blood Sugar (RBS)"
+                                tag="Blood"
+                                description="It's a blood test that measures glucose levels at any time of the day, regardless of when you last ate. It helps assess blood sugar control and detect diabetes."
+                                link={{ label: "Book Now", href: '/tests/67bd7997eb03aecfeb2f2331' }}
                             />
                             <Card
-                                label="Complete Blood Count (CBC)"
-                                subText="Blood"
-                                description="It measures red and white blood cells, hemoglobin, hematocrit, and platelets to assess overall health. It helps diagnose infections, anemia, and other blood disorders."
-                                footer="Book Now"
+                                label="Bilirubin, Total"
+                                tag="Blood"
+                                description="It's a blood test that measures bilirubin levels. It helps evaluate liver function and diagnose jaundice, liver disease, and hemolytic anemia."
+                                link={{ label: "Book Now", href: '/tests/67bc6495e0dc0a8cb0b61dc5' }}
                             />
                         </div>
                     </div>
@@ -131,16 +131,16 @@ export function OurPromisesSection() {
     )
 }
 
-function Card({ label = "CBC", subText, description, footer, icon }: { label: string, subText?: string, description?: string, footer?: string, icon?: StaticImageData }) {
+function Card({ label = "CBC", tag, description, link, icon }: { label: string, tag?: string, description?: string, link?: { label: string, href: string }, icon?: StaticImageData }) {
     return (
         <div className="shadow-indigo-100 flex flex-col bg-white dark:bg-[#172A46] rounded-md shadow-lg dark:shadow-black border border-primary border-opacity-35 min-w-52">
             <div className="p-4 pb-2">
                 <h1 className="text-2xl font-semibold mb-1.5 text-primary">{label}</h1>
-                {subText && <p className="text-sm font-semibold text-primary mb-2.5 bg-primary bg-opacity-20 px-4 py-1.5 w-fit rounded-full">{subText}</p>}
+                {tag && <p className="text-sm font-semibold text-primary mb-2.5 bg-primary bg-opacity-20 px-4 py-1.5 w-fit rounded-full">{tag}</p>}
                 {description && <p className="text-sm opacity-70">{description}</p>}
                 {icon && <Image src={icon} alt="" style={{ width: 120 }} />}
             </div>
-            <Link href={'#'} className="border-t border-gray-400 mt-auto p-4 pb-3 pt-2.5 text-primary text-sm flex items-center gap-2">{footer}<LinkArrowIcon size={12} /></Link>
+            <Link href={link?.href || '#'} className="border-t border-gray-400 mt-auto p-4 pb-3 pt-2.5 text-primary text-sm flex items-center gap-2">{link?.label}<LinkArrowIcon size={12} /></Link>
         </div>
     )
 }
