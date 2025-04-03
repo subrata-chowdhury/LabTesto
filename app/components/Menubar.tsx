@@ -15,7 +15,6 @@ import { OrderIcon } from '@/assets/reactIcon/menubar/Orders';
 import { AboutIcon } from '@/assets/reactIcon/menubar/About';
 import { ContactIcon } from '@/assets/reactIcon/menubar/Contact';
 import { NotificationIcon } from '@/assets/reactIcon/menubar/Notification';
-import userIcon from '@/assets/user.png';
 import UserIcon from '@/assets/reactIcon/User';
 
 const Menubar = () => {
@@ -102,7 +101,7 @@ const Menubar = () => {
                                     <div className="text-primary text-xs mt-1 font-medium menu">{userEmail ? userEmail : ''}</div>
                                 </div>
                                 <Link href='/profile' onClickCapture={() => setShowProfilePopup(false)} aria-label="View Account" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
-                                    <span className='flex items-center gap-2'><Image src={userIcon} alt='' width={16} height={16} />Account</span> <span className='ml-10'>❯</span>
+                                    <span className='flex items-center gap-2'><UserIcon size={16} />Account</span> <span className='ml-10'>❯</span>
                                 </Link>
                                 <Link href='/notifications' onClickCapture={() => setShowProfilePopup(false)} aria-label="View Notifications" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
                                     <span className='flex items-center gap-2'><NotificationIcon size={16} />Notification</span> <span className='ml-10'>❯</span>

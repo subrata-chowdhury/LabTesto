@@ -2,10 +2,9 @@
 import Input from '@/components/Inputs/Input'
 import React, { useEffect, useState } from 'react'
 import fetcher from '@/lib/fetcher'
-import Image from 'next/image'
-import userIcon from '@/assets/user.png';
 import { toast } from 'react-toastify'
 import TagInput from '@/components/Inputs/TagInput'
+import UserIcon from '@/assets/reactIcon/User'
 
 const ProfilePage = () => {
     const [user, setUser] = useState<User>({
@@ -41,7 +40,7 @@ const ProfilePage = () => {
         <div className='flex-1'>
             <div className='h-40 bg-[rgba(57,134,186,0.1)]'>
                 <div className='w-32 h-32 flex justify-center items-center top-full translate-x-1/2 -translate-y-1/2 bg-white dark:bg-[#172A46] rounded-full relative'>
-                    <Image src={userIcon} alt="profile picture" width={118} height={118} className='w-[118px] h-[118px] p-2 border-4 border-[rgb(57,134,186)] shadow-lg shadow-[rgba(57,134,186,0.2)] rounded-full bg-white dark:bg-[#172A46]' />
+                    <UserIcon size={118} className='w-[118px] h-[118px] p-2 border-4 border-[rgb(57,134,186)] shadow-lg shadow-[rgba(57,134,186,0.2)] rounded-full bg-white dark:bg-[#172A46]' />
                 </div>
             </div>
             <section className='p-20 pb-2 px-10 md:px-12'>
