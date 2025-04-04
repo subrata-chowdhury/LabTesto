@@ -94,100 +94,20 @@ const Menubar = () => {
                             {/* <Link href='/profile' aria-label="View Profile"> */}
                             <UserIcon onClick={() => setShowProfilePopup(val => !val)} size={40} className="rounded-full p-2 bg-primary bg-opacity-20" />
                             {/* </Link> */}
-                            {showProfilePopup && <div className='flex flex-col gap-1 px-5 py-4 rounded-lg bg-white dark:bg-[#09192F] shadow-md dark:shadow-black mt-5 border border-primary border-opacity-25 absolute top-full -right-3 text-primary'>
-                                <UserIcon onClick={() => setShowProfilePopup(val => !val)} size={80} className="rounded-full p-4 mx-auto bg-primary bg-opacity-20" />
-                                <div className='text-center mb-4'>
-                                    <div className="text-primary text-lg font-bold menu text-nowrap px-2">{userName ? userName : 'Profile'}</div>
-                                    <div className="text-primary text-xs mt-1 font-medium menu">{userEmail ? userEmail : ''}</div>
-                                </div>
-                                <Link href='/profile' onClickCapture={() => setShowProfilePopup(false)} aria-label="View Account" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
-                                    <span className='flex items-center gap-2'><UserIcon size={16} />Account</span> <span className='ml-10'>❯</span>
-                                </Link>
-                                <Link href='/notifications' onClickCapture={() => setShowProfilePopup(false)} aria-label="View Notifications" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
-                                    <span className='flex items-center gap-2'><NotificationIcon size={16} />Notification</span> <span className='ml-10'>❯</span>
-                                </Link>
-                                {isLoggedIn && <div
-                                    className={`cursor-pointer flex justify-start gap-3 mt-4 bg-primary bg-opacity-10 hover:bg-opacity-15 px-4 rounded-xl p-2 items-center text-primary`}
-                                    onClick={() => {
-                                        document.cookie = 'token=; Max-Age=0; path=/;';
-                                        localStorage.removeItem('isLoggedIn');
-                                        localStorage.removeItem('userName');
-                                        localStorage.removeItem('userEmail');
-                                        window.location.href = '/';
-                                    }}
-                                    aria-label="Log Out"
-                                >
-                                    <Image src={logout} alt='Logout Icon' width={18} height={18} style={{ width: 18, height: 18 }} />
-                                    <p>Log Out</p>
-                                </div>}
-                            </div>}
+                            {showProfilePopup && <ProfilePopup isLoggedIn={isLoggedIn} userEmail={userEmail} userName={userName} onPopupClose={() => { setShowProfilePopup(false); setIsOpen(false) }} />}
                         </div>
                     </> :
                     <>
                         <Link href={'/signup'} className='px-3 sm:px-5 py-1.5 text-white font-medium bg-primary rounded-md text-sm sm:text-base'>Register</Link>
                     </>}
             </div>
-            {isOpen && (
-                <div className="md:hidden flex flex-col gap-2 fixed left-0 top-0 w-full text-base sm:w-auto px-10 z-20 bg-white dark:bg-[#0A192F] h-screen">
-                    <div className='flex relative top-4 mb-6 justify-center items-center'>
-                        <button onClick={() => setIsOpen(!isOpen)} className="text-primary absolute left-0 menu focus:outline-none">
-                            <svg className="w-6 h-6 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"}></path>
-                            </svg>
-                        </button>
-                        <div className="text-white text-lg font-bold mr-0 md:mr-16">
-                            <Link href={'/'} onClick={() => setIsOpen(false)} className=''><span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></Link>
-                        </div>
-                    </div>
-                    <Link className="flex flex-col gap-2 justify-center items-center cursor-pointer py-5 pb-8 text-primary" href={'/profile'} onClick={() => setIsOpen(false)} aria-label="View Profile">
-                        <UserIcon size={80} className="rounded-full p-4 bg-primary bg-opacity-20" />
-                        <div className='text-center'>
-                            <div className="text-primary text-lg font-bold menu">{userName ? userName : 'Profile'}</div>
-                            <div className="text-primary text-xs font-medium menu">{userEmail ? userEmail : ''}</div>
-                        </div>
-                    </Link>
-                    <Link href="/profile" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary py-2" onClick={() => setIsOpen(false)}>
-                        <span className='flex items-center gap-2'><UserIcon size={18} />Account</span> <span className='ml-12'>❯</span>
-                    </Link>
-                    <Link href="/tests" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary py-2" onClick={() => setIsOpen(false)}>
-                        <span className='flex items-center gap-2'><LabIcon size={18} />Book a Test</span> <span className='ml-12'>❯</span>
-                    </Link>
-                    <Link href="/cart" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
-                        <span className='flex items-center gap-2'><FilledCartIcon size={20} />Cart</span> <span className='ml-12'>❯</span>
-                    </Link>
-                    <Link href="/order" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
-                        <span className='flex items-center gap-2'><OrderIcon size={18} />Orders</span> <span className='ml-12'>❯</span>
-                    </Link>
-                    <Link href="/notifications" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
-                        <span className='flex items-center gap-2'><NotificationIcon size={18} />Notification</span> <span className='ml-12'>❯</span>
-                    </Link>
-                    <Link href="/contact" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
-                        <span className='flex items-center gap-2'><ContactIcon size={16} />Contact</span> <span className='ml-12'>❯</span>
-                    </Link>
-                    <Link href="/about" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => setIsOpen(false)}>
-                        <span className='flex items-center gap-2'><AboutIcon size={18} />About</span> <span className='ml-12'>❯</span>
-                    </Link>
-                    {isLoggedIn && <div
-                        className={`cursor-pointer flex justify-start gap-3 bg-primary bg-opacity-10 hover:bg-opacity-15 px-4 rounded-xl p-3 mt-auto mb-9 items-center text-primary`}
-                        onClick={() => {
-                            document.cookie = 'token=; Max-Age=0; path=/;';
-                            localStorage.removeItem('isLoggedIn');
-                            localStorage.removeItem('userName');
-                            localStorage.removeItem('userEmail');
-                            window.location.href = '/';
-                        }}
-                        aria-label="Log Out"
-                    >
-                        <Image src={logout} alt='Logout Icon' width={18} height={18} style={{ width: 18, height: 18 }} />
-                        <p>Log Out</p>
-                    </div>}
-                </div>
-            )}
+            {isOpen && <MobileMenubar onClose={() => setIsOpen(false)} userEmail={userEmail} userName={userName} isLoggedIn={isLoggedIn} />}
         </nav>
     );
 };
 
 export default Menubar;
+
 
 export function SearchBar({ active = false, className = '', onSelect = () => { } }: { active?: boolean, className?: string, onSelect?: (value: { name: string, _id: string }) => void }) {
     const [showSearchBar, setShowSearchBar] = useState(active);
@@ -216,6 +136,97 @@ export function SearchBar({ active = false, className = '', onSelect = () => { }
                                 c-10.214,0-18.482-8.268-18.482-18.482S13.268,5,23.482,5s18.482,8.268,18.482,18.482S33.696,41.965,23.482,41.965z"/>
                 </svg>
             </button>
+        </div>
+    )
+}
+
+function MobileMenubar({ onClose = () => { }, isLoggedIn, userName = '', userEmail = '' }: { onClose?: () => void, isLoggedIn?: boolean, userName?: string, userEmail?: string }) {
+    return (
+        <div className="md:hidden flex flex-col gap-2 fixed left-0 top-0 w-full text-base sm:w-auto px-10 z-20 bg-white dark:bg-[#0A192F] h-screen">
+            <div className='flex relative top-4 mb-6 justify-center items-center'>
+                <button onClick={() => onClose()} className="text-primary absolute left-0 menu focus:outline-none">
+                    <svg className="w-6 h-6 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={"M6 18L18 6M6 6l12 12"}></path>
+                    </svg>
+                </button>
+                <div className="text-white text-lg font-bold mr-0 md:mr-16">
+                    <Link href={'/'} onClick={() => onClose()} className=''><span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></Link>
+                </div>
+            </div>
+            <Link className="flex flex-col gap-2 justify-center items-center cursor-pointer py-5 pb-8 text-primary" href={'/profile'} onClick={() => onClose()} aria-label="View Profile">
+                <UserIcon size={80} className="rounded-full p-4 bg-primary bg-opacity-20" />
+                <div className='text-center'>
+                    <div className="text-primary text-lg font-bold menu">{userName ? userName : 'Profile'}</div>
+                    <div className="text-primary text-xs font-medium menu">{userEmail ? userEmail : ''}</div>
+                </div>
+            </Link>
+            <Link href="/profile" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary py-2" onClick={() => onClose()}>
+                <span className='flex items-center gap-2'><UserIcon size={18} />Account</span> <span className='ml-12'>❯</span>
+            </Link>
+            <Link href="/tests" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary py-2" onClick={() => onClose()}>
+                <span className='flex items-center gap-2'><LabIcon size={18} />Book a Test</span> <span className='ml-12'>❯</span>
+            </Link>
+            <Link href="/cart" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => onClose()}>
+                <span className='flex items-center gap-2'><FilledCartIcon size={20} />Cart</span> <span className='ml-12'>❯</span>
+            </Link>
+            <Link href="/order" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => onClose()}>
+                <span className='flex items-center gap-2'><OrderIcon size={18} />Orders</span> <span className='ml-12'>❯</span>
+            </Link>
+            <Link href="/notifications" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => onClose()}>
+                <span className='flex items-center gap-2'><NotificationIcon size={18} />Notification</span> <span className='ml-12'>❯</span>
+            </Link>
+            <Link href="/contact" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => onClose()}>
+                <span className='flex items-center gap-2'><ContactIcon size={16} />Contact</span> <span className='ml-12'>❯</span>
+            </Link>
+            <Link href="/about" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => onClose()}>
+                <span className='flex items-center gap-2'><AboutIcon size={18} />About</span> <span className='ml-12'>❯</span>
+            </Link>
+            {isLoggedIn && <div
+                className={`cursor-pointer flex justify-start gap-3 bg-primary bg-opacity-10 hover:bg-opacity-15 px-4 rounded-xl p-3 mt-auto mb-9 items-center text-primary`}
+                onClick={() => {
+                    document.cookie = 'token=; Max-Age=0; path=/;';
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userName');
+                    localStorage.removeItem('userEmail');
+                    window.location.href = '/';
+                }}
+                aria-label="Log Out"
+            >
+                <Image src={logout} alt='Logout Icon' width={18} height={18} style={{ width: 18, height: 18 }} />
+                <p>Log Out</p>
+            </div>}
+        </div>
+    )
+}
+
+function ProfilePopup({ onPopupClose, userName, userEmail, isLoggedIn }: { onPopupClose: () => void, userName?: string, userEmail?: string, isLoggedIn?: boolean }) {
+    return (
+        <div className='flex flex-col gap-1 px-5 py-4 rounded-lg bg-white dark:bg-[#09192F] shadow-md dark:shadow-black mt-5 border border-primary border-opacity-25 absolute top-full -right-3 text-primary'>
+            <UserIcon size={80} className="rounded-full p-4 mx-auto bg-primary bg-opacity-20" />
+            <div className='text-center mb-4'>
+                <div className="text-primary text-lg font-bold menu text-nowrap px-2">{userName ? userName : 'Profile'}</div>
+                <div className="text-primary text-xs mt-1 font-medium menu">{userEmail ? userEmail : ''}</div>
+            </div>
+            <Link href='/profile' onClick={() => onPopupClose()} aria-label="View Account" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2">
+                <span className='flex items-center gap-2'><UserIcon size={16} />Account</span> <span className='ml-10'>❯</span>
+            </Link>
+            <Link href='/notifications' onClick={() => onPopupClose()} aria-label="View Notifications" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2">
+                <span className='flex items-center gap-2'><NotificationIcon size={16} />Notification</span> <span className='ml-10'>❯</span>
+            </Link>
+            {isLoggedIn && <div
+                className={`cursor-pointer flex justify-start gap-3 mt-4 bg-primary bg-opacity-10 hover:bg-opacity-15 px-4 rounded-xl p-2 items-center text-primary`}
+                onClick={() => {
+                    document.cookie = 'token=; Max-Age=0; path=/;';
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userName');
+                    localStorage.removeItem('userEmail');
+                    window.location.href = '/';
+                }}
+                aria-label="Log Out"
+            >
+                <Image src={logout} alt='Logout Icon' width={18} height={18} style={{ width: 18, height: 18 }} />
+                <p>Log Out</p>
+            </div>}
         </div>
     )
 }
