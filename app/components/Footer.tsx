@@ -8,7 +8,7 @@ import YoutubeIcon from '@/assets/reactIcon/footer/Youtube';
 const Footer = () => {
     return (
         <footer className="bg-primary bg-opacity-10 py-6 pt-5" role="contentinfo">
-            <div className="container mx-auto px-4">
+            <div className="mx-auto px-7">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-4">
                     <div className='mr-4'>
                         <h1 className="text-xl font-bold mb-2"><span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></h1>

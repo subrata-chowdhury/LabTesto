@@ -27,14 +27,16 @@ export default function Home() {
                     <SearchBar className="px-5 py-3" active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
                 </div>
                 <section className="mx-4 mb-4">
-                    <Slide slides={3} slideElement={({ slide }) => {
-                        if (slide === 1) return <Image src={slide1} alt="" />
-                        if (slide === 2) return <Image src={slide2} alt="" />
-                        if (slide === 3) return <Image src={slide3} alt="" />
-                    }} />
+                    <Slide
+                        slides={3}
+                        slideElement={({ slide }) => {
+                            if (slide === 1) return <Image className="h-96 mx-auto object-scale-down" src={slide1} alt="" />
+                            if (slide === 2) return <Image className="h-96 mx-auto object-scale-down" src={slide2} alt="" />
+                            if (slide === 3) return <Image className="h-96 mx-auto object-scale-down" src={slide3} alt="" />
+                        }} />
                 </section>
                 <section className="mx-auto flex flex-col">
-                    <h1 className="text-3xl font-semibold text-center px-4 mx-auto mt-4">Frequently Required Tests</h1>
+                    <h1 className="text-2xl sm:text-3xl font-semibold text-center px-4 mx-auto mt-4">Frequently Required Tests</h1>
                     <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-4"></div>
                     {/* <h1 className="text-2xl font-semibold">Frequently Required Tests</h1> */}
                     {/* <h1 className="text-xl font-semibold translate-y-full ml-2 bg-white w-fit px-2">Frequently Required Tests</h1> */}
@@ -89,7 +91,7 @@ export default function Home() {
                 </section>
                 <OurPromisesSection />
                 <section className=" mx-auto md:w-[95%] pt-0 sm:pt-0 md:pt-0 p-4 flex flex-col">
-                    <h1 className="text-3xl font-semibold text-center mx-auto mt-4">Our Popular Packages</h1>
+                    <h1 className="text-2xl sm:text-3xl font-semibold text-center mx-auto mt-4">Our Popular Packages</h1>
                     <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-3"></div>
                     {/* <h1 className="text-2xl font-semibold w-fit">Our Services</h1> */}
                     <ul className="mt-2 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
@@ -101,7 +103,7 @@ export default function Home() {
                     </ul>
                 </section>
                 <section className="mx-auto md:w-[95%] pt-0 mt-5 sm:pt-0 md:pt-0 p-1 sm:p-2 md:p-4 flex flex-col">
-                    <h1 className="text-3xl font-semibold text-center mx-auto mt-4">Our Achivements</h1>
+                    <h1 className="text-2xl sm:text-3xl font-semibold text-center mx-auto mt-4">Our Achivements</h1>
                     <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-3"></div>
                     {/* <h1 className="text-2xl font-semibold w-fit">Our Achivements</h1> */}
                     <div className="mt-4 px-4 w-full grid gap-1 sm:gap-2 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
@@ -121,7 +123,7 @@ export default function Home() {
 export function OurPromisesSection() {
     return (
         <section className="mx-auto md:w-[95%] pt-0 sm:pt-0 md:pt-0 p-4 flex flex-col">
-            <h1 className="text-3xl font-semibold text-center mx-auto mt-4">Our Promise</h1>
+            <h1 className="text-2xl sm:text-3xl font-semibold text-center mx-auto mt-4">Our Promise</h1>
             <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-3"></div>
             <div className="mt-2 rounded-md w-full">
                 {/* <div className="mt-4 p-3 md:p-5 border-2 border-primary border-opacity-40 border-dashed rounded-md bg-white w-full"> */}
@@ -142,7 +144,7 @@ function Card({ label = "CBC", tag, description, link, icon }: { label: string, 
     return (
         <div className="shadow-indigo-100 flex flex-col bg-white dark:bg-[#172A46] rounded-md shadow-lg dark:shadow-black border border-primary border-opacity-35 min-w-52">
             <div className="p-4 pb-2">
-                <h1 className="text-2xl font-semibold mb-1.5 text-primary">{label}</h1>
+                <h1 className="text-xl sm:text-2xl font-semibold mb-1.5 text-primary">{label}</h1>
                 {tag && <p className="text-sm font-semibold text-primary mb-2.5 bg-primary bg-opacity-20 px-4 py-1.5 w-fit rounded-full">{tag}</p>}
                 {description && <p className="text-sm opacity-70">{description}</p>}
                 {icon && <Image src={icon} alt="" style={{ width: 120 }} />}
@@ -159,7 +161,7 @@ function CardType2({ label = "CBC", subText, description, icon, bgColor }: { lab
                 <div style={{ backgroundColor: bgColor }} className="w-24 h-24 p-4 mx-auto rounded-3xl flex items-center justify-center">
                     {icon && <Image src={icon} alt="" className="mx-auto" width={120} />}
                 </div>
-                <h1 className="text-lg font-medium text-center">{label}</h1>
+                <h1 className="sm:text-lg font-medium text-center">{label}</h1>
                 {subText && <p className="text-sm text-primary text-opacity-45">{subText}</p>}
                 {description && <p className="text-sm">{description}</p>}
             </div>
@@ -201,7 +203,7 @@ function CardType4({ label = "CBC", subText, icon }: { label: string, subText?: 
                     height={50}
                 />
             </figure>}
-            <span className="text-primary text-5xl font-bold">{label}</span>
+            <span className="text-primary text-4xl sm:text-5xl font-bold">{label}</span>
             <span className="text-primary">{subText}</span>
         </div>
     )

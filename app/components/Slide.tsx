@@ -16,7 +16,7 @@ export default function Slide({ slides = 1, slideElement }: { slideElement?: Rea
 
     return (
         <>
-            <div className="max-w-screen-lg overflow-x-hidden relative mx-auto mt-4">
+            <div className="max-w-screen-xl overflow-x-hidden relative mx-auto mt-4">
                 <div className={goingForward.current ? 'slide' : 'slide-reverse'} key={slideIndex}>
                     {!slideElement && <>
                         <div className="text-[#f2f2f2] text-[12px] px-[12px] py-[8px] absolute top-[0]">{slideIndex} / 3</div>
