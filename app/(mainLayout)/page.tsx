@@ -13,6 +13,9 @@ import Slide from "../components/Slide";
 import Footer from "../components/Footer";
 import { LinkArrowIcon } from "@/assets/reactIcon/LinkArrow";
 import Link from "next/link";
+import slide1 from '@/assets/HomePage/Slides/slide1.png'
+import slide2 from '@/assets/HomePage/Slides/slide2.png'
+import slide3 from '@/assets/HomePage/Slides/slide3.png'
 
 export default function Home() {
     const navigate = useRouter();
@@ -24,7 +27,11 @@ export default function Home() {
                     <SearchBar className="px-5 py-3" active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
                 </div>
                 <section className="mx-4 mb-4">
-                    <Slide slides={3} />
+                    <Slide slides={3} slideElement={({ slide }) => {
+                        if (slide === 1) return <Image src={slide1} alt="" />
+                        if (slide === 2) return <Image src={slide2} alt="" />
+                        if (slide === 3) return <Image src={slide3} alt="" />
+                    }} />
                 </section>
                 <section className="mx-auto flex flex-col">
                     <h1 className="text-3xl font-semibold text-center px-4 mx-auto mt-4">Frequently Required Tests</h1>
