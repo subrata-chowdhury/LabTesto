@@ -13,6 +13,12 @@ const Footer = () => {
                     <div className='mr-4'>
                         <h1 className="text-xl font-bold mb-2"><span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></h1>
                         <p className="text-sm">A well known trusted blood collection website to book any tests from any lab by user&#39;s choice.</p>
+                        <h1 className='text-lg mt-2 text-blue-600 dark:text-primary font-semibold'>Contact Us</h1>
+                        <div className='text-sm text-gray-600d dark:text-gray-400 font-medium mt-1'>
+                            <p><span className='text-gray-800 dark:text-gray-300 font-normal'>Phone:</span> +91 82507 11212</p>
+                            <p><span className='text-gray-800 dark:text-gray-300 font-normal'>Email:</span> sayan825071das@gmail.com</p>
+                            <p><span className='text-gray-800 dark:text-gray-300 font-normal'>Address:</span> Kadasole more, Bankura, <br />Pin. 722202 - West Bengal</p>
+                        </div>
                         <div className='flex gap-3 mt-4'>
                             <Link href='#' aria-label="Facebook">
                                 <FacebookIcon />
@@ -30,36 +36,46 @@ const Footer = () => {
                     </div>
                     <div className='grid grid-cols-2 sm:grid-cols-3 gap-4'>
                         <div className='inline-flex flex-col'>
-                            <h2 className="text-base font-semibold mb-2">Footer</h2>
-                            <ul>
-                                {['Link 1', 'Link 2', 'Link 3'].map((link, index) => (
+                            <h2 className="text-base font-semibold mb-2">Platform Details</h2>
+                            <ul className='flex flex-col gap-1'>
+                                {[{ label: 'About Us', href: "/about" },
+                                { label: 'Privacy Policy', href: "#" },
+                                { label: 'Terms & Conditions', href: "#" },
+                                { label: 'Services', href: "/services" }].map((link, index) => (
                                     <li key={index} className="mb-1 text-sm">
-                                        <a href="#" className="hover:text-gray-400">
-                                            {link}
+                                        <a href={link.href} className="hover:text-gray-400">
+                                            {link.label}
                                         </a>
                                     </li>
                                 ))}
                             </ul>
                         </div>
                         <div className='inline-flex flex-col'>
-                            <h2 className="text-base font-semibold mb-2">Group 2</h2>
-                            <ul>
-                                {['Link 4', 'Link 5', 'Link 6', 'Link 6', 'Link 6'].map((link, index) => (
+                            <h2 className="text-base font-semibold mb-2">Popular Tests</h2>
+                            <ul className='flex flex-col gap-1'>
+                                {[{ label: 'Complete Blood Count', href: "/tests/67a38ddca80c243e83d518ed" },
+                                { label: 'Fasting Blood Sugar', href: "/tests/67a44ab70daa8b678a7fa330" },
+                                { label: 'Thyroid Stimulating Hormone', href: "/tests/67b9667ee39bde2a012634ca" },
+                                { label: 'Random Blood Sugar', href: "/tests/67bd7997eb03aecfeb2f2331" },
+                                { label: 'Urine Examination', href: "/tests/67bd6412266fe37d1fb4e7a8" }].map((link, index) => (
                                     <li key={index} className="mb-1 text-sm">
-                                        <a href="#" className="hover:text-gray-400">
-                                            {link}
+                                        <a href={link.href} className="hover:text-gray-400">
+                                            {link.label}
                                         </a>
                                     </li>
                                 ))}
                             </ul>
                         </div>
                         <div className='inline-flex flex-col'>
-                            <h2 className="text-base font-semibold mb-2">Group 3</h2>
-                            <ul>
-                                {['Link 7', 'Link 8', 'Link 9'].map((link, index) => (
+                            <h2 className="text-base font-semibold mb-2">Follow Us</h2>
+                            <ul className='flex flex-col gap-1'>
+                                {[{ label: 'Facebook', href: "#" },
+                                { label: 'Instagram', href: "#" },
+                                { label: 'LinkedIn', href: "#" },
+                                { label: 'YouTube', href: "#" }].map((link, index) => (
                                     <li key={index} className="mb-1 text-sm">
-                                        <a href="#" className="hover:text-gray-400">
-                                            {link}
+                                        <a href={link.href} className="hover:text-gray-400">
+                                            {link.label}
                                         </a>
                                     </li>
                                 ))}
@@ -69,7 +85,7 @@ const Footer = () => {
                 </div>
 
                 <div className="border-t border-[#3987ba] mt-5 pt-4 text-center flex justify-between text-xs">
-                    <p><a href="/privacy-policy" className="hover:text-gray-400">Privacy Policy</a> | <a href="/terms-of-service" className="hover:text-gray-400">Terms of Service</a></p>
+                    <p><a href="#" className="hover:text-gray-400">Privacy Policy</a> | <a href="#" className="hover:text-gray-400">Terms of Service</a></p>
                     <p>&copy; 2023 Your Company. All rights reserved.</p>
                 </div>
             </div>

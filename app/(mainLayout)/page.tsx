@@ -22,8 +22,8 @@ export default function Home() {
 
     return (
         <>
-            <div className="flex-1 pt-3 dark:bg-[#0A192F]">
-                <div className="md:hidden px-4 pt-2">
+            <div className="flex-1 dark:bg-[#0A192F]">
+                <div className="md:hidden px-4">
                     <SearchBar className="px-5 py-3" active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
                 </div>
                 <section className="mx-4 mb-4">
@@ -120,10 +120,10 @@ export default function Home() {
     );
 }
 
-export function OurPromisesSection() {
+export function OurPromisesSection({ heading }: { heading?: string }) {
     return (
         <section className="mx-auto md:w-[95%] pt-0 sm:pt-0 md:pt-0 p-4 flex flex-col">
-            <h1 className="text-2xl sm:text-3xl font-semibold text-center mx-auto mt-4">Our Promise</h1>
+            <h1 className="text-2xl sm:text-3xl font-semibold text-center mx-auto mt-4">{heading ? heading : 'Our Promise'}</h1>
             <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-3"></div>
             <div className="mt-2 rounded-md w-full">
                 {/* <div className="mt-4 p-3 md:p-5 border-2 border-primary border-opacity-40 border-dashed rounded-md bg-white w-full"> */}
