@@ -118,7 +118,7 @@ const CollectorDashboard = () => {
                 </div>
             </>}
             {passedOrderData.length > 0 && <>
-                <h1 className='text-xl font-semibold mx-4 mb-2 mt-4'>Passed</h1>
+                <h1 className='text-xl font-semibold mx-4 mb-2 mt-4'>Order Time Passed</h1>
                 <div className='flex flex-col gap-2 mx-4'>
                     {
                         passedOrderData.map(order => (

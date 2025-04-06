@@ -35,7 +35,7 @@ const TagInput = ({ label, values = [], onChange = () => { }, error = '' }: Prop
                 )}
                 <input
                     ref={inputContainer}
-                    className='outline-none m-2'
+                    className='outline-none m-2 bg-transparent'
                     value={tag}
                     onChange={(e) => setTag(e.target.value)}
                     onKeyDown={(e) => {

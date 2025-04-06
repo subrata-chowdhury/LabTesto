@@ -3,12 +3,13 @@ import Model from '@/components/Model'
 import PatientDetailsPopup, { PatientDetails } from "@/app/components/popups/PatientDetailsPopup";
 import SelectTest from '@/app/components/SelectTest'
 import React, { useState } from 'react'
-import { Item, Lab } from './OrderForm';
+import { Item } from './OrderForm';
 import Image from 'next/image'
 import Input from '@/components/Inputs/Input'
 import { MainTable } from '@/components/Table';
 import plusIcon from '@/assets/blue-plus.svg'
 import TrashBinIcon from '@/assets/reactIcon/TrashBin';
+import { toast } from 'react-toastify';
 
 export default function OrderPopup({ item, onSave, onClose }: { item: Item, onSave: (item: Item) => void, onClose: () => void }) {
     const [itemData, setItemData] = useState<Item>(item || { product: { test: '', lab: '', price: 0 }, patientDetails: [], quantity: 1 });
@@ -35,7 +36,6 @@ export default function OrderPopup({ item, onSave, onClose }: { item: Item, onSa
                         <label className='font-medium'>Test</label>
                         <SelectTest onSelect={val => {
                             setItemData({ ...itemData, product: { ...itemData?.product, test: val } })
-                            console.log(val.labsDetails)
                             setPriceDetails(val.labsDetails)
                         }} />
                     </div>
@@ -43,9 +43,11 @@ export default function OrderPopup({ item, onSave, onClose }: { item: Item, onSa
                         <label className='font-medium'>Lab</label>
                         <SelectLab onSelect={val => {
                             // price calculation
-                            const selectedLab = val as Lab;
-                            const testPrice = (priceDetails || {})[selectedLab._id].price || 0;
-                            setItemData({ ...itemData, product: { ...itemData.product, lab: val, price: testPrice } });
+                            if (priceDetails && priceDetails[val._id]) {
+                                const selectedLab = val;
+                                const testPrice = priceDetails[selectedLab._id].price || 0;
+                                setItemData({ ...itemData, product: { ...itemData.product, lab: val, price: testPrice } });
+                            } else toast.error('This lab does not provide this test service')
                         }} />
                     </div>
                     {/* <Input label='Test' value={itemData?.product.test || ''} onChange={val => setItemData({ ...itemData, product: { ...itemData.product, test: val } })} /> */}

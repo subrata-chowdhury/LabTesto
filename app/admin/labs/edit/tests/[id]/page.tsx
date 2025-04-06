@@ -4,7 +4,7 @@ import LabForm, { LabTestDetails } from '../../../components/LabForm'
 import { useParams } from 'next/navigation'
 import fetcher from '@/lib/fetcher'
 import { toast } from 'react-toastify'
-import { LabWithMissingPrices } from '@/app/admin/warnings/page'
+import { LabWithMissingPrices } from '@/app/admin/datamiss/page'
 
 const Page = () => {
     const [labDetails, setLabDetails] = useState<LabTestDetails>({

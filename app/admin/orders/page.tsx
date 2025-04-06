@@ -174,16 +174,12 @@ type Order = {
     };
     status: 'Ordered' | 'Out for Sample Collection' | 'Sample Collected' | 'Report Delivered to Lab' | 'Report Generated' | 'Out for Report Delivery' | 'Report Delivered' | 'Canceled';
     sampleTakenDateTime: {
-        date: {
-            start?: Date;
-            end?: Date;
-        };
+        start?: Date;
+        end?: Date;
     };
     reportDeliverTime: {
-        date: {
-            start?: Date;
-            end?: Date;
-        };
+        start?: Date;
+        end?: Date;
     };
     _id: string;
 }

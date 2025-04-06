@@ -13,6 +13,7 @@ import SelectUser from '@/app/components/SelectUser'
 import DateInput from '@/components/Inputs/DateInput'
 import OrderPopup from './OrderPopup'
 import TrashBinIcon from '@/assets/reactIcon/TrashBin'
+import OrderTimeSelector from '@/app/(mainLayout)/cart/component/OrderTimeSelector'
 
 type Props = {
     orderDetails: OrderDetails,
@@ -24,7 +25,8 @@ type Props = {
 }
 
 const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props) => {
-    const [showOrderPopup, setShowOrderPopup] = useState<{ index: number } | null>(null)
+    const [showOrderPopup, setShowOrderPopup] = useState<{ index: number } | null>(null);
+    const [showScheduleOrderTimesModel, setShowScheduleOrderTimesModel] = useState<boolean>(false)
 
     return (
         <div className='bg-white mt-4 p-8 px-10'>
@@ -57,7 +59,7 @@ const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props)
                 {/* <Input label='Collector' name='collector' placeholder='Enter collector' value={orderDetails.collector || ''} onChange={(val) => onChange.orderDetails({ ...orderDetails, collector: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'collector' ? error.msg : ""} /> */}
                 <div className='flex flex-col gap-1'>
                     <p className='font-medium'>Status</p>
-                    <Dropdown options={['Ordered', 'Sample Collected', 'Report Generated', 'Report Delivered', 'Canceled']} value={orderDetails.status} onChange={(val) => onChange.orderDetails({ ...orderDetails, status: val.value as 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' })} width={'100%'} />
+                    <Dropdown options={['Ordered', 'Out for Sample Collection', 'Sample Collected', 'Report Delivered to Lab', 'Report Generated', 'Out for Report Delivery', 'Report Delivered', 'Canceled']} value={orderDetails.status} onChange={(val) => onChange.orderDetails({ ...orderDetails, status: val.value as 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' })} width={'100%'} />
                 </div>
             </div>
             <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
@@ -129,8 +131,19 @@ const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props)
                 Time Information
             </div>
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
-                <DateInput label='Sample Taken Start Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.sampleTakenDateTime.start || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { ...orderDetails.sampleTakenDateTime, start: new Date(val).toISOString() } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'sampleTakenStartDate' ? error.msg : ""} />
-                <DateInput label='Sample Taken End Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.sampleTakenDateTime.end || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { ...orderDetails.sampleTakenDateTime, end: new Date(val).toISOString() } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'sampleTakenEndDate' ? error.msg : ""} />
+                {showScheduleOrderTimesModel && <OrderTimeSelector
+                    onClose={() => setShowScheduleOrderTimesModel(false)}
+                    onChange={(sampleTakenDateTime) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { start: sampleTakenDateTime.start.toISOString(), end: sampleTakenDateTime.end.toISOString() } })} />}
+                <div className='text-sm flex flex-col gap-1 pt-2'>
+                    <label className='font-medium'>Sample Taken Start Date</label>
+                    <div className='px-3 py-2 border-2 h-fit rounded' onClick={() => setShowScheduleOrderTimesModel(true)}>{new Date(orderDetails.sampleTakenDateTime?.start || '').toDateString()}, {new Date(orderDetails?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
+                </div>
+                <div className='text-sm flex flex-col gap-1 pt-2'>
+                    <label className='font-medium'>Sample Taken End Date</label>
+                    <div className='px-3 py-2 border-2 h-fit rounded' onClick={() => setShowScheduleOrderTimesModel(true)}>{new Date(orderDetails.sampleTakenDateTime?.end || '').toDateString()}, {new Date(orderDetails?.sampleTakenDateTime?.end || '').toTimeString().split(' ')[0]}</div>
+                </div>
+                {/* <DateInput label='Sample Taken Start Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.sampleTakenDateTime.start || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { ...orderDetails.sampleTakenDateTime, start: new Date(val).toISOString() } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'sampleTakenStartDate' ? error.msg : ""} />
+                <DateInput label='Sample Taken End Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.sampleTakenDateTime.end || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { ...orderDetails.sampleTakenDateTime, end: new Date(val).toISOString() } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'sampleTakenEndDate' ? error.msg : ""} /> */}
                 <DateInput label='Report Deliver Start Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.reportDeliverTime.start || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, reportDeliverTime: { ...orderDetails.reportDeliverTime, start: new Date(val).toISOString() } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'reportDeliverStartDate' ? error.msg : ""} />
                 <DateInput label='Report Deliver End Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.reportDeliverTime.end || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, reportDeliverTime: { ...orderDetails.reportDeliverTime, end: new Date(val).toISOString() } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'reportDeliverEndDate' ? error.msg : ""} />
             </div>
@@ -155,7 +168,7 @@ export type OrderDetails = {
     items: Item[];
     user: { _id: string, name: string };
     collector?: { _id: string, name: string };
-    status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
+    status: 'Ordered' | 'Out for Sample Collection' | 'Sample Collected' | 'Report Delivered to Lab' | 'Report Generated' | 'Out for Report Delivery' | 'Report Delivered' | 'Canceled';
     sampleTakenDateTime: {
         start?: string;
         end?: string;

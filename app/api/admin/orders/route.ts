@@ -1,5 +1,5 @@
 import dbConnect from "@/config/db";
-import Collector from "@/models/Collector";
+import Collector, { ICollector } from "@/models/Collector";
 import Order from "@/models/Order";
 import User from "@/models/User";
 import { isValidObjectId } from "mongoose";
@@ -95,6 +95,14 @@ export async function POST(req: NextRequest) {
         }
         if (!data.address || !data.address.pin || !data.address.city || !data.address.district || !data.address.phone) {
             return new NextResponse('Address must have pin, city, district, and phone', { status: 400 });
+        }
+        if (!data.collector) {
+            // Assign a collector to the order
+            const collectors = await Collector.find({ reachableAreas: { $in: [data.address.pin] } }).lean() as unknown as ICollector[];
+            if (collectors.length === 0) {
+                return new NextResponse('No verified collectors available', { status: 500 });
+            }
+            data.collector = collectors[Math.floor(Math.random() * collectors.length)];
         }
 
         const newOrder = new Order(data);
