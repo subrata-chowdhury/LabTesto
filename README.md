@@ -18,13 +18,15 @@ It is a full stack web app where user can book any medical test from any lab. It
 13. User can leave a **review** after all the order's procedure is completed.
 14. User can **put** there **tests in cart**.
 15. User can choose to **provide the patient details at the collection time**.
+16. User can **contact** through contact form.
 
 ### Admin Features:
 1. Admin User can **add, edit & delete** any **Tests, Labs, User, Collectors & Orders**.
 2. Admin User can see **statisctics related Tests, Labs, Orders Also Financial Details** like total income vs total expenses per month.
-3. Admin User can also check **data misses** for any Labs.
-4. Admin Users has **top level permissions** to the entire database.
-5. **Has a rich text editor** with many features like table, alignment, bold, italic, underline, fontsize, links and many more.
+3. Admin User can **monitor collectors**.
+4. Admin User can also check **data misses** for any Labs.
+5. Admin Users has **top level permissions** to the entire database.
+6. **Has a rich text editor** with many features like table, alignment, bold, italic, underline, fontsize, links and many more.
 
 ### Routes
 **`/admin`**: This route contains **all the admin pages** for the app where admins can add/edit/delete tests, labs make a order for users. 
