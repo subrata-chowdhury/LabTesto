@@ -36,6 +36,19 @@ This has top level permissions.
 
 **`/`**: Routes except `/admin` and `/collector` are for Users where user can search view Tests and order them.
 
+### Environment Variables
+**`MONGODB_URI`**=mongodb+srv://USERNAME:PASSWORD@cluster0.men5q.mongodb.net/DATABASE?retryWrites=true&w=majority<br/>
+**`JWT_SECRET`**=YOUR_JWT_SECRET<br/>
+**`ADMIN_JWT_SECRET`**=YOUR_JWT_SECRET_ADMIN<br/>
+**`COLLECTOR_JWT_SECRET`**=YOUR_JWT_SECRET_COLLECTOR<br/>
+**`CLOUDINARY_CLOUD_NAME`**=NAME<br/>
+**`CLOUDINARY_API_KEY`**=KEY<br/>
+**`CLOUDINARY_API_SECRET`**=API_SECRET<br/>
+**`TELEGRAM_BOT_API_URL`**=BOT_URL<br/>
+**`PRIVATE_KEY`**="-----BEGIN RSA PRIVATE KEY-----<br/>
+KEY<br/>
+-----END RSA PRIVATE KEY-----"<br/>
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ### Getting Started
