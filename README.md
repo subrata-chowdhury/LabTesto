@@ -27,9 +27,11 @@ It is a full stack web app where user can book any medical test from any lab. It
 5. **Has a rich text editor** with many features like table, alignment, bold, italic, underline, fontsize, links and many more.
 
 ### Routes
-**`/admin`**: This route contains **all the admin pages** for the app where admins can add/edit/delete tests, labs make a order for users. 
-This has top level permissions.<br/>
-**`/collector`**: This route contains **all the pages required for collectors** like assign orders, previously assign orders etc.<br/>
+**`/admin`**: This route contains **all the admin pages** for the app where admins can add/edit/delete tests, labs make a order for users. <br/>
+This has top level permissions.
+
+**`/collector`**: This route contains **all the pages required for collectors** like assign orders, previously assign orders etc.
+
 **`/`**: Routes except `/admin` and `/collector` are for Users where user can search view Tests and order them.
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).

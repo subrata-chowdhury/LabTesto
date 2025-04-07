@@ -177,7 +177,7 @@ export async function POST(req: NextRequest) {
             }[]
         };
 
-        await fetch('https://api.telegram.org/bot7846622941:AAEjj6UdF2C42GG_S1RVvK2oPhmRxFUCukA/sendMessage', {
+        await fetch(process.env.TELEGRAM_BOT_API_URL || '', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
