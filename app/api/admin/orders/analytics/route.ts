@@ -1,7 +1,10 @@
+import dbConnect from '@/config/db';
 import Order from '@/models/Order';
 
 export async function GET() {
     try {
+        await dbConnect();
+        
         const totalOrders = await Order.countDocuments({});
         const canceled = await Order.countDocuments({ status: 'Canceled' });
         const ordered = await Order.countDocuments({ status: 'Ordered' });

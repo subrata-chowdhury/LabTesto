@@ -4,7 +4,7 @@ import mailIcon from '@/assets/mail.svg'
 import locationIcon from '@/assets/location.svg'
 import Image from 'next/image'
 import Head from 'next/head'
-import MainForm from './components/page'
+import MainForm from './components/MainContactForm'
 
 function ContactPage() {
     return (

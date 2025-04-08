@@ -92,7 +92,7 @@ const Menubar = () => {
                         </Link>
                         <div className="hidden relative md:flex items-center space-x-4 cursor-pointer text-primary">
                             {/* <Link href='/profile' aria-label="View Profile"> */}
-                            <UserIcon onClick={() => setShowProfilePopup(val => !val)} size={40} className="rounded-full p-2 bg-primary bg-opacity-20" />
+                            <span onClick={() => setShowProfilePopup(val => !val)}><UserIcon size={40} className="rounded-full p-2 bg-primary bg-opacity-20" /></span>
                             {/* </Link> */}
                             {showProfilePopup && <ProfilePopup isLoggedIn={isLoggedIn} userEmail={userEmail} userName={userName} onPopupClose={() => { setShowProfilePopup(false); setIsOpen(false) }} />}
                         </div>

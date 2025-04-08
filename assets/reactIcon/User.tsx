@@ -1,13 +1,13 @@
 import React from 'react'
 
-export default function UserIcon({ size = 20, className = '', onClick = () => { } }: { size?: number; className?: string, onClick?: () => void }) {
+export default function UserIcon({ size = 20, className = '' }: { size?: number; className?: string }) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
             width={size}
             height={size}
             className={className}
-            onClick={onClick}
+            // onClick={onClick}
             viewBox="0 0 256 256"
         >
             <g

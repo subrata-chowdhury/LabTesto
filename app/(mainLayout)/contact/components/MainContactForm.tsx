@@ -12,7 +12,7 @@ export default function MainForm() {
     })
     const [loading, setLoading] = useState(false);
 
-    async function sendData(e: React.MouseEvent<HTMLButtonElement>) {
+    async function sendData(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (!formData.name || !formData.email || !formData.subject || !formData.message) {
             toast.error('Please fill in all fields.');
@@ -34,7 +34,7 @@ export default function MainForm() {
     }
 
     return (
-        <form className='px-4 pt-4 pb-1 flex flex-col' onSubmit={e => e.preventDefault()}>
+        <form className='px-4 pt-4 pb-1 flex flex-col' onSubmit={sendData}>
             <div className='flex flex-col md:flex-row gap-6'>
                 <div className='flex flex-col gap-0.5'>
                     <label htmlFor='name' className='text-sm'>Name</label>
@@ -53,7 +53,7 @@ export default function MainForm() {
                 <label htmlFor='message' className='text-sm'>Message</label>
                 <textarea id='message' name='message' value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })} className='outline-none border-2 rounded-md border-opacity-60 mt-1 border-primary bg-transparent text-lg font-semibold p-2' rows={3} ></textarea>
             </div>
-            <button type='submit' disabled={loading} className='px-7 py-2 cursor-pointer rounded-md mt-4 mx-auto text-white bg-primary' onClick={sendData}>{loading ? 'Submitting..' : 'Submit'}</button>
+            <button type='submit' disabled={loading} className='px-7 py-2 cursor-pointer rounded-md mt-4 mx-auto text-white bg-primary'>{loading ? 'Submitting..' : 'Submit'}</button>
         </form>
     )
 }

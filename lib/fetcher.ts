@@ -80,7 +80,13 @@ class Fetcher {
             return { body: null, status: response.status, error: error }
         }
         return {
-            body: await response.json(),
+            body: await (async () => {
+                try {
+                    return await response.json();
+                } catch (error) {
+                    return await response.text();
+                }
+            })(),
             status: response.status,
             error: null
         };
