@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react'
 import Loading from './loading';
 import Input from '@/components/Inputs/Input';
 import Dropdown from '@/components/Dropdown';
-import { toast } from 'react-toastify';
 
 function ContactEditPage() {
     const { id } = useParams<{ id: string }>();
@@ -22,17 +21,6 @@ function ContactEditPage() {
         if (res.body && res.status === 200)
             setContact(res.body);
         setLoading(false);
-    }
-
-    async function onSave() {
-        if (!contact) return;
-        const res = await fetcher.put<{ status: 'Pending' | 'Resolved' }, Contact>(`/admin/contacts/${id}`, { status: contact.status });
-        if (res.body && res.status === 201) {
-            setContact(res.body);
-            toast.success('Contact updated successfully');
-        } else {
-            toast.error('Error updating contact');
-        }
     }
 
     if (loading) return <Loading />

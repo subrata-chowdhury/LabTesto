@@ -83,7 +83,7 @@ class Fetcher {
             body: await (async () => {
                 try {
                     return await response.json();
-                } catch (error) {
+                } catch {
                     return await response.text();
                 }
             })(),

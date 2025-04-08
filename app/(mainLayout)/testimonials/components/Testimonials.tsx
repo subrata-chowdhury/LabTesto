@@ -2,6 +2,7 @@ import React from 'react'
 import testimonials, { tags, TestimonialType } from './data'
 import { StarFilledIcon } from '@/assets/reactIcon/StarFilled';
 import UserIcon from '@/assets/reactIcon/User';
+import Image from 'next/image';
 
 function Gallery() {
     return (
@@ -68,12 +69,13 @@ function ImageCard({ testimonial }: { testimonial: TestimonialType }) {
     return (
         <div className="w-full inline-block border border-gray-300 dark:border-gray-500 mb-4 break-inside-avoid bg-white dark:bg-[#172A46] rounded-lg overflow-hidden text-start">
             <div className='relative w-full' style={{ height: testimonial.height }}>
-                <img
+                {testimonial.thumbnail && <Image
+                    width={300}
                     src={testimonial.thumbnail}
                     className="w-full h-full object-cover rounded-t-lg"
                     style={{ zIndex: -1 }}
                     alt='testimonial thumbnail'
-                />
+                />}
                 <div
                     style={{
                         // top: testimonial.top,

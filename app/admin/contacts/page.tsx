@@ -2,8 +2,6 @@
 import Card from '@/components/Card';
 import Table from '@/components/Table';
 import React, { useCallback, useEffect, useState } from 'react'
-import plusIcon from '@/assets/plus.svg'
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import fetcher from '@/lib/fetcher';
 import TrashBinIcon from '@/assets/reactIcon/TrashBin';
