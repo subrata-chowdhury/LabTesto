@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import ReviewForm, { ReviewType } from '@/app/components/ReviewForm';
 import Loading from './loading';
 import ConfirmationModel from '@/app/components/popups/ConfirmationModel';
+import Link from 'next/link';
 
 function OrderPage() {
     const [order, setOrder] = useState<Order>();
@@ -69,6 +70,29 @@ function OrderPage() {
                     </div>
                 </div>
             ))}
+            <Link href={`/admin/orders/edit/${order._id}`} className='ms-auto px-4 py-2 bg-primary text-white rounded font-medium'>Edit Order</Link>
+            <div className='bg-white text-sm flex flex-col dark:bg-[#172A46] px-6 py-4 rounded'>
+                <div className='py-2.5 flex gap-2'>
+                    <div>
+                        1.
+                    </div>
+                    <div>
+                        <div className='font-semibold'>Ordered</div>
+                        {new Date(order.createdAt).toDateString()}, {new Date(order.createdAt).toTimeString()}
+                    </div>
+                </div>
+                {order.statusRecords.map((e, index) => (
+                    <div className='py-2.5 flex gap-2' key={e.date}>
+                        <div>
+                            {index + 2}.
+                        </div>
+                        <div>
+                            <div className='font-semibold'>{e.status}</div>
+                            {new Date(e.date).toDateString()}, {new Date(e.date).toTimeString()}
+                        </div>
+                    </div>
+                ))}
+            </div>
             <div className='bg-white px-6 py-4 rounded'>
                 <div className='text-lg font-semibold'>Sample Taken Time </div>
                 <div><span className='font-medium'>Start:</span> {new Date(order?.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
@@ -191,7 +215,7 @@ export type Order = {
         // password: string;
         phone?: string;
     };
-    status: 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled';
+    status: 'Ordered' | 'Out for Sample Collection' | 'Sample Collected' | 'Report Delivered to Lab' | 'Report Generated' | 'Out for Report Delivery' | 'Report Delivered' | 'Canceled';
     sampleTakenDateTime: {
         start?: string;
         end?: string;
@@ -207,6 +231,10 @@ export type Order = {
         collectorRating: number,
         platformRating: number,
         reviewText: string
+    }[];
+    statusRecords: {
+        status: 'Out for Sample Collection' | 'Sample Collected' | 'Report Delivered to Lab' | 'Report Generated' | 'Out for Report Delivery' | 'Report Delivered' | 'Canceled',
+        date: string
     }[];
     createdAt: string;
     updatedAt: string;
