@@ -51,7 +51,7 @@ const Tests = () => {
     }, [])
 
     return (
-        <div className='p-5 dark:bg-[#0A192F]'>
+        <div className='p-5 pb-12 dark:bg-[#0A192F]'>
             <h1 className='text-xl text-center sm:text-2xl sm:text-left sm:font-semibold text-primary font-medium'>All Available Tests</h1>
             <div className='flex flex-col sm:flex-row gap-4 mt-4'>
                 <div className={"px-4 py-2 flex gap-3 justify-between border-primary border-opacity-50 border bg-gray-500 bg-opacity-5 rounded-full"}>

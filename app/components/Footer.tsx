@@ -39,9 +39,10 @@ const Footer = () => {
                             <h2 className="text-base font-semibold mb-2">Platform Details</h2>
                             <ul className='flex flex-col gap-1'>
                                 {[{ label: 'About Us', href: "/about" },
+                                { label: 'Services', href: "/services" },
+                                { label: 'Testimonials', href: "/testimonials" },
                                 { label: 'Privacy Policy', href: "#" },
-                                { label: 'Terms & Conditions', href: "#" },
-                                { label: 'Services', href: "/services" }].map((link, index) => (
+                                { label: 'Terms & Conditions', href: "#" }].map((link, index) => (
                                     <li key={index} className="mb-1 text-sm">
                                         <a href={link.href} className="hover:text-gray-400">
                                             {link.label}

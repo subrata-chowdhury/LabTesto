@@ -7,18 +7,18 @@ import Image from 'next/image';
 function Gallery() {
     return (
         <section className="container mx-auto mt-8">
-            <h1 className="text-center text-5xl font-bold">
+            <h1 className="text-center text-3xl sm:text-4xl lg:text-5xl font-bold">
                 We know testimonials drive trust
                 <br />
-                <span className="text-primary text-5xl">— here’s why people trust us</span>
+                <span className="text-primary">— here’s why people trust us</span>
             </h1>
             <div
-                className="flex flex-wrap text-nowrap justify-center mt-5"
+                className="flex flex-wrap text-sm lg:text-base text-nowrap justify-center mt-5"
                 style={{ gap: "1rem" }}
             >
                 {tags.map(tag => (
                     <div className="px-4 border border-gray-300 dark:border-gray-500 rounded-md col-auto p-2" key={tag.text}>
-                        <p className="card-text">{tag.icon} {tag.text}</p>
+                        <p>{tag.icon} {tag.text}</p>
                     </div>
                 ))}
             </div>

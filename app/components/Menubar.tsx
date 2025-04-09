@@ -71,10 +71,10 @@ const Menubar = () => {
                     <Link href={'/'} onClick={() => setIsOpen(false)} className=''><span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></Link>
                 </div>
                 <div className="hidden md:flex gap-6 lg:gap-8 xl:gap-10 xl:ml-5 mr-auto">
-                    <Link href="/tests" className="text-primary menu">Book</Link>
-                    <Link href="/about" className="text-primary menu">About</Link>
-                    <Link href="/order" className="text-primary menu">Orders</Link>
-                    <Link href="/contact" className="text-primary menu">Contact</Link>
+                    <Link href="/tests" className="text-primary menu flex">Book&nbsp;<span className='hidden lg:block'>a Test</span></Link>
+                    <Link href="/about" className="text-primary menu flex">About&nbsp;<span className='hidden lg:block'>Us</span></Link>
+                    <Link href="/order" className="text-primary menu flex">Orders&nbsp;<span className='hidden lg:block'></span></Link>
+                    <Link href="/contact" className="text-primary menu flex">Contact&nbsp;<span className='hidden lg:block'>Us</span></Link>
                 </div>
                 <div className='hidden ms-6 md:block mr-5'>
                     <SearchBar onSelect={(test) => navigate.push('/tests/' + test._id)} active={true} />

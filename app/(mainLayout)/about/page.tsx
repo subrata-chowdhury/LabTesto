@@ -32,7 +32,7 @@ function AboutPage() {
                     </div>
                 </div>
             </section>
-            <section className='h-screen mt-8 sm:mt-2 md:-mt-14'>
+            <section className='mt-8 mb-12 sm:mt-2 md:-mt-14'>
                 <OurPromisesSection />
             </section>
         </>
