@@ -23,6 +23,19 @@ export default function Home() {
     return (
         <>
             <div className="flex-1 dark:bg-[#0A192F]">
+                <button onClick={() => {
+                    Notification.requestPermission().then(function(permission) {
+                        if (permission === "granted") {
+                            // Step 2: Show Notification
+                            new Notification("Hello!", {
+                                body: "This is a simple notification from JS.",
+                                icon: "https://example.com/icon.png"
+                            });
+                        } else {
+                            console.log("Permission denied for notifications.");
+                        }
+                    });
+                }}>SEND NOTIFICATION</button>
                 <div className="md:hidden px-4">
                     <SearchBar className="px-5 py-3" active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
                 </div>
