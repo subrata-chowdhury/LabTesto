@@ -1,6 +1,5 @@
 'use client'
 import { SearchBar } from "../components/Menubar";
-import { useRouter } from "next/navigation";
 import React, { ReactNode } from "react";
 import Image, { StaticImageData } from "next/image";
 import deliveryIcon from '@/assets/HomePage/delivery.svg'
@@ -18,13 +17,11 @@ import slide2 from '@/assets/HomePage/Slides/slide2.png'
 import slide3 from '@/assets/HomePage/Slides/slide3.png'
 
 export default function Home() {
-    const navigate = useRouter();
-
     return (
         <>
             <div className="flex-1 dark:bg-[#0A192F]">
                 <div className="md:hidden px-4">
-                    <SearchBar className="px-5 py-3" active={true} onSelect={(test) => navigate.push('/tests/' + test._id)} />
+                    <SearchBar className="px-5 py-3" active={true} />
                 </div>
                 <section className="mx-4 mb-4">
                     <Slide
