@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import React from 'react'
 import { Achivements } from '../page';
-import { ContactDetails } from '../contact/page';
-import { Services } from '../services/page';
+import ContactDetails from '../contact/components/ContactDetails';
+import Services from '../services/components/Services';
 
 function AboutPage() {
     return (

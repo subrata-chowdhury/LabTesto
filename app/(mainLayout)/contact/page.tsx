@@ -1,13 +1,8 @@
 import React from 'react'
-import phoneIcon from '@/assets/phone.svg'
-import mailIcon from '@/assets/mail.svg'
-import locationIcon from '@/assets/location.svg'
 import Image from 'next/image'
 import Head from 'next/head'
 import MainForm from './components/MainContactForm'
-import { PhoneIcon } from '@/assets/reactIcon/contact/Phone'
-import { MailIcon } from '@/assets/reactIcon/contact/Mail'
-import { LocationIcon } from '@/assets/reactIcon/contact/Location'
+import ContactDetails from './components/ContactDetails'
 
 function ContactPage() {
     return (
@@ -36,40 +31,3 @@ function ContactPage() {
 }
 
 export default ContactPage;
-
-export function ContactDetails({ className = "flex-col", iconClassName }: { className?: string , iconClassName?: string}) {
-    return (
-        <div className={'flex gap-8 my-auto ' + className}>
-            <div className='flex items-center gap-4'>
-                <div className={'p-4 bg-white rounded-full shadow text-black ' + iconClassName}>
-                    <PhoneIcon />
-                </div>
-                <div>
-                    <div className='font-bold'>Phone</div>
-                    +91 82507 11212
-                </div>
-                {/* <Image src={phoneIcon} alt="Phone Icon" /> */}
-            </div>
-            <div className='flex items-center gap-4'>
-                <div className={'p-4 bg-white rounded-full shadow text-black ' + iconClassName}>
-                    <MailIcon />
-                </div>
-                {/* <Image src={mailIcon} alt="Mail Icon" /> */}
-                <div>
-                    <div className='font-bold'>Email</div>
-                    sayan825071das@gmail.com
-                </div>
-            </div>
-            <div className='flex items-center gap-4'>
-                <div className={'p-4 bg-white rounded-full shadow text-black ' + iconClassName}>
-                    <LocationIcon />
-                </div>
-                {/* <Image src={locationIcon} alt="Location Icon" width={30} height={30} /> */}
-                <div>
-                    <div className='font-bold'>Location</div>
-                    Kadasole more, Bankura, <br />Pin.: 722202 - West Bengal
-                </div>
-            </div>
-        </div>
-    )
-}
