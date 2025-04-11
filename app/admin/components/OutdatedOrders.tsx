@@ -19,9 +19,9 @@ export default function OutdatedOrders() {
         <div className='mt-5 bg-white px-5 py-4 rounded-lg border-2 w-fit'>
             <div className='text-lg font-semibold pb-2.5 border-b-2'>Outdated Orders</div>
             <div className="w-full flex flex-col gap-2 overflow-x-auto mt-3 min-w-96 h-60 overflow-y-auto">
-                {outdatedOrders.filter(order => order.status === 'Ordered').length > 0 && <h3 className='font-medium text-base'>Ordered</h3>}
+                {outdatedOrders.filter(order => order.status === 'Ordered').length > 0 && <h3 className='text-base'>Ordered</h3>}
                 {outdatedOrders.filter(order => order.status === 'Ordered').map((order) => <OutdatedOrderCard order={order} key={order._id} />)}
-                {outdatedOrders.filter(order => order.status === 'Out for Sample Collection').length > 0 && <h3 className='font-medium text-base'>Out for Collection</h3>}
+                {outdatedOrders.filter(order => order.status === 'Out for Sample Collection').length > 0 && <h3 className='text-base mt-5'>Out for Collection</h3>}
                 {outdatedOrders.filter(order => order.status === 'Out for Sample Collection').map((order) => <OutdatedOrderCard order={order} key={order._id} />)}
                 {outdatedOrders.length === 0 && <div className="text-center my-auto text-gray-500">No outdated orders</div>}
             </div>
@@ -33,8 +33,8 @@ function OutdatedOrderCard({ order }: { order: Order }) {
     return (
         <div key={order._id} className="flex items-center gap-4 justify-between px-4 py-2 bg-gray-50 border-2 rounded-md">
             <div>
-                <div className="font-medium text-sm">ID: {order._id}</div>
-                <div className="text-xs text-orange-600">Date: {new Date(order.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
+                <div className="text-sm">ID: {order._id}</div>
+                <div className="text-xs font-semibold text-orange-600">Date: {new Date(order.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
             </div>
             <div className="flex text-sm space-x-2">
                 <Link href={'/admin/orders/view/' + order._id} className="bg-blue-500 text-white px-2 py-0.5 rounded hover:bg-blue-600">

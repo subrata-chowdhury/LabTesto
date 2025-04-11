@@ -11,8 +11,8 @@ export default function MonthlyPriceBarChart({ financeData }: { financeData?: { 
                     <Tooltip contentStyle={{ borderRadius: '8px' }} formatter={(value, name) => [value, name]} labelFormatter={(label) => new Date(label).toDateString()} />
                     <Legend iconType="circle" wrapperStyle={{ fontSize: 14 }} />
                     <CartesianGrid vertical={false} />
-                    <Bar dataKey="totalPrice" name="Total Price" fill="#8884d8" barSize={10} radius={[10, 10, 0, 0]} />
-                    <Bar dataKey="expenses" name="Expenses" fill="#82ca9d" barSize={10} radius={[10, 10, 0, 0]} />
+                    <Bar dataKey="totalPrice" name="Total Price" fill="#1A73E8" barSize={10} radius={[10, 10, 0, 0]} />
+                    <Bar dataKey="expenses" name="Expenses" fill="#FF8042" barSize={10} radius={[10, 10, 0, 0]} />
                 </BarChart>
             </div>
         </div>
