@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import React from 'react'
-import { OurPromisesSection } from '../page';
+import { Achivements } from '../page';
+import { ContactDetails } from '../contact/page';
+import { Services } from '../services/page';
 
 function AboutPage() {
     return (
@@ -33,7 +35,13 @@ function AboutPage() {
                 </div>
             </section>
             <section className='mt-8 mb-12 sm:mt-2 md:-mt-14'>
-                <OurPromisesSection />
+                <Services />
+            </section>
+            <Achivements />
+            <section className="mx-auto md:w-[95%] pt-0 sm:pt-0 md:pt-0 p-4 flex flex-col">
+                <h1 className="text-2xl sm:text-3xl font-semibold text-center mx-auto mt-4">Our Contact Details</h1>
+                <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-3"></div>
+                <ContactDetails className='mx-10 my-12 flex-wrap justify-between' iconClassName='border shadow-md' />
             </section>
         </>
     )

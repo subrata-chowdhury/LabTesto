@@ -58,7 +58,7 @@ const Menubar = () => {
     }, [])
 
     return (
-        <nav className={`bg-white dark:bg-[#09192F] px-6 z-20 fixed w-screen transition-all ${active ? 'p-3 shadow-md shadow-sky-100 dark:shadow-black dark:shadow-md' : 'p-4'}`} role="navigation" aria-label="Main Navigation">
+        <nav className={`bg-white dark:bg-[#09192F] px-6 z-20 fixed w-screen top-to-bottom transition-all ${active ? 'p-3 shadow-md shadow-sky-100 dark:shadow-black dark:shadow-md' : 'p-4'}`} style={{ animationDuration: '0.5s' }} role="navigation" aria-label="Main Navigation">
             <div className="mx-auto flex justify-between items-center">
                 <div className="md:hidden flex items-center">
                     <button onClick={() => setIsOpen(!isOpen)} className="text-primary menu focus:outline-none" aria-label="Toggle Menu">
@@ -142,7 +142,7 @@ export function SearchBar({ active = false, className = '', onSelect = () => { }
 
 function MobileMenubar({ onClose = () => { }, isLoggedIn, userName = '', userEmail = '' }: { onClose?: () => void, isLoggedIn?: boolean, userName?: string, userEmail?: string }) {
     return (
-        <div className="md:hidden flex flex-col gap-2 fixed left-0 top-0 w-full text-base sm:w-auto px-10 z-20 bg-white dark:bg-[#0A192F] h-screen">
+        <div className="md:hidden flex flex-col gap-2 fixed left-0 top-0 w-full text-base sm:w-auto px-10 z-20 bg-white dark:bg-[#0A192F] h-screen shadow-2xl">
             <div className='flex relative top-4 mb-6 justify-center items-center'>
                 <button onClick={() => onClose()} className="text-primary absolute left-0 menu focus:outline-none">
                     <svg className="w-6 h-6 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

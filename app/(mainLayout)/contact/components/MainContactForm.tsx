@@ -34,7 +34,7 @@ export default function MainForm() {
     }
 
     return (
-        <form className='px-4 pt-4 pb-1 flex flex-col' onSubmit={sendData}>
+        <form className='p-6 flex flex-col rounded-md border-2 border-primary border-opacity-30 bg-white dark:bg-[#172A46] ' onSubmit={sendData}>
             <div className='flex flex-col md:flex-row gap-6'>
                 <div className='flex flex-col gap-0.5'>
                     <label htmlFor='name' className='text-sm'>Name</label>
