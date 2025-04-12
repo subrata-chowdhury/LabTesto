@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
     title: "LabTesto",
-    description: "Your wellness which makes us Happy",
+    description: "A trusted diagnostic platform offering secure, convenient access to accredited labs and professional sample collection.",
 };
 
 export default function RootLayout({
