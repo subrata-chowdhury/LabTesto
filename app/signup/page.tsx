@@ -115,7 +115,10 @@ export default function Signup() {
                             name="confirmpassword"
                             placeholder="Confirm Password" />
                     </div> */}
-                    <button type="submit" className="bg-primary text-white rounded p-2" disabled={loading}>{loading ? 'Signing Up...' : 'Sign Up'}</button>
+                    <div className="w-full">
+                    <button type="submit" className="bg-primary text-white w-full rounded p-2" disabled={loading}>{loading ? 'Signing Up...' : 'Sign Up'}</button>
+                        <div className="text-xs">By Signing in You are Accepting our <Link href={'/terms-and-conditionss'} className="text-blue-600 font-semibold">Terms & Conditions</Link> and <Link href={'/privacy-policy'} className="text-blue-600 font-semibold">Privacy Policy</Link></div>
+                    </div>
                     <div className="flex flex-col">
                         <div className="text-[0.9rem] text-center text-slate-500 dark:text-gray-400">Already have an account?</div>
                         <Link href="/login" className="bg-gray-300 text-center text-slate-700 rounded p-2 border-2 border-gray-300">Log In</Link>

@@ -58,14 +58,17 @@ body {
   0% {
     transform: translateX(0%);
   }
+
   30% {
     transform: translateX(-100%);
     opacity: 0.4;
   }
+
   31% {
     transform: translateX(100%);
     opacity: 0.4;
   }
+
   100% {
     transform: translateX(0%);
     opacity: 1;
@@ -76,14 +79,17 @@ body {
   0% {
     transform: translateX(0%);
   }
+
   30% {
     transform: translateX(100%);
     opacity: 0.4;
   }
+
   31% {
     transform: translateX(-100%);
     opacity: 0.4;
   }
+
   100% {
     transform: translateX(0%);
     opacity: 1;
@@ -100,8 +106,25 @@ body {
     background: transparent;
     /* scale: 0.2; */
   }
+
   100% {
     transform: translateY(0%);
     /* scale: 1; */
   }
+}
+
+
+
+
+
+input[type='checkbox']:checked~label .plus-icon {
+  display: none;
+}
+
+input[type='checkbox']:checked~label .minus-icon {
+  display: block;
+}
+
+.minus-icon {
+  display: none;
 }

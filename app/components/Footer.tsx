@@ -12,7 +12,7 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-4">
                     <div className='mr-4'>
                         <h1 className="text-xl font-bold mb-2"><span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></h1>
-                        <p className="text-sm">A well known trusted blood collection website to book any tests from any lab by user&#39;s choice.</p>
+                        <p className="text-sm">A trusted diagnostic platform offering seamless test bookings from accredited labs of your choice, with certified home sample collection and secure payment options.</p>
                         <h1 className='text-lg mt-2 text-blue-600 dark:text-primary font-semibold'>Contact Us</h1>
                         <div className='text-sm text-gray-600d dark:text-gray-400 font-medium mt-1'>
                             <p><span className='text-gray-800 dark:text-gray-300 font-normal'>Phone:</span> +91 82507 11212</p>
@@ -40,9 +40,10 @@ const Footer = () => {
                             <ul className='flex flex-col gap-1'>
                                 {[{ label: 'About Us', href: "/about" },
                                 { label: 'Services', href: "/services" },
+                                { label: 'FAQs', href: "/faq" },
                                 { label: 'Testimonials', href: "/testimonials" },
-                                { label: 'Privacy Policy', href: "#" },
-                                { label: 'Terms & Conditions', href: "#" }].map((link, index) => (
+                                { label: 'Privacy Policy', href: "/privacy-policy" },
+                                { label: 'Terms & Conditions', href: "/terms-and-conditions" }].map((link, index) => (
                                     <li key={index} className="mb-1 text-sm">
                                         <a href={link.href} className="hover:text-gray-400">
                                             {link.label}

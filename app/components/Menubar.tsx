@@ -58,7 +58,7 @@ const Menubar = () => {
     }, [])
 
     return (
-        <nav className={`bg-white dark:bg-[#09192F] px-6 z-20 fixed w-screen top-to-bottom transition-all ${active ? 'p-3 shadow-md shadow-sky-100 dark:shadow-black dark:shadow-md' : 'p-4'}`} style={{ animationDuration: '0.5s' }} role="navigation" aria-label="Main Navigation">
+        <nav className={`bg-white dark:bg-[#09192F] px-6 z-20 fixed w-screen transition-all ${active ? 'p-3 shadow-md shadow-sky-100 dark:shadow-black dark:shadow-md' : 'p-4'}`} role="navigation" aria-label="Main Navigation">
             <div className="mx-auto flex justify-between items-center">
                 <div className="md:hidden flex items-center">
                     <button onClick={() => setIsOpen(!isOpen)} className="text-primary menu focus:outline-none" aria-label="Toggle Menu">
@@ -176,10 +176,10 @@ function MobileMenubar({ onClose = () => { }, isLoggedIn, userName = '', userEma
                 <span className='flex items-center gap-2'><NotificationIcon size={18} />Notification</span> <span className='ml-12'>❯</span>
             </Link>
             <Link href="/contact" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => onClose()}>
-                <span className='flex items-center gap-2'><ContactIcon size={16} />Contact</span> <span className='ml-12'>❯</span>
+                <span className='flex items-center gap-2'><ContactIcon size={16} />Contact Us</span> <span className='ml-12'>❯</span>
             </Link>
             <Link href="/about" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => onClose()}>
-                <span className='flex items-center gap-2'><AboutIcon size={18} />About</span> <span className='ml-12'>❯</span>
+                <span className='flex items-center gap-2'><AboutIcon size={18} />About Us</span> <span className='ml-12'>❯</span>
             </Link>
             {isLoggedIn && <div
                 className={`cursor-pointer flex justify-start gap-3 bg-primary bg-opacity-10 hover:bg-opacity-15 px-4 rounded-xl p-3 mt-auto mb-9 items-center text-primary`}

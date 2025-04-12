@@ -11,7 +11,7 @@ function AboutPage() {
                 <div className='flex flex-wrap gap-12 md:gap-0 px-8 xl:px-1 h-[calc(100vh-120px)] items-center justify-between'>
                     <div className='my-auto mt-6 md:mt-auto flex flex-col mx-auto'>
                         <h1 className='text-5xl lg:text-6xl font-light'>Get Quick<br /> <span className='font-extrabold'>Tests Done</span></h1>
-                        <p className="mt-4 text-base lg:text-lg text-gray-600 dark:text-gray-400">A well known trusted blood collection website<br /> to book any tests from any lab by user&#39;s choice.</p>
+                        <p className="mt-4 text-sm lg:text-base text-gray-600 dark:text-gray-400">A trusted diagnostic platform offering secure,<br /> convenient access to accredited labs and<br /> professional sample collection.</p>
                         <Link href='/signup' className='px-5 py-2.5 text-lg bg-primary text-white rounded w-fit mt-8'>Get Started</Link>
                     </div>
                     <div className='w-64 h-64 sm:w-72 sm:h-72 lg:w-96 lg:h-96 relative mx-auto flex justify-center items-center rounded-full bg-opacity-30 shadow-md bg-primary text-4xl sm:text-5xl font-bold'>
@@ -37,11 +37,15 @@ function AboutPage() {
             <section className='mt-8 mb-12 sm:mt-2 md:-mt-14'>
                 <Services />
             </section>
-            <Achivements />
+            <div className='mx-5'>
+                <Achivements />
+            </div>
             <section className="mx-auto md:w-[95%] pt-0 sm:pt-0 md:pt-0 p-4 flex flex-col">
                 <h1 className="text-2xl sm:text-3xl font-semibold text-center mx-auto mt-4">Our Contact Details</h1>
                 <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-3"></div>
-                <ContactDetails className='mx-10 my-12 flex-wrap justify-between' iconClassName='border shadow-md' />
+                <div className='mx-10 my-12 '>
+                    <ContactDetails className='flex-wrap justify-between' iconClassName='border shadow-md' />
+                </div>
             </section>
         </>
     )

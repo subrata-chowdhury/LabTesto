@@ -26,7 +26,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased font-inter flex flex-col min-h-screen`}
+                className={`${geistSans.variable} ${geistMono.variable} antialiased font-inter flex flex-col min-h-screen scroll-smooth`}
             >
                 <ToastContainer
                     position="top-right"
