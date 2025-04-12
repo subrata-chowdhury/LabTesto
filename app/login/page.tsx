@@ -84,7 +84,7 @@ export default function Login() {
                             name="password"
                             placeholder="Password" />
                         <div className="font-medium text-[0.9rem] text-blue-600 ms-auto">
-                            <Link href="/">Forgot Password</Link>
+                            <Link href="#" onClick={() => toast.info('Currently out of service')}>Forgot Password</Link>
                         </div>
                     </div>
                     <button className="bg-primary text-white rounded p-2" onClick={login} disabled={loading}>{loading ? 'Loading...' : 'Login'}</button>
