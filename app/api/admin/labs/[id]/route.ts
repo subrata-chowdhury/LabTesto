@@ -106,6 +106,12 @@ export async function DELETE(req: NextRequest) {
 
     try {
         const deletedLab = await Lab.findByIdAndDelete(id);
+        
+        // Remove the lab from the labsDetails field in Test documents
+        await Test.updateMany(
+            { [`labsDetails.${id}`]: { $exists: true } },
+            { $unset: { [`labsDetails.${id}`]: "" } }
+        );
 
         if (!deletedLab) {
             return new NextResponse('Lab not found', { status: 404 });

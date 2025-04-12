@@ -86,6 +86,7 @@ const LabForm = ({ labDetails, loading, onChange, onSave = () => { } }: Props) =
                             const newLabDetails = { name: labDetails?.name, details: labDetails.details || [] };
                             newLabDetails.details[showTestDetailsPopup.index] = details;
                             onChange.labDetails(newLabDetails);
+                            setShowTestDetailsPopup(null)
                         }} />
                 }
             </div>

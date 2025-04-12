@@ -15,6 +15,11 @@ import Link from "next/link";
 import slide1 from '@/assets/HomePage/Slides/slide1.png'
 import slide2 from '@/assets/HomePage/Slides/slide2.png'
 import slide3 from '@/assets/HomePage/Slides/slide3.png'
+import fullBodyTestIcon from '@/assets/HomePage/packages/full-body-test.png'
+import premiumFullBodyTestIcon from '@/assets/HomePage/packages/premium-full-body-test.webp'
+import fullGastroenterologyTestIcon from '@/assets/HomePage/packages/full-gastroenterology-test.png'
+import fullUrologyTestIcon from '@/assets/HomePage/packages/full-urology-test.png'
+import fullNeurologyTestIcon from '@/assets/HomePage/packages/full-neurology-test.png'
 
 export default function Home() {
     return (
@@ -32,60 +37,7 @@ export default function Home() {
                             if (slide === 3) return <Image className="h-96 mx-auto object-scale-down" src={slide3} alt="" />
                         }} />
                 </section>
-                <section className="mx-auto flex flex-col">
-                    <h1 className="text-2xl sm:text-3xl font-semibold text-center px-4 mx-auto mt-4">Frequently Required Tests</h1>
-                    <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-4"></div>
-                    {/* <h1 className="text-2xl font-semibold">Frequently Required Tests</h1> */}
-                    {/* <h1 className="text-xl font-semibold translate-y-full ml-2 bg-white w-fit px-2">Frequently Required Tests</h1> */}
-                    <div className="mt-2 relative rounded-md w-full">
-                        <div className="absolute -z-10 -top-64 md:-top-32 opacity-30 blur-sm w-full flex flex-col">
-                            <Image src={'/wave.svg'} width={960} height={540} alt="" className='w-full object-cover h-[100vh] md:h-[55vh] -z-10 top-0 bg-transparent' />
-                            <Image src={'/wave.svg'} width={960} height={540} alt="" className='w-full object-cover h-[100vh] md:h-[55vh] rotate-180 -z-10 top-0 bg-transparent' />
-
-                            {/* <div style={{ backgroundImage: `url(/wave.svg)` }} className="w-full h-[100vh] md:h-[55vh] object-cover bg-no-repeat bg-cover bg-center" />
-                            <div style={{ backgroundImage: `url(/wave.svg)` }} className="w-full h-[100vh] md:h-[55vh] object-cover bg-no-repeat bg-cover bg-center rotate-180" /> */}
-                        </div>
-                        {/* <div className="mt-4 p-3 md:p-5 border-2 border-primary border-opacity-40 border-dashed rounded-md bg-white w-full"> */}
-                        <div className="w-full md:w-[95%] mx-auto pt-0 sm:pt-0 md:pt-0 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                            <Card
-                                label="Complete Blood Count (CBC)"
-                                tag="Blood"
-                                description="It measures red and white blood cells, hemoglobin, hematocrit, and platelets to assess overall health. It helps diagnose infections, anemia, and other blood disorders."
-                                link={{ label: "Book Now", href: '/tests/67a38ddca80c243e83d518ed' }}
-                            />
-                            <Card
-                                label="Fasting Blood Sugar (FBS)"
-                                tag="Blood"
-                                description="It's a blood test that measures glucose levels after an overnight fast. It helps diagnose diabetes, prediabetes, and monitor blood sugar control in diabetic patients."
-                                link={{ label: "Book Now", href: '/tests/67a44ab70daa8b678a7fa330' }}
-                            />
-                            <Card
-                                label="Thyroid Stimulating Hormone (TSH)"
-                                tag="Blood"
-                                description="It's a blood test that measures TSH levels to evaluate thyroid function. It helps diagnose hypothyroidism, hyperthyroidism, and monitor thyroid disorders."
-                                link={{ label: "Book Now", href: '/tests/67b9667ee39bde2a012634ca' }}
-                            />
-                            <Card
-                                label="Urine Examination (Routine)"
-                                tag="Urine"
-                                description="It analyzes urine for physical, chemical, and microscopic properties. It helps detect infections, kidney diseases, diabetes, and metabolic disorders."
-                                link={{ label: "Book Now", href: '/tests/67bd6412266fe37d1fb4e7a8' }}
-                            />
-                            <Card
-                                label="Random Blood Sugar (RBS)"
-                                tag="Blood"
-                                description="It's a blood test that measures glucose levels at any time of the day, regardless of when you last ate. It helps assess blood sugar control and detect diabetes."
-                                link={{ label: "Book Now", href: '/tests/67bd7997eb03aecfeb2f2331' }}
-                            />
-                            <Card
-                                label="Bilirubin, Total"
-                                tag="Blood"
-                                description="It's a blood test that measures bilirubin levels. It helps evaluate liver function and diagnose jaundice, liver disease, and hemolytic anemia."
-                                link={{ label: "Book Now", href: '/tests/67bc6495e0dc0a8cb0b61dc5' }}
-                            />
-                        </div>
-                    </div>
-                </section>
+                <FrequentRequiredTests />
                 <Promises />
                 <Packages />
                 <Achivements />
@@ -93,6 +45,65 @@ export default function Home() {
             <Footer />
         </>
     );
+}
+
+function FrequentRequiredTests() {
+    return (
+        <section className="mx-auto flex flex-col">
+            <h1 className="text-2xl sm:text-3xl font-semibold text-center px-4 mx-auto mt-4">Frequently Required Tests</h1>
+            <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-4"></div>
+            {/* <h1 className="text-2xl font-semibold">Frequently Required Tests</h1> */}
+            {/* <h1 className="text-xl font-semibold translate-y-full ml-2 bg-white w-fit px-2">Frequently Required Tests</h1> */}
+            <div className="mt-2 relative rounded-md w-full">
+                <div className="absolute -z-10 -top-64 md:-top-32 opacity-30 blur-sm w-full flex flex-col">
+                    <Image src={'/wave.svg'} width={960} height={540} alt="" className='w-full object-cover h-[100vh] md:h-[55vh] -z-10 top-0 bg-transparent' />
+                    <Image src={'/wave.svg'} width={960} height={540} alt="" className='w-full object-cover h-[100vh] md:h-[55vh] rotate-180 -z-10 top-0 bg-transparent' />
+
+                    {/* <div style={{ backgroundImage: `url(/wave.svg)` }} className="w-full h-[100vh] md:h-[55vh] object-cover bg-no-repeat bg-cover bg-center" />
+                            <div style={{ backgroundImage: `url(/wave.svg)` }} className="w-full h-[100vh] md:h-[55vh] object-cover bg-no-repeat bg-cover bg-center rotate-180" /> */}
+                </div>
+                {/* <div className="mt-4 p-3 md:p-5 border-2 border-primary border-opacity-40 border-dashed rounded-md bg-white w-full"> */}
+                <div className="w-full md:w-[95%] mx-auto pt-0 sm:pt-0 md:pt-0 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                    <Card
+                        label="Complete Blood Count (CBC)"
+                        tag="Blood"
+                        description="It measures red and white blood cells, hemoglobin, hematocrit, and platelets to assess overall health. It helps diagnose infections, anemia, and other blood disorders."
+                        link={{ label: "Book Now", href: '/tests/67a38ddca80c243e83d518ed' }}
+                    />
+                    <Card
+                        label="Fasting Blood Sugar (FBS)"
+                        tag="Blood"
+                        description="It's a blood test that measures glucose levels after an overnight fast. It helps diagnose diabetes, prediabetes, and monitor blood sugar control in diabetic patients."
+                        link={{ label: "Book Now", href: '/tests/67a44ab70daa8b678a7fa330' }}
+                    />
+                    <Card
+                        label="Thyroid Stimulating Hormone (TSH)"
+                        tag="Blood"
+                        description="It's a blood test that measures TSH levels to evaluate thyroid function. It helps diagnose hypothyroidism, hyperthyroidism, and monitor thyroid disorders."
+                        link={{ label: "Book Now", href: '/tests/67b9667ee39bde2a012634ca' }}
+                    />
+                    <Card
+                        label="Urine Examination (Routine)"
+                        tag="Urine"
+                        description="It analyzes urine for physical, chemical, and microscopic properties. It helps detect infections, kidney diseases, diabetes, and metabolic disorders."
+                        link={{ label: "Book Now", href: '/tests/67bd6412266fe37d1fb4e7a8' }}
+                    />
+                    <Card
+                        label="Random Blood Sugar (RBS)"
+                        tag="Blood"
+                        description="It's a blood test that measures glucose levels at any time of the day, regardless of when you last ate. It helps assess blood sugar control and detect diabetes."
+                        link={{ label: "Book Now", href: '/tests/67bd7997eb03aecfeb2f2331' }}
+                    />
+                    <Card
+                        label="Bilirubin, Total"
+                        tag="Blood"
+                        description="It's a blood test that measures bilirubin levels. It helps evaluate liver function and diagnose jaundice, liver disease, and hemolytic anemia."
+                        link={{ label: "Book Now", href: '/tests/67bc6495e0dc0a8cb0b61dc5' }}
+                    />
+                </div>
+            </div>
+        </section>
+    )
 }
 
 export function Promises({ heading }: { heading?: string }) {
@@ -120,11 +131,11 @@ export function Packages() {
             <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-3"></div>
             {/* <h1 className="text-2xl font-semibold w-fit">Our Services</h1> */}
             <ul className="mt-2 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                <CardType3 label="Full Body Test" link="/tests/cardiology" />
-                <CardType3 label="Premium Full Body Test" link="/tests/dentistry" />
-                <CardType3 label="Full Gastroenterology Test" link="/tests/dermatology" />
-                <CardType3 label="Full Urology Test" link="/tests/diabetes" />
-                <CardType3 label="Full Neurology Test" link="/tests/neurology" />
+                <CardType3 label="Full Body Test" link="/tests/67fa8db1144234ebc4c6fe06" icon={fullBodyTestIcon} />
+                <CardType3 label="Premium Full Body Test" link="/tests/67fa8ded144234ebc4c6fe14" icon={premiumFullBodyTestIcon} />
+                <CardType3 label="Full Gastroenterology Test" link="/tests/67fa8e33144234ebc4c6fe1d" icon={fullGastroenterologyTestIcon} />
+                <CardType3 label="Full Urology Test" link="/tests/67fa8e5b144234ebc4c6fe28" icon={fullUrologyTestIcon} />
+                <CardType3 label="Full Neurology Test" link="/tests/67fa8e80144234ebc4c6fe31" icon={fullNeurologyTestIcon} />
             </ul>
         </section>
     )
@@ -179,18 +190,18 @@ function CardType2({ label = "CBC", subText, description, icon, bgColor }: { lab
     )
 }
 
-function CardType3({ label = "Cardiology", link = "#" }: { label: string, link?: string, icon?: StaticImageData }) {
+function CardType3({ label = "Cardiology", link = "#", icon }: { label: string, link?: string, icon?: StaticImageData }) {
     return (
         <a href={link} className="shadow-md shadow-indigo-100 bg-white dark:bg-[#172A46] dark:shadow-black rounded-md p-2 py-6 border border-opacity-30 border-primary">
             <li className="flex flex-col items-center">
                 <figure>
-                    <Image
-                        src="https://healthworldhospitals.com/wp-content/themes/healthworld/images/home/department/Cardiology.svg"
+                    {icon && <Image
+                        src={icon}
                         alt=""
                         className="sr-icon"
-                        width={50}
-                        height={50}
-                    />
+                        width={80}
+                        height={80}
+                    />}
                 </figure>
                 <span className="text-primary text-center">{label}</span>
             </li>
