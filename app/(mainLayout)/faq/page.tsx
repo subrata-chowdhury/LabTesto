@@ -67,7 +67,7 @@ export default page;
 
 function DetailCardToggler({ title = '', description = '', className = '' }: { title?: string, description?: string, className?: string }) {
     return (
-        <div className="border-2 bg-white dark:bg-[#172A46] dark:border-gray-500 px-4 py-2.5 rounded-md w-full">
+        <div className={"border-2 bg-white dark:bg-[#172A46] dark:border-gray-500 px-4 py-2.5 rounded-md w-full " + className}>
             <input type="checkbox" id={title.toLowerCase().replace(/\s+/g, '')} className="peer hidden" />
 
             <label

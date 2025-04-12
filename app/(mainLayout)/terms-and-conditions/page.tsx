@@ -9,7 +9,7 @@ const page = () => {
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">Last Updated: <span className="font-medium">12/4/2025 at 10:00am</span></p>
 
             <p className="mb-4">
-                Welcome to our platform (<span className="italic">"Platform", "Service", "Website"</span>). Please read these Terms and Conditions (<span className="italic">"Terms", "Agreement"</span>) carefully before accessing, using, or registering on the website. By using this Platform, you (<span className="italic">"User", "You", "Your"</span>) agree to be legally bound by these Terms, which govern your access and use of all features, functionalities, services, and tools provided on the Platform.
+                Welcome to our platform (<span className="italic">&quot;Platform&quot;, &quot;Service&quot;, &quot;Website&quot;</span>). Please read these Terms and Conditions (<span className="italic">&quot;Terms&quot;, &quot;Agreement&quot;</span>) carefully before accessing, using, or registering on the website. By using this Platform, you (<span className="italic">&quot;User&quot;, &quot;You&quot;, &quot;Your&quot;</span>) agree to be legally bound by these Terms, which govern your access and use of all features, functionalities, services, and tools provided on the Platform.
             </p>
 
             <h2 className="text-xl font-semibold mt-6 mb-2">1. Acceptance of Terms</h2>
@@ -91,7 +91,7 @@ const page = () => {
 
             <h2 className="text-xl font-semibold mt-6 mb-2">10. User Conduct and Responsibilities</h2>
             <ul className="list-disc list-inside mb-4">
-                <li>Users agree to use the Platform for lawful purposes only and shall not engage in any activity that interferes with or disrupts the Platform's functionality.</li>
+                <li>Users agree to use the Platform for lawful purposes only and shall not engage in any activity that interferes with or disrupts the Platform&apos;s functionality.</li>
                 <li>You may not misuse the Platform by knowingly introducing viruses, Trojans, worms, or other malicious software.</li>
                 <li>Any form of attempted unauthorized access to other user accounts, lab data, or backend systems will be considered a criminal offense and may lead to legal action.</li>
                 <li>Any attempt to copy, reproduce, distribute, or exploit Platform content for commercial purposes without written consent from the Company is strictly prohibited.</li>
@@ -115,7 +115,7 @@ const page = () => {
                     <li>Unauthorized access to or use of our servers and/or personal information</li>
                     <li>Any malware, viruses, or harmful code transmitted through the Platform</li>
                 </ul>
-                <li>The Company provides all services on an "as-is" and "as-available" basis. No warranties, either express or implied, are made regarding the reliability, availability, accuracy, or completeness of the Platform or services.</li>
+                <li>The Company provides all services on an &quot;as-is&quot; and &quot;as-available&quot; basis. No warranties, either express or implied, are made regarding the reliability, availability, accuracy, or completeness of the Platform or services.</li>
             </ul>
 
             <h2 className="text-xl font-semibold mt-6 mb-2">13. Termination of Access</h2>

@@ -134,7 +134,7 @@ function CookiePolicy() {
 
             <h3 className="text-lg font-medium mt-4 mb-2">3.2. Performance Cookies</h3>
             <p className="mb-4">
-                These cookies collect anonymous data on how users interact with the platform—such as pages visited and error messages—so we can improve the site's performance.
+                These cookies collect anonymous data on how users interact with the platform—such as pages visited and error messages—so we can improve the site&apos;s performance.
             </p >
 
             <h3 className="text-lg font-medium mt-4 mb-2">3.3. Functionality Cookies</h3>
