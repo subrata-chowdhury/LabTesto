@@ -1,7 +1,7 @@
 import SelectLab from '@/app/components/SelectLab'
 import Model from '@/components/Model'
 import PatientDetailsPopup, { PatientDetails } from "@/app/components/popups/PatientDetailsPopup";
-import SelectTest from '@/app/components/SelectTest'
+// import SelectTest from '@/app/components/SelectTest'
 import React, { useState } from 'react'
 import { Item } from './OrderForm';
 import Image from 'next/image'
@@ -10,6 +10,7 @@ import { MainTable } from '@/components/Table';
 import plusIcon from '@/assets/blue-plus.svg'
 import TrashBinIcon from '@/assets/reactIcon/TrashBin';
 import { toast } from 'react-toastify';
+import AdminTestSelector from '../../components/AdminTestSelector';
 
 export default function OrderPopup({ item, onSave, onClose }: { item: Item, onSave: (item: Item) => void, onClose: () => void }) {
     const [itemData, setItemData] = useState<Item>(item || { product: { test: '', lab: '', price: 0 }, patientDetails: [], quantity: 1 });
@@ -34,7 +35,7 @@ export default function OrderPopup({ item, onSave, onClose }: { item: Item, onSa
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
                     <div className='flex flex-col gap-1'>
                         <label className='font-medium'>Test</label>
-                        <SelectTest onSelect={val => {
+                        <AdminTestSelector onSelect={val => {
                             setItemData({ ...itemData, product: { ...itemData?.product, test: val } })
                             setPriceDetails(val.labsDetails)
                         }} />

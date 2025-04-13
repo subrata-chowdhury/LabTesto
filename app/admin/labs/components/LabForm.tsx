@@ -6,10 +6,11 @@ import TrashBinIcon from '@/assets/reactIcon/TrashBin'
 import Model from '@/components/Model'
 import TagInput from '@/components/Inputs/TagInput'
 import Input from '@/components/Inputs/Input'
-import SelectTest from '@/app/components/SelectTest'
+// import SelectTest from '@/app/components/SelectTest'
 import { toast } from 'react-toastify'
 import fetcher from '@/lib/fetcher'
 import { useParams } from 'next/navigation'
+import AdminTestSelector from '../../components/AdminTestSelector'
 
 type Props = {
     labDetails: LabTestDetails,
@@ -139,7 +140,7 @@ function TestDetailsPopup({ details, onClose, onSave }: { details: TestsDetails,
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-6 pt-2 text-sm'>
                 <label className="flex flex-col gap-1">
                     Test *
-                    <SelectTest
+                    <AdminTestSelector
                         onSelect={val => setTestDetails(prevVal => ({ ...prevVal, test: val._id, name: val.name }))} />
                 </label>
             </div>

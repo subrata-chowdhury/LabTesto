@@ -4,7 +4,6 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import Link from 'next/link';
 import SelectTest from './SelectTest';
-import { useRouter } from 'next/navigation';
 import fetcher from '@/lib/fetcher';
 import logout from '@/assets/Menubar/logout.svg'
 import { useItemCountContext } from '../contexts/ItemCountContext';
@@ -25,7 +24,6 @@ const Menubar = () => {
     const [showProfilePopup, setShowProfilePopup] = useState(false);
     const [active, setActive] = useState(false);
     const { itemCount, setItemCount } = useItemCountContext();
-    const navigate = useRouter();
 
     useEffect(() => {
         fetcher.get<{ items: number }>('/cart/count').then(res => {
@@ -77,7 +75,7 @@ const Menubar = () => {
                     <Link href="/contact" className="text-primary menu flex">Contact&nbsp;<span className='hidden lg:block'>Us</span></Link>
                 </div>
                 <div className='hidden ms-6 md:block mr-5'>
-                    <SearchBar onSelect={(test) => navigate.push('/tests/' + test._id)} active={true} />
+                    <SearchBar active={true} />
                 </div>
                 {isLoggedIn ?
                     <>

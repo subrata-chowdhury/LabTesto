@@ -12,9 +12,12 @@ import Slide from "../components/Slide";
 import Footer from "../components/Footer";
 import { LinkArrowIcon } from "@/assets/reactIcon/LinkArrow";
 import Link from "next/link";
-import slide1 from '@/assets/HomePage/Slides/slide1.png'
-import slide2 from '@/assets/HomePage/Slides/slide2.png'
-import slide3 from '@/assets/HomePage/Slides/slide3.png'
+import slide1Light from '@/assets/HomePage/Slides/slide1-light.webp'
+import slide1Dark from '@/assets/HomePage/Slides/slide1-dark.webp'
+import slide2Light from '@/assets/HomePage/Slides/slide2-light.webp'
+import slide2Dark from '@/assets/HomePage/Slides/slide2-dark.webp'
+import slide3Light from '@/assets/HomePage/Slides/slide3-light.png'
+import slide3Dark from '@/assets/HomePage/Slides/slide3-dark.png'
 import fullBodyTestIcon from '@/assets/HomePage/packages/full-body-test.png'
 import premiumFullBodyTestIcon from '@/assets/HomePage/packages/premium-full-body-test.webp'
 import fullGastroenterologyTestIcon from '@/assets/HomePage/packages/full-gastroenterology-test.png'
@@ -32,9 +35,9 @@ export default function Home() {
                     <Slide
                         slides={3}
                         slideElement={({ slide }) => {
-                            if (slide === 1) return <Image className="h-96 mx-auto object-scale-down" src={slide1} alt="" />
-                            if (slide === 2) return <Image className="h-96 mx-auto object-scale-down" src={slide2} alt="" />
-                            if (slide === 3) return <Image className="h-96 mx-auto object-scale-down" src={slide3} alt="" />
+                            if (slide === 1) return <SlideImage imgLight={slide1Light} imgDark={slide1Dark} />
+                            if (slide === 2) return <SlideImage imgLight={slide2Light} imgDark={slide2Dark} />
+                            if (slide === 3) return <SlideImage imgLight={slide3Light} imgDark={slide3Dark} />
                         }} />
                 </section>
                 <FrequentRequiredTests />
@@ -103,6 +106,15 @@ function FrequentRequiredTests() {
                 </div>
             </div>
         </section>
+    )
+}
+
+function SlideImage({ imgLight, imgDark }: { imgLight: StaticImageData, imgDark: StaticImageData }) {
+    return (
+        <>
+            <Image className="h-96 mx-auto object-scale-down dark:hidden block" src={imgLight} alt="" />
+            <Image className="h-96 mx-auto object-scale-down hidden dark:block" src={imgDark} alt="" />
+        </>
     )
 }
 
