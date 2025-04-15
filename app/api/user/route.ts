@@ -55,3 +55,29 @@ export async function POST(req: NextRequest) {
         return new NextResponse('Error updating user details', { status: 500 });
     }
 }
+
+export async function DELETE(req: NextRequest) {
+    const id = await req.headers.get('x-user');
+
+    if (!id) {
+        return new NextResponse('User ID is required', { status: 400 });
+    }
+
+    try {
+        await dbConnect();
+
+        const user = await User.findById(id);
+
+        if (!user) {
+            return new NextResponse('User not found', { status: 404 });
+        }
+
+        user.isDeleted = true;
+        await user.save();
+
+        return NextResponse.json({ message: 'User deleted successfully' }, { status: 200 });
+    } catch (e) {
+        console.log(e);
+        return new NextResponse('Error deleting user', { status: 500 });
+    }
+}

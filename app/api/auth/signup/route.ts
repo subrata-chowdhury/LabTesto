@@ -27,6 +27,22 @@ export async function POST(request: NextRequest) {
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
+        if (existingUser.isDeleted) {
+            existingUser.isDeleted = false;
+            existingUser.password = hashedPassword;
+            await existingUser.save();
+
+            const token = await new SignJWT({
+                id: existingUser._id,
+                verified: existingUser.verified,
+            })
+                .setProtectedHeader({ alg: 'HS256' })
+                .setExpirationTime(Math.floor(Date.now() / 1000) + 3 * 30 * 24 * 60 * 60) // 6 months
+                .sign(new TextEncoder().encode(process.env.JWT_SECRET));
+
+            return NextResponse.json({ message: 'User reactivated successfully', user: { verified: false, name: existingUser.name, email: existingUser.email }, token });
+        }
+        // User already exists, return an error response
         return new NextResponse('User already exists. Please log in.', { status: 400 });
     }
 

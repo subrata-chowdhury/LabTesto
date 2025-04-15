@@ -20,23 +20,7 @@ export async function POST(req: NextRequest) {
     await dbConnect();
 
     try {
-        async function findByEmail(email: string) {
-            const collections = [Collector];
-
-            const promises = collections.map((collection) =>
-                (collection as typeof Collector).findOne({ email }).exec().then((result: InstanceType<typeof Collector> | null) => ({ model: collection.modelName, data: result }))
-            );
-
-            const results = await Promise.all(promises);
-
-            const user = results.find(result => result.data !== null);
-            if (user) {
-                return { ...user.data.toObject(), type: user.model };
-            }
-            return null;
-        }
-
-        const user = await findByEmail(email);
+        const user = await Collector.findOne({ email, isDeleted: false });;
 
         if (!user) {
             return new NextResponse('Invalid email or password', { status: 406 });

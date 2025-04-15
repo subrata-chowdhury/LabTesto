@@ -23,6 +23,7 @@ interface IUser extends Document {
     verified: boolean;
     otp?: string;
     otpExpiry?: Date;
+    isDeleted: boolean;
 
     createdAt: Date;
     updatedAt: Date;
@@ -55,6 +56,7 @@ const UserSchema: Schema = new Schema({
     verified: { type: Boolean, default: false },
     otp: { type: String, required: false },
     otpExpiry: { type: Date, required: false },
+    isDeleted: { type: Boolean, default: false },
 }, { collection: 'users', timestamps: true });
 
 const User = mongoose.models.User || mongoose.model<IUser>('User', UserSchema);

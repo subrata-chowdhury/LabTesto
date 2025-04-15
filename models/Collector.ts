@@ -19,6 +19,7 @@ export interface ICollector extends Document {
     verified: boolean;
     otp?: string;
     otpExpiry?: Date;
+    isDeleted: boolean;
 
     rating: number;
     rated: number;
@@ -48,6 +49,7 @@ const CollectorSchema: Schema = new Schema({
     verified: { type: Boolean, default: false },
     otp: { type: String, required: false },
     otpExpiry: { type: Date, required: false },
+    isDeleted: { type: Boolean, default: false },
 
     rating: { type: Number, required: false, default: 0 },
     rated: { type: Number, required: false, default: 0 },
