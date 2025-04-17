@@ -5,16 +5,17 @@ import crossIcon from '@/assets/cross.svg'
 type Props = {
     label?: string,
     values?: string[],
+    className?: string,
     onChange?: (val: string[]) => void,
     error?: string
 }
 
-const TagInput = ({ label, values = [], onChange = () => { }, error = '' }: Props) => {
+const TagInput = ({ label, values = [], onChange = () => { }, className = '', error = '' }: Props) => {
     const [tag, setTag] = useState<string>('');
     const inputContainer = useRef<HTMLInputElement>(null);
 
     return (
-        <div className='flex flex-col gap-1 rounded' onClick={() => inputContainer.current?.focus()}>
+        <div className={'flex flex-col gap-1 rounded '+ className} onClick={() => inputContainer.current?.focus()}>
             {label && <div className='font-medium'>{label}</div>}
             <div className='gap-2 border-2 rounded px-3 py-2 max-h-44 min-h-20 overflow-y-auto'>
                 {values.length > 0 && values.map((tag, index) =>

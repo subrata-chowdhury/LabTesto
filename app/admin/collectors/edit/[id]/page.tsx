@@ -44,7 +44,8 @@ const Page = () => {
                 phone: res.body.phone,
                 adhaar: res.body.adhaar,
                 experience: res.body.experience,
-                qualification: res.body.qualification
+                qualification: res.body.qualification,
+                reachableAreas: res.body.reachableAreas
             });
     }
 

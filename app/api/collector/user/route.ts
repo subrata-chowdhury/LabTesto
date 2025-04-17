@@ -33,23 +33,19 @@ export async function POST(req: NextRequest) {
     try {
         await dbConnect();
 
-        const user = await Collector.findById(id);
+        const newUserDetails = {
+            name: reqBody.name,
+            email: reqBody.email,
+            phone: reqBody.phone,
+            reachableAreas: reqBody.reachableAreas,
+        }
+
+        const user = await Collector.findByIdAndUpdate(id, newUserDetails, { new: true, runValidators: true })
+            .select('-password -otp -otpExpiry');
 
         if (!user) {
             return new NextResponse('User not found', { status: 404 });
         }
-
-        if (reqBody.name) user.name = reqBody.name || user.name;
-        if (reqBody.email) user.email = reqBody.email || user.email;
-        if (reqBody.phone) user.phone = reqBody.phone || user.phone;
-        // user.patientDetails = reqBody.patientDetails || user.patientDetails;
-        // user.address = reqBody.address || user.address;
-        if (reqBody.reachableAreas) user.reachableAreas = reqBody.reachableAreas || user.reachableAreas;
-        if (reqBody.reachableAreas) user.reachableAreas = reqBody.reachableAreas || user.reachableAreas;
-
-        await user.save();
-
-        user.password = "";
 
         return NextResponse.json(user, { status: 200 });
     } catch (e) {

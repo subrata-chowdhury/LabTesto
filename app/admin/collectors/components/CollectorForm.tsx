@@ -10,6 +10,7 @@ import { MainTable } from '@/components/Table'
 import plusIcon from '@/assets/blue-plus.svg'
 import Model from '@/components/Model'
 import TrashBinIcon from '@/assets/reactIcon/TrashBin'
+import TagInput from '@/components/Inputs/TagInput'
 
 type Props = {
     collectorDetails: CollectorDetails,
@@ -40,7 +41,11 @@ const CollectorForm = ({ collectorDetails, error, onChange, onSave = () => { } }
                 <Input label='Adhaar' name='adhaar' placeholder='Enter adhaar number' value={collectorDetails.adhaar || ''} onChange={(val) => onChange.collectorDetails({ ...collectorDetails, adhaar: val })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'adhaar' ? error.msg : ""} />
                 <Input label='Experience' name='experience' type='number' placeholder='Enter experience in years' value={collectorDetails.experience?.toString() || ''} onChange={(val) => onChange.collectorDetails({ ...collectorDetails, experience: parseInt(val || '0') })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'experience' ? error.msg : ""} />
             </div>
-            <div className='pb-4 flex justify-between font-semibold  pt-5 border-t-2'>
+            <div className='pb-4 flex flex-col gap-1 justify-between'>
+                <div className='font-medium text-sm'>Reachable Areas</div>
+                <TagInput className='w-full' values={collectorDetails.reachableAreas} onChange={vals => onChange.collectorDetails({ ...collectorDetails, reachableAreas: vals })} />
+            </div>
+            <div className='pb-4 flex justify-between font-semibold pt-5 border-t-2'>
                 Qualification
                 <div
                     className='ms-auto flex gap-2 font-semibold text-sm text-blue-500 border-2 border-blue-500 px-4 py-2 rounded cursor-pointer'
@@ -106,7 +111,7 @@ export type CollectorDetails = {
     email: string;
     password: string;
     phone?: string;
-
+    reachableAreas?: string[];
     adhaar?: string;
     experience?: number;
     qualification?: Qualification[];

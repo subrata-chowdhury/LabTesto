@@ -75,9 +75,10 @@ export async function POST(req: NextRequest) {
         adhaar: body.adhaar,
         experience: body.experience,
         qualification: body.qualification,
-        verified: body.verified,
-        otp: body.otp,
-        otpExpiry: body.otpExpiry,
+        reachableAreas: body.reachableAreas,
+        // verified: body.verified,
+        // otp: body.otp,
+        // otpExpiry: body.otpExpiry,
     };
 
     const collector = new Collector(collectorData);
