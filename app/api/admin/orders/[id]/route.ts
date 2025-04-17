@@ -38,11 +38,8 @@ export async function DELETE(req: NextRequest) {
     try {
         const id = req.url.split('/').pop();
         await dbConnect();
-
-        const cart = await Order.findByIdAndDelete(id);
-        if (!cart) {
-            return new NextResponse('Order not found', { status: 404 });
-        }
+        
+        await Order.findByIdAndDelete(id);
         return new NextResponse('Order deleted', { status: 204 });
     } catch {
         return new NextResponse('Error deleting order', { status: 500 });

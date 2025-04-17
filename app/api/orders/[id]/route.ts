@@ -17,8 +17,12 @@ export async function GET(req: NextRequest) {
         await dbConnect();
 
         try {
-            const order = await Order.findOne({ _id: id, user: userId }).populate({ path: 'items.product.test', model: Test }).populate({ path: 'items.product.lab', model: Lab }).populate({ path: 'collector', model: Collector });
+            const order = await Order.findOne({ _id: id, user: userId })
+                .populate({ path: 'items.product.test', model: Test, select: 'name' })
+                .populate({ path: 'items.product.lab', model: Lab, select: 'name location' })
+                .populate({ path: 'collector', model: Collector, select: 'name email phone' });
 
+            if (!order) return new NextResponse('Order not found', { status: 404 });
             return NextResponse.json(order, { status: 200 });
         } catch (e) {
             console.log(e)

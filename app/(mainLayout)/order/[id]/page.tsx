@@ -15,20 +15,24 @@ function OrderPage() {
     const [showPatientPopup, setShowPatientPopup] = useState<{ itemIndex: number, patientIndex: number } | null>(null);
     const [showReviewModel, setShowReviewModel] = useState<{ orderId: string, item: { test: string, lab: string }, index: number } | null>(null);
     const [showConfirmPopup, setShowConfirmPopup] = useState<boolean>(false);
+    const [loading, setLoading] = useState(false);
     const { id } = useParams();
 
     const fetchOrderDetails = useCallback(async () => {
+        setLoading(true)
         try {
             const response = await fetcher.get<Order>('/orders/' + id);
             if (response.status !== 200) {
-                throw new Error('Failed to fetch order');
+                toast.error(response.error || 'Unable to fetch order details')
             }
+            if (response.status === 200) setLoading(false)
             if (response.body) {
                 return (response.body);
             }
         } catch {
             toast.error("Unable to fetch data")
         }
+        setLoading(false)
     }, [id])
 
     useEffect(() => {
@@ -38,7 +42,8 @@ function OrderPage() {
         startUp()
     }, [fetchOrderDetails])
 
-    if (!order) return <Loading />
+    if (loading) return <Loading />
+    if (!order) return <div className='flex justify-center items-center h-screen text-red-500'>Order Not Found</div>
 
     return (
         <div className='flex-1 flex flex-col gap-4 bg-gray-100 dark:bg-[#0A192F] px-5 py-4'>

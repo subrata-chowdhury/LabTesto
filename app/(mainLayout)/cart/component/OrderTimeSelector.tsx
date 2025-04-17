@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { toast } from "react-toastify";
 
 
-export default function OrderTimeSelector({ onClose, onChange }: { onClose: () => void, onChange: (sampleTakenDateTime: { start: Date, end: Date }) => void }) {
+export default function OrderTimeSelector({ excludeTimes = [], onClose, onChange }: { excludeTimes?: string[], onClose: () => void, onChange: (sampleTakenDateTime: { start: Date, end: Date }) => void }) {
     const sampleStartTime = useRef<Date | null>(null)
     const sampleEndTime = useRef<Date | null>(null)
     const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
@@ -32,6 +32,7 @@ export default function OrderTimeSelector({ onClose, onChange }: { onClose: () =
                             }
                             for (let i = minHr; i <= 12; i++) {
                                 const time = new Date(0, 0, 0, 6 + i, 0);
+                                if (excludeTimes.includes(time.toTimeString().split(' ')[0])) continue;
                                 const time2 = new Date(0, 0, 0, 6 + i, 30);
                                 times.push(`${time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })} - ${time2.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`);
                             }

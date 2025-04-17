@@ -17,7 +17,7 @@ const Page = () => {
     });
 
     const handleSave = async () => {
-        const res = await fetcher.post('/collectors', collectorDetails);
+        const res = await fetcher.post('/admin/collectors', collectorDetails);
         if (res.status === 200) {
             toast.success('Collector saved successfully');
             console.log('Collector details saved:', collectorDetails);

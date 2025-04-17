@@ -4,7 +4,6 @@ import Cart, { ICart } from '@/models/Cart';
 import { NextRequest, NextResponse } from 'next/server';
 import Lab from '@/models/Lab';
 import Test, { ITest } from '@/models/Test';
-import User from '@/models/User';
 
 export async function GET(req: NextRequest) {
     const id = await req.headers.get('x-user');
@@ -16,19 +15,10 @@ export async function GET(req: NextRequest) {
     await dbConnect();
 
     try {
-        const cart = await Cart.findOne({ user: id }).populate({ path: 'items.product.test', model: Test }).populate({ path: 'items.product.lab', model: Lab }).populate({ path: 'user', model: User }).lean() as unknown as ICart;
-        const labs = cart.items.map((item) => item.product.lab._id.toString());
-
-        cart.items.forEach((item => {
-            (item.product.test as unknown as ITest).labsDetails = Object.fromEntries(
-                Object.entries((item.product.test as unknown as ITest)?.labsDetails || {}).filter(([key]) => labs.includes(key))
-            );
-            const priceDetails = ((item.product.test as unknown as ITest)?.labsDetails?.[item.product.lab?._id?.toString()]);
-            if (priceDetails) {
-                delete priceDetails.expenses;
-                // (item.product.test as unknown as ITest).labsDetails = { [item.product.lab?._id?.toString()]: priceDetails };
-            }
-        }));
+        const cart = await Cart.findOne({ user: id })
+            .populate({ path: 'items.product.test', model: Test })
+            .populate({ path: 'items.product.lab', model: Lab })
+            .lean() as unknown as ICart;
 
         if (!cart) {
             const cartData = {
@@ -46,6 +36,18 @@ export async function GET(req: NextRequest) {
                 return new NextResponse('Error creating cart', { status: 500 });
             }
         }
+
+        cart.items.forEach((item) => {
+            const test = item.product.test as unknown as ITest;
+            const labId = item.product.lab?._id?.toString();
+
+            if (test && test.labsDetails && labId) {
+                const labDetails = test.labsDetails[labId];
+                if (labDetails) {
+                    delete labDetails.expenses;
+                }
+            }
+        });
 
         return NextResponse.json(cart, { status: 200 });
     } catch (e) {

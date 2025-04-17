@@ -4,7 +4,6 @@ import Order from '@/models/Order';
 import { NextRequest, NextResponse } from 'next/server';
 import Cart from '@/models/Cart';
 import Test, { ITest } from '@/models/Test';
-import Lab from '@/models/Lab';
 import Collector, { ICollector } from '@/models/Collector';
 
 export async function GET(req: NextRequest) {
@@ -38,8 +37,7 @@ export async function GET(req: NextRequest) {
             const order = await Order.find({ ...filter, user: id })
                 .limit(limit)
                 .skip((page - 1) * limit)
-                .populate({ path: 'items.product.test', model: Test })
-                .populate({ path: 'items.product.lab', model: Lab })
+                .populate({ path: 'items.product.test', model: Test, select: 'name' })
                 .sort({ createdAt: -1 }); // Sort by createdAt in descending order
 
 

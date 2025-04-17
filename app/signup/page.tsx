@@ -116,8 +116,8 @@ export default function Signup() {
                             placeholder="Confirm Password" />
                     </div> */}
                     <div className="w-full">
-                    <button type="submit" className="bg-primary text-white w-full rounded p-2" disabled={loading}>{loading ? 'Signing Up...' : 'Sign Up'}</button>
-                        <div className="text-xs">By Signing in You are Accepting our <Link href={'/terms-and-conditionss'} className="text-blue-600 font-semibold">Terms & Conditions</Link> and <Link href={'/privacy-policy'} className="text-blue-600 font-semibold">Privacy Policy</Link></div>
+                        <button type="submit" className="bg-primary text-white w-full rounded p-2 mb-0.5" disabled={loading}>{loading ? 'Signing Up...' : 'Sign Up'}</button>
+                        <div className="text-xs">By Signing in You are Accepting our <Link href={'/terms-and-conditions'} className="text-blue-600 font-semibold">Terms & Conditions</Link> and <Link href={'/privacy-policy'} className="text-blue-600 font-semibold">Privacy Policy</Link></div>
                     </div>
                     <div className="flex flex-col">
                         <div className="text-[0.9rem] text-center text-slate-500 dark:text-gray-400">Already have an account?</div>

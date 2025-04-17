@@ -21,6 +21,8 @@ export const OrderDetailsCard = ({ order, onPass }: { order: Order, onPass: (ord
                         if (res.body && res.status === 200) {
                             onPass(order);
                             toast.success('Order Passed to another collector');
+                        } else {
+                            toast.error(res.error || 'Unable to Pass the order')
                         }
                     }}>Pass</button>}
             </div>

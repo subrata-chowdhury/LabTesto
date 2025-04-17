@@ -55,10 +55,6 @@ const OrderPage = () => {
         return <div className="flex justify-center items-center h-screen text-red-500">Please Reload Your Page Or Click &nbsp;<button onClick={() => window.location.reload()}>Reload</button></div>;
     }
 
-    if (orders?.length <= 0) {
-        return <div className="flex justify-center items-center h-screen">No items in the order</div>;
-    }
-
     return (
         <div className="flex-1 flex flex-col p-4 bg-gray-100 dark:bg-[#0A192F] min-h-screen">
             <h1 className="text-2xl font-bold">Ordered Items</h1>
@@ -75,25 +71,30 @@ const OrderPage = () => {
                     </button>
                 ))}
             </div>
-            <ul className="space-y-3 h-fit">
-                {orders.map((order, outerIndex) => (
-                    <li
-                        key={outerIndex}
-                        onClick={() => navigate.push('/order/' + order._id)}
-                        className="bg-white dark:bg-[#172A46] border-2 dark:border-gray-500 rounded-lg shadow-md shadow-indigo-100 dark:shadow-black cursor-pointer p-3 px-4 flex justify-between items-center">
-                        <div>
-                            <div className="text-lg font-semibold text-primary">{order.items.map(e => e.product.test.name).join(', ')}</div>
-                            <div className='text-sm text-gray-800 dark:text-gray-300'><span className={order.status === "Canceled" ? 'text-red-500' : (order.status === 'Report Delivered' ? 'text-green-600' : '')}>{order.status}</span>, {new Date(order.updatedAt).toDateString()}</div>
+            {
+                (orders?.length <= 0) ? <div className="flex justify-center items-center h-screen">No items in the order</div> :
+                    <>
+                        <ul className="space-y-3 h-fit">
+                            {orders.map((order, outerIndex) => (
+                                <li
+                                    key={outerIndex}
+                                    onClick={() => navigate.push('/order/' + order._id)}
+                                    className="bg-white dark:bg-[#172A46] border-2 dark:border-gray-500 rounded-lg shadow-md shadow-indigo-100 dark:shadow-black cursor-pointer p-3 px-4 flex justify-between items-center">
+                                    <div>
+                                        <div className="text-lg font-semibold text-primary">{order.items.map(e => e.product.test.name).join(', ')}</div>
+                                        <div className='text-sm text-gray-800 dark:text-gray-300'><span className={order.status === "Canceled" ? 'text-red-500' : (order.status === 'Report Delivered' ? 'text-green-600' : '')}>{order.status}</span>, {new Date(order.updatedAt).toDateString()}</div>
+                                    </div>
+                                    <div>
+                                        ❯
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                        <div className='mt-4'>
+                            <Pagination currentPage={currentPage} totalPages={totalPages} onChange={setCurrentPage} />
                         </div>
-                        <div>
-                            ❯
-                        </div>
-                    </li>
-                ))}
-            </ul>
-            <div className='mt-4'>
-                <Pagination currentPage={currentPage} totalPages={totalPages} onChange={setCurrentPage} />
-            </div>
+                    </>
+            }
             {
                 showReviewModel && <ReviewModel
                     onSave={async review => {

@@ -19,8 +19,8 @@ export async function GET(req: NextRequest) {
 
         try {
             const order = await Order.findOne({ _id: id, collector: userId })
-                .populate({ path: 'items.product.test', model: Test })
-                .populate({ path: 'items.product.lab', model: Lab })
+                .populate({ path: 'items.product.test', model: Test, select: 'name' })
+                .populate({ path: 'items.product.lab', model: Lab, select: 'name location' })
                 .populate({ path: 'user', model: User })
                 .populate({ path: 'collector', model: Collector });
 
