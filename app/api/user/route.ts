@@ -33,7 +33,15 @@ export async function POST(req: NextRequest) {
     try {
         await dbConnect();
 
-        const user = await User.findByIdAndUpdate(id, reqBody, { new: true, runValidators: true })
+        const newUserDetails = {
+            name: reqBody.name,
+            email: reqBody.email,
+            phone: reqBody.phone,
+            patientDetails: reqBody.patientDetails,
+            address: reqBody.address,
+        }
+
+        const user = await User.findByIdAndUpdate(id, newUserDetails, { new: true, runValidators: true })
             .select('-password -otp -otpExpiry');
 
         if (!user) {
