@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
         const user = await User.findById(id).select('-password -otp -otpExpiry');
 
         return NextResponse.json(user, { status: 200 });
-    } catch(e) {
+    } catch (e) {
         console.log(e)
         return new NextResponse('Error fetching user details', { status: 500 });
     }
@@ -33,21 +33,12 @@ export async function POST(req: NextRequest) {
     try {
         await dbConnect();
 
-        const user = await User.findById(id);
+        const user = await User.findByIdAndUpdate(id, reqBody, { new: true, runValidators: true })
+            .select('-password -otp -otpExpiry');
 
         if (!user) {
             return new NextResponse('User not found', { status: 404 });
         }
-
-        user.name = reqBody.name || user.name;
-        user.email = reqBody.email || user.email;
-        user.phone = reqBody.phone || user.phone;
-        user.patientDetails = reqBody.patientDetails || user.patientDetails;
-        user.address = reqBody.address || user.address;
-
-        await user.save();
-
-        user.password = "";
 
         return NextResponse.json(user, { status: 200 });
     } catch (e) {
