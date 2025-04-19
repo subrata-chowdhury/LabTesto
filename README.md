@@ -6,19 +6,21 @@ It is a full stack web app where user can book any medical test from any lab. It
 1. User can **search any Tests** without logging in.
 2. User can **view test and lab details** wihout loggin in.
 3. Has **login, sign up** feature.
+4. **Passwords** that are send via API are **end to end encrypted** with server / backend.
+7. User can **reset there password**.
 4. User can **order** any tests.
 5. User can **select any lab** for the test.
 6. User can **store multiple patient and address** details.
-7. User can **reset there password**.
 8. User can view **previously ordered** tests.
 9. User can **see** assign **collector details** for specific orders.
 10. User **can cancel the order** before Sample Collection.
 11. User can **view / change** his **profile details**.
-12. User data are **secure** and **no one can access** other user's data by other users.
+12. User data are **secure** and **no one can access** another user's data by other users.
 13. User can leave a **review** after all the order's procedure is completed.
 14. User can **put** there **tests in cart**.
 15. User can choose to **provide the patient details at the collection time**.
 16. User can **contact** through contact form.
+17. UI has both **light and dark theme**.
 
 ### Admin Features:
 1. Admin User can **add, edit & delete** any **Tests, Labs, User, Collectors & Orders**.
@@ -27,6 +29,15 @@ It is a full stack web app where user can book any medical test from any lab. It
 4. Admin User can also check **data misses** for any Labs.
 5. Admin Users has **top level permissions** to the entire database.
 6. **Has a rich text editor** with many features like table, alignment, bold, italic, underline, fontsize, links and many more.
+
+### Collector Account Features:
+1. Can see **notifications group by Status** like Orders that need to be **sample collected today / report delivery / sample delivery to lab** etc.
+2. Can see there **previously assigned orders**.
+3. Can add or change **reachable zones** (if order's location does not match with that collector he/she will not be assign with that order).
+4. Can **pass an order to a different collector** if the current collector is not comfortable with that order requirements.
+5. Can see some **basic details** like **Total Number of Order** that he/she recieved, **Total Number of Completed Order**s etc.
+6. Can **view** every **details** related to the **assigned Order** to the collector.
+7. Can **edit only status and paid value of the Order** which are assigned to him/her also status can be updated in a specific order **(collector can't directly change from Order status to Report Delivered status)**.
 
 ### Routes
 **`/admin`**: This route contains **all the admin pages** for the app where admins can add/edit/delete tests, labs make a order for users. <br/>
