@@ -33,9 +33,9 @@ It is a full stack web app where user can book any medical test from any lab. It
 ### Collector Account Features:
 1. Can see **notifications group by Status** like Orders that need to be **sample collected today / report delivery / sample delivery to lab** etc.
 2. Can see there **previously assigned orders**.
-3. Can add or change **reachable zones** (if order's location does not match with that collector he/she will not be assign with that order).
+3. Can add or change **reachable zones** (if order's location does not match with that collector then he/she will not be assign with that order).
 4. Can **pass an order to a different collector** if the current collector is not comfortable with that order requirements.
-5. Can see some **basic details** like **Total Number of Order** that he/she recieved, **Total Number of Completed Order**s etc.
+5. Can see some **basic details** like **Total Number of Order** that collector recieved, **Total Number of Completed Order**s etc.
 6. Can **view** every **details** related to the **assigned Order** to the collector.
 7. Can **edit only status and paid value of the Order** which are assigned to him/her also status can be updated in a specific order **(collector can't directly change from Order status to Report Delivered status)**.
 
