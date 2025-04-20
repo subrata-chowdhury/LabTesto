@@ -76,6 +76,7 @@ export async function POST(req: NextRequest) {
         experience: body.experience,
         qualification: body.qualification,
         reachableAreas: body.reachableAreas,
+        chatId: body.chatId,
         // verified: body.verified,
         // otp: body.otp,
         // otpExpiry: body.otpExpiry,

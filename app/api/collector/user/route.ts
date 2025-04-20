@@ -38,6 +38,7 @@ export async function POST(req: NextRequest) {
             email: reqBody.email,
             phone: reqBody.phone,
             reachableAreas: reqBody.reachableAreas,
+            chatId: reqBody.chatId,
         }
 
         const user = await Collector.findByIdAndUpdate(id, newUserDetails, { new: true, runValidators: true })
