@@ -321,7 +321,7 @@ const DetailsSection = memo(({ labBaseDetails, testDetails }: {
                         {(testDetails?.overview || '').replace(/<[^>]*>/g, '').length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, overview: !seeMore.overview })}>See {!seeMore.overview ? 'More' : 'Less'}</div>}
                     </div>
                 </div>}
-                {(testDetails?.description || '').replace(/<br\/>/g, '').length > 0 && <div className='flex justify-start gap-2'>
+                {(testDetails?.description || '').replace(/<[^>]*>/g, '').length > 0 && <div className='flex justify-start gap-2'>
                     <DescriptionIcon />
                     <div className='flex-1 flex flex-col gap-1'>
                         <h2 className='font-semibold text-xl'>Description</h2>
@@ -341,7 +341,7 @@ const DetailsSection = memo(({ labBaseDetails, testDetails }: {
                         {(testDetails.testResultInterpretation || '').replace(/<[^>]*>/g, '').length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, testResultInterpretation: !seeMore.testResultInterpretation })}>See {!seeMore.testResultInterpretation ? 'More' : 'Less'}</div>}
                     </div>
                 </div>}
-                {(testDetails?.riskAssesment || '').length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
+                {(testDetails?.riskAssesment || '').replace(/<[^>]*>/g, '').length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
                     <DescriptionIcon />
                     <div className='flex flex-col gap-1'>
                         <h2 className='font-semibold text-xl flex gap-2'>Risk Assessment</h2>
