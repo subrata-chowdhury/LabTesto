@@ -1,4 +1,4 @@
-import Test, { ITest } from '@/models/Test';
+import Test from '@/models/Test';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(res: NextRequest) {

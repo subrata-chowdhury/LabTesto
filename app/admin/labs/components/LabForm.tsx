@@ -26,7 +26,6 @@ type Props = {
 const LabForm = ({ labDetails, loading, onChange, onSave = () => { } }: Props) => {
     const [showTestDetailsPopup, setShowTestDetailsPopup] = useState<{ index: number } | null>(null);
     const [copyLabId, setCopyLabId] = useState<string | null>(null);
-    const [targetLabId, setTargetLabId] = useState<string | null>(null);
     const { id } = useParams();
 
     return (
