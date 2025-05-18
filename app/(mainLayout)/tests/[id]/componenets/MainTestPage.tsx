@@ -333,7 +333,7 @@ const DetailsSection = memo(({ labBaseDetails, testDetails }: {
                 </div>}
                 {(testDetails?.testResultInterpretation || '').length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
                     <DescriptionIcon />
-                    <div className='flex flex-col gap-1'>
+                    <div className='flex flex-col gap-1 overflow-x-auto'>
                         <h2 className='font-semibold text-xl flex gap-2'>Test Result Interpretation</h2>
                         <div className={'text-gray-500 dark:text-gray-300 relative ' + (!seeMore.testResultInterpretation ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, testResultInterpretation: !seeMore.testResultInterpretation })}>
                             <div className='tiptap text-gray-500 dark:text-gray-300' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.testResultInterpretation || '' }}></div>

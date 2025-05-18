@@ -68,13 +68,13 @@ const AdminTestSelector: React.FC<SelectInstituteProps> = ({
                 }} />
             {
                 open && <>
-                    <div
+                    {/* <div
                         className="fixed top-0 left-0 w-screen h-screen"
                         onClick={(event) => {
                             event.stopPropagation();
                             setOpen(false);
                         }}
-                    ></div>
+                    ></div> */}
                     <div className="absolute top-12 -left-4 w-[calc(100%+60px)] bg-white dark:bg-[#172A46] border-2 dark:border-[#172A46] rounded-md cursor-pointer drop-shadow-lg">
                         <div className="max-h-[150px] overflow-y-auto">
                             {!loading && tests.map(e => (

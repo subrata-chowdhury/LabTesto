@@ -82,7 +82,7 @@ const SelectLab: React.FC<SelectInstituteProps> = ({
     return (
         <div className="relative">
             <input
-                className={"px-3 py-2 border-orange-200 border-2 rounded outline-none w-full " + className}
+                className={"px-3 py-2 border-primary  border-opacity-50 border-2 rounded outline-none w-full " + className}
                 type="text"
                 value={labSearch}
                 placeholder={placeholder}

@@ -11,6 +11,7 @@ import { toast } from 'react-toastify'
 import fetcher from '@/lib/fetcher'
 import { useParams } from 'next/navigation'
 import AdminTestSelector from '../../components/AdminTestSelector'
+import SelectLab from '@/app/components/SelectLab'
 
 type Props = {
     labDetails: LabTestDetails,
@@ -24,12 +25,44 @@ type Props = {
 
 const LabForm = ({ labDetails, loading, onChange, onSave = () => { } }: Props) => {
     const [showTestDetailsPopup, setShowTestDetailsPopup] = useState<{ index: number } | null>(null);
+    const [copyLabId, setCopyLabId] = useState<string | null>(null);
+    const [targetLabId, setTargetLabId] = useState<string | null>(null);
     const { id } = useParams();
 
     return (
         <div className='bg-white mt-4 p-8 px-10'>
             <div className='text-xl flex gap-3 items-center font-bold pb-6'>
                 Tests Lab Form of <span className='text-blue-600'>{labDetails.name}</span>
+            </div>
+            <div className='text-sm flex flex-col gap-1 mb-6'>
+                <div className='font-medium'>Same as</div>
+                <div className='flex gap-2'>
+                    <SelectLab onSelect={(val) => setCopyLabId(val._id)} />
+                    <div
+                        className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer'
+                        onClick={() => {
+                            if (!copyLabId) {
+                                toast.error('Please select a lab to copy from');
+                                return;
+                            }
+                            if (copyLabId === id) {
+                                toast.error('Cannot copy from the same lab');
+                                return;
+                            }
+                            if (!id) {
+                                toast.error('Lab ID is not available');
+                                return;
+                            }
+                            fetcher.post<{ targetId: string, copyId: string }, { success: boolean }>(`/admin/labs/tests/copy`, { targetId: id as string, copyId: copyLabId }).then((res) => {
+                                if (res.status === 200 && res.body?.success) {
+                                    onChange.labDetails(labDetails);
+                                    toast.success('Lab details copied successfully');
+                                } else {
+                                    toast.error('Error copying lab details');
+                                }
+                            })
+                        }}>Copy</div>
+                </div>
             </div>
             <div className='pb-4 flex justify-between font-semibold'>
                 Test Details
@@ -49,10 +82,11 @@ const LabForm = ({ labDetails, loading, onChange, onSave = () => { } }: Props) =
                         {
                             heading: 'Actions',
                             component: ({ index, data }) => (<div className='flex items-center gap-1'>
-                                <button onClick={() => setShowTestDetailsPopup({ index })}>
+                                <button className='text-primary' onClick={() => setShowTestDetailsPopup({ index })}>
                                     Edit
                                 </button>|
                                 <button
+                                    className='text-red-500'
                                     onClick={() => {
                                         const deleteTestData = async () => fetcher.delete<{ test: string }, { messege: string } | string>(`/admin/labs/tests/${id}`, { test: data.test }).then((res) => {
                                             if (res.status === 200 && res.body) {
@@ -87,7 +121,7 @@ const LabForm = ({ labDetails, loading, onChange, onSave = () => { } }: Props) =
                             const newLabDetails = { name: labDetails?.name, details: labDetails.details || [] };
                             newLabDetails.details[showTestDetailsPopup.index] = details;
                             onChange.labDetails(newLabDetails);
-                            setShowTestDetailsPopup(null)
+                            setShowTestDetailsPopup(null);
                         }} />
                 }
             </div>
@@ -136,6 +170,7 @@ function TestDetailsPopup({ details, onClose, onSave }: { details: TestsDetails,
                     values={testDetails?.packages}
                     onChange={(val) => setTestDetails(prevVal => ({ ...prevVal, packages: val }))}
                 />
+                {(error?.packages && error?.packages?.length > 0) && <p className="text-red-500 text-xs font-medium">{error.packages}</p>}
             </div>
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-6 pt-2 text-sm'>
                 <label className="flex flex-col gap-1">
@@ -165,9 +200,9 @@ function TestDetailsPopup({ details, onClose, onSave }: { details: TestsDetails,
                         errors.resultTime = "Result Time is required";
                     }
 
-                    if (!testDetails.packages || testDetails.packages.length === 0) {
-                        errors.packages = "At least one package is required";
-                    }
+                    // if (!testDetails.packages || testDetails.packages.length === 0) {
+                    //     errors.packages = "At least one package is required";
+                    // }
 
                     if (!testDetails.test || testDetails.test.length === 0) {
                         toast.warning("Please Select a Test");

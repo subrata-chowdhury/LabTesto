@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     const labId = searchParams.get('labId');
     const limit = searchParams.get('limit') || '10';
     try {
-        const labs = await Lab.find(labId ? { _id: new ObjectId(labId) } : {}).limit(parseInt(limit, 10));
+        const labs = await Lab.find(labId ? { _id: new ObjectId(labId) } : {}).select('_id name').limit(parseInt(limit, 10));
         const tests = await Test.find().lean();
 
         const labsWithMissingPrices = labs.map(lab => {
