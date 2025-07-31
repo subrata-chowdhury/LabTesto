@@ -174,15 +174,15 @@ export async function POST(req: NextRequest) {
                 other?: string;
             }[]
         };
-
-        await fetch(process.env.TELEGRAM_BOT_API_URL || '', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                chat_id: randomCollector.chatId || -4659804693,
-                text: `
+        try {
+            await fetch(process.env.TELEGRAM_BOT_API_URL || '', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: randomCollector.chatId || -4659804693,
+                    text: `
 Order ID: ${order._id}
 ${order.items.map((e: Item) => `
 Test: ${e.product.test.name},
@@ -203,8 +203,9 @@ Sample Taken Time:
     Start: ${order.sampleTakenDateTime.start},
     End: ${order.sampleTakenDateTime.end}
             `
-            })
-        });
+                })
+            });
+        } catch {}
 
         await cart.save();
 

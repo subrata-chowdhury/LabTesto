@@ -38,9 +38,9 @@ export async function DELETE(req: NextRequest) {
     try {
         const id = req.url.split('/').pop();
         await dbConnect();
-        
+
         await Order.findByIdAndDelete(id);
-        return new NextResponse('Order deleted', { status: 204 });
+        return NextResponse.json({ message: 'Order deleted' }, { status: 200 });
     } catch {
         return new NextResponse('Error deleting order', { status: 500 });
     }
