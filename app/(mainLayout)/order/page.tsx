@@ -169,6 +169,7 @@ export type Order = {
         status: 'Out for Sample Collection' | 'Sample Collected' | 'Report Delivered to Lab' | 'Report Generated' | 'Out for Report Delivery' | 'Report Delivered' | 'Canceled',
         date: string
     }[];
+    paid: number;
     createdAt: string;
     updatedAt: string;
 }

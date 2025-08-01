@@ -10,6 +10,12 @@ import ReviewForm, { ReviewType } from '@/app/components/ReviewForm';
 import Loading from './loading';
 import ConfirmationModel from '@/app/components/popups/ConfirmationModel';
 
+declare global {
+    interface Window {
+        Razorpay: new (options: object) => { open: () => void };
+    }
+}
+
 function OrderPage() {
     const [order, setOrder] = useState<Order>();
     const [showPatientPopup, setShowPatientPopup] = useState<{ itemIndex: number, patientIndex: number } | null>(null);
@@ -34,6 +40,67 @@ function OrderPage() {
         }
         setLoading(false)
     }, [id])
+
+    const handlePayment = async () => {
+        if (!order) {
+            toast.error('Order not found');
+            return;
+        }
+        const totalPrice = order.items.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
+
+        const res = await fetcher.post<{ amount: number, id: string | string[] | undefined }, { orderId: string }>("/orders/pay", {
+            amount: totalPrice,
+            id: id
+        });
+
+        if (res.status !== 200) {
+            toast.error(res.error || 'Unable to initiate payment');
+            return;
+        }
+
+        if (!res.body || !res.body.orderId) {
+            toast.error('Invalid response from payment API');
+            return;
+        }
+
+        const options = {
+            key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+            amount: totalPrice * 100,
+            currency: "INR",
+            name: "LabTesto",
+            description: "Test Payment",
+            order_id: res.body.orderId,
+            handler: async function (response: { razorpay_order_id?: string; razorpay_payment_id?: string; razorpay_signature?: string; }) {
+                if (!response || !response.razorpay_order_id || !response.razorpay_payment_id || !response.razorpay_signature) {
+                    toast.error('Payment failed or cancelled');
+                    return;
+                }
+                // verifying payment on server
+                const res = await fetcher.post<{ razorpay_order_id: string, razorpay_payment_id: string, razorpay_signature: string, id?: string[] | string }, { orderId: string }>("/orders/pay/verify", {
+                    razorpay_order_id: response.razorpay_order_id,
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_signature: response.razorpay_signature,
+                    id: id
+                });
+                if (res.status !== 200) {
+                    toast.error(res.error || 'Unable to verify payment');
+                    return;
+                }
+                toast.success("Payment successful!");
+            },
+            // prefill: {
+            //     name: "Test User",
+            //     email: "test@example.com",
+            //     contact: "9999999999",
+            // },
+            // theme: {
+            //     color: "#3399cc",
+            // },
+        };
+
+        const razor = new window.Razorpay(options);
+        razor.open();
+    };
 
     useEffect(() => {
         async function startUp() {
@@ -106,6 +173,7 @@ function OrderPage() {
                         })
                         if (res.status === 200) setOrder(await fetchOrderDetails())
                     }}>Delivered</button>}
+                {order.paid !== (order.items.reduce((acc, item) => acc + (item.product.price * item.quantity), 0)) && <button className='bg-primary text-white px-4 py-2 rounded ml-4' onClick={handlePayment}>Pay Now</button>}
             </div>
             <div className='bg-white text-sm flex flex-col dark:bg-[#172A46] px-6 py-4 rounded'>
                 <div className='py-2.5 flex gap-2'>

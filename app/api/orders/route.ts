@@ -209,7 +209,7 @@ Sample Taken Time:
 
         await cart.save();
 
-        return NextResponse.json({ message: 'Order saved successfully' }, { status: 200 });
+        return NextResponse.json({ message: 'Order saved successfully', id: order._id }, { status: 200 });
     } catch (error) {
         console.error(error);
         return new NextResponse('Error processing order', { status: 500 });

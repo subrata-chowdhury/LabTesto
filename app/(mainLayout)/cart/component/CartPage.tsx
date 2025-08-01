@@ -139,7 +139,7 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
 
     async function order(orderDetails: OrderDetails) {
         setShowLoading(true);
-        const res = await fetcher.post<OrderDetails, { message: string }>(`/orders`, orderDetails);
+        const res = await fetcher.post<OrderDetails, { message: string, id: string }>(`/orders`, orderDetails);
         if (res.status === 200) {
             // await fetcher.delete('/cart');
             // fetchCart();
@@ -149,7 +149,7 @@ export const CartPage = ({ filterCartFunc = () => true, onFetchedCart = () => { 
                     setItemCount(res.body.items || 0)
                 };
             })
-            navigate.push('/order');
+            navigate.push('/order/' + res.body?.id);
         } else {
             toast.error(res.error || 'Unable to place the order currently')
         }
