@@ -23,7 +23,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-    title: "LabTesto | Trusted Diagnostic Platform | Accredited Labs & Home Sample Collection",
+    title: "LabTesto - Trusted Diagnostic Platform - Accredited Labs & Home Sample Collection",
     description:
         "LabTesto is a trusted diagnostic platform offering secure, convenient access to NABL-certified laboratories, professional home sample collection, and reliable medical test results.",
     keywords: [
@@ -273,7 +273,7 @@ export default function RootLayout({
                     <GoogleAnalyticsProvider />
                 </Suspense>
                 {/* Skip to content link for accessibility */}
-                <a href="#main" className="skip-to-content" aria-label="Skip to main content">
+                <a href="#main" className="skip-to-content h-0" aria-label="Skip to main content">
                     Skip to main content
                 </a>
                 {children}

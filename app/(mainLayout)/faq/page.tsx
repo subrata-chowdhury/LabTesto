@@ -1,4 +1,3 @@
-'use client'
 import Minus from '@/assets/reactIcon/Minus';
 import Plus from '@/assets/reactIcon/Plus';
 import React from 'react'
@@ -8,7 +7,7 @@ const page = () => {
         <div className='px-5 py-6 flex flex-col gap-4 bg-gray-50 dark:bg-[#0A192F]'>
             <div>
                 <h1 className="text-2xl sm:text-3xl font-semibold text-center mx-auto mt-4">Frequently Asked Questions</h1>
-                <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-3"></div>
+                <div className="w-20 h-1 rounded-full mx-auto bg-black/20 dark:bg-white/30 my-3"></div>
             </div>
 
             <DetailCardToggler
@@ -67,7 +66,7 @@ export default page;
 
 function DetailCardToggler({ title = '', description = '', className = '' }: { title?: string, description?: string, className?: string }) {
     return (
-        <div className={"border-2 bg-white dark:bg-[#172A46] dark:border-gray-500 px-4 py-2.5 rounded-md w-full " + className}>
+        <div className={"border-2 border-gray-300/70 bg-white dark:bg-[#172A46] dark:border-gray-500 px-4 py-2.5 rounded-md w-full animate-fadeInUpScroll " + className}>
             <input type="checkbox" id={title.toLowerCase().replace(/\s+/g, '')} className="peer hidden" />
 
             <label
@@ -79,7 +78,7 @@ function DetailCardToggler({ title = '', description = '', className = '' }: { t
                 <span className="minus-icon my-auto"><Minus /></span>
             </label>
 
-            <div className="hidden peer-checked:block pt-3 mt-2.5 border-t-2 dark:border-gray-500 text-gray-600 dark:text-gray-400">
+            <div className="hidden peer-checked:block pt-3 mt-2.5 border-t-2 border-gray-300/70 dark:border-gray-500 text-gray-600 dark:text-gray-400">
                 {description}
             </div>
         </div>

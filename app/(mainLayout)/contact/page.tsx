@@ -1,18 +1,19 @@
 import React from 'react'
-import Image from 'next/image'
-import Head from 'next/head'
 import MainForm from './components/MainContactForm'
 import ContactDetails from './components/ContactDetails'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+    title: "Contact Us - LabTesto",
+    description: "Get in touch with LabTesto. Whether you have questions or you would just like to say hello, contact us.",
+    alternates: {
+        canonical: (process.env.NEXT_PUBLIC_APP_URL + "/contact") || "https://labtesto.vercel.app/contact"
+    }
+}
 
 function ContactPage() {
     return (
         <>
-            <Head>
-                <title>Contact Us - LabTesto</title>
-                <meta name="description" content="Get in touch with LabTesto. Whether you have questions or you would just like to say hello, contact us." />
-                <meta name="keywords" content="contact, LabTesto, questions, hello, get in touch" />
-                <meta name="author" content="LabTesto" />
-            </Head>
             <div className='flex flex-col relative items-center pb-12 mb-6 bg-primary'>
                 {/* <Image src={'/wave.svg'} width={960} height={540} alt="" className='w-full opacity-75 blur-sm object-cover h-screen absolute -z-10 top-0 rotate-180 bg-transparent' /> */}
                 <div className='text-4xl md:text-6xl text-white text-center font-bold mt-18'>We'd Love to Hear From You</div>

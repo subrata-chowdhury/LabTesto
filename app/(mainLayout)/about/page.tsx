@@ -3,6 +3,11 @@ import React from 'react'
 import { Achivements } from '../page';
 import ContactDetails from '../contact/components/ContactDetails';
 import Services from '../services/components/Services';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'About Us - LabTesto',
+}
 
 function AboutPage() {
     return (
@@ -12,7 +17,10 @@ function AboutPage() {
                     <div className='my-auto mt-6 md:mt-auto flex flex-col mx-auto'>
                         <h1 className='text-5xl lg:text-6xl font-light'>Get Quick<br /> <span className='font-extrabold'>Tests Done</span></h1>
                         <p className="mt-4 text-sm lg:text-base text-gray-600 dark:text-gray-400">A trusted diagnostic platform offering secure,<br /> convenient access to accredited labs and<br /> professional sample collection.</p>
-                        <Link href='/signup' className='px-5 py-2.5 text-lg bg-primary text-white rounded w-fit mt-8'>Get Started</Link>
+                        <Link href='/signup' className='px-5 py-2.5 text-lg bg-primary text-white rounded w-fit mt-8 group overflow-hidden relative hover:text-primary border hover:border-primary transition-all duration-300'>
+                            <div className='bg-white transition-all duration-500 w-0 h-0 top-0 left-0 rounded-full group-hover:w-[180%] group-hover:h-[120px] absolute group-hover:-top-[25%] group-hover:-left-[25%]'></div>
+                            <p className='relative z-20'>Get Started</p>
+                        </Link>
                     </div>
                     <div className='w-64 h-64 sm:w-72 sm:h-72 lg:w-96 lg:h-96 relative mx-auto flex justify-center items-center rounded-full shadow-md bg-primary/30 text-4xl sm:text-5xl font-bold'>
                         <span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span>
