@@ -28,7 +28,7 @@ import useIsVisible from "@/lib/isVisibileHook";
 export default function Home() {
     return (
         <>
-            <div className="flex-1 dark:bg-[#0A192F]">
+            <main id="main" className="flex-1 dark:bg-[#0A192F]">
                 <div className="md:hidden px-4 mt-4">
                     <SearchBar className="px-5 py-3" active={true} />
                 </div>
@@ -45,7 +45,7 @@ export default function Home() {
                 <Promises />
                 <Packages />
                 <Achivements />
-            </div>
+            </main>
             <Footer />
         </>
     );

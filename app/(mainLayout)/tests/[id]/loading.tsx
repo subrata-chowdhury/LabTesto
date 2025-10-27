@@ -7,7 +7,7 @@ const Loading = () => {
             <div className='mt-1 md:mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 md:gap-5 rounded-lg'>
                 <LabLoader />
             </div>
-            <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 dark:border-[#172A46] bg-white dark:bg-[#172A46]'>
+            <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 border-gray-300/50 dark:border-[#172A46] bg-white dark:bg-[#172A46]'>
                 <DetailsLoader />
             </div>
         </div>
