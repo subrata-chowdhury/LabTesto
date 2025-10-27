@@ -4,6 +4,7 @@ import "./globals.css";
 import { Bounce, ToastContainer } from "react-toastify";
 import Script from "next/script";
 import { GoogleAnalyticsProvider } from "@/components/analytics/GoogleAnalyticsProvider";
+import { Suspense } from "react";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -268,7 +269,9 @@ export default function RootLayout({
                     theme="light"
                     transition={Bounce}
                 />
-                <GoogleAnalyticsProvider />
+                <Suspense fallback={<div>Loading...</div>}>
+                    <GoogleAnalyticsProvider />
+                </Suspense>
                 {/* Skip to content link for accessibility */}
                 <a href="#main" className="skip-to-content" aria-label="Skip to main content">
                     Skip to main content
