@@ -18,8 +18,11 @@ export default async function verifyToken<T>(token: string | undefined | null, u
                     jwtSecret = process.env.JWT_SECRET;
                     break;
             }
-            const { payload } = await jwtVerify(token, new TextEncoder().encode(jwtSecret));
-            return payload as T;
+            const { payload } = await jwtVerify(token, new TextEncoder().encode(jwtSecret)) as { payload: { id: { buffer: number[] } } };
+            const newPayload = {
+                id: Buffer.from(Object.values(payload.id.buffer)).toString('hex')
+            };
+            return newPayload as T;
         } catch {
             return false;
         }

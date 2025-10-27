@@ -62,7 +62,7 @@ const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props)
                     <Dropdown options={['Ordered', 'Out for Sample Collection', 'Sample Collected', 'Report Delivered to Lab', 'Report Generated', 'Out for Report Delivery', 'Report Delivered', 'Canceled']} value={orderDetails.status} onChange={(val) => onChange.orderDetails({ ...orderDetails, status: val.value as 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' })} width={'100%'} />
                 </div>
             </div>
-            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
+            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2 border-gray-300/50'>
                 Address Information
             </div>
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-sm pb-4'>
@@ -77,9 +77,9 @@ const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props)
             </div>
             <div className='text-sm flex flex-col gap-1 pt-2'>
                 <label className='font-medium'>Landmark / Any Other details</label>
-                <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Other Details' value={orderDetails.address.other} onChange={(e) => onChange.orderDetails({ ...orderDetails, address: { ...orderDetails.address, other: e.target.value } })}></textarea>
+                <textarea className='border-2 border-gray-300/50 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Other Details' value={orderDetails.address.other} onChange={(e) => onChange.orderDetails({ ...orderDetails, address: { ...orderDetails.address, other: e.target.value } })}></textarea>
             </div>
-            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
+            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2 border-gray-300/50'>
                 Items Information
                 <div
                     className='ms-auto flex gap-2 font-semibold text-sm text-blue-500 border-2 border-blue-500 px-4 py-2 rounded cursor-pointer'
@@ -88,7 +88,7 @@ const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props)
                     <Image src={plusIcon} alt='' width={20} height={20} />
                 </div>
             </div>
-            <div className='border-2 border-t-0 rounded'>
+            <div className='border-2 border-gray-300/50 border-t-0 rounded'>
                 <MainTable<Item>
                     config={[
                         {
@@ -127,7 +127,7 @@ const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props)
                     }}
                     onClose={() => setShowOrderPopup(null)} />}
             </div>
-            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
+            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2 border-gray-300/50'>
                 Time Information
             </div>
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
@@ -136,22 +136,22 @@ const OrderForm = ({ orderDetails, error, onChange, onSave = () => { } }: Props)
                     onChange={(sampleTakenDateTime) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { start: sampleTakenDateTime.start.toISOString(), end: sampleTakenDateTime.end.toISOString() } })} />}
                 <div className='text-sm flex flex-col gap-1 pt-2'>
                     <label className='font-medium'>Sample Taken Start Date</label>
-                    <div className='px-3 py-2 border-2 h-fit rounded' onClick={() => setShowScheduleOrderTimesModel(true)}>{new Date(orderDetails.sampleTakenDateTime?.start || '').toDateString()}, {new Date(orderDetails?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
+                    <div className='px-3 py-2 border-2 border-gray-300/50 h-fit rounded' onClick={() => setShowScheduleOrderTimesModel(true)}>{new Date(orderDetails.sampleTakenDateTime?.start || '').toDateString()}, {new Date(orderDetails?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
                 </div>
                 <div className='text-sm flex flex-col gap-1 pt-2'>
                     <label className='font-medium'>Sample Taken End Date</label>
-                    <div className='px-3 py-2 border-2 h-fit rounded' onClick={() => setShowScheduleOrderTimesModel(true)}>{new Date(orderDetails.sampleTakenDateTime?.end || '').toDateString()}, {new Date(orderDetails?.sampleTakenDateTime?.end || '').toTimeString().split(' ')[0]}</div>
+                    <div className='px-3 py-2 border-2 border-gray-300/50 h-fit rounded' onClick={() => setShowScheduleOrderTimesModel(true)}>{new Date(orderDetails.sampleTakenDateTime?.end || '').toDateString()}, {new Date(orderDetails?.sampleTakenDateTime?.end || '').toTimeString().split(' ')[0]}</div>
                 </div>
                 {/* <DateInput label='Sample Taken Start Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.sampleTakenDateTime.start || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { ...orderDetails.sampleTakenDateTime, start: new Date(val).toISOString() } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'sampleTakenStartDate' ? error.msg : ""} />
                 <DateInput label='Sample Taken End Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.sampleTakenDateTime.end || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, sampleTakenDateTime: { ...orderDetails.sampleTakenDateTime, end: new Date(val).toISOString() } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'sampleTakenEndDate' ? error.msg : ""} /> */}
                 <DateInput label='Report Deliver Start Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.reportDeliverTime.start || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, reportDeliverTime: { ...orderDetails.reportDeliverTime, start: new Date(val).toISOString() } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'reportDeliverStartDate' ? error.msg : ""} />
                 <DateInput label='Report Deliver End Date' minTime={new Date(new Date().setHours(6, 0, 0))} maxTime={new Date(new Date().setHours(18, 0, 0))} value={new Date(orderDetails.reportDeliverTime.end || '')} onChange={(val) => onChange.orderDetails({ ...orderDetails, reportDeliverTime: { ...orderDetails.reportDeliverTime, end: new Date(val).toISOString() } })} labelClass='font-medium' containerClass='flex-1' error={error?.field === 'reportDeliverEndDate' ? error.msg : ""} />
             </div>
-            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
+            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2 border-gray-300/50'>
                 Payment Information
             </div>
             <Input label='Paid *' value={orderDetails?.paid?.toString() || '0'} type='number' onChange={val => onChange.orderDetails({ ...orderDetails, paid: Number(val) })} />
-            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
+            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2 border-gray-300/50'>
                 Total Amount: ₹{orderDetails.items.reduce((total, item) => total + (item.product.price * item.quantity), 0)}
             </div>
             <div className='p-5 px-0 ms-auto justify-end items-end flex gap-4'>

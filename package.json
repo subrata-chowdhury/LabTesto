@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint"
   },
   "dependencies": {
     "@tiptap/extension-color": "^2.11.5",
@@ -21,30 +21,32 @@
     "@tiptap/extension-underline": "^2.11.5",
     "@tiptap/react": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
-    "bcryptjs": "^2.4.3",
+    "bcryptjs": "^3.0.2",
     "cloudinary": "^2.5.1",
     "crypto-js": "^4.2.0",
-    "jose": "^5.9.6",
+    "jose": "^6.1.0",
     "mongoose": "^8.9.7",
-    "next": "^15.2.4",
+    "next": "^16.0.0",
     "razorpay": "^2.9.6",
     "react": "^19.0.0",
     "react-datepicker": "^8.1.0",
     "react-dom": "^19.0.0",
     "react-toastify": "^11.0.5",
-    "recharts": "^2.15.1"
+    "recharts": "^3.3.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4.1.16",
     "@types/bcryptjs": "^2.4.6",
     "@types/crypto-js": "^4.2.2",
-    "@types/node": "^20",
+    "@types/node": "^24.9.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9",
-    "eslint-config-next": "15.1.6",
+    "eslint-config-next": "^16.0.0",
     "postcss": "^8",
-    "tailwindcss": "^3.4.1",
+    "tailwindcss": "^4.1.16",
     "typescript": "^5"
   }
 }

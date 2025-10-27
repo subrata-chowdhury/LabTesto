@@ -34,7 +34,7 @@ const AboutForm = ({ labDetails, loading, onChange = () => { }, onSave = async (
                     <UploadToCloudinary imgUrl={labDetails.image} apiPath='/api/admin/labs/upload' onUpload={url => onChange({ ...labDetails, image: url })} />
                 </div>
             </div>
-            <div className='pb-4 font-semibold mt-6 pt-5 border-t-2'>Address Information</div>
+            <div className='pb-4 font-semibold mt-6 pt-5 border-t-2 border-gray-300/50'>Address Information</div>
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-sm pb-4'>
                 <Input label='City *' value={labDetails.location.address.city} onChange={val => onChange({ ...labDetails, location: { location: labDetails.location.location, address: { ...labDetails.location.address, city: val } } })} labelClass='font-medium' />
                 {/* <div className='text-sm flex flex-col gap-1'>
@@ -48,7 +48,7 @@ const AboutForm = ({ labDetails, loading, onChange = () => { }, onSave = async (
                 <Input label='Latitude' name='lat' placeholder='Enter latitude' value={labDetails.location.location.lat.toString()} onChange={(val) => onChange({ ...labDetails, location: { ...labDetails.location, location: { ...labDetails.location.location, lat: Number(val) } } })} labelClass='font-medium' containerClass='flex-1' />
                 <Input label='Longitude' name='lang' placeholder='Enter longitude' value={labDetails.location.location.lang.toString()} onChange={(val) => onChange({ ...labDetails, location: { ...labDetails.location, location: { ...labDetails.location.location, lang: Number(val) } } })} labelClass='font-medium' containerClass='flex-1' />
             </div>
-            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
+            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2 border-gray-300/50'>
                 Certification Information
                 <div
                     className='ms-auto flex gap-2 font-semibold text-sm text-blue-500 border-2 border-blue-500 px-4 py-2 rounded cursor-pointer'
@@ -57,7 +57,7 @@ const AboutForm = ({ labDetails, loading, onChange = () => { }, onSave = async (
                     <Image src={plusIcon} alt='' width={20} height={20} />
                 </div>
             </div>
-            <div className='border-2 border-t-0 rounded'>
+            <div className='border-2 border-gray-300/50 border-t-0 rounded'>
                 <MainTable<Certification>
                     config={[
                         { heading: 'Organization', selector: 'organization' },
@@ -90,7 +90,7 @@ const AboutForm = ({ labDetails, loading, onChange = () => { }, onSave = async (
                         setCetificationIndex(null);
                     }} />}
             </div>
-            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
+            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2 border-gray-300/50'>
                 Description
             </div>
             <RichTextEditor value={labDetails.description || ''} onChange={val => onChange({ ...labDetails, tempDescription: val })} />

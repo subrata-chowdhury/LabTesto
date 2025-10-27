@@ -101,7 +101,7 @@ const CollectorDashboard = () => {
                 <div className='flex flex-col gap-2 mx-4'>
                     {
                         sampleCollectedData.map(order => (
-                            <div key={order._id} className='flex justify-between items-center flex-col sm:flex-row gap-2 rounded-md border-2 bg-white p-2 px-3'>
+                            <div key={order._id} className='flex justify-between items-center flex-col sm:flex-row gap-2 rounded-md border-2 border-gray-300/50 bg-white p-2 px-3'>
                                 {/* <div>{order._id}</div> */}
                                 <div className='text-xs flex flex-col font-medium text-gray-600'>
                                     <div>Order from <span className="text-black font-semibold dark:text-gray-200">{order.user.name}</span></div>
@@ -171,7 +171,7 @@ const CollectorDashboard = () => {
                     <div className='flex flex-col gap-2'>
                         {
                             orderReportDeliveryData.map(order => (
-                                <div key={order._id} className='flex justify-between items-center flex-col sm:flex-row gap-2 rounded-md border-2 bg-white p-2 px-3'>
+                                <div key={order._id} className='flex justify-between items-center flex-col sm:flex-row gap-2 rounded-md border-2 border-gray-300/50 bg-white p-2 px-3'>
                                     {/* <div>{order._id}</div> */}
                                     <div className='text-xs flex flex-col font-medium text-gray-600'>
                                         <div>Order from <span className="text-black font-semibold dark:text-gray-200">{order.user.name}</span></div>

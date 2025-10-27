@@ -72,7 +72,7 @@ const LabForm = ({ labDetails, loading, onChange, onSave = () => { } }: Props) =
                     <Image src={plusIcon} alt='' width={20} height={20} />
                 </div>
             </div>
-            <div className='border-2 border-t-0 rounded'>
+            <div className='border-2 border-gray-300/50 border-t-0 rounded'>
                 <MainTable<TestsDetails>
                     config={[
                         { heading: 'Test', selector: 'name' },

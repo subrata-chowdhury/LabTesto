@@ -27,7 +27,7 @@ function Page() {
             {
                 datamissByLab.map((lab) => (
                     <Link href={'/admin/labs/edit/tests/' + lab.lab._id} key={lab.lab._id}>
-                        <div className="mb-6 p-4 border rounded-lg shadow-md bg-white">
+                        <div className="mb-6 p-4 border border-gray-300/50 rounded-lg shadow-md bg-white">
                             <h2 className="text-xl font-semibold mb-2">{lab.lab.name}</h2>
                             <ul className="list-disc list-inside">
                                 {lab.missingTests.map((missingTest) => (

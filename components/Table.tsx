@@ -39,8 +39,8 @@ type Props<T> = {
 
 function Table<T>({ name, table, pagination, limit, onSearch, tag, dropdown, loading = false }: Props<T>) {
     return (
-        <div className='border-2 rounded-md dark:border-gray-500 bg-white dark:bg-[#172A46]'>
-            <h3 className='p-3 border-b-2 dark:border-gray-500 text-xl font-semibold'>{name}</h3>
+        <div className='border-2 border-gray-300/50 rounded-md dark:border-gray-500 bg-white dark:bg-[#172A46]'>
+            <h3 className='p-3 border-b-2 border-gray-300/50 dark:border-gray-500 text-xl font-semibold'>{name}</h3>
             <div className='p-3 flex justify-between items-center md:flex-row flex-col gap-2'>
                 <TableTags loading={loading} tags={tag?.tags || []} onActiveTagChange={tag?.onTagChange} />
                 <div className='flex gap-2 items-center'>
@@ -85,7 +85,7 @@ export function MainTable<T>({
 }: MainTableProps<T>) {
     if (!config.length) return <div>Invalid Data</div>
     return (
-        <table className={'text-start overflow-hidden border-y-2 w-full ' + className} cellPadding={0} cellSpacing={0}>
+        <table className={'text-start overflow-hidden border-y-2 border-gray-300/50 w-full ' + className} cellPadding={0} cellSpacing={0}>
             <thead>
                 <tr style={{ height: 48 }} className='bg-gray-200  dark:bg-gray-500'>
                     {config.map((configObj, index) => (
@@ -95,7 +95,7 @@ export function MainTable<T>({
             </thead>
             <tbody>
                 {!loading && data?.length > 0 && data.map((obj, index) => (
-                    <tr key={index} className='border-t' style={{ height: 48 }}>
+                    <tr key={index} className='border-t border-gray-300/50' style={{ height: 48 }}>
                         {config.map((configObj, innerIndex) => (
                             // @ts-expect-error: Type 'keyof T' cannot be used as an index type.
                             <td key={innerIndex} className={`pl-4 min-h-12 items-center ${configObj.hideAble ? "hidden md:flex" : ""}`} >{configObj.component ? React.createElement(configObj.component, { data: obj, index }) : obj[configObj.selector || ""]}</td>
@@ -121,7 +121,7 @@ function TableTags({ tags = [], onActiveTagChange = () => { }, loading = false }
             {tags.map((tag, index) => (
                 <div
                     key={index}
-                    className={`cursor-pointer p-2 px-4 rounded border-2 ${activeTag === tag ? 'border-blue-300 dark:border-blue-500 text-blue-500 bg-primary bg-opacity-10' : 'bg-white dark:bg-[#172A46] dark:border-gray-400'}`}
+                    className={`cursor-pointer p-2 px-4 rounded border-2 ${activeTag === tag ? 'border-blue-300 dark:border-blue-500 text-blue-500 bg-primary/10' : 'bg-white dark:bg-[#172A46] border-gray-300/50 dark:border-gray-400'}`}
                     onClick={() => {
                         if (loading) return
                         setActiveTag(tag);
@@ -136,7 +136,7 @@ function SearchBar({ onSearch = () => { } }: { onSearch?: (value: string) => voi
     const [searchValue, setSearchValue] = useState('');
 
     return (
-        <div className='flex items-center gap-1 p-1 px-2 rounded border-2 dark:border-gray-500 max-w-52 min-h-10'>
+        <div className='flex items-center gap-1 p-1 px-2 rounded border-2 border-gray-300/50 dark:border-gray-500 max-w-52 min-h-10'>
             <Image src={SearchIcon} alt='' className='w-5 h-5' width={20} height={20} />
             <input className='outline-none w-full bg-transparent text-sm' value={searchValue} placeholder='Search' onChange={e => { setSearchValue(e.target.value); onSearch(e.target.value) }} />
         </div>

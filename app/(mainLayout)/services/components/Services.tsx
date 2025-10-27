@@ -1,3 +1,4 @@
+'use client';
 import React from 'react'
 import Image, { StaticImageData } from "next/image";
 import deliveryIcon from '@/assets/HomePage/delivery.svg'
@@ -8,27 +9,37 @@ import flexdateandtime from '@/assets/HomePage/flex.png'
 import cod from '@/assets/HomePage/cod.svg'
 import selectLabIcon from '@/assets/services/labs.png'
 import testsIcon from '@/assets/services/tests.png'
+import useIsVisible from '@/lib/isVisibileHook';
 
 export default function Services() {
+    const [ref, isVisible] = useIsVisible<HTMLDivElement>({ threshold: 0.1, once: true });
+
     return (
-        <section className="mx-auto md:w-[95%] pt-0 sm:pt-0 md:pt-0 p-4 flex flex-col">
-            <h1 className="text-2xl sm:text-3xl font-semibold text-center mx-auto mt-4">Our Services</h1>
-            <div className="w-20 h-1 rounded-full mx-auto bg-black dark:bg-white dark:bg-opacity-30 bg-opacity-20 my-3"></div>
-            <div className='w-full mx-auto mt-5 pt-0 sm:pt-0 md:pt-0 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
+        <section ref={ref} className="mx-auto md:w-[95%] pt-0 sm:pt-0 md:pt-0 p-4 flex flex-col">
+            <h1 className={"text-2xl sm:text-3xl md:text-4xl font-bold text-center mx-auto mt-4" + (isVisible ? " opacity-100 translate-y-0" : " opacity-0 translate-y-6")} style={{ transition: `all 0.5s ease 0.2s` }}>Our Services</h1>
+            <div className="w-20 h-1 rounded-full mx-auto bg-black/20 dark:bg-white/30 my-3"></div>
+            <div className='w-full max-w-7xl mx-auto mt-5 pt-0 sm:pt-0 md:pt-0 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
                 {labServices.map((service, index) => (
-                    <ServiceCard key={index} icon={service.icon} title={service.title} details={service.details} />
+                    <ServiceCard
+                        key={index}
+                        icon={service.icon}
+                        title={service.title}
+                        details={service.details}
+                        className={(isVisible ? " opacity-100 translate-y-0" : " opacity-0 translate-y-6")}
+                        style={{ transition: `all 0.5s ease ` + (0.2 + index * 0.1) + 's' }} />
                 ))}
             </div>
         </section>
     )
 }
 
-function ServiceCard({ icon, title, details }: { icon: StaticImageData, title: string; details: React.JSX.Element }) {
+function ServiceCard({ icon, title, details, className, style }: { icon: StaticImageData, title: string; details: React.JSX.Element, className?: string; style?: React.CSSProperties }) {
     return (
-        <div className="border dark:border-gray-600 rounded-lg shadow dark:shadow-md dark:shadow-black px-5 py-4 bg-white dark:bg-[#172A46]">
-            <Image src={icon} alt={title} className="w-10 h-10 ml-2 mt-2 mb-4 mr-auto" />
-            <h3 className="text-lg font-semibold mb-2 text-primary">{title}</h3>
-            <div className="text-gray-600 dark:text-gray-300 text-sm">{details}</div>
+        <div className={`border border-gray-300/50 group overflow-hidden relative transition-all dark:border-gray-600 rounded-lg shadow dark:shadow-md dark:shadow-black px-5 py-4 bg-white dark:bg-[#172A46] ${className}`} style={style}>
+            <div className='bg-primary transition-all duration-500 w-0 h-0 top-0 left-0 rounded-full group-hover:w-[180%] group-hover:h-[500px] absolute group-hover:-top-[25%] group-hover:-left-[25%]'></div>
+            <Image src={icon} alt={title} className="w-10 h-10 ml-2 mt-2 mb-4 mr-auto z-10 relative" />
+            <h3 className="text-lg font-semibold mb-2 transition-all duration-300 text-primary group-hover:text-white z-10 relative">{title}</h3>
+            <div className="text-gray-600 transition-all duration-300 group-hover:text-gray-200 dark:text-gray-300 text-sm z-10 relative">{details}</div>
         </div>
     );
 }

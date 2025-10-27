@@ -17,7 +17,7 @@ export default function CartItemCard({ item, isPatientDetailsRequired = false, o
                 </div>
                 <div className='flex flex-col gap-2 text-sm'>
                     <div className='flex gap-2 justify-center items-center'>
-                        <button className='text-lg py-1 px-1 rounded-md cursor-pointer dark:text-white hover:bg-gray-100 border-2' disabled={item.quantity <= 1} onClick={async () => await onQuantityChange(item.quantity - 1)}>
+                        <button className='text-lg py-1 px-1 rounded-md cursor-pointer dark:text-white hover:bg-gray-100 border-2 border-gray-300/60' disabled={item.quantity <= 1} onClick={async () => await onQuantityChange(item.quantity - 1)}>
                             <Minus size={18} />
                         </button>
                         <input type='text' min={1} value={item.quantity} className='w-12 text-center bg-transparent' onChange={async (e) => {
@@ -26,7 +26,7 @@ export default function CartItemCard({ item, isPatientDetailsRequired = false, o
                             if (number > 50) number = 50;
                             await onQuantityChange(number);
                         }} />
-                        <button className='text-lg py-1 px-1 rounded-md cursor-pointer dark:text-white hover:bg-gray-100 border-2' onClick={async () => await onQuantityChange(item.quantity + 1)}>
+                        <button className='text-lg py-1 px-1 rounded-md cursor-pointer dark:text-white hover:bg-gray-100 border-2 border-gray-300/60' onClick={async () => await onQuantityChange(item.quantity + 1)}>
                             <Plus size={18} />
                         </button>
                     </div>

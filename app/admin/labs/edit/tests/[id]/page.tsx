@@ -64,7 +64,7 @@ const Page = () => {
             />
             {
                 datamissByLab.map((lab) => (
-                    <div key={lab.lab._id} className="mb-6 p-4 border rounded-lg bg-white mt-6">
+                    <div key={lab.lab._id} className="mb-6 p-4 border border-gray-300/50 rounded-lg bg-white mt-6">
                         <div className='text-xl font-semibold mb-2'>Remaining Tests to Add</div>
                         {/* <h2 className="text-xl font-semibold mb-2">{lab.lab.name}</h2> */}
                         <ul className="list-disc list-inside">

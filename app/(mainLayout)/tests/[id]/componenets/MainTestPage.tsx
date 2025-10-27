@@ -125,7 +125,7 @@ function MainTestPage({ test }: Props) {
 
     return (
         <div className='bg-blue-50 dark:bg-[#0A192F] p-1 md:py-9 md:px-10'>
-            <section className='bg-white dark:bg-[#0A192F] border-2 dark:border-[#172A46] p-7 px-8 flex flex-col rounded-lg'>
+            <section className='bg-white dark:bg-[#0A192F] border-2 border-gray-300/50 dark:border-[#172A46] p-7 px-8 flex flex-col rounded-lg'>
                 <h1 className='text-2xl font-bold text-primary'>{testDetails.name}</h1>
                 {(testDetails?.otherTerms || []).length > 0 && <div className='text-sm text-gray-500 pt-2'>
                     <strong className='font-normal'>Also known as:</strong> <span className='text-black font-medium'>{testDetails?.otherTerms?.join(', ')}</span>
@@ -180,9 +180,9 @@ function MainTestPage({ test }: Props) {
             <section className='mt-1 md:mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 md:gap-5 rounded-lg'>
                 {/* {loadingLabs === true && <LabLoader />} */}
                 {labs.length > 0 && labs.map((labObj, i) => (
-                    <div key={i} className='border-2 dark:border-[#172A46] p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white dark:bg-[#172A46]' onClick={() => onLabSelect(labObj)}>
+                    <div key={i} className='border-2 border-gray-300/50 dark:border-[#172A46] p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white dark:bg-[#172A46]' onClick={() => onLabSelect(labObj)}>
                         <div className='flex items-center gap-3'>
-                            <div className='w-14 h-14 bg-primary bg-opacity-20 rounded-md flex items-center justify-center'></div>
+                            <div className='w-14 h-14 bg-primary/50 rounded-md flex items-center justify-center'></div>
                             <div>
                                 <div className='font-semibold text-primary'>{labObj.name}</div>
                                 <div className='flex items-center gap-2'>
@@ -295,7 +295,7 @@ const DetailsSection = memo(({ labBaseDetails, testDetails }: {
     });
 
     return (
-        <section className='mt-1 md:mt-4 py-8 px-8 rounded-lg border-2 dark:border-[#172A46] bg-white dark:bg-[#172A46]'>
+        <section className='mt-1 md:mt-4 py-8 px-8 rounded-lg border-2 border-gray-300/50 dark:border-[#172A46] bg-white dark:bg-[#172A46]'>
             <div className='flex flex-col gap-5' style={{ padding: 0, border: 0 }}>
                 {labBaseDetails.packages.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
                     <PackageIcon />
@@ -390,9 +390,9 @@ const LabDetailsSidePopup = memo(({ labId, onClose }: { labId: string, onClose: 
     }
 
     return (
-        <section className='fixed w-screen h-screen top-0 left-0 bg-black bg-opacity-20 z-50' onClick={() => onClose()}>
+        <section className='fixed w-screen h-screen top-0 left-0 bg-black/20 z-50' onClick={() => onClose()}>
             <div className='fixed left-0 top-0 w-[90vw] sm:w-[70vw] bg-white dark:bg-[#0A192F] shadow-2xl' onClick={e => e.stopPropagation()}>
-                <button className='flex justify-end p-2 absolute right-0 top-0 translate-x-full bg-white dark:text-white dark:bg-[#0A192F] rounded-e-md border-2 dark:border-gray-600' onClick={() => onClose()}>
+                <button className='flex justify-end p-2 absolute right-0 top-0 cursor-pointer translate-x-full bg-white dark:text-white dark:bg-[#0A192F] rounded-e-md border-2 border-gray-300/50 dark:border-gray-600' onClick={() => onClose()}>
                     <CrossIcon />
                 </button>
                 <div className='overflow-y-scroll h-screen'>
@@ -412,7 +412,7 @@ const LabDetailsSidePopup = memo(({ labId, onClose }: { labId: string, onClose: 
                                 <Image key={i} src={star} alt='' width={20} height={20} />
                             ))}
                         </div>}
-                        <div className='absolute bottom-0 w-full h-full z-10 -translate-x-[10%] translate-y-1/2 bg-gradient-to-t from-gray-400 dark:from-black to-transparent transform rotate-[20deg]'></div>
+                        <div className='absolute bottom-0 w-full h-full z-10 -translate-x-[10%] translate-y-1/2 bg-linear-to-t from-gray-400 dark:from-black to-transparent transform rotate-20'></div>
                     </div>
                     {loading ? <div className='p-5 flex flex-col gap-2'>
                         <div className='h-4 w-full animate-pulse bg-gray-300 rounded'></div>

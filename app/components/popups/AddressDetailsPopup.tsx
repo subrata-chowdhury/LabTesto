@@ -28,7 +28,7 @@ export default function AddressDetailsPopup({ addressDetails, onSave, onRemove, 
                 </div>
                 <div className='text-sm flex flex-col gap-1 pt-2'>
                     <label className='font-medium'>Landmark / Any Other details</label>
-                    <textarea className='border-2 dark:border-gray-400 rounded w-full h-20 p-2 outline-none bg-transparent' rows={5} placeholder='Enter Other Details' value={values.other} onChange={(e) => setValues({ ...values, other: e.target.value })}></textarea>
+                    <textarea className='border-2 border-gray-300/50 dark:border-gray-400 rounded w-full h-20 p-2 outline-none bg-transparent' rows={5} placeholder='Enter Other Details' value={values.other} onChange={(e) => setValues({ ...values, other: e.target.value })}></textarea>
                 </div>
                 <div className='p-5 pb-2 px-0 ms-auto justify-end items-end flex gap-4'>
                     <div className='font-medium text-primary h-10 flex justify-center items-center px-4 border-2 border-primary rounded cursor-pointer' onClick={onClose}>Cancel</div>

@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 export const OrderDetailsCard = ({ order, onPass }: { order: Order, onPass: (order: Order) => void }) => {
     return (
-        <div key={order._id} className='flex justify-between items-center flex-col sm:flex-row gap-2 rounded-md border-2 dark:border-gray-600 bg-white dark:bg-[#172A46] dark:shadow-md dark:shadow-black p-2 px-3'>
+        <div key={order._id} className='flex justify-between items-center flex-col sm:flex-row gap-2 rounded-md border-2 border-gray-300/50 dark:border-gray-600 bg-white dark:bg-[#172A46] dark:shadow-md dark:shadow-black p-2 px-3'>
             {/* <div>{order._id}</div> */}
             <div className='text-xs flex flex-col font-medium text-gray-600'>
                 <div className='dark:text-gray-400'>Order from <span className="text-black font-semibold dark:text-gray-200">{order.user.name}</span></div>

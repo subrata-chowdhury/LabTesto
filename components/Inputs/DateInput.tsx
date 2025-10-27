@@ -24,7 +24,7 @@ const DateInput = ({ label = "", error = "", value = new Date(), onChange = () =
             <DatePicker
                 selected={value}
                 onChange={date => onChange(date as Date)}
-                className="px-3 py-2 border-2 w-full rounded outline-none"
+                className="px-3 py-2 border-2 border-gray-300/50 w-full rounded outline-none"
                 showTimeSelect
                 dateFormat="Pp"
                 minDate={minTime}

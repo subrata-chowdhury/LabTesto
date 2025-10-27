@@ -74,12 +74,12 @@ const SelectTest: React.FC<SelectInstituteProps> = ({
             {
                 open && <>
                     <div className="fixed top-0 left-0 w-screen h-screen" onClick={() => setOpen(false)}></div>
-                    <div className="absolute top-12 -left-4 w-[calc(100%+60px)] bg-white dark:bg-[#172A46] border-2 dark:border-[#172A46] rounded-md cursor-pointer drop-shadow-lg">
+                    <div className="absolute top-12 -left-4 w-[calc(100%+60px)] bg-white dark:bg-[#172A46] border-2 border-primary/20 dark:border-[#172A46] rounded-md cursor-pointer drop-shadow-lg">
                         <div className="max-h-[150px] overflow-y-auto">
                             {!loading && !optionElement && tests.map(e => (
                                 <div
                                     key={e._id}
-                                    className="px-3 py-2 border-b-2 hover:bg-gray-100"
+                                    className="px-3 py-2 border-b-2 border-primary/20 hover:bg-gray-100"
                                     onClick={(event) => {
                                         event.stopPropagation()
                                         setTestSearch(e.name)

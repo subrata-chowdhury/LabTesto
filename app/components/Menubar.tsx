@@ -15,6 +15,7 @@ import { AboutIcon } from '@/assets/reactIcon/menubar/About';
 import { ContactIcon } from '@/assets/reactIcon/menubar/Contact';
 import { NotificationIcon } from '@/assets/reactIcon/menubar/Notification';
 import UserIcon from '@/assets/reactIcon/User';
+import useIsVisible from '@/lib/isVisibileHook';
 
 const Menubar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -22,8 +23,8 @@ const Menubar = () => {
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
     const [showProfilePopup, setShowProfilePopup] = useState(false);
-    const [active, setActive] = useState(false);
     const { itemCount, setItemCount } = useItemCountContext();
+    const [ref, isVisible] = useIsVisible<HTMLDivElement>({ threshold: 0.1, once: true });
 
     useEffect(() => {
         fetcher.get<{ items: number }>('/cart/count').then(res => {
@@ -39,25 +40,11 @@ const Menubar = () => {
                 setIsLoggedIn(false);
             };
         })
-        const handleScroll = () => {
-            if (window.scrollY > 5) {
-                setActive(true);
-            } else if (window.scrollY <= 5) {
-                setActive(false);
-            }
-        }
-        window.addEventListener('wheel', handleScroll);
-        window.addEventListener('scroll', handleScroll);
-
-        return () => {
-            window.removeEventListener('wheel', handleScroll);
-            window.removeEventListener('scroll', handleScroll);
-        };
     }, [])
 
     return (
-        <nav className={`bg-white dark:bg-[#09192F] px-6 z-20 fixed w-screen transition-all ${active ? 'p-3 shadow-md shadow-sky-100 dark:shadow-black dark:shadow-md' : 'p-4'}`} role="navigation" aria-label="Main Navigation">
-            <div className="mx-auto flex justify-between items-center">
+        <nav ref={ref} className={`bg-white dark:bg-[#09192F] px-6 z-20 fixed w-screen transition-all p-4 shadow-md shadow-sky-100 dark:shadow-black dark:shadow-md`} role="navigation" aria-label="Main Navigation">
+            <div className="mx-auto lg:px-4 container flex justify-between items-center">
                 <div className="md:hidden flex items-center">
                     <button onClick={() => setIsOpen(!isOpen)} className="text-primary menu focus:outline-none" aria-label="Toggle Menu">
                         <svg className="w-6 h-6 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -65,16 +52,16 @@ const Menubar = () => {
                         </svg>
                     </button>
                 </div>
-                <div className="text-white text-lg font-bold mr-0 md:mr-16">
+                <div className={"text-white text-lg font-bold mr-0 md:mr-16 transition-all " + (isVisible ? " opacity-100 translate-y-0" : " opacity-0 translate-y-6")} style={{ transition: `all 0.5s ease 0.2s` }}>
                     <Link href={'/'} onClick={() => setIsOpen(false)} className=''><span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></Link>
                 </div>
                 <div className="hidden md:flex gap-6 lg:gap-8 xl:gap-10 xl:ml-5 mr-auto">
-                    <Link href="/tests" className="text-primary menu flex">Book&nbsp;<span className='hidden lg:block'>a Test</span></Link>
-                    <Link href="/about" className="text-primary menu flex">About&nbsp;<span className='hidden lg:block'>Us</span></Link>
-                    <Link href="/order" className="text-primary menu flex">Orders&nbsp;<span className='hidden lg:block'></span></Link>
-                    <Link href="/contact" className="text-primary menu flex">Contact&nbsp;<span className='hidden lg:block'>Us</span></Link>
+                    <Link href="/tests" className={"text-primary menu flex" + (isVisible ? " opacity-100 translate-y-0" : " opacity-0 translate-y-6")} style={{ transition: `all 0.5s ease 0.3s` }}>Book&nbsp;<span className='hidden lg:block'>a Test</span></Link>
+                    <Link href="/about" className={"text-primary menu flex" + (isVisible ? " opacity-100 translate-y-0" : " opacity-0 translate-y-6")} style={{ transition: `all 0.5s ease 0.4s` }}>About&nbsp;<span className='hidden lg:block'>Us</span></Link>
+                    <Link href="/order" className={"text-primary menu flex" + (isVisible ? " opacity-100 translate-y-0" : " opacity-0 translate-y-6")} style={{ transition: `all 0.5s ease 0.5s` }}>Orders&nbsp;<span className='hidden lg:block'></span></Link>
+                    <Link href="/contact" className={"text-primary menu flex" + (isVisible ? " opacity-100 translate-y-0" : " opacity-0 translate-y-6")} style={{ transition: `all 0.5s ease 0.6s` }}>Contact&nbsp;<span className='hidden lg:block'>Us</span></Link>
                 </div>
-                <div className='hidden ms-6 md:block mr-5'>
+                <div className={'hidden ms-6 md:block mr-5' + (isVisible ? " opacity-100 translate-y-0" : " opacity-0 translate-y-6")} style={{ transition: `all 0.5s ease 0.7s` }}>
                     <SearchBar active={true} />
                 </div>
                 {isLoggedIn ?
@@ -85,18 +72,18 @@ const Menubar = () => {
                             onClick={() => setIsOpen(false)}
                             aria-label="View Cart"
                         >
-                            {(itemCount || 0) > 0 && <div className='absolute -right-1 -top-1 px-[6px] py-[2px] rounded-full text-xs text-white font-medium bg-primary'>{(itemCount || 0) > 9 ? '9+' : itemCount}</div>}
+                            {(itemCount || 0) > 0 && <div className='absolute -right-1 -top-1 px-1.5 py-0.5 rounded-full text-xs text-white font-medium bg-primary'>{(itemCount || 0) > 9 ? '9+' : itemCount}</div>}
                             <CartIcon size={28} />
                         </Link>
                         <div className="hidden relative md:flex items-center space-x-4 cursor-pointer text-primary">
                             {/* <Link href='/profile' aria-label="View Profile"> */}
-                            <span onClick={() => setShowProfilePopup(val => !val)}><UserIcon size={40} className="rounded-full p-2 bg-primary bg-opacity-20" /></span>
+                            <span onClick={() => setShowProfilePopup(val => !val)}><UserIcon size={40} className="rounded-full p-2 bg-primary/20" /></span>
                             {/* </Link> */}
                             {showProfilePopup && <ProfilePopup isLoggedIn={isLoggedIn} userEmail={userEmail} userName={userName} onPopupClose={() => { setShowProfilePopup(false); setIsOpen(false) }} />}
                         </div>
                     </> :
                     <>
-                        <Link href={'/signup'} className='px-3 sm:px-5 py-1.5 text-white font-medium bg-primary rounded-md text-sm sm:text-base'>Register</Link>
+                        <Link href={'/signup'} className={'px-3 sm:px-5 py-1.5 text-white font-medium bg-primary rounded-md text-sm sm:text-base' + (isVisible ? " opacity-100 translate-y-0" : " opacity-0 translate-y-6")} style={{ transition: `all 0.5s ease 0.8s` }}>Register</Link>
                     </>}
             </div>
             {isOpen && <MobileMenubar onClose={() => setIsOpen(false)} userEmail={userEmail} userName={userName} isLoggedIn={isLoggedIn} />}
@@ -111,12 +98,12 @@ export function SearchBar({ active = false, className = '', onSelect = () => { }
     const [showSearchBar, setShowSearchBar] = useState(active);
 
     return (
-        <div className={"relative text-sm z-10 text-primary flex gap-3 items-center justify-between px-4 py-2 border-primary bg-gray-500 bg-opacity-5 border-opacity-50 border outline-none w-full rounded-full " + className}>
+        <div className={"relative text-sm z-10 text-primary flex gap-3 items-center justify-between px-4 py-2 bg-gray-500/5 border border-primary/50 outline-none w-full rounded-full " + className}>
             {showSearchBar && <SelectTest
                 onSelect={onSelect}
                 optionElement={(option, index, onClick) => (
                     <Link href={'/tests/' + option._id} key={index}>
-                        <div key={index} className='px-3 py-2 border-b-2 dark:bg-[#172A46] hover:bg-gray-100' onClick={() => { onClick(); onSelect(option) }}>
+                        <div key={index} className='px-3 py-2 border-b-2 border-primary/20 dark:bg-[#172A46] hover:bg-gray-100' onClick={() => { onClick(); onSelect(option) }}>
                             <div className='text-base font-medium'>{option.name}</div>
                             <div className='text-xs'>{option.sampleType}</div>
                         </div>
@@ -152,35 +139,35 @@ function MobileMenubar({ onClose = () => { }, isLoggedIn, userName = '', userEma
                 </div>
             </div>
             <Link className="flex flex-col gap-2 justify-center items-center cursor-pointer py-5 pb-8 text-primary" href={'/profile'} onClick={() => onClose()} aria-label="View Profile">
-                <UserIcon size={80} className="rounded-full p-4 bg-primary bg-opacity-20" />
+                <UserIcon size={80} className="rounded-full p-4 bg-primary/20" />
                 <div className='text-center'>
                     <div className="text-primary text-lg font-bold menu">{userName ? userName : 'Profile'}</div>
                     <div className="text-primary text-xs font-medium menu">{userEmail ? userEmail : ''}</div>
                 </div>
             </Link>
-            <Link href="/profile" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary py-2" onClick={() => onClose()}>
+            <Link href="/profile" className="flex justify-between bg-primary/10 hover:bg-opacity-15 px-5 rounded-xl text-primary py-2" onClick={() => onClose()}>
                 <span className='flex items-center gap-2'><UserIcon size={18} />Account</span> <span className='ml-12'>❯</span>
             </Link>
-            <Link href="/tests" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary py-2" onClick={() => onClose()}>
+            <Link href="/tests" className="flex justify-between bg-primary/10 hover:bg-opacity-15 px-5 rounded-xl text-primary py-2" onClick={() => onClose()}>
                 <span className='flex items-center gap-2'><LabIcon size={18} />Book a Test</span> <span className='ml-12'>❯</span>
             </Link>
-            <Link href="/cart" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => onClose()}>
+            <Link href="/cart" className="flex justify-between bg-primary/10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => onClose()}>
                 <span className='flex items-center gap-2'><FilledCartIcon size={20} />Cart</span> <span className='ml-12'>❯</span>
             </Link>
-            <Link href="/order" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => onClose()}>
+            <Link href="/order" className="flex justify-between bg-primary/10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => onClose()}>
                 <span className='flex items-center gap-2'><OrderIcon size={18} />Orders</span> <span className='ml-12'>❯</span>
             </Link>
-            <Link href="/notifications" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => onClose()}>
+            <Link href="/notifications" className="flex justify-between bg-primary/10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => onClose()}>
                 <span className='flex items-center gap-2'><NotificationIcon size={18} />Notification</span> <span className='ml-12'>❯</span>
             </Link>
-            <Link href="/contact" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => onClose()}>
+            <Link href="/contact" className="flex justify-between bg-primary/10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => onClose()}>
                 <span className='flex items-center gap-2'><ContactIcon size={16} />Contact Us</span> <span className='ml-12'>❯</span>
             </Link>
-            <Link href="/about" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => onClose()}>
+            <Link href="/about" className="flex justify-between bg-primary/10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2" onClick={() => onClose()}>
                 <span className='flex items-center gap-2'><AboutIcon size={18} />About Us</span> <span className='ml-12'>❯</span>
             </Link>
             {isLoggedIn && <div
-                className={`cursor-pointer flex justify-start gap-3 bg-primary bg-opacity-10 hover:bg-opacity-15 px-4 rounded-xl p-3 mt-auto mb-9 items-center text-primary`}
+                className={`cursor-pointer flex justify-start gap-3 bg-primary/10 hover:bg-opacity-15 px-4 rounded-xl p-3 mt-auto mb-9 items-center text-primary`}
                 onClick={() => {
                     document.cookie = 'token=; Max-Age=0; path=/;';
                     localStorage.removeItem('isLoggedIn');
@@ -199,20 +186,20 @@ function MobileMenubar({ onClose = () => { }, isLoggedIn, userName = '', userEma
 
 function ProfilePopup({ onPopupClose, userName, userEmail, isLoggedIn }: { onPopupClose: () => void, userName?: string, userEmail?: string, isLoggedIn?: boolean }) {
     return (
-        <div className='flex flex-col gap-1 px-5 py-4 rounded-lg bg-white dark:bg-[#09192F] shadow-md dark:shadow-black mt-5 border border-primary border-opacity-25 absolute top-full -right-3 text-primary'>
-            <UserIcon size={80} className="rounded-full p-4 mx-auto bg-primary bg-opacity-20" />
+        <div className='flex flex-col gap-1 px-5 py-4 rounded-lg bg-white dark:bg-[#09192F] shadow-md dark:shadow-black mt-5 border border-primary/25 absolute top-full -right-3 text-primary'>
+            <UserIcon size={80} className="rounded-full p-4 mx-auto bg-primary/20" />
             <div className='text-center mb-4'>
                 <div className="text-primary text-lg font-bold menu text-nowrap px-2">{userName ? userName : 'Profile'}</div>
                 <div className="text-primary text-xs mt-1 font-medium menu">{userEmail ? userEmail : ''}</div>
             </div>
-            <Link href='/profile' onClick={() => onPopupClose()} aria-label="View Account" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2">
+            <Link href='/profile' onClick={() => onPopupClose()} aria-label="View Account" className="flex justify-between bg-primary/10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2">
                 <span className='flex items-center gap-2'><UserIcon size={16} />Account</span> <span className='ml-10'>❯</span>
             </Link>
-            <Link href='/notifications' onClick={() => onPopupClose()} aria-label="View Notifications" className="flex justify-between bg-primary bg-opacity-10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2">
+            <Link href='/notifications' onClick={() => onPopupClose()} aria-label="View Notifications" className="flex justify-between bg-primary/10 hover:bg-opacity-15 px-5 rounded-xl text-primary menu py-2">
                 <span className='flex items-center gap-2'><NotificationIcon size={16} />Notification</span> <span className='ml-10'>❯</span>
             </Link>
             {isLoggedIn && <div
-                className={`cursor-pointer flex justify-start gap-3 mt-4 bg-primary bg-opacity-10 hover:bg-opacity-15 px-4 rounded-xl p-2 items-center text-primary`}
+                className={`cursor-pointer flex justify-start gap-3 mt-4 bg-primary/10 hover:bg-opacity-15 px-4 rounded-xl p-2 items-center text-primary`}
                 onClick={() => {
                     document.cookie = 'token=; Max-Age=0; path=/;';
                     localStorage.removeItem('isLoggedIn');

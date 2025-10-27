@@ -18,7 +18,7 @@ export default Loading
 
 export function BasicTestDetailsLoader() {
     return (
-        <div className='bg-white dark:bg-[#172A46] border-2 dark:border-[#172A46] p-7 px-8 flex flex-col rounded-lg'>
+        <div className='bg-white dark:bg-[#172A46] border-2 border-gray-300/50 dark:border-[#172A46] p-7 px-8 flex flex-col rounded-lg'>
             <div className='animate-pulse pb-6'>
                 <div className='h-8 w-32 bg-gray-300 rounded'></div>
             </div>
@@ -74,7 +74,7 @@ export function BasicTestDetailsLoader() {
 
 export function LabLoader() {
     return Array(4).fill(0).map((_, i) => (
-        <div key={i} className='border-2 dark:border-[#172A46] p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white dark:bg-[#172A46]'>
+        <div key={i} className='border-2 border-gray-300/50 dark:border-[#172A46] p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white dark:bg-[#172A46]'>
             <div className='flex items-center gap-3'>
                 <div className='w-14 h-14 bg-primary bg-opacity-20 animate-pulse rounded-md flex items-center justify-center'>
                     {/* <Image src='/download.png' alt='' width={115} height={50} /> */}
@@ -94,7 +94,7 @@ export function DetailsLoader() {
             <div className='w-6 h-6 animate-pulse rounded bg-gray-300'></div>
             <div className='flex flex-1 flex-col gap-1'>
                 <p className='w-32 h-4 my-1 animate-pulse rounded bg-gray-300'></p>
-                <div className='flex flex-col gap-[2px]'>
+                <div className='flex flex-col gap-0.5'>
                     <p className='min-w-52 w-full h-4 animate-pulse rounded bg-gray-300'></p>
                     <p className='min-w-52 w-full h-4 animate-pulse rounded bg-gray-300'></p>
                     <p className='min-w-28 h-4 animate-pulse rounded bg-gray-300'></p>

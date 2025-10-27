@@ -45,7 +45,7 @@ const CollectorForm = ({ collectorDetails, error, onChange, onSave = () => { } }
                 <div className='font-medium text-sm'>Reachable Areas</div>
                 <TagInput className='w-full' values={collectorDetails.reachableAreas} onChange={vals => onChange.collectorDetails({ ...collectorDetails, reachableAreas: vals })} />
             </div>
-            <div className='pb-4 flex justify-between font-semibold pt-5 border-t-2'>
+            <div className='pb-4 flex justify-between font-semibold pt-5 border-t-2 border-gray-300/50'>
                 Qualification
                 <div
                     className='ms-auto flex gap-2 font-semibold text-sm text-blue-500 border-2 border-blue-500 px-4 py-2 rounded cursor-pointer'
@@ -55,7 +55,7 @@ const CollectorForm = ({ collectorDetails, error, onChange, onSave = () => { } }
                 </div>
             </div>
             <div className='flex flex-col gap-1'>
-                <div className='border-2 border-t-0 rounded'>
+                <div className='border-2 border-gray-300/50 border-t-0 rounded'>
                     <MainTable<Qualification>
                         config={[
                             { heading: 'Degree', selector: 'degree' },

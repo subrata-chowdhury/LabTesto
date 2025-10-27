@@ -79,7 +79,7 @@ const OrderPage = () => {
                                 <li
                                     key={outerIndex}
                                     onClick={() => navigate.push('/order/' + order._id)}
-                                    className="bg-white dark:bg-[#172A46] border-2 dark:border-gray-500 rounded-lg shadow-md shadow-indigo-100 dark:shadow-black cursor-pointer p-3 px-4 flex justify-between items-center">
+                                    className="bg-white dark:bg-[#172A46] border-2 border-gray-300/50 dark:border-gray-500 rounded-lg shadow-md shadow-indigo-100 dark:shadow-black cursor-pointer p-3 px-4 flex justify-between items-center">
                                     <div>
                                         <div className="text-lg font-semibold text-primary">{order.items.map(e => e.product.test.name).join(', ')}</div>
                                         <div className='text-sm text-gray-800 dark:text-gray-300'><span className={order.status === "Canceled" ? 'text-red-500' : (order.status === 'Report Delivered' ? 'text-green-600' : '')}>{order.status}</span>, {new Date(order.updatedAt).toDateString()}</div>

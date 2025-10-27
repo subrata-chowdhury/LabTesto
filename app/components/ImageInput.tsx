@@ -47,7 +47,7 @@ const UploadToCloudinary = ({ imgUrl, apiPath, onUpload }: { imgUrl?: string, ap
     }
 
     return (
-        <div className="flex items-center space-x-3 px-3 py-2 rounded border-2">
+        <div className="flex items-center space-x-3 px-3 py-2 rounded border-2 border-gray-300/50">
             {/* If imageName is null, don't show anything */}
             <div
                 className="text-gray-500 flex-1 mr-2 cursor-pointer truncate"

@@ -16,8 +16,8 @@ export default function OutdatedOrders() {
     }, []);
 
     return (
-        <div className='mt-5 bg-white px-5 py-4 rounded-lg border-2 w-fit'>
-            <div className='text-lg font-semibold pb-2.5 border-b-2'>Outdated Orders</div>
+        <div className='mt-5 bg-white px-5 py-4 rounded-lg border-2 border-gray-300/50 w-fit'>
+            <div className='text-lg font-semibold pb-2.5 border-b-2 border-gray-300/50'>Outdated Orders</div>
             <div className="w-full flex flex-col gap-2 overflow-x-auto mt-3 min-w-96 h-60 overflow-y-auto">
                 {outdatedOrders.filter(order => order.status === 'Ordered').length > 0 && <h3 className='text-base'>Ordered</h3>}
                 {outdatedOrders.filter(order => order.status === 'Ordered').map((order) => <OutdatedOrderCard order={order} key={order._id} />)}
@@ -31,7 +31,7 @@ export default function OutdatedOrders() {
 
 function OutdatedOrderCard({ order }: { order: Order }) {
     return (
-        <div key={order._id} className="flex items-center gap-4 justify-between px-4 py-2 bg-gray-50 border-2 rounded-md">
+        <div key={order._id} className="flex items-center gap-4 justify-between px-4 py-2 bg-gray-50 border-2 border-gray-300/50 rounded-md">
             <div>
                 <div className="text-sm">ID: {order._id}</div>
                 <div className="text-xs font-semibold text-orange-600">Date: {new Date(order.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>

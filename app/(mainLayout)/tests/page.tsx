@@ -3,7 +3,6 @@ import fetcher from '@/lib/fetcher';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react'
 import Loading from './loading';
-import { LinkArrowIcon } from '@/assets/reactIcon/LinkArrow';
 import debounce from '@/lib/debouncer';
 
 type Test = {
@@ -51,12 +50,12 @@ const Tests = () => {
     }, [])
 
     return (
-        <div className='p-5 pb-12 dark:bg-[#0A192F]'>
-            <h1 className='text-xl text-center sm:text-2xl sm:text-left sm:font-semibold text-primary font-medium'>All Available Tests</h1>
+        <div className='p-5 pb-12 dark:bg-[#0A192F] container max-w-7xl mx-auto w-full'>
+            <h1 className='text-xl text-center sm:text-2xl md:text-3xl tracking-wide sm:text-left font-bold text-primary'>All Available Tests</h1>
             <div className='flex flex-col sm:flex-row gap-4 mt-4'>
-                <div className={"px-4 py-2 flex gap-3 justify-between border-primary border-opacity-50 border bg-gray-500 bg-opacity-5 rounded-full"}>
+                <div className={"px-4 py-2 flex gap-3 justify-between border-primary border-opacity-50 border bg-gray-500/5 rounded-full"}>
                     <input
-                        className="flex-1 outline-none bg-transparent"
+                        className="flex-1 text-sm outline-none bg-transparent"
                         type="text"
                         value={filter.name}
                         placeholder='Search for tests'
@@ -79,7 +78,7 @@ const Tests = () => {
                 {['All', 'Blood', 'Urine', 'Semen', 'Stool', 'Sputum', 'Other'].map((sampleType, index) => (
                     <button
                         key={index}
-                        className={`px-3.5 py-1 rounded-full bg-primary font-medium ${filter.sampleType === sampleType ? 'bg-opacity-80 text-white' : 'bg-opacity-0 border-2 border-primary text-primary'}`}
+                        className={`px-3.5 py-1 rounded-full cursor-pointer text-sm font-medium ${filter.sampleType === sampleType ? 'bg-primary text-white' : 'bg-primary/0 border-2 border-primary text-primary'}`}
                         onClick={async () => {
                             setFilter({ ...filter, sampleType });
                             await onSeach({ name: filter.name, sampleType: sampleType as 'All' | 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other' }, limit)
@@ -89,17 +88,14 @@ const Tests = () => {
                     </button>
                 ))}
             </div>
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-4'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4'>
                 {
                     tests.map(test => (
-                        <div key={test._id} className="flex flex-col bg-white dark:bg-[#172A46] dark:shadow-md dark:border-gray-500 rounded-md shadow-md border-2 dark:border border-opacity-60 text-primary min-w-52">
-                            <div className="p-4 pb-2">
-                                <h1 className="text-xl font-semibold mb-1.5">{test.name}</h1>
-                                <p className="text-sm font-semibold text-primary mb-2.5 bg-primary bg-opacity-20 px-4 py-1.5 w-fit rounded-full text-opacity-80">{test.sampleType}</p>
-                                <p className="text-sm opacity-60 dark:text-white text-black">Fasting: {test.fastingRequired} | Tube Type: {test.tubeType}</p>
-                            </div>
-                            <Link href={'/tests/' + test._id} className="border-t-2 dark:border-gray-500 mt-auto p-4 pb-3 pt-2.5 text-sm flex items-center gap-2">{'View'}<LinkArrowIcon size={12} /></Link>
-                        </div>
+                        <Link href={'/tests/' + test._id} key={test._id} className="flex flex-col bg-white dark:bg-[#172A46] dark:shadow-md dark:border-gray-500 rounded-md shadow-md border border-primary/50 dark:border text-primary p-4 min-w-52">
+                            <h1 className="text-xl font-semibold mb-1.5">{test.name}</h1>
+                            <p className="text-xs font-semibold text-white mb-2.5 bg-primary bg-opacity-20 px-4 py-1.5 w-fit rounded-full">{test.sampleType}</p>
+                            <p className="text-sm mt-auto opacity-60 dark:text-white text-black">Fasting: {test.fastingRequired} | Tube Type: {test.tubeType}</p>
+                        </Link>
                     ))
                 }
             </div>
