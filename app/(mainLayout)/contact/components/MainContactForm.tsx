@@ -34,26 +34,27 @@ export default function MainForm() {
     }
 
     return (
-        <form className='p-6 flex flex-col rounded-md border-2 border-primary border-opacity-30 bg-white dark:bg-[#172A46] ' onSubmit={sendData}>
+        <form className='p-6 px-8 flex flex-col rounded-md border-2 border-primary/10 mb-6 lg:mb-24 bg-white dark:bg-[#172A46] ' onSubmit={sendData}>
+            <h2 className='text-2xl mb-4 font-bold text-primary'>Send Us a Message</h2>
             <div className='flex flex-col md:flex-row gap-6'>
                 <div className='flex flex-col gap-0.5'>
-                    <label htmlFor='name' className='text-sm'>Name</label>
-                    <input id='name' name='name' value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className='outline-none border-2 rounded-md border-opacity-60 mt-1 border-primary bg-transparent text-lg font-semibold p-2' />
+                    <label htmlFor='name' className='text-sm'>Name *</label>
+                    <input id='name' name='name' placeholder='Your Full Name' value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className='outline-none border border-gray-400/80 rounded-xs border-opacity-60 mt-1 bg-transparent text-sm p-2 px-3' />
                 </div>
                 <div className='flex flex-col gap-0.5'>
-                    <label htmlFor='email' className='text-sm'>Email / Phone</label>
-                    <input id='email' name='email' value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className='outline-none border-2 rounded-md border-opacity-60 mt-1 border-primary bg-transparent text-lg font-semibold p-2' />
+                    <label htmlFor='email' className='text-sm'>Email / Phone *</label>
+                    <input id='email' name='email' placeholder='Your Email or Phone' value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className='outline-none border border-gray-400/80 rounded-xs border-opacity-60 mt-1 bg-transparent text-sm p-2 px-3' />
                 </div>
             </div>
             <div className='mt-8 flex flex-col gap-0.5'>
-                <label htmlFor='subject' className='text-sm'>Subject</label>
-                <input id='subject' name='subject' value={formData.subject} onChange={e => setFormData({ ...formData, subject: e.target.value })} className='outline-none border-2 rounded-md border-opacity-60 mt-1 border-primary bg-transparent text-lg font-semibold p-2' />
+                <label htmlFor='subject' className='text-sm'>Subject *</label>
+                <input id='subject' name='subject' value={formData.subject} onChange={e => setFormData({ ...formData, subject: e.target.value })} className='outline-none border border-gray-400/80 rounded-xs border-opacity-60 mt-1 bg-transparent text-sm p-2 px-3' />
             </div>
             <div className='mt-8 flex flex-col gap-0.5'>
-                <label htmlFor='message' className='text-sm'>Message</label>
-                <textarea id='message' name='message' value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })} className='outline-none border-2 rounded-md border-opacity-60 mt-1 border-primary bg-transparent text-lg font-semibold p-2' rows={3} ></textarea>
+                <label htmlFor='message' className='text-sm'>Message *</label>
+                <textarea id='message' name='message' value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })} className='outline-none border border-gray-400/80 rounded-xs border-opacity-60 mt-1 bg-transparent text-sm p-2 px-3' rows={3} ></textarea>
             </div>
-            <button type='submit' disabled={loading} className='px-7 py-2 cursor-pointer rounded-md mt-4 mx-auto text-white bg-primary'>{loading ? 'Submitting..' : 'Submit'}</button>
+            <button type='submit' disabled={loading} className='px-7 py-2 cursor-pointer rounded-xs mt-4 mx-auto text-white bg-primary'>{loading ? 'Sending..' : 'Send Message'}</button>
         </form>
     )
 }

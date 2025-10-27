@@ -102,11 +102,11 @@ const Page = () => {
                     {/* <Dropdown options={['Ordered', 'Out for Sample Collection', 'Sample Collected', 'Report Delivered to Lab', 'Report Generated', 'Out for Report Delivery', 'Report Delivered', 'Canceled']} value={orderDetails.status} onChange={(val) => setOrderDetails({ ...orderDetails, status: val.value as 'Ordered' | 'Sample Collected' | 'Report Generated' | 'Report Delivered' | 'Canceled' })} width={'100%'} /> */}
                 </div>
             </div>
-            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
+            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2 border-gray-300/50'>
                 Payment Information
             </div>
             <Input label='Paid' value={orderDetails?.paid?.toString() || '0'} min={0} max={maxPrice} type='number' onChange={val => setOrderDetails({ ...orderDetails, paid: Math.min(Number(val), maxPrice) })} />
-            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2'>
+            <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2 border-gray-300/50'>
                 Total Amount: ₹{maxPrice}
             </div>
             <div className='p-5 px-0 ms-auto justify-end items-end flex gap-4'>

@@ -52,7 +52,7 @@ const PatientsPage = () => {
                     {user?.patientDetails?.map((patientDetail, i) => (
                         <div
                             key={i}
-                            className='border-2 dark:border-gray-500 dark:bg-[#172A46] text-black px-4 py-3.5 rounded-md cursor-pointer'
+                            className='border-2 border-gray-300/50 bg-white dark:border-gray-500 dark:bg-[#172A46] text-black px-4 py-3.5 rounded-md cursor-pointer'
                             onClick={() =>
                                 setShowPatientPopup({ patientIndex: i })}>
                             <div className='font-semibold mb-1 text-black dark:text-white'>{patientDetail.name}</div>

@@ -53,7 +53,7 @@ const AddressesPage = () => {
                     {user?.address?.map((address, i) => (
                         <div
                             key={i}
-                            className='border-2 dark:border-gray-500 dark:bg-[#172A46] px-4 py-3.5 rounded-md cursor-pointer'
+                            className='border-2 border-gray-300/70 bg-white dark:border-gray-500 dark:bg-[#172A46] px-4 py-3.5 rounded-md cursor-pointer'
                             onClick={() =>
                                 setShowAddressPopup({ addressIndex: i })}>
                             <div className='font-semibold mb-1 text-black dark:text-white'>{address.phone}</div>

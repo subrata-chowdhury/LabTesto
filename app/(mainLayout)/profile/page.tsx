@@ -44,8 +44,8 @@ const ProfilePage = () => {
                 </div>
             </div> */}
             <section className='pt-0 pb-2 sm:pb-4'>
-                <div className='border-2 bg-white dark:bg-[#172A46] dark:border-gray-500 relative flex flex-col sm:flex-row gap-4 items-center rounded-lg px-3 sm:px-5 py-3 sm:py-5 text-primary'>
-                    <UserIcon size={120} className='w-16 h-16 md:w-20 md:h-20 p-4 bg-primary bg-opacity-20 dark:bg-opacity-30 rounded-full' />
+                <div className='border-2 border-gray-300/50 bg-white dark:bg-[#172A46] dark:border-gray-500 relative flex flex-col sm:flex-row gap-4 items-center rounded-lg px-3 sm:px-5 py-3 sm:py-5 text-primary'>
+                    <UserIcon size={120} className='w-16 h-16 md:w-20 md:h-20 p-4 bg-primary/20 dark:bg-primary/30 rounded-full' />
                     <div className='text-center sm:text-left'>
                         <div className='text-base sm:text-lg md:text-xl font-bold'>{user.name}</div>
                         <div className='text-sm font-medium text-gray-500 dark:text-gray-400'>{user.email}</div>
