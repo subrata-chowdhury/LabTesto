@@ -103,9 +103,9 @@ const Orders = () => {
                             { heading: 'Status', selector: 'status', component: ({ data }) => <ColoredStatus data={data} /> },
                             {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
-                                    <button className='text-blue-500' onClick={() => navigate.push('/admin/contacts/view/' + data._id)}>View</button>|
-                                    <button className='text-blue-500' onClick={() => navigate.push(`/admin/contacts/edit/${data._id}`)} >Edit</button>|
-                                    <button className='text-[#ff5d76]' onClick={() => deleteContact(data._id)} ><TrashBinIcon /></button>
+                                    <button className='text-blue-500 cursor-pointer' onClick={() => navigate.push('/admin/contacts/view/' + data._id)}>View</button>|
+                                    <button className='text-blue-500 cursor-pointer' onClick={() => navigate.push(`/admin/contacts/edit/${data._id}`)} >Edit</button>|
+                                    <button className='text-[#ff5d76] cursor-pointer' onClick={() => deleteContact(data._id)} ><TrashBinIcon /></button>
                                 </div>
                             }
                         ],

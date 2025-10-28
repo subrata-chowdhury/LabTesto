@@ -25,7 +25,7 @@ const CollectorForm = ({ collectorDetails, error, onChange, onSave = () => { } }
     const [showQualificationPopup, setShowQualificationPopup] = useState<{ index: number } | null>(null);
 
     return (
-        <div className='bg-white mt-4 p-8 px-10'>
+        <div className='bg-white dark:bg-black mt-4 p-8 px-10'>
             <div className='text-xl flex gap-3 items-center font-bold pb-6'>
                 Collector Form
                 <Title title={<p className='text-nowrap font-medium'>Fill in the details for the collector</p>}>
@@ -48,10 +48,10 @@ const CollectorForm = ({ collectorDetails, error, onChange, onSave = () => { } }
             <div className='pb-4 flex justify-between font-semibold pt-5 border-t-2 border-gray-300/50'>
                 Qualification
                 <div
-                    className='ms-auto flex gap-2 font-semibold text-sm text-blue-500 border-2 border-blue-500 px-4 py-2 rounded cursor-pointer'
+                    className='ms-auto flex gap-2 font-semibold text-sm text-primary dark:text-white border-2 border-primary dark:border-white/60 px-4 py-2 rounded cursor-pointer'
                     onClick={() => setShowQualificationPopup({ index: collectorDetails.qualification?.length || 0 })}>
                     <div>New Entry</div>
-                    <Image src={plusIcon} alt='' width={20} height={20} />
+                    <Image src={plusIcon} className='filter brightness-0 dark:invert' alt='' width={20} height={20} />
                 </div>
             </div>
             <div className='flex flex-col gap-1'>
@@ -97,8 +97,8 @@ const CollectorForm = ({ collectorDetails, error, onChange, onSave = () => { } }
                 }
             </div>
             <div className='p-5 px-0 ms-auto justify-end items-end flex gap-4'>
-                <div className='font-medium text-blue-500 h-10 flex justify-center items-center px-4 border-2 border-blue-400 rounded cursor-pointer' onClick={() => { }}>Cancel</div>
-                <div className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => { await onSave(); }}>Save</div>
+                <div className='font-medium text-primary dark:text-white h-10 flex justify-center items-center px-4 border-2 border-primary dark:border-white/60 rounded cursor-pointer' onClick={() => { }}>Cancel</div>
+                <div className='bg-primary dark:bg-white/25 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => { await onSave(); }}>Save</div>
             </div>
         </div>
     )
@@ -133,15 +133,15 @@ const QualificationPopup = ({ qualification, onClose = () => { }, onSave = () =>
 
     return (
         <Model heading='Add Qualification' onClose={onClose}>
-            <div className='bg-white p-6 pb-3 px-8'>
+            <div className='bg-white dark:bg-black p-6 pb-3 px-8'>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>
                     <Input label='Degree *' name='degree' placeholder='Enter degree' value={qualificationData?.degree || ''} onChange={(val) => setQualificationData(prevVal => ({ ...prevVal, degree: val }))} labelClass='font-medium' containerClass='flex-1' />
                     <Input label='College *' name='college' placeholder='Enter college' value={qualificationData?.college || ''} onChange={(val) => setQualificationData(prevVal => ({ ...prevVal, college: val }))} labelClass='font-medium' containerClass='flex-1' />
                     <Input label='Year *' name='year' type='number' placeholder='Enter year' value={qualificationData?.year?.toString() || ''} onChange={(val) => setQualificationData(prevVal => ({ ...prevVal, year: parseInt(val) }))} labelClass='font-medium' containerClass='flex-1' />
                 </div>
                 <div className='p-5 px-0 ms-auto justify-end items-end flex gap-4'>
-                    <div className='font-medium text-blue-500 h-10 flex justify-center items-center px-4 border-2 border-blue-400 rounded cursor-pointer' onClick={onClose}>Cancel</div>
-                    <div className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => {
+                    <div className='font-medium text-primary dark:text-white h-10 flex justify-center items-center px-4 border-2 border-primary dark:border-white/60 rounded cursor-pointer' onClick={onClose}>Cancel</div>
+                    <div className='bg-primary dark:bg-white/25 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => {
                         await onSave(qualificationData);
                     }}>Save</div>
                 </div>

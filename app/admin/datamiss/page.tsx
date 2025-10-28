@@ -27,7 +27,7 @@ function Page() {
             {
                 datamissByLab.map((lab) => (
                     <Link href={'/admin/labs/edit/tests/' + lab.lab._id} key={lab.lab._id}>
-                        <div className="mb-6 p-4 border border-gray-300/50 rounded-lg shadow-md bg-white">
+                        <div className="mb-6 p-4 border border-gray-300/50 rounded-lg shadow-md bg-white dark:bg-black">
                             <h2 className="text-xl font-semibold mb-2">{lab.lab.name}</h2>
                             <ul className="list-disc list-inside">
                                 {lab.missingTests.map((missingTest) => (
@@ -45,7 +45,7 @@ function Page() {
                         await fetchDatamissByLab(limit.current + 10);
                     }}
                     disabled={loading}
-                    className="mt-2 mx-auto px-4 py-2 bg-blue-500 text-white rounded-lg"
+                    className="mt-2 mx-auto px-4 py-2 bg-primary dark:bg-white/25 cursor-pointer text-white rounded-sm"
                 >
                     {loading ? "Loading..." : "Load More"}
                 </button>

@@ -45,7 +45,7 @@ function OrderPage() {
         <div className='flex-1 flex flex-col gap-4 pt-2'>
             <div className='text-sm'>Order ID: {order?._id.toUpperCase()}</div>
             {order?.items.map((item, index) => (
-                <div className='bg-white dark:bg-[#172A46] rounded shadow-md' key={index}>
+                <div className='bg-white dark:bg-black rounded shadow-md' key={index}>
                     <div className='flex justify-between p-3 px-4'>
                         <div className='flex flex-col gap-2 justify-between h-full'>
                             <div>
@@ -55,12 +55,12 @@ function OrderPage() {
                             <div className='mt-auto font-medium text-xl'>₹{(item.product.price || 0) * item.quantity}</div>
                         </div>
                     </div>
-                    <div className='bg-[rgba(57,134,186,0.08)] flex gap-2 p-2 text-xs'>
+                    <div className='bg-primary/5 dark:bg-white/5 flex gap-2 p-2 text-xs'>
                         {
                             order.items[index]?.patientDetails?.length > 0 && Array(item.quantity).fill(0).map((_, i) => (
                                 <div
                                     key={i}
-                                    className='bg-[rgba(57,134,186,0.25)] px-3 py-1 rounded-full cursor-pointer'
+                                    className='bg-primary text-white dark:bg-white/20 px-3 py-1 rounded-full cursor-pointer'
                                     onClick={() =>
                                         setShowPatientPopup({ itemIndex: index, patientIndex: i })}>
                                     {order.items[index]?.patientDetails[i]?.name?.split(' ').map(e => e.charAt(0)).join('') || 'Add +'}
@@ -70,8 +70,8 @@ function OrderPage() {
                     </div>
                 </div>
             ))}
-            <Link href={`/collector/orders/edit/${order._id}`} className='ms-auto px-4 py-2 bg-primary text-white rounded font-medium'>Edit Order</Link>
-            <div className='bg-white text-sm flex flex-col dark:bg-[#172A46] px-6 py-4 rounded'>
+            <Link href={`/collector/orders/edit/${order._id}`} className='ms-auto px-4 py-2 bg-primary dark:bg-white/15 text-white rounded font-medium'>Edit Order</Link>
+            <div className='bg-white text-sm flex flex-col dark:bg-black px-6 py-4 rounded'>
                 <div className='py-2.5 flex gap-2'>
                     <div>
                         1.
@@ -93,25 +93,25 @@ function OrderPage() {
                     </div>
                 ))}
             </div>
-            <div className='bg-white dark:bg-[#172A46] px-6 py-4 rounded'>
+            <div className='bg-white dark:bg-black px-6 py-4 rounded'>
                 <div className='text-lg font-semibold'>Sample Taken Time </div>
                 <div><span className='font-medium'>Start:</span> {new Date(order?.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
                 <div><span className='font-medium'>End:</span> {new Date(order?.sampleTakenDateTime?.end || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.end || '').toTimeString().split(' ')[0]}</div>
             </div>
-            {!(order.status === 'Report Delivered' || order.status === 'Canceled') && <div className='bg-white dark:bg-[#172A46] px-6 py-4 rounded'>
+            {!(order.status === 'Report Delivered' || order.status === 'Canceled') && <div className='bg-white dark:bg-black px-6 py-4 rounded'>
                 <div className='text-lg font-semibold'>Collector Details</div>
                 <div><span className='font-medium'>Name:</span> {order?.collector?.name}</div>
                 <div><span className='font-medium'>Email:</span> {order?.collector?.email}</div>
                 <div><span className='font-medium'>Phone Number:</span> {order?.collector?.phone}</div>
             </div>}
-            <div className='bg-white dark:bg-[#172A46] px-6 py-4 rounded'>
+            <div className='bg-white dark:bg-black px-6 py-4 rounded'>
                 <div className='text-lg font-semibold'>Report Delivery Address</div>
                 <div><span className='font-medium'>City:</span> {order?.address?.city}</div>
                 <div><span className='font-medium'>District:</span> {order?.address?.district}</div>
                 <div><span className='font-medium'>Pin:</span> {order?.address?.pin}</div>
                 <div><span className='font-medium'>Phone:</span> {order?.address?.phone}</div>
             </div>
-            <div className='bg-white dark:bg-[#172A46] px-6 py-4 rounded'>
+            <div className='bg-white dark:bg-black px-6 py-4 rounded'>
                 <div className='text-lg font-semibold'>User Details</div>
                 <div><span className='font-medium'>Name:</span> {order?.user?.name}</div>
                 <div><span className='font-medium'>Email / Phone:</span> {order?.user?.email}</div>

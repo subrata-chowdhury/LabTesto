@@ -48,12 +48,12 @@ export default function AdminLogin() {
 
     return (
         <div className="flex flex-col md:flex-row h-screen gap-0">
-            <div className="md:w-1/2 hidden md:flex flex-col gap-4 justify-center items-center bg-gray-200 w-full h-full">
-                <h1 className="text-2xl font-semibold">Welcome Back to <span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span> Admin</h1>
+            <div className="md:w-1/2 hidden md:flex flex-col gap-4 justify-center items-center bg-gray-200 dark:bg-white/10 w-full h-full">
+                <h1 className="text-2xl font-semibold">Welcome Back to <span className="text-orange-500">Lab</span><span className="text-primary dark:text-white">Testo</span> Admin</h1>
                 <div>Your wellness which makes us Happy</div>
             </div>
             <div className="md:w-1/2 md:h-auto flex flex-col justify-center absolute md:relative items-center w-full h-full">
-                <h1 className="md:pl-6 ps-0 pb-3 md:pb-0 w-11/12 md:w-9/12 max-w-[450px] text-center md:text-start text-2xl font-semibold">Log In to <span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span> Admin</h1>
+                <h1 className="md:pl-6 ps-0 pb-3 md:pb-0 w-11/12 md:w-9/12 max-w-[450px] text-center md:text-start text-2xl font-semibold">Log In to <span className="text-orange-500">Lab</span><span className="text-primary dark:text-white">Testo</span> Admin</h1>
                 <form className="flex flex-col gap-4 bg-transparent p-6 rounded-md w-11/12 md:w-9/12 max-w-[450px]">
                     <Input
                         label="Email"
@@ -74,7 +74,7 @@ export default function AdminLogin() {
                             <Link href="#" onClick={() => toast.info('Currently out of service')}>Forgot Password</Link>
                         </div>
                     </div>
-                    <button className="bg-blue-500 text-white rounded p-2" onClick={login} disabled={loading}>{loading ? 'Loading...' : 'Login'}</button>
+                    <button className="bg-primary dark:bg-white/15 text-white rounded p-2" onClick={login} disabled={loading}>{loading ? 'Loading...' : 'Login'}</button>
                 </form>
             </div>
         </div>

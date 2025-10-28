@@ -91,7 +91,7 @@ const Carts = () => {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
                                     {/* <button className='text-blue-500' onClick={() => navigate.push('/carts/' + data._id)}>View</button>| */}
                                     {/* <button className='text-blue-500' onClick={() => navigate.push(`/admin/carts/edit/${data._id}`)} >Edit</button>| */}
-                                    <button className='text-[#ff5d76]' onClick={() => deleteCart(data._id as string)} ><TrashBinIcon /></button>
+                                    <button className='text-[#ff5d76] cursor-pointer' onClick={() => deleteCart(data._id as string)} ><TrashBinIcon /></button>
                                 </div>
                             }
                         ],

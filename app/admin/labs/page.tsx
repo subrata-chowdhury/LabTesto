@@ -74,7 +74,7 @@ const Labs = () => {
                 <div className='mb-4 justify-start'>
                     <Card label='Total Labs' value={analytics.totalLabs} className='mr-3 mt-3' />
                 </div>
-                <div className='ms-auto mb-4 flex gap-2 bg-blue-500 text-white px-4 py-2 rounded cursor-pointer' onClick={() => navigate.push('/admin/labs/new')}>
+                <div className='ms-auto mb-4 flex gap-2 bg-primary dark:bg-white/15 text-white px-4 py-2 rounded cursor-pointer' onClick={() => navigate.push('/admin/labs/new')}>
                     <div>New Lab</div>
                     <Image src={plusIcon} alt='' />
                 </div>
@@ -89,9 +89,9 @@ const Labs = () => {
                             { heading: 'Rated', selector: 'rated' },
                             {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
-                                    <button className='text-blue-500' onClick={() => navigate.push(`/admin/labs/edit/tests/${data._id}`)} >Edit Tests</button>|
-                                    <button className='text-blue-500' onClick={() => navigate.push('/admin/labs/edit/about/' + data._id)}>Edit About</button>|
-                                    <button className='text-[#ff5d76]' onClick={() => deleteLab(data._id as string)} ><TrashBinIcon /></button>
+                                    <button className='text-blue-500 cursor-pointer' onClick={() => navigate.push(`/admin/labs/edit/tests/${data._id}`)} >Edit Tests</button>|
+                                    <button className='text-blue-500 cursor-pointer' onClick={() => navigate.push('/admin/labs/edit/about/' + data._id)}>Edit About</button>|
+                                    <button className='text-[#ff5d76] cursor-pointer' onClick={() => deleteLab(data._id as string)} ><TrashBinIcon /></button>
                                 </div>
                             }
                         ],

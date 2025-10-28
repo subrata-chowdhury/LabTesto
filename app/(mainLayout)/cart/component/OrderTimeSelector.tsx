@@ -15,7 +15,7 @@ export default function OrderTimeSelector({ excludeTimes = [], onClose, onChange
             <div className='px-7 py-4 pt-6 pb-5 min-w-80 text-sm'>
                 <div className='font-medium text-base mb-2'>Pick Date</div>
                 <div>
-                    <input type="date" className="px-3 py-2 border-2 rounded" min={new Date().toISOString().split('T')[0]} value={date} onChange={e => setDate(e.target.value)} />
+                    <input type="date" className="px-3 py-2 text-primary dark:text-white dark:fill-white border-2 border-black/10 dark:border-white/30 rounded" min={new Date().toISOString().split('T')[0]} value={date} onChange={e => setDate(e.target.value)} />
                 </div>
                 <div className='font-medium text-base mb-2 mt-4'>Duration</div>
                 <div className="flex gap-2 justify-between">
@@ -57,7 +57,7 @@ export default function OrderTimeSelector({ excludeTimes = [], onClose, onChange
             </div>
             <div className='flex justify-end pb-8 px-7'>
                 <button
-                    className="bg-primary text-white px-5 py-2 rounded"
+                    className="bg-primary dark:bg-white/20 text-white px-5 py-2 rounded"
                     onClick={() => {
                         if (sampleStartTime.current && sampleEndTime.current && sampleStartTime.current < sampleEndTime.current) {
                             onChange({ start: sampleStartTime.current, end: sampleEndTime.current });

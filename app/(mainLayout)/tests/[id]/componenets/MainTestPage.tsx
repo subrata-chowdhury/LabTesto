@@ -124,9 +124,9 @@ function MainTestPage({ test }: Props) {
     }
 
     return (
-        <div className='bg-blue-50 dark:bg-[#0A192F] p-1 md:py-9 md:px-10'>
-            <section className='bg-white dark:bg-[#0A192F] border-2 border-gray-300/50 dark:border-[#172A46] p-7 px-8 flex flex-col rounded-lg'>
-                <h1 className='text-2xl font-bold text-primary'>{testDetails.name}</h1>
+        <div className='bg-blue-50 dark:bg-white/0 p-1 md:py-9 md:px-10'>
+            <section className='bg-white dark:bg-black border-2 border-gray-300/50 dark:border-white/15 p-7 px-8 flex flex-col rounded-lg'>
+                <h1 className='text-2xl font-bold text-primary dark:text-white'>{testDetails.name}</h1>
                 {(testDetails?.otherTerms || []).length > 0 && <div className='text-sm text-gray-500 pt-2'>
                     <strong className='font-normal'>Also known as:</strong> <span className='text-black font-medium'>{testDetails?.otherTerms?.join(', ')}</span>
                 </div>}
@@ -172,19 +172,19 @@ function MainTestPage({ test }: Props) {
                         </>}
                     </div>
                     <div className='flex gap-3'>
-                        {(labs.length > 0) && <button disabled={loading} className='px-5 py-2 rounded-md bg-primary text-white font-medium' onClick={onBook}>{booking ? 'Booking..' : 'Book'}</button>}
-                        {(labs.length > 0) && <button disabled={loading} className='px-5 py-2 rounded-md bg-primary text-white font-medium text-nowrap' onClick={onAddToCart}>{loading ? 'Adding to Cart..' : 'Add to Cart'}</button>}
+                        {(labs.length > 0) && <button disabled={loading} className='px-5 py-2 rounded-md bg-primary dark:bg-white/15 text-white font-medium cursor-pointer' onClick={onBook}>{booking ? 'Booking..' : 'Book'}</button>}
+                        {(labs.length > 0) && <button disabled={loading} className='px-5 py-2 rounded-md bg-primary dark:bg-white/15 text-white font-medium text-nowrap cursor-pointer' onClick={onAddToCart}>{loading ? 'Adding to Cart..' : 'Add to Cart'}</button>}
                     </div>
                 </div>
             </section>
             <section className='mt-1 md:mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 md:gap-5 rounded-lg'>
                 {/* {loadingLabs === true && <LabLoader />} */}
                 {labs.length > 0 && labs.map((labObj, i) => (
-                    <div key={i} className='border-2 border-gray-300/50 dark:border-[#172A46] p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white dark:bg-[#172A46]' onClick={() => onLabSelect(labObj)}>
+                    <div key={i} className='border-2 border-gray-300/50 dark:border-white/15 p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white dark:bg-black' onClick={() => onLabSelect(labObj)}>
                         <div className='flex items-center gap-3'>
-                            <div className='w-14 h-14 bg-primary/50 rounded-md flex items-center justify-center'></div>
+                            <div className='w-14 h-14 bg-primary/50 dark:bg-white/15 rounded-md flex items-center justify-center'></div>
                             <div>
-                                <div className='font-semibold text-primary'>{labObj.name}</div>
+                                <div className='font-semibold text-primary dark:text-white'>{labObj.name}</div>
                                 <div className='flex items-center gap-2'>
                                     <div className='text-lg font-semibold'>₹{labObj.offer}</div>
                                     <div className='text-base line-through text-gray-500 dark:text-gray-400'>₹{labObj.price}</div>
@@ -295,7 +295,7 @@ const DetailsSection = memo(({ labBaseDetails, testDetails }: {
     });
 
     return (
-        <section className='mt-1 md:mt-4 py-8 px-8 rounded-lg border-2 border-gray-300/50 dark:border-[#172A46] bg-white dark:bg-[#172A46]'>
+        <section className='mt-1 md:mt-4 py-8 px-8 rounded-lg border-2 border-gray-300/50 dark:border-white/15 bg-white dark:bg-black'>
             <div className='flex flex-col gap-5' style={{ padding: 0, border: 0 }}>
                 {labBaseDetails.packages.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
                     <PackageIcon />
@@ -308,7 +308,7 @@ const DetailsSection = memo(({ labBaseDetails, testDetails }: {
                                 ))
                             }
                         </ul>
-                        {labBaseDetails.packages.length > 5 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, packagesInclude: !seeMore.packagesInclude })}>See {!seeMore.packagesInclude ? 'More' : 'Less'}</div>}
+                        {labBaseDetails.packages.length > 5 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary dark:text-white' onClick={() => setSeeMore({ ...seeMore, packagesInclude: !seeMore.packagesInclude })}>See {!seeMore.packagesInclude ? 'More' : 'Less'}</div>}
                     </div>
                 </div>}
                 {(testDetails?.overview?.length || 0) > 0 && <div className='grid grid-flow-col justify-start gap-2'>
@@ -318,7 +318,7 @@ const DetailsSection = memo(({ labBaseDetails, testDetails }: {
                         <div className={'text-gray-500 dark:text-gray-300 relative ' + (!seeMore.overview ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, overview: !seeMore.overview })}>
                             <div className='tiptap' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.overview || '' }}></div>
                         </div>
-                        {(testDetails?.overview || '').replace(/<[^>]*>/g, '').length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, overview: !seeMore.overview })}>See {!seeMore.overview ? 'More' : 'Less'}</div>}
+                        {(testDetails?.overview || '').replace(/<[^>]*>/g, '').length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary dark:text-white' onClick={() => setSeeMore({ ...seeMore, overview: !seeMore.overview })}>See {!seeMore.overview ? 'More' : 'Less'}</div>}
                     </div>
                 </div>}
                 {(testDetails?.description || '').replace(/<[^>]*>/g, '').length > 0 && <div className='flex justify-start gap-2'>
@@ -328,7 +328,7 @@ const DetailsSection = memo(({ labBaseDetails, testDetails }: {
                         <div className={'text-gray-500 dark:text-gray-300 relative ' + (!seeMore.description ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, description: !seeMore.description })}>
                             <div className='tiptap text-gray-500 dark:text-gray-300' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.description || '' }}></div>
                         </div>
-                        {(testDetails?.description || '').replace(/<[^>]*>/g, '').length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, description: !seeMore.description })}>See {!seeMore.description ? 'More' : 'Less'}</div>}
+                        {(testDetails?.description || '').replace(/<[^>]*>/g, '').length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary dark:text-white' onClick={() => setSeeMore({ ...seeMore, description: !seeMore.description })}>See {!seeMore.description ? 'More' : 'Less'}</div>}
                     </div>
                 </div>}
                 {(testDetails?.testResultInterpretation || '').length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
@@ -338,7 +338,7 @@ const DetailsSection = memo(({ labBaseDetails, testDetails }: {
                         <div className={'text-gray-500 dark:text-gray-300 relative ' + (!seeMore.testResultInterpretation ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, testResultInterpretation: !seeMore.testResultInterpretation })}>
                             <div className='tiptap text-gray-500 dark:text-gray-300' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.testResultInterpretation || '' }}></div>
                         </div>
-                        {(testDetails.testResultInterpretation || '').replace(/<[^>]*>/g, '').length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, testResultInterpretation: !seeMore.testResultInterpretation })}>See {!seeMore.testResultInterpretation ? 'More' : 'Less'}</div>}
+                        {(testDetails.testResultInterpretation || '').replace(/<[^>]*>/g, '').length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary dark:text-white' onClick={() => setSeeMore({ ...seeMore, testResultInterpretation: !seeMore.testResultInterpretation })}>See {!seeMore.testResultInterpretation ? 'More' : 'Less'}</div>}
                     </div>
                 </div>}
                 {(testDetails?.riskAssesment || '').replace(/<[^>]*>/g, '').length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
@@ -348,7 +348,7 @@ const DetailsSection = memo(({ labBaseDetails, testDetails }: {
                         <div className={'text-gray-500 dark:text-gray-300 relative ' + (!seeMore.riskAssesment ? 'max-h-[4.8rem] overflow-y-hidden' : '')} onClick={() => setSeeMore({ ...seeMore, riskAssesment: !seeMore.riskAssesment })}>
                             <div className='tiptap text-gray-500 dark:text-gray-300' style={{ padding: 0, border: 0, minHeight: 'auto' }} dangerouslySetInnerHTML={{ __html: testDetails.riskAssesment || '' }}></div>
                         </div>
-                        {(testDetails.riskAssesment || '').replace(/<[^>]*>/g, '').length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary' onClick={() => setSeeMore({ ...seeMore, riskAssesment: !seeMore.riskAssesment })}>See {!seeMore.riskAssesment ? 'More' : 'Less'}</div>}
+                        {(testDetails.riskAssesment || '').replace(/<[^>]*>/g, '').length > 50 && <div className='mt-auto text-sm font-semibold cursor-pointer text-primary dark:text-white' onClick={() => setSeeMore({ ...seeMore, riskAssesment: !seeMore.riskAssesment })}>See {!seeMore.riskAssesment ? 'More' : 'Less'}</div>}
                     </div>
                 </div>}
             </div>

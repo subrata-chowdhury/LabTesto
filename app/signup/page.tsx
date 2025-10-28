@@ -77,11 +77,11 @@ export default function Signup() {
     return (
         <div className="flex flex-col md:flex-row h-screen gap-0">
             <div className="md:w-1/2 hidden md:flex flex-col gap-4 justify-center items-center bg-gray-200 dark:bg-[#0A192F] w-full h-full">
-                <h1 className="text-2xl font-semibold">Welcome to <span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></h1>
+                <h1 className="text-2xl font-semibold">Welcome to <span className="text-orange-500">Lab</span><span className="text-primary dark:text-white">Testo</span></h1>
                 <div>Your wellness which makes us Happy</div>
             </div>
             <div className="md:w-1/2 md:h-auto flex flex-col justify-center absolute md:relative items-center w-full h-full">
-                <h1 className="md:pl-6 ps-0 pb-3 md:pb-0 w-11/12 md:w-9/12 max-w-[450px] text-center md:text-start text-2xl font-semibold">Sign Up to <span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span></h1>
+                <h1 className="md:pl-6 ps-0 pb-3 md:pb-0 w-11/12 md:w-9/12 max-w-[450px] text-center md:text-start text-2xl font-semibold">Sign Up to <span className="text-orange-500">Lab</span><span className="text-primary dark:text-white">Testo</span></h1>
                 <form className="flex flex-col gap-4 bg-transparent p-6 rounded-md w-11/12 md:w-9/12 max-w-[450px]" onSubmit={signup}>
                     <Input
                         label="Full Name"
@@ -116,7 +116,7 @@ export default function Signup() {
                             placeholder="Confirm Password" />
                     </div> */}
                     <div className="w-full">
-                        <button type="submit" className="bg-primary text-white w-full rounded p-2 mb-0.5" disabled={loading}>{loading ? 'Signing Up...' : 'Sign Up'}</button>
+                        <button type="submit" className="bg-primary dark:bg-white/15 text-white w-full rounded p-2 mb-0.5 cursor-pointer" disabled={loading}>{loading ? 'Signing Up...' : 'Sign Up'}</button>
                         <div className="text-xs">By Signing in You are Accepting our <Link href={'/terms-and-conditions'} className="text-blue-600 font-semibold">Terms & Conditions</Link> and <Link href={'/privacy-policy'} className="text-blue-600 font-semibold">Privacy Policy</Link></div>
                     </div>
                     <div className="flex flex-col">

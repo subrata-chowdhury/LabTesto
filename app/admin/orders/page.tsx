@@ -82,7 +82,7 @@ const Orders = () => {
                     <Card label='Total Ordered' value={analytics.ordered} colors={{ lineColor: '#A74726', iconBgColor: '#FEE1D7' }} className='mr-3 mt-3' />
                     <Card label='Total Collected' value={analytics.sampleCollected} colors={{ lineColor: '#A74726', iconBgColor: '#FEF3DD' }} className='mr-3 mt-3' />
                 </div>
-                <div className='ms-auto mb-4 flex gap-2 bg-blue-500 text-white px-4 py-2 rounded cursor-pointer' onClick={() => navigate.push('/admin/orders/new')}>
+                <div className='ms-auto mb-4 flex gap-2 bg-primary dark:bg-white/15 text-white px-4 py-2 rounded cursor-pointer' onClick={() => navigate.push('/admin/orders/new')}>
                     <div>New Order</div>
                     <Image src={plusIcon} alt='' />
                 </div>
@@ -110,9 +110,9 @@ const Orders = () => {
                             { heading: 'Status', selector: 'status', component: ({ data }) => <ColoredStatus data={data} /> },
                             {
                                 heading: 'Actions', component: ({ data }) => <div className='flex gap-1 items-center w-fit'>
-                                    <button className='text-blue-500' onClick={() => navigate.push('/admin/orders/view/' + data._id)}>View</button>|
-                                    <button className='text-blue-500' onClick={() => navigate.push(`/admin/orders/edit/${data._id}`)} >Edit</button>|
-                                    <button className='text-[#ff5d76]' onClick={() => deleteOrder(data._id as string)} ><TrashBinIcon /></button>
+                                    <button className='text-blue-500 cursor-pointer' onClick={() => navigate.push('/admin/orders/view/' + data._id)}>View</button>|
+                                    <button className='text-blue-500 cursor-pointer' onClick={() => navigate.push(`/admin/orders/edit/${data._id}`)} >Edit</button>|
+                                    <button className='text-[#ff5d76] cursor-pointer' onClick={() => deleteOrder(data._id as string)} ><TrashBinIcon /></button>
                                 </div>
                             }
                         ],

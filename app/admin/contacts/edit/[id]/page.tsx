@@ -38,7 +38,7 @@ function ContactEditPage() {
     if (loading) return <Loading />
 
     return (
-        <div className='bg-white mt-4 p-8 px-10'>
+        <div className='bg-white dark:bg-black mt-4 p-8 px-10'>
             <div className='text-xl flex gap-3 items-center font-bold pb-6'>
                 Contact Form
             </div>
@@ -50,7 +50,7 @@ function ContactEditPage() {
                 <Input label='Subject' labelClass='font-medium' value={contact?.subject || ''} onChange={() => { }} />
                 <div className='text-sm flex flex-col gap-1 pt-2'>
                     <label className='font-medium'>Messege</label>
-                    <textarea className='border-2 dark:border-gray-400 bg-transparent rounded w-full h-20 p-2 outline-none' rows={5} defaultValue={contact?.message} readOnly></textarea>
+                    <textarea className='border-2 border-black/10 dark:border-white/20 bg-transparent rounded w-full h-20 p-2 outline-none' rows={5} defaultValue={contact?.message} readOnly></textarea>
                 </div>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4'>
                     <div className='text-sm flex flex-col gap-1 pt-2'>
@@ -65,15 +65,15 @@ function ContactEditPage() {
                 </div>
                 {contact?.user && <div className='text-sm flex flex-col gap-1 pt-2'>
                     <label className='font-medium'>User</label>
-                    <div className='border-2 rounded px-3 py-2'>
+                    <div className='border-2 border-black/10 dark:border-white/20 rounded px-3 py-2'>
                         <div>ID: {contact?.user._id}</div>
                         <div>Name: {contact?.user.name}</div>
                         <div>Email: {contact?.user.email}</div>
                     </div>
                 </div>}
                 <div className='p-5 px-0 ms-auto justify-end items-end flex gap-4'>
-                    <div className='font-medium text-blue-500 h-10 flex justify-center items-center px-4 border-2 border-blue-400 rounded cursor-pointer' onClick={() => { }}>Cancel</div>
-                    <div className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => { await onSave(); }}>Save</div>
+                    <div className='font-medium text-primary dark:text-white h-10 flex justify-center items-center px-4 border-2 border-primary dark:border-white/60 rounded cursor-pointer' onClick={() => { }}>Cancel</div>
+                    <div className='bg-primary dark:bg-white/25 text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => { await onSave(); }}>Save</div>
                 </div>
             </div>
         </div>

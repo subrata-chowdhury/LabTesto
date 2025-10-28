@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         openGraph: {
             title: `${test.name} - LabTesto`,
             description: test.description?.split('.')[0] || "Book lab tests easily online with LabTesto.",
-            url: `${process.env.NEXT_PUBLIC_APP_URL}/tests/${test._id}`,
+            url: `${(process.env.NEXT_PUBLIC_APP_URL || "https://labtesto.vercel.app")}/tests/${test._id}`,
         },
     };
 }

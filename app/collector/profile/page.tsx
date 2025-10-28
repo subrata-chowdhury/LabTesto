@@ -38,9 +38,9 @@ const ProfilePage = () => {
 
     return (
         <div className='flex-1'>
-            <div className='h-40 bg-[rgba(57,134,186,0.1)]'>
-                <div className='w-32 h-32 flex justify-center items-center top-full translate-x-1/2 -translate-y-1/2 bg-white dark:bg-[#172A46] rounded-full relative'>
-                    <UserIcon size={118} className='w-[118px] h-[118px] p-2 border-4 border-[rgb(57,134,186)] shadow-lg shadow-[rgba(57,134,186,0.2)] rounded-full bg-white dark:bg-[#172A46]' />
+            <div className='h-40 bg-primary/10 dark:bg-white/10'>
+                <div className='w-32 h-32 flex justify-center items-center top-full translate-x-1/2 -translate-y-1/2 bg-white dark:bg-black rounded-full relative'>
+                    <UserIcon size={118} className='w-[118px] h-[118px] p-2 border-4 border-white/20 shadow-lg shadow-[rgba(57,134,186,0.2)] rounded-full bg-white dark:bg-white/15' />
                 </div>
             </div>
             <section className='p-20 pb-2 px-10 md:px-12'>
@@ -55,10 +55,10 @@ const ProfilePage = () => {
                 <TagInput label='Reachable Areas' values={user.reachableAreas} onChange={(tags) => { setUser({ ...user, reachableAreas: tags }); setIsDirty(true) }} />
             </section>
             {isDirty && <div className='px-10 md:px-12 pt-8 pb-10 flex'>
-                <button className='bg-primary text-white py-2 px-4 rounded ms-auto' onClick={async () => await updateUser()}>Save</button>
+                <button className='bg-primary dark:bg-white/20 text-white py-2 px-4 rounded ms-auto' onClick={async () => await updateUser()}>Save</button>
             </div>}
             <div className='px-10 md:px-12 pt-8 pb-10 flex'>
-                <button className='bg-primary text-white py-2 px-4 rounded-md'>Delete Your Account / Resign</button>
+                <button className='bg-red-600 text-white py-2 px-4 rounded-xs'>Delete Your Account / Resign</button>
             </div>
         </div>
     )

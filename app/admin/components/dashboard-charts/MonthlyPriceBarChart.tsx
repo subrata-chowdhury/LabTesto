@@ -2,7 +2,7 @@ import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from "rec
 
 export default function MonthlyPriceBarChart({ financeData }: { financeData?: { date: Date, totalPrice: number, expenses: number }[] }) {
     return (
-        <div className='mt-5 bg-white p-5 px-6 pr-10 rounded-lg border-2 border-gray-300/50 w-fit'>
+        <div className='mt-5 bg-white dark:bg-black p-5 px-6 pr-10 rounded-lg border-2 border-gray-300/50 dark:border-white/20 w-fit'>
             <div className='text-lg font-semibold mb-3'>Total Price vs Expenses of {new Date().getFullYear()} (monthly)</div>
             <div className="w-full overflow-x-auto">
                 <BarChart width={730} height={250} data={financeData}>

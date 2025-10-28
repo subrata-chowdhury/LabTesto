@@ -29,7 +29,7 @@ const LabForm = ({ labDetails, loading, onChange, onSave = () => { } }: Props) =
     const { id } = useParams();
 
     return (
-        <div className='bg-white mt-4 p-8 px-10'>
+        <div className='bg-white dark:bg-black mt-4 p-8 px-10'>
             <div className='text-xl flex gap-3 items-center font-bold pb-6'>
                 Tests Lab Form of <span className='text-blue-600'>{labDetails.name}</span>
             </div>
@@ -38,7 +38,7 @@ const LabForm = ({ labDetails, loading, onChange, onSave = () => { } }: Props) =
                 <div className='flex gap-2'>
                     <SelectLab onSelect={(val) => setCopyLabId(val._id)} />
                     <div
-                        className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer'
+                        className='bg-primary dark:bg-white/25 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer'
                         onClick={() => {
                             if (!copyLabId) {
                                 toast.error('Please select a lab to copy from');
@@ -66,10 +66,10 @@ const LabForm = ({ labDetails, loading, onChange, onSave = () => { } }: Props) =
             <div className='pb-4 flex justify-between font-semibold'>
                 Test Details
                 <div
-                    className='ms-auto flex gap-2 font-semibold text-sm text-blue-500 border-2 border-blue-500 px-4 py-2 rounded cursor-pointer'
+                    className='ms-auto flex gap-2 font-semibold text-sm text-primary dark:text-white border-2 border-primary dark:border-white/60 px-4 py-2 rounded cursor-pointer'
                     onClick={() => setShowTestDetailsPopup({ index: labDetails.details?.length || 0 })}>
                     <div>New Entry</div>
-                    <Image src={plusIcon} alt='' width={20} height={20} />
+                    <Image src={plusIcon} className='filter brightness-0 dark:invert' alt='' width={20} height={20} />
                 </div>
             </div>
             <div className='border-2 border-gray-300/50 border-t-0 rounded'>
@@ -81,7 +81,7 @@ const LabForm = ({ labDetails, loading, onChange, onSave = () => { } }: Props) =
                         {
                             heading: 'Actions',
                             component: ({ index, data }) => (<div className='flex items-center gap-1'>
-                                <button className='text-primary' onClick={() => setShowTestDetailsPopup({ index })}>
+                                <button className='text-primary dark:text-white cursor-pointer' onClick={() => setShowTestDetailsPopup({ index })}>
                                     Edit
                                 </button>|
                                 <button
@@ -126,8 +126,8 @@ const LabForm = ({ labDetails, loading, onChange, onSave = () => { } }: Props) =
             </div>
 
             <div className='p-5 px-0 ms-auto justify-end items-end flex gap-4'>
-                <div className='font-medium text-blue-500 h-10 flex justify-center items-center px-4 border-2 border-blue-400 rounded cursor-pointer' onClick={() => { }}>Cancel</div>
-                <button className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => { await onSave(); }} disabled={loading}>{loading ? 'Saving..' : 'Save'}</button>
+                <div className='font-medium text-primary dark:text-white h-10 flex justify-center items-center px-4 border-2 border-primary dark:border-white/60 rounded cursor-pointer' onClick={() => { }}>Cancel</div>
+                <button className='bg-primary dark:bg-white/25 text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => { await onSave(); }} disabled={loading}>{loading ? 'Saving..' : 'Save'}</button>
             </div>
         </div>
     )
@@ -179,8 +179,8 @@ function TestDetailsPopup({ details, onClose, onSave }: { details: TestsDetails,
                 </label>
             </div>
             <div className='p-6 pt-2 ms-auto justify-end items-end flex gap-4'>
-                <div className='font-medium text-blue-500 h-10 flex justify-center items-center px-4 border-2 border-blue-400 rounded cursor-pointer' onClick={onClose}>Cancel</div>
-                <div className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => {
+                <div className='font-medium text-primary dark:text-white h-10 flex justify-center items-center px-4 border-2 border-primary dark:border-white/60 rounded cursor-pointer' onClick={onClose}>Cancel</div>
+                <div className='bg-primary dark:bg-white/25 text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => {
                     const errors: { [key: string]: string } = {};
 
                     if (!testDetails.price || testDetails.price <= 0) {

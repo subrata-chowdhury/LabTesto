@@ -69,7 +69,7 @@ const Page = () => {
 
     return (
 
-        <div className='bg-white dark:bg-[#172A46] mt-4 p-8 px-10'>
+        <div className='bg-white dark:bg-black mt-4 p-8 px-10'>
             <div className='text-xl flex gap-3 items-center font-bold pb-6'>
                 Order Form
                 <Title title={<p className='text-nowrap font-medium dark:text-black'>i. You can only change status on given order<br />ii. And one at a time</p>}>
@@ -111,7 +111,7 @@ const Page = () => {
             </div>
             <div className='p-5 px-0 ms-auto justify-end items-end flex gap-4'>
                 <div className='font-medium text-primary h-10 flex justify-center items-center px-4 border-2 border-primary rounded cursor-pointer' onClick={() => { }}>Cancel</div>
-                <div className='bg-primary font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => { await handleSave(); }}>Save</div>
+                <div className='bg-primary dark:bg-white/20 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => { await handleSave(); }}>Save</div>
             </div>
         </div>
     )

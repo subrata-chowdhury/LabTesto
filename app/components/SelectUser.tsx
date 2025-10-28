@@ -41,7 +41,7 @@ const SelectUser: React.FC<SelectInstituteProps> = ({
     return (
         <div className="relative">
             <input
-                className={"px-3 py-2 border-orange-200 border-2 rounded outline-none w-full " + className}
+                className={"px-3 py-2 border-black/10 dark:border-white/30 border-2 rounded outline-none w-full " + className}
                 type="text"
                 value={userSearch}
                 placeholder={placeholder}
@@ -53,12 +53,12 @@ const SelectUser: React.FC<SelectInstituteProps> = ({
                 }}
                 ref={inputRef} />
             {
-                open && users.length > 0 && <div className="absolute top-12 left-0 z-10 w-full bg-white border-2 rounded-md cursor-pointer drop-shadow-lg">
+                open && users.length > 0 && <div className="absolute top-12 left-0 z-10 w-full bg-white dark:bg-black border-2 border-black/10 dark:border-white/30 rounded-md cursor-pointer drop-shadow-lg">
                     <div className=" max-h-[150px] overflow-y-auto">
                         {!optionElement && users.map(e => (
                             <div
                                 key={e._id}
-                                className="px-3 py-2 border-b-2 hover:bg-gray-100"
+                                className="px-3 py-2 border-b-2 border-black/10 dark:border-white/30 hover:bg-gray-100 dark:hover:bg-gray-800"
                                 onClick={(event) => {
                                     event.stopPropagation()
                                     setUserSearch(e.name)
@@ -68,7 +68,7 @@ const SelectUser: React.FC<SelectInstituteProps> = ({
                                 <div className="turncate">
                                     {e.name}
                                 </div>
-                                <div className="text-xs text-gray-500 truncate">
+                                <div className="text-xs text-gray-500 dark:text-white/60 truncate">
                                     {e.email}
                                 </div>
                             </div>

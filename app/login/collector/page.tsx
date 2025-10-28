@@ -74,7 +74,7 @@ export default function AdminLogin() {
                             <Link href="#" onClick={() => toast.info('Currently out of service')}>Forgot Password</Link>
                         </div>
                     </div>
-                    <button className="bg-blue-500 text-white rounded p-2" onClick={login} disabled={loading}>{loading ? 'Loading...' : 'Login'}</button>
+                    <button className="bg-primary dark:bg-white/15 text-white rounded p-2" onClick={login} disabled={loading}>{loading ? 'Loading...' : 'Login'}</button>
                 </form>
             </div>
         </div>

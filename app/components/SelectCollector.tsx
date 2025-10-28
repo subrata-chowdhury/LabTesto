@@ -41,7 +41,7 @@ const SelectCollector: React.FC<SelectInstituteProps> = ({
     return (
         <div className="relative">
             <input
-                className={"px-3 py-2 border-orange-200 border-2 rounded outline-none w-full " + className}
+                className={"px-3 py-2 border-black/10 dark:border-white/30 border-2 rounded outline-none w-full " + className}
                 type="text"
                 value={collectorSearch}
                 placeholder={placeholder}
@@ -53,12 +53,12 @@ const SelectCollector: React.FC<SelectInstituteProps> = ({
                 }}
                 ref={inputRef} />
             {
-                open && collectors.length > 0 && <div className="absolute top-12 left-0 z-10 w-full bg-white border-2 rounded-md cursor-pointer drop-shadow-lg">
+                open && collectors.length > 0 && <div className="absolute top-12 left-0 z-10 w-full bg-white dark:bg-black border-2 border-black/10 dark:border-white/30 rounded-md cursor-pointer drop-shadow-lg">
                     <div className=" max-h-[150px] overflow-y-auto">
                         {!optionElement && collectors.map(e => (
                             <div
                                 key={e._id}
-                                className="px-3 py-2 border-b-2 hover:bg-gray-100"
+                                className="px-3 py-2 border-b-2 border-black/10 dark:border-white/30 hover:bg-gray-100 dark:hover:bg-gray-800"
                                 onClick={(event) => {
                                     event.stopPropagation()
                                     setCollectorSearch(e.name)

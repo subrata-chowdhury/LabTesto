@@ -11,6 +11,12 @@
     /* all: unset; */
 }
 
+@media (prefers-color-scheme: dark) {
+    .tiptap {
+        border: 2px solid oklab(0.999994 0.0000455678 0.0000200868 / 0.3);
+    }
+}
+
 .tiptap * {
     min-height: 0.875rem
         /* 14px */
@@ -51,6 +57,17 @@
     color: rgba(0, 0, 0, 0.68);
 }
 
+@media (prefers-color-scheme: dark) {
+    .tiptap table th {
+        background-color: oklab(0.999994 0.0000455678 0.0000200868 / 0.2);
+    }
+
+    .tiptap table th,
+    .tiptap table td {
+        border: 2px solid oklab(0.999994 0.0000455678 0.0000200868 / 0.3);
+    }
+}
+
 .tiptap h1,
 .tiptap h2,
 .tiptap h3,
@@ -87,6 +104,12 @@
 
 .tiptap strong {
     color: rgba(0, 0, 0, 0.6);
+}
+
+@media (prefers-color-scheme: dark) {
+    .tiptap strong {
+        color: #ffffff;
+    }
 }
 
 .tiptap ol {
@@ -133,4 +156,18 @@
 .control-group .button-group button.is-active {
     background-color: rgb(229, 231, 235);
     /* background-color: rgb(138, 175, 248); */
+}
+
+@media (prefers-color-scheme: dark) {
+    .control-group .button-group button {
+        border: 2px solid oklab(0.999994 0.0000455678 0.0000200868 / 0.3);
+    }
+
+    .control-group .button-group button img {
+        @apply filter brightness-0 invert;
+    }
+
+    .control-group .button-group button.is-active {
+        background-color: rgb(229, 231, 235, 0.5);
+    }
 }

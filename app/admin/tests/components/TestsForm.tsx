@@ -64,7 +64,7 @@ const TestForm = ({ testDetails, loading, error, onChange, onSave = () => { } }:
     }, [error])
 
     return (
-        <div className='bg-white mt-4 p-8 px-10'>
+        <div className='bg-white dark:bg-black mt-4 p-8 px-10'>
             <div className='text-xl flex gap-3 items-center font-bold pb-6'>
                 Test Form
                 <Title title={<p className='text-nowrap font-medium'>Fill in the details for the test</p>}>
@@ -113,8 +113,8 @@ const TestForm = ({ testDetails, loading, error, onChange, onSave = () => { } }:
                 {/* <textarea className='border-2 rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Description' value={testDetails.description} onChange={(e) => onChange.testDetails({ ...testDetails, description: e.target.value })}></textarea> */}
             </div>
             <div className='p-5 px-0 ms-auto justify-end items-end flex gap-4'>
-                <div className='font-medium text-blue-500 h-10 flex justify-center items-center px-4 border-2 border-blue-400 rounded cursor-pointer' onClick={() => { }}>Cancel</div>
-                <button className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => { await onSave(); }} disabled={loading}>{loading ? 'Saving..' : 'Save'}</button>
+                <div className='font-medium text-primary dark:text-white h-10 flex justify-center items-center px-4 border-2 border-primary dark:border-white/60 rounded cursor-pointer' onClick={() => { }}>Cancel</div>
+                <button className='bg-primary dark:bg-white/25 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => { await onSave(); }} disabled={loading}>{loading ? 'Saving..' : 'Save'}</button>
             </div>
         </div>
     )

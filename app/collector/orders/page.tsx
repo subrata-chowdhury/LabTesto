@@ -95,7 +95,7 @@ const Orders = () => {
                                 selector: 'user',
                                 component: ({ data }) => <div>
                                     <div className='text-sm'>{data.user.name}</div>
-                                    <div className='text-xs text-gray-500 dark:text-gray-400'>{data.user.email}</div>
+                                    <div className='text-xs text-gray-500 dark:text-white/60'>{data.user.email}</div>
                                 </div>
                             },
                             // { heading: 'Collector', selector: 'collector', component: ({ data }) => <div>{data.collector || 'Not Assigned'}</div> },

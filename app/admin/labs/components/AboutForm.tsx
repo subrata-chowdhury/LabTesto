@@ -19,7 +19,7 @@ const AboutForm = ({ labDetails, loading, onChange = () => { }, onSave = async (
     const [certificationIndex, setCetificationIndex] = useState<{ index: number } | null>(null)
 
     return (
-        <div className='bg-white mt-4 p-8 px-10'>
+        <div className='bg-white dark:bg-black mt-4 p-8 px-10'>
             <div className='text-xl flex gap-3 items-center font-bold pb-6'>
                 About Lab Form
                 {/* <Title title={<p className='text-nowrap font-medium'>To autofill by labs themselves, <br /> enable checkbox at below of this form</p>}>
@@ -51,10 +51,10 @@ const AboutForm = ({ labDetails, loading, onChange = () => { }, onSave = async (
             <div className='pb-4 flex justify-between font-semibold mt-6 pt-5 border-t-2 border-gray-300/50'>
                 Certification Information
                 <div
-                    className='ms-auto flex gap-2 font-semibold text-sm text-blue-500 border-2 border-blue-500 px-4 py-2 rounded cursor-pointer'
+                    className='ms-auto flex gap-2 font-semibold text-sm text-primary dark:text-white border-2 border-primary dark:border-white/60 px-4 py-2 rounded cursor-pointer'
                     onClick={() => setCetificationIndex({ index: labDetails?.certification?.length || 0 })}>
                     <div>New Entry</div>
-                    <Image src={plusIcon} alt='' width={20} height={20} />
+                    <Image src={plusIcon} className='filter brightness-0 dark:invert' alt='' width={20} height={20} />
                 </div>
             </div>
             <div className='border-2 border-gray-300/50 border-t-0 rounded'>
@@ -95,9 +95,9 @@ const AboutForm = ({ labDetails, loading, onChange = () => { }, onSave = async (
             </div>
             <RichTextEditor value={labDetails.description || ''} onChange={val => onChange({ ...labDetails, tempDescription: val })} />
             <div className='p-5 px-0 ms-auto justify-end items-end flex gap-4'>
-                <div className='font-medium text-blue-500 h-10 flex justify-center items-center px-4 border-2 border-blue-400 rounded cursor-pointer' onClick={() => { }}>Cancel</div>
+                <div className='font-medium text-primary dark:text-white h-10 flex justify-center items-center px-4 border-2 border-primary dark:border-white/60 rounded cursor-pointer' onClick={() => { }}>Cancel</div>
                 <button
-                    className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer'
+                    className='bg-primary dark:bg-white/25 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer'
                     onClick={async () => {
                         await onSave();
                     }}
@@ -150,8 +150,8 @@ function CertificationModel({ certificationDetails, onSave, onClose }: { certifi
                 <Input label='Image URL' name='imageUrl' placeholder='Enter image URL' value={certification?.imageUrl || ''} onChange={(val) => setCetification({ ...certification, imageUrl: val })} labelClass='font-medium' containerClass='flex-1' />
             </div>
             <div className='p-5 pb-7 ms-auto justify-end items-end flex gap-4 px-6'>
-                <div className='font-medium text-blue-500 h-10 flex justify-center items-center px-4 border-2 border-blue-400 rounded cursor-pointer' onClick={() => { }}>Cancel</div>
-                <div className='bg-blue-400 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => {
+                <div className='font-medium text-primary dark:text-white h-10 flex justify-center items-center px-4 border-2 border-primary dark:border-white/60 rounded cursor-pointer' onClick={() => { }}>Cancel</div>
+                <div className='bg-primary dark:bg-white/25 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => {
                     await onSave(certification);
                 }}>Save</div>
             </div>

@@ -19,11 +19,11 @@ const TagInput = ({ label, values = [], onChange = () => { }, className = '', er
             {label && <div className='font-medium'>{label}</div>}
             <div className='gap-2 border-2 border-gray-300/50 dark:border-white/20 rounded px-3 py-2 max-h-44 min-h-20 overflow-y-auto'>
                 {values.length > 0 && values.map((tag, index) =>
-                    <div key={index} className='bg-gray-200 inline-flex items-center justify-between m-1 px-2 py-1 rounded text-sm'>
+                    <div key={index} className='bg-gray-200 dark:bg-white/25 inline-flex items-center justify-between m-1 px-2 py-1 rounded text-sm'>
                         {tag}
                         <Image
                             src={crossIcon}
-                            className='ml-2 cursor-pointer'
+                            className='ml-2 cursor-pointer filter brightness-0 dark:invert'
                             onClick={() => {
                                 const newTags = [...values];
                                 newTags.splice(index, 1);
