@@ -17,7 +17,7 @@ const Menubar = () => {
                 // { label: 'Reports', href: '/reports' },
                 // { label: 'Logout', href: '/logout' }
             ].map((item) => (
-                <Link key={item.href} href={item.href} className={`font-medium ${currentPath === item.href ? 'bg-primary/15 text-primary' : 'bg-primary/0 text-gray-500 dark:text-gray-400'} h-fit text-[10px] sm:text-base px-4 sm:px-6 py-1.5 rounded`}>{item.label}</Link>
+                <Link key={item.href} href={item.href} className={`font-medium ${currentPath === item.href ? 'bg-primary/15 text-primary dark:text-white dark:bg-white/15' : 'bg-primary/0 text-gray-500 dark:text-white/80'} h-fit text-[10px] sm:text-base px-4 sm:px-6 py-1.5 rounded`}>{item.label}</Link>
             ))}
             {/* <div
                 className={`bg-primary bg-opacity-0 text-gray-500 dark:text-gray-400 px-4 sm:px-6 py-1.5 rounded-md`}

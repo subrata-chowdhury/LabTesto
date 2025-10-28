@@ -19,11 +19,11 @@ function Dropdown({ options = [], value = "", onChange = () => { }, containerCla
 
     return (
         <div className={'relative ' + containerClassName} style={{ width: width || 'fit-content' }}>
-            <div className='flex justify-between items-center  border-gray-300/50 dark:border-gray-400 border-2 p-2 rounded cursor-pointer gap-1' onClick={() => !loading ? setIsOpen(!isOpen) : ''} ref={ref} style={{ height: height || 40, width: width || 'fit-content' }}>
+            <div className='flex justify-between items-center  border-gray-300/50 dark:border-white/20 border-2 p-2 rounded cursor-pointer gap-1' onClick={() => !loading ? setIsOpen(!isOpen) : ''} ref={ref} style={{ height: height || 40, width: width || 'fit-content' }}>
                 <div className='text-nowrap truncate' title={value.toString()}>{value}</div>
                 <Image src={dropdownArrow} alt='Search Icon' width={16} height={16} className={`transition-all w-4 h-4 ${isOpen ? 'rotate-180' : 'rotate-0'}`} />
             </div>
-            {isOpen && <div className='border-2 border-gray-300/50 absolute w-full bg-white dark:bg-[#172A46] dark:border-gray-400 z-10 my-1 rounded max-h-60 overflow-y-auto' style={{ top: showPopupAtTop ? 'auto' : '100%', bottom: showPopupAtTop ? '100%' : 'auto' }}>
+            {isOpen && <div className='border-2 border-gray-300/50 absolute w-full bg-white dark:bg-black dark:border-white/20 z-10 my-1 rounded max-h-60 overflow-y-auto' style={{ top: showPopupAtTop ? 'auto' : '100%', bottom: showPopupAtTop ? '100%' : 'auto' }}>
                 {!optionElement && options.map((option, index) => (
                     <div
                         key={index}

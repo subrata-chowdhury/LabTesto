@@ -14,9 +14,9 @@ const Layout = async ({ children }: { children: ReactNode }) => {
 
     return isValid && (
         <>
-            <div className='flex flex-col sm:flex-row gap-2 px-4 h-screen sm:px-10 lg:px-28 py-3 pt-4 bg-gray-50 dark:bg-[#0A192F]'>
+            <div className='flex flex-col sm:flex-row gap-2 px-4 h-screen sm:px-10 lg:px-28 py-3 pt-4 bg-gray-50 dark:bg-black'>
                 <Menubar />
-                <div className='sm:border-l-2 border-gray-300/70 dark:border-gray-500 w-full flex justify-center pl-2.5 sm:pl-5 lg:pl-12'>
+                <div className='sm:border-l-2 border-gray-300/70 dark:border-white/20 w-full flex justify-center pl-2.5 sm:pl-5 lg:pl-12'>
                     {children}
                 </div>
             </div>

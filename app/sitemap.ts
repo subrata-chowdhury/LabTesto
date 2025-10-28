@@ -30,7 +30,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Dynamic entries can be added here in the future
     const res = await fetch(`${baseUrl}/api/tests?filter={%22name%22:%22%22}&limit=50&page=1`);
     const tests = (await res.json()).tests;
-    console.log("Sitemap - fetched tests:", tests);
     tests.forEach((t: { _id: string, updatedAt: string }) => {
         sitemapEntries.push({
             url: `${baseUrl}tests/${t._id}`,

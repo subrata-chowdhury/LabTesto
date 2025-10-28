@@ -6,7 +6,7 @@ import { CartItem } from "./CartPage";
 
 export default function CartItemCard({ item, isPatientDetailsRequired = false, onQuantityChange, onRemove, onOrder, onPatientClick }: { item: CartItem, isPatientDetailsRequired?: boolean, onQuantityChange: (quantity: number) => void, onRemove?: () => void, onOrder: () => void, onPatientClick: (index: number) => void }) {
     return (
-        <li className="bg-white dark:bg-[#172A46] rounded shadow-md flex flex-col">
+        <li className="bg-white dark:bg-black rounded shadow-md flex flex-col">
             <div className='p-4 flex justify-between items-center'>
                 <div className='flex flex-col gap-3 justify-between h-full'>
                     <Link href={'/tests/' + item.product.test._id}>
@@ -31,7 +31,7 @@ export default function CartItemCard({ item, isPatientDetailsRequired = false, o
                         </button>
                     </div>
                     {onRemove && <button
-                        className="border-primary border-2 text-primary px-2 py-1 rounded"
+                        className="border-primary dark:border-white/30 border-2 text-primary dark:text-white px-2 py-1 rounded"
                         onClick={async () => {
                             const res = await fetcher.delete<{ test: string, lab: string, quantity: number }, { message: string } | string>("/cart", {
                                 test: item.product.test._id,
@@ -41,18 +41,18 @@ export default function CartItemCard({ item, isPatientDetailsRequired = false, o
                             if (res.status === 200) onRemove()
                         }}>Remove</button>}
                     <button
-                        className="bg-primary text-white px-2 py-1 rounded"
+                        className="bg-primary dark:bg-white/20 text-white px-2 py-1 rounded"
                         onClick={async () => {
                             onOrder()
                         }}>Order</button>
                 </div>
             </div>
-            <div className='bg-[rgba(57,134,186,0.05)] p-1 text-xs'>
+            <div className='bg-primary/5 dark:bg-white/5 p-1 text-xs'>
                 {
                     isPatientDetailsRequired && Array(item.quantity).fill(0).map((_, i) => (
                         <div
                             key={i}
-                            className='bg-[rgba(57,134,186,0.2)] px-3 py-1 rounded-full cursor-pointer inline-flex m-1'
+                            className='bg-primary text-white dark:bg-white/20 px-3 py-1.5 rounded-full cursor-pointer inline-flex m-1'
                             onClick={() => onPatientClick(i)}>
                             {item?.patientDetails[i]?.name?.split(' ').map(e => e.charAt(0)).join('') || 'Add +'}
                         </div>

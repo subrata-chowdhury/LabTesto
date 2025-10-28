@@ -28,12 +28,12 @@ export default function PatientDetailsPopup({ patientDetails, onSave = () => { }
                 </div>
                 <div className='text-sm flex flex-col gap-1 pt-2'>
                     <label className='font-medium'>Other Details / Disability</label>
-                    <textarea className='border-2 border-gray-300/50 dark:border-gray-400 bg-transparent rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Other Details' value={values.other} onChange={(e) => setValues({ ...values, other: e.target.value })}></textarea>
+                    <textarea className='border-2 border-gray-300/50 dark:border-white/20 bg-transparent rounded w-full h-20 p-2 outline-none' rows={5} placeholder='Enter Other Details' value={values.other} onChange={(e) => setValues({ ...values, other: e.target.value })}></textarea>
                 </div>
                 <div className='p-5 pb-2 px-0 ms-auto justify-end items-end flex gap-4'>
-                    <div className='font-medium text-primary h-10 flex justify-center items-center px-4 border-2 border-primary rounded cursor-pointer' onClick={onClose}>Cancel</div>
-                    <div className="bg-primary font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer" onClick={onRemove}>Remove</div>
-                    <div className='bg-primary font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => {
+                    <div className='font-medium text-primary dark:text-white h-10 flex justify-center items-center px-4 border-2 border-primary dark:border-white/30 rounded cursor-pointer' onClick={onClose}>Cancel</div>
+                    <div className="bg-primary dark:bg-white/15 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer" onClick={onRemove}>Remove</div>
+                    <div className='bg-primary dark:bg-white/15 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer' onClick={async () => {
                         // validate
                         const errors: { [key: string]: string } = {};
                         if (!values.name) errors.name = 'Name is required';
@@ -49,12 +49,12 @@ export default function PatientDetailsPopup({ patientDetails, onSave = () => { }
                     }}>Save</div>
                 </div>
             </div>
-            {patients && patients.length > 0 && <div className='bg-[rgba(57,134,186,0.05)] p-1 text-xs'>
+            {patients && patients.length > 0 && <div className='bg-primary/5 dark:bg-white/5 p-1 text-xs'>
                 {
                     patients.map((patient, i) => (
                         <div
                             key={i}
-                            className='bg-[rgba(57,134,186,0.2)] px-4 py-2 rounded-full cursor-pointer inline-flex m-1'
+                            className='bg-primary text-white dark:bg-white/20 px-4 py-2 rounded-full cursor-pointer inline-flex m-1'
                             onClick={() => setValues(patient)}>
                             {patient?.name?.split(' ').map(e => e.charAt(0)).join('') || 'Add +'}
                         </div>

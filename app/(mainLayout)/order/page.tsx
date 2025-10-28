@@ -56,13 +56,13 @@ const OrderPage = () => {
     }
 
     return (
-        <div className="flex-1 flex flex-col p-4 bg-gray-100 dark:bg-[#0A192F] min-h-screen">
+        <div className="flex-1 flex flex-col p-4 bg-gray-100 dark:bg-white/0 min-h-screen">
             <h1 className="text-2xl font-bold">Ordered Items</h1>
             <div className='flex flex-wrap justify-center sm:justify-normal gap-2 mb-4 mt-3 opacity-80'>
                 {['All', 'Ordered', 'Out for Sample Collection', 'Sample Collected', 'Report Delivered to Lab', 'Report Generated', 'Out for Report Delivery', 'Report Delivered', 'Canceled'].map((e, index) => (
                     <button
                         key={index}
-                        className={`px-3.5 py-1 text-sm rounded-full font-medium ${status === e ? 'bg-opacity-80 bg-primary text-white' : 'border-2 border-primary bg-white dark:bg-[#172A46] text-primary'}`}
+                        className={`px-3.5 py-1.5 rounded-lg cursor-pointer text-sm font-semibold ${status === e ? 'bg-primary text-white dark:bg-white dark:text-black' : 'bg-primary/15 text-primary dark:bg-white/10 dark:text-white'}`}
                         onClick={() => {
                             setStatus(e);
                         }}
@@ -79,10 +79,10 @@ const OrderPage = () => {
                                 <li
                                     key={outerIndex}
                                     onClick={() => navigate.push('/order/' + order._id)}
-                                    className="bg-white dark:bg-[#172A46] border-2 border-gray-300/50 dark:border-gray-500 rounded-lg shadow-md shadow-indigo-100 dark:shadow-black cursor-pointer p-3 px-4 flex justify-between items-center">
+                                    className="bg-white dark:bg-black border-2 border-gray-300/50 dark:border-white/20 rounded-lg shadow-md shadow-indigo-100 dark:shadow-black cursor-pointer p-3 px-4 flex justify-between items-center">
                                     <div>
-                                        <div className="text-lg font-semibold text-primary">{order.items.map(e => e.product.test.name).join(', ')}</div>
-                                        <div className='text-sm text-gray-800 dark:text-gray-300'><span className={order.status === "Canceled" ? 'text-red-500' : (order.status === 'Report Delivered' ? 'text-green-600' : '')}>{order.status}</span>, {new Date(order.updatedAt).toDateString()}</div>
+                                        <div className="text-lg font-semibold text-primary dark:text-white">{order.items.map(e => e.product.test.name).join(', ')}</div>
+                                        <div className='text-sm text-gray-800 dark:text-white/60'><span className={order.status === "Canceled" ? 'text-red-500' : (order.status === 'Report Delivered' ? 'text-green-600' : '')}>{order.status}</span>, {new Date(order.updatedAt).toDateString()}</div>
                                     </div>
                                     <div>
                                         ❯

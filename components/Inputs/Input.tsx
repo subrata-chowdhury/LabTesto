@@ -21,7 +21,7 @@ const Input = ({ label = "", placeholder = "", name = "", error = "", value = ""
     return (
         <label className={"flex flex-col gap-1 " + containerClass}>
             <div className={labelClass}>{label}</div>
-            <input type={type} placeholder={placeholder} min={min} max={max} name={name} value={value} onChange={e => onChange(e.target.value)} className="px-3 py-2 border-2 border-gray-300/60 dark:border-gray-400 rounded outline-none bg-transparent" style={inputStyle} ref={ref} />
+            <input type={type} placeholder={placeholder} min={min} max={max} name={name} value={value} onChange={e => onChange(e.target.value)} className="px-3 py-2 border-2 border-gray-300/60 dark:border-white/20 rounded outline-none bg-transparent" style={inputStyle} ref={ref} />
             {(error && error?.length > 0) && <p className="text-red-500 text-xs font-medium">{error}</p>}
         </label>
     )

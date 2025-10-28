@@ -38,7 +38,6 @@ export async function proxy(request: NextRequest) {
             return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
         }
         const requestHeaders = new Headers(request.headers);
-        console.log('User ID from token:', user);
         requestHeaders.set('x-user', user.id);
 
         return NextResponse.next({

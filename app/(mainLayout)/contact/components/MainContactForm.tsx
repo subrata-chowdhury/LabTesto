@@ -34,8 +34,8 @@ export default function MainForm() {
     }
 
     return (
-        <form className='p-6 px-8 flex flex-col rounded-md border-2 border-primary/10 mb-6 lg:mb-24 bg-white dark:bg-[#172A46] ' onSubmit={sendData}>
-            <h2 className='text-2xl mb-4 font-bold text-primary'>Send Us a Message</h2>
+        <form className='p-6 px-8 flex flex-col rounded-md border-2 border-primary/10 mb-6 lg:mb-24 bg-white dark:bg-black ' onSubmit={sendData}>
+            <h2 className='text-2xl mb-4 font-bold text-primary dark:text-white'>Send Us a Message</h2>
             <div className='flex flex-col md:flex-row gap-6'>
                 <div className='flex flex-col gap-0.5'>
                     <label htmlFor='name' className='text-sm'>Name *</label>

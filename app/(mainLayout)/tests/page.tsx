@@ -50,10 +50,10 @@ const Tests = () => {
     }, [])
 
     return (
-        <div className='p-5 pb-12 dark:bg-[#0A192F] container max-w-7xl mx-auto w-full'>
-            <h1 className='text-xl text-center sm:text-2xl md:text-3xl tracking-wide sm:text-left font-bold text-primary'>All Available Tests</h1>
+        <main id="main" className='p-5 pb-12 container max-w-7xl mx-auto w-full'>
+            <h1 className='text-xl text-center sm:text-2xl md:text-3xl tracking-wide sm:text-left font-bold text-primary dark:text-white'>All Available Tests</h1>
             <div className='flex flex-col sm:flex-row gap-4 mt-4'>
-                <div className={"px-4 py-2 flex gap-3 justify-between border-primary border-opacity-50 border bg-gray-500/5 rounded-full"}>
+                <div className={"px-4 py-2 flex gap-3 justify-between border-primary/50 border dark:border-white/30 bg-gray-500/5 rounded-full"}>
                     <input
                         className="flex-1 text-sm outline-none bg-transparent"
                         type="text"
@@ -64,7 +64,7 @@ const Tests = () => {
                             onSeach({ name: e.target.value }, limit)
                         }} />
                     <button type="submit" className={"relative right-0 top-0"}>
-                        <svg className="h-4 w-4 fill-primary" xmlns="http://www.w3.org/2000/svg" version="1.1" id="Capa_1" x="0px" y="0px"
+                        <svg className="h-4 w-4 fill-primary dark:fill-white" xmlns="http://www.w3.org/2000/svg" version="1.1" id="Capa_1" x="0px" y="0px"
                             viewBox="0 0 56.966 56.966" xmlSpace="preserve" width="512px" height="512px">
                             <path d="M55.146,51.887L41.588,38.329c3.486-4.191,5.377-9.479,5.377-14.979C46.965,10.478,36.486,0,23.482,0
                                 C10.479,0,0,10.478,0,23.482c0,13.004,10.479,23.482,23.482,23.482c5.5,0,10.788-1.891,14.979-5.377l13.558,13.558
@@ -78,7 +78,7 @@ const Tests = () => {
                 {['All', 'Blood', 'Urine', 'Semen', 'Stool', 'Sputum', 'Other'].map((sampleType, index) => (
                     <button
                         key={index}
-                        className={`px-3.5 py-1 rounded-full cursor-pointer text-sm font-medium ${filter.sampleType === sampleType ? 'bg-primary text-white' : 'bg-primary/0 border-2 border-primary text-primary'}`}
+                        className={`px-3.5 py-1.5 rounded-lg cursor-pointer text-sm font-semibold ${filter.sampleType === sampleType ? 'bg-primary text-white dark:bg-white dark:text-black' : 'bg-primary/15 text-primary dark:bg-white/10 dark:text-white'}`}
                         onClick={async () => {
                             setFilter({ ...filter, sampleType });
                             await onSeach({ name: filter.name, sampleType: sampleType as 'All' | 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other' }, limit)
@@ -91,9 +91,9 @@ const Tests = () => {
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4'>
                 {
                     tests.map(test => (
-                        <Link href={'/tests/' + test._id} key={test._id} className="flex flex-col bg-white dark:bg-[#172A46] dark:shadow-md dark:border-gray-500 rounded-md shadow-md border border-primary/50 dark:border text-primary p-4 min-w-52">
-                            <h1 className="text-xl font-semibold mb-1.5">{test.name}</h1>
-                            <p className="text-xs font-semibold text-white mb-2.5 bg-primary bg-opacity-20 px-4 py-1.5 w-fit rounded-full">{test.sampleType}</p>
+                        <Link href={'/tests/' + test._id} key={test._id} className="flex flex-col bg-white dark:bg-black dark:shadow-md dark:border-white/30 rounded-md shadow-md border border-primary/50 dark:border text-primary p-4 min-w-52">
+                            <h1 className="text-xl font-semibold mb-1.5 dark:text-white">{test.name}</h1>
+                            <p className="text-xs font-semibold text-white mb-2.5 bg-primary dark:bg-white/25 px-4 py-1.5 w-fit rounded-full">{test.sampleType}</p>
                             <p className="text-sm mt-auto opacity-60 dark:text-white text-black">Fasting: {test.fastingRequired} | Tube Type: {test.tubeType}</p>
                         </Link>
                     ))
@@ -102,7 +102,7 @@ const Tests = () => {
             {loading && <Loading />}
             {totalPages !== 1 && !loading && <div className='w-full flex justify-center mt-2'>
                 <button
-                    className='mt-2 px-5 py-2 rounded-md bg-primary text-white font-medium'
+                    className='mt-2 px-5 py-2 rounded-md bg-primary dark:bg-white/30 cursor-pointer text-white font-medium'
                     onClick={async () => {
                         setLimit(prevLimit => prevLimit + 6);
                         await onSeach({ ...filter, sampleType: filter.sampleType as 'All' | 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other' | 'Other Body Fluid' }, limit + 6)
@@ -111,7 +111,7 @@ const Tests = () => {
                     Load More
                 </button>
             </div>}
-        </div>
+        </main>
     )
 }
 

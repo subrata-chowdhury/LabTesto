@@ -1,25 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { Bounce, ToastContainer } from "react-toastify";
 import Script from "next/script";
 import { GoogleAnalyticsProvider } from "@/components/analytics/GoogleAnalyticsProvider";
 import { Suspense } from "react";
 
-const geistSans = Geist({
-    variable: "--font-geist-sans",
-    subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-    variable: "--font-geist-mono",
-    subsets: ["latin"],
-});
-
 const inter = Inter({
     variable: "--font-inter",
     subsets: ["latin"],
-    weight: ["400", "700", "900"],
+    weight: ["400", "600", "700", "900"],
 });
 
 export const metadata: Metadata = {
@@ -254,7 +244,7 @@ export default function RootLayout({
                 />
             </head>
             <body
-                className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased font-inter flex flex-col min-h-screen scroll-smooth`}
+                className={`${inter.variable} antialiased font-inter flex flex-col min-h-screen scroll-smooth`}
             >
                 <ToastContainer
                     position="top-right"
@@ -273,7 +263,7 @@ export default function RootLayout({
                     <GoogleAnalyticsProvider />
                 </Suspense>
                 {/* Skip to content link for accessibility */}
-                <a href="#main" className="skip-to-content h-0" aria-label="Skip to main content">
+                <a href="#main" className="skip-to-content h-0" aria-label="Skip to main content" style={{ color: 'transparent' }}>
                     Skip to main content
                 </a>
                 {children}

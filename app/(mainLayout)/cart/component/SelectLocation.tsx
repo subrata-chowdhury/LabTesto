@@ -47,31 +47,31 @@ export function SelectLocation({ selectedAddress, onChange }: { selectedAddress?
 
     return (
         <>
-            <div className='w-full flex justify-between items-center py-3 px-4 bg-white dark:bg-[#172A46] rounded shadow mb-5'>
+            <div className='w-full flex justify-between items-center py-3 px-4 bg-white dark:bg-black rounded shadow mb-5'>
                 {user.address.length <= 0 && <div className='text-sm text-gray-600'>Add Address</div>}
                 {selectedAddress && <div>
                     <div className='font-medium'><span className='font-normal'>Deliver to:</span> {selectedAddress.city}, {selectedAddress.pin}</div>
                     <div className='text-sm text-gray-600 dark:text-gray-400'>{selectedAddress.other} | {selectedAddress.phone}</div>
                 </div>}
                 <div>
-                    {user.address.length > 0 && <div className='px-3 py-1 rounded cursor-pointer text-primary font-medium border-2 border-primary' onClick={() => setShowAddressesPopup(true)}>Change</div>}
-                    {user.address.length <= 0 && <div className='px-3 py-1 rounded cursor-pointer text-primary font-medium border-2 border-primary' onClick={() => setShowAddressesPopup(true)}>Add</div>}
+                    {user.address.length > 0 && <div className='px-3 py-1 rounded cursor-pointer text-primary dark:text-white font-medium border-2 border-primary dark:border-white' onClick={() => setShowAddressesPopup(true)}>Change</div>}
+                    {user.address.length <= 0 && <div className='px-3 py-1 rounded cursor-pointer text-primary dark:text-white font-medium border-2 border-primary dark:border-white' onClick={() => setShowAddressesPopup(true)}>Add</div>}
                 </div>
             </div>
             {showAddressesPopup && <Model heading='Addresses' onClose={() => setShowAddressesPopup(false)}>
                 <div className='px-7 py-4 pt-6 min-w-80'>
                     <div className='grid grid-cols-1 gap-2 sm:gap-4 text-sm pb-4'>
                         {user.address.map((address, index) => (
-                            <div key={index} className='bg-white dark:bg-[#172A46] p-3 flex gap-3 rounded-md border-2 border-gray-200 dark:border-gray-400 cursor-pointer' onClick={() => { onChange(address); setShowAddressesPopup(false) }}>
+                            <div key={index} className='bg-white dark:bg-white/10 p-3 flex gap-3 rounded-md border-2 border-gray-200 dark:border-white/15 cursor-pointer' onClick={() => { onChange(address); setShowAddressesPopup(false) }}>
                                 <CheckBox value={(address.pin === selectedAddress?.pin && address.city === selectedAddress.city && address.district === selectedAddress.district && address.other === selectedAddress.other && address.phone === selectedAddress.phone)} onChange={() => { }} />
                                 <div>
                                     <div className='font-medium'>{address.city}, {address.pin}</div>
                                     <div className='text-sm text-gray-600 dark:text-gray-400'>{address.other} | {address.phone}</div>
                                 </div>
-                                <div className="px-2 py-1 my-auto ms-auto rounded cursor-pointer text-primary font-medium border-2 border-primary" onClick={() => setShowAddAddressDetailsPopup({ index })}>Edit</div>
+                                <div className="px-2 py-1 my-auto ms-auto rounded cursor-pointer text-primary dark:text-white font-medium border-2 border-primary dark:border-white/15" onClick={() => setShowAddAddressDetailsPopup({ index })}>Edit</div>
                             </div>
                         ))}
-                        <div className="bg-primary p-2 px-3 flex gap-3 rounded-md text-white cursor-pointer ms-auto" onClick={() => setShowAddAddressDetailsPopup({ index: user.address.length })}>Add new Address</div>
+                        <div className="bg-primary dark:bg-white/20 p-2 px-3 flex gap-3 rounded-md text-white cursor-pointer ms-auto" onClick={() => setShowAddAddressDetailsPopup({ index: user.address.length })}>Add new Address</div>
                     </div>
                 </div>
             </Model>}

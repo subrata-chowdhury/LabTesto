@@ -43,7 +43,7 @@ const PatientsPage = () => {
             <section className='w-full'>
                 <div className='font-semibold text-lg mb-2'>Patient Details</div>
                 <div
-                    className='border-2 border-primary text-primary text-sm sm:text-base font-semibold w-fit bg-opacity-75 px-3.5 py-1.5 rounded-lg cursor-pointer'
+                    className='border-2 border-primary dark:bg-white/20 dark:border-transparent dark:text-white text-primary text-sm sm:text-base font-semibold w-fit bg-opacity-75 px-3.5 py-1.5 rounded-sm cursor-pointer'
                     onClick={() =>
                         setShowPatientPopup({ patientIndex: user.patientDetails?.length || 0 })}>
                     Add +
@@ -52,16 +52,16 @@ const PatientsPage = () => {
                     {user?.patientDetails?.map((patientDetail, i) => (
                         <div
                             key={i}
-                            className='border-2 border-gray-300/50 bg-white dark:border-gray-500 dark:bg-[#172A46] text-black px-4 py-3.5 rounded-md cursor-pointer'
+                            className='border-2 border-gray-300/70 bg-white dark:border-white/20 dark:bg-white/20 px-4 py-3.5 rounded-md cursor-pointer'
                             onClick={() =>
                                 setShowPatientPopup({ patientIndex: i })}>
                             <div className='font-semibold mb-1 text-black dark:text-white'>{patientDetail.name}</div>
-                            <div className='text-gray-800 dark:text-gray-400'>{patientDetail.age} - {patientDetail.gender}</div>
+                            <div className='text-gray-800 dark:text-white/60'>{patientDetail.age} - {patientDetail.gender}</div>
                         </div>
                     ))}
                 </div>
                 {isDirty && <div className='pt-8 pb-10 flex'>
-                    <button className='bg-primary text-white py-2 px-4 rounded ms-auto' onClick={async () => await updateUser()}>Save</button>
+                    <button className='bg-primary dark:bg-white/15 text-white py-2 px-4 rounded ms-auto' onClick={async () => await updateUser()}>Save</button>
                 </div>}
             </section>
 

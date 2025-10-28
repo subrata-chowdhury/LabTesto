@@ -113,10 +113,10 @@ function OrderPage() {
     if (!order) return <div className='flex justify-center items-center h-screen text-red-500'>Order Not Found</div>
 
     return (
-        <div className='flex-1 flex flex-col gap-4 bg-gray-100 dark:bg-[#0A192F] px-5 py-4'>
+        <div className='flex-1 flex flex-col gap-4 bg-gray-100 dark:bg-white/0 px-5 py-4'>
             <div className='text-sm'>Order ID: {order?._id.toUpperCase()}</div>
             {order?.items.map((item, index) => (
-                <div className='bg-white dark:bg-[#172A46] rounded shadow-md' key={index}>
+                <div className='bg-white dark:bg-black rounded shadow-md' key={index}>
                     <div className='flex justify-between p-3 px-4'>
                         <div className='flex flex-col gap-2 justify-between h-full'>
                             <div>
@@ -144,12 +144,12 @@ function OrderPage() {
                                 }}>Review</button>}
                         </div>
                     </div>
-                    <div className='bg-[rgba(57,134,186,0.08)] flex gap-2 p-2 text-xs'>
+                    <div className='bg-primary/5 dark:bg-white/5 p-1 text-xs'>
                         {
                             order.items[index]?.patientDetails?.length > 0 && Array(item.quantity).fill(0).map((_, i) => (
                                 <div
                                     key={i}
-                                    className='bg-[rgba(57,134,186,0.25)] px-3 py-1 rounded-full cursor-pointer'
+                                    className='bg-primary text-white dark:bg-white/20 px-3 py-1.5 rounded-full cursor-pointer inline-flex m-1'
                                     onClick={() =>
                                         setShowPatientPopup({ itemIndex: index, patientIndex: i })}>
                                     {order.items[index]?.patientDetails[i]?.name?.split(' ').map(e => e.charAt(0)).join('') || 'Add +'}
@@ -173,9 +173,9 @@ function OrderPage() {
                         })
                         if (res.status === 200) setOrder(await fetchOrderDetails())
                     }}>Delivered</button>}
-                {order.paid !== (order.items.reduce((acc, item) => acc + (item.product.price * item.quantity), 0)) && <button className='bg-primary text-white px-4 py-2 rounded ml-4' onClick={handlePayment}>Pay Now</button>}
+                {order.paid !== (order.items.reduce((acc, item) => acc + (item.product.price * item.quantity), 0)) && <button className='bg-primary dark:bg-white/15 text-white px-4 py-2 rounded ml-4' onClick={handlePayment}>Pay Now</button>}
             </div>
-            <div className='bg-white text-sm flex flex-col dark:bg-[#172A46] px-6 py-4 rounded'>
+            <div className='bg-white text-sm flex flex-col dark:bg-black px-6 py-4 rounded'>
                 <div className='py-2.5 flex gap-2'>
                     <div>
                         1.
@@ -197,18 +197,18 @@ function OrderPage() {
                     </div>
                 ))}
             </div>
-            <div className='bg-white dark:bg-[#172A46] px-6 py-4 rounded'>
+            <div className='bg-white dark:bg-black px-6 py-4 rounded'>
                 <div className='text-lg font-semibold'>Sample Taken Time </div>
                 <div><span className='font-medium'>Start:</span> {new Date(order?.sampleTakenDateTime?.start || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.start || '').toTimeString().split(' ')[0]}</div>
                 <div><span className='font-medium'>End:</span> {new Date(order?.sampleTakenDateTime?.end || '').toDateString()}, {new Date(order?.sampleTakenDateTime?.end || '').toTimeString().split(' ')[0]}</div>
             </div>
-            {!(order.status === 'Report Delivered' || order.status === 'Canceled') && <div className='bg-white dark:bg-[#172A46] px-6 py-4 rounded'>
+            {!(order.status === 'Report Delivered' || order.status === 'Canceled') && <div className='bg-white dark:bg-black px-6 py-4 rounded'>
                 <div className='text-lg font-semibold'>Collector Details</div>
                 <div><span className='font-medium'>Name:</span> {order?.collector?.name}</div>
                 <div><span className='font-medium'>Email:</span> {order?.collector?.email}</div>
                 <div><span className='font-medium'>Phone Number:</span> {order?.collector?.phone}</div>
             </div>}
-            <div className='bg-white dark:bg-[#172A46] px-6 py-4 rounded'>
+            <div className='bg-white dark:bg-black px-6 py-4 rounded'>
                 <div className='text-lg font-semibold'>Report Delivery Address</div>
                 <div><span className='font-medium'>City:</span> {order?.address?.city}</div>
                 <div><span className='font-medium'>District:</span> {order?.address?.district}</div>

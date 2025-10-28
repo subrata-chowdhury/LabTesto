@@ -2,7 +2,7 @@ import React from 'react'
 
 const Loading = () => {
     return (
-        <div className='flex-1 flex flex-col p-4 bg-gray-100 dark:bg-[#0A192F] min-h-screen'>
+        <div className='flex-1 flex flex-col p-4 bg-gray-100 dark:bg-white/0 min-h-screen'>
             <AddressLoader />
             <CartLoader />
         </div>
@@ -11,7 +11,7 @@ const Loading = () => {
 
 export function AddressLoader() {
     return (
-        <div className='mb-5 w-full flex justify-between items-center py-3 px-4 min-h-16 rounded bg-white dark:bg-[#172A46]'>
+        <div className='mb-5 w-full flex justify-between items-center py-3 px-4 min-h-16 rounded bg-white dark:bg-black'>
             <div>
                 <div className='w-52 h-6 rounded bg-gray-300 animate-pulse mb-1'></div>
                 <div className='w-32 h-5 rounded bg-gray-300 animate-pulse'></div>
@@ -25,7 +25,7 @@ export function CartLoader() {
     return (
         <ul className="space-y-4 flex-1 max-h-[70vh] overflow-y-scroll pb-5">
             {Array(3).fill(0).map((_, index) => (
-                <li key={index} className="bg-white dark:bg-[#172A46] rounded shadow-md flex flex-col">
+                <li key={index} className="bg-white dark:bg-black rounded shadow-md flex flex-col">
                     <div className='p-4 flex justify-between items-center'>
                         <div className='flex flex-col gap-4 justify-between h-full'>
                             <div>
@@ -54,10 +54,10 @@ export function CartLoader() {
                             <div className="bg-primary text-white px-2 py-1 w-20 h-7 animate-pulse rounded"></div>
                         </div>
                     </div>
-                    <div className='bg-[rgba(57,134,186,0.08)] p-1 text-xs'>
+                    <div className='bg-primary/5 dark:bg-white/5 p-1 text-xs'>
                         {
                             Array(3).fill(0).map((_, i) => (
-                                <div className='w-12 h-6 inline-flex mr-2 m-1 mb-0 bg-[rgba(57,134,186,0.3)] animate-pulse rounded-full' key={i}>
+                                <div className='w-12 h-6 inline-flex mr-2 m-1 mb-0 bg-primary text-white dark:bg-white/20 animate-pulse rounded-full' key={i}>
                                 </div>
                             ))
                         }

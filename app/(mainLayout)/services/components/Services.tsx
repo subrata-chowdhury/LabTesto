@@ -35,10 +35,10 @@ export default function Services() {
 
 function ServiceCard({ icon, title, details, className, style }: { icon: StaticImageData, title: string; details: React.JSX.Element, className?: string; style?: React.CSSProperties }) {
     return (
-        <div className={`border border-gray-300/50 group overflow-hidden relative transition-all dark:border-gray-600 rounded-lg shadow dark:shadow-md dark:shadow-black px-5 py-4 bg-white dark:bg-[#172A46] ${className}`} style={style}>
-            <div className='bg-primary transition-all duration-500 w-0 h-0 top-0 left-0 rounded-full group-hover:w-[180%] group-hover:h-[500px] absolute group-hover:-top-[25%] group-hover:-left-[25%]'></div>
+        <div className={`border border-gray-300/50 group overflow-hidden relative transition-all dark:border-white/25 rounded-lg shadow dark:shadow-md dark:shadow-black px-5 py-4 bg-white dark:bg-black ${className}`} style={style}>
+            <div className='bg-primary dark:bg-white/30 transition-all duration-500 w-0 h-0 top-0 left-0 rounded-full group-hover:w-[180%] group-hover:h-[500px] absolute group-hover:-top-[25%] group-hover:-left-[25%]'></div>
             <Image src={icon} alt={title} className="w-10 h-10 ml-2 mt-2 mb-4 mr-auto z-10 relative" />
-            <h3 className="text-lg font-semibold mb-2 transition-all duration-300 text-primary group-hover:text-white z-10 relative">{title}</h3>
+            <h3 className="text-lg font-semibold mb-2 transition-all duration-300 text-primary group-hover:text-white dark:text-white z-10 relative">{title}</h3>
             <div className="text-gray-600 transition-all duration-300 group-hover:text-gray-200 dark:text-gray-300 text-sm z-10 relative">{details}</div>
         </div>
     );

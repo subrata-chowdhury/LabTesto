@@ -22,21 +22,21 @@ function AboutPage() {
                             <p className='relative z-20'>Get Started</p>
                         </Link>
                     </div>
-                    <div className='w-64 h-64 sm:w-72 sm:h-72 lg:w-96 lg:h-96 relative mx-auto flex justify-center items-center rounded-full shadow-md bg-primary/30 text-4xl sm:text-5xl font-bold'>
-                        <span className="text-orange-500">Lab</span><span className="text-blue-600">Testo</span>
-                        <div className='text-base lg:text-xl flex gap-3 border border-gray-300 dark:border-gray-600 dark:shadow-gray-900 absolute top-8 -left-10 sm:-left-16 bg-white dark:bg-[#172A46] shadow-xl px-3 sm:px-3.5 py-2 sm:py-2.5 lg:px-5 lg:py-4 pr-8 leading-5 rounded-md'>
-                            <div className='h-10 w-10 rounded bg-primary/25'></div>
+                    <div className='w-64 h-64 sm:w-72 sm:h-72 lg:w-96 lg:h-96 relative mx-auto flex justify-center items-center rounded-full shadow-md bg-primary/30 dark:bg-white/15 text-4xl sm:text-5xl font-bold'>
+                        <span className="text-orange-500">Lab</span><span className="text-primary dark:text-white">Testo</span>
+                        <div className='text-base lg:text-xl flex gap-3 border border-gray-300 backdrop-blur-xl dark:border-white/25 dark:shadow-gray-900 absolute top-8 -left-10 sm:-left-16 bg-white dark:bg-white/10 shadow-xl px-3 sm:px-3.5 py-2 sm:py-2.5 lg:px-5 lg:py-4 pr-8 leading-5 rounded-md'>
+                            <div className='h-10 w-10 rounded bg-primary/25 dark:bg-white/25'></div>
                             <div>
                                 <div>1820+</div>
-                                <div className='text-xs lg:text-sm font-normal text-gray-500 dark:text-gray-400'>Active Users</div>
+                                <div className='text-xs lg:text-sm font-normal text-gray-500 dark:text-white/60'>Active Users</div>
                             </div>
                         </div>
-                        <div className='text-base lg:text-xl flex gap-3 border border-gray-300 dark:border-gray-600 dark:shadow-gray-900 absolute bottom-10 lg:bottom-16 -right-14 sm:-right-24 bg-white dark:bg-[#172A46] shadow-xl px-3 sm:px-3.5 py-2 sm:py-2.5 lg:px-5 lg:py-4 pr-4 sm:pr-8 leading-5 rounded-md'>
+                        <div className='text-base lg:text-xl flex gap-3 border border-gray-300 backdrop-blur-xl dark:border-white/25 dark:shadow-gray-900 absolute bottom-10 lg:bottom-16 -right-14 sm:-right-24 bg-white dark:bg-white/10 shadow-xl px-3 sm:px-3.5 py-2 sm:py-2.5 lg:px-5 lg:py-4 pr-4 sm:pr-8 leading-5 rounded-md'>
                             {/* <div className='h-10 w-10 rounded bg-primary bg-opacity-25'></div> */}
                             <ul className=' list-disc pl-4'>
                                 {/* <div>1820+</div> */}
-                                <li className='text-xs lg:text-sm font-normal text-gray-500 dark:text-gray-400'>Get Sample Collected<br /> at your Home</li>
-                                <li className='text-xs lg:text-sm font-normal text-gray-500 dark:text-gray-400'>Also get Report on your Home</li>
+                                <li className='text-xs lg:text-sm font-normal text-gray-500 dark:text-white/60'>Get Sample Collected<br /> at your Home</li>
+                                <li className='text-xs lg:text-sm font-normal text-gray-500 dark:text-white/60'>Also get Report on your Home</li>
                             </ul>
                         </div>
                     </div>
