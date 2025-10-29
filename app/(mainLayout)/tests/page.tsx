@@ -53,7 +53,7 @@ const Tests = () => {
         <main id="main" className='p-5 pb-12 container max-w-7xl mx-auto w-full'>
             <h1 className='text-xl text-center sm:text-2xl md:text-3xl tracking-wide sm:text-left font-bold text-primary dark:text-white'>All Available Tests</h1>
             <div className='flex flex-col sm:flex-row gap-4 mt-4'>
-                <div className={"px-4 py-2 flex gap-3 justify-between border-primary/50 border dark:border-white/30 bg-gray-500/5 rounded-full"}>
+                <div className={"px-4 py-2 flex gap-3 justify-between border-primary/20 border dark:border-white/30 bg-gray-500/5 rounded-full"}>
                     <input
                         className="flex-1 text-sm outline-none bg-transparent"
                         type="text"
@@ -91,7 +91,7 @@ const Tests = () => {
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4'>
                 {
                     tests.map(test => (
-                        <Link href={'/tests/' + test._id} key={test._id} className="flex flex-col bg-white dark:bg-black dark:shadow-md dark:border-white/30 rounded-md shadow-md border border-primary/50 dark:border text-primary p-4 min-w-52">
+                        <Link href={'/tests/' + test._id} key={test._id} className="flex flex-col bg-white dark:bg-black dark:border-white/30 rounded-md shadow-md shadow-primary/5 border border-primary/15 dark:border text-primary p-4 min-w-52">
                             <h1 className="text-xl font-semibold mb-1.5 dark:text-white">{test.name}</h1>
                             <p className="text-xs font-semibold text-white mb-2.5 bg-primary dark:bg-white/25 px-4 py-1.5 w-fit rounded-full">{test.sampleType}</p>
                             <p className="text-sm mt-auto opacity-60 dark:text-white text-black">Fasting: {test.fastingRequired} | Tube Type: {test.tubeType}</p>
@@ -102,7 +102,7 @@ const Tests = () => {
             {loading && <Loading />}
             {totalPages !== 1 && !loading && <div className='w-full flex justify-center mt-2'>
                 <button
-                    className='mt-2 px-5 py-2 rounded-md bg-primary dark:bg-white/30 cursor-pointer text-white font-medium'
+                    className='mt-2 px-5 py-2 rounded bg-primary dark:bg-white/30 cursor-pointer text-white font-medium'
                     onClick={async () => {
                         setLimit(prevLimit => prevLimit + 6);
                         await onSeach({ ...filter, sampleType: filter.sampleType as 'All' | 'Blood' | 'Urine' | 'Semen' | 'Stool' | 'Sputum' | 'Other' | 'Other Body Fluid' }, limit + 6)

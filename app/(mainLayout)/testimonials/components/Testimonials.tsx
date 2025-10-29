@@ -10,14 +10,14 @@ function Gallery() {
             <h1 className="text-center text-3xl sm:text-4xl lg:text-5xl font-bold">
                 We know testimonials drive trust
                 <br />
-                <span className="text-primary">— here’s why people trust us</span>
+                <span className="text-primary dark:text-white">— here’s why people trust us</span>
             </h1>
             <div
                 className="flex flex-wrap text-sm lg:text-base text-nowrap justify-center mt-5"
                 style={{ gap: "1rem" }}
             >
                 {tags.map(tag => (
-                    <div className="px-4 border border-gray-300 dark:border-gray-500 rounded-md col-auto p-2" key={tag.text}>
+                    <div className="px-4 border border-gray-300 dark:border-white/25 rounded-md col-auto p-2" key={tag.text}>
                         <p>{tag.icon} {tag.text}</p>
                     </div>
                 ))}
@@ -37,7 +37,7 @@ function Gallery() {
 
 function TestimonialCard({ testimonial }: { testimonial: TestimonialType }) {
     return (
-        <div className="w-full inline-block border border-gray-300 dark:border-gray-500 mb-4 break-inside-avoid bg-white dark:bg-[#172A46] rounded-lg text-start">
+        <div className="w-full inline-block border border-gray-300 dark:border-white/20 mb-4 break-inside-avoid bg-white dark:bg-black rounded-lg text-start shadow-md shadow-primary/5">
             <div className="px-4 py-3">
                 <div className="flex items-center mr-auto">
                     {/* {testimonial.profilePic && <Image
@@ -47,7 +47,7 @@ function TestimonialCard({ testimonial }: { testimonial: TestimonialType }) {
                         src={testimonial.profilePic}
                         alt="profile picture"
                     />} */}
-                    <UserIcon size={45} className='p-2 bg-primary bg-opacity-20 text-primary rounded-full' />
+                    <UserIcon size={45} className='p-2 bg-primary/20 dark:bg-white/30 text-primary dark:text-white rounded-full' />
                     <div className="ml-2">
                         <div className="font-bold m-0 leading-4">{testimonial.name}</div>
                         <div>{testimonial.website}</div>
@@ -67,7 +67,7 @@ function TestimonialCard({ testimonial }: { testimonial: TestimonialType }) {
 
 function ImageCard({ testimonial }: { testimonial: TestimonialType }) {
     return (
-        <div className="w-full inline-block border border-gray-300 dark:border-gray-500 mb-4 break-inside-avoid bg-white dark:bg-[#172A46] rounded-lg overflow-hidden text-start">
+        <div className="w-full inline-block border border-gray-300 dark:border-white/20 mb-4 break-inside-avoid bg-white dark:bg-black rounded-lg overflow-hidden text-start shadow-md shadow-primary/5">
             <div className='relative w-full' style={{ height: testimonial.height }}>
                 {testimonial.thumbnail && <Image
                     width={500}

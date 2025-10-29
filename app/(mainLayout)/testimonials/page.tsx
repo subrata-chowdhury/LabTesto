@@ -3,7 +3,7 @@ import Gallery from './components/Testimonials'
 
 const TestimonialsPage = () => {
     return (
-        <div className='w-full min-h-screen dark:bg-[#0A192F]'>
+        <div className='w-full min-h-screen dark:bg-white/0'>
             <Gallery />
         </div>
     )

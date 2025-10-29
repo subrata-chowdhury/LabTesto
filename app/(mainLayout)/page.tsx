@@ -249,7 +249,7 @@ export function Achivements() {
 
 function Card({ label = "CBC", tag, description, link, icon, className, style }: { label: string, tag?: string, description?: string, link?: { label: string, href: string }, icon?: StaticImageData, className?: string, style?: React.CSSProperties }) {
     return (
-        <div className={`shadow-primary/5 flex flex-col p-4 pb-2 bg-white dark:bg-black rounded-md shadow-lg dark:shadow-black border border-primary/45 min-w-52 ${className}`} style={style}>
+        <div className={`shadow-primary/5 flex flex-col p-4 pb-2 bg-white dark:bg-black rounded-md shadow-lg dark:shadow-black border border-primary/20 min-w-52 ${className}`} style={style}>
             <h1 className="text-xl font-semibold mb-1.5 text-primary dark:text-white">{label}</h1>
             {tag && <p className="text-xs font-semibold text-white mb-2.5 bg-primary dark:bg-white/25 px-4 py-1.5 w-fit rounded-full">{tag}</p>}
             {description && <p className="text-sm opacity-70 mb-2.5">{description}</p>}
@@ -279,7 +279,7 @@ function CardType2({ label = "CBC", subText, description, icon, bgColor, classNa
 
 function CardType3({ label = "Cardiology", link = "#", icon, className, style }: { label: string, link?: string, icon?: StaticImageData, className?: string, style?: React.CSSProperties }) {
     return (
-        <a href={link} className={`shadow-md group overflow-hidden relative transition-all shadow-primary/5 bg-white dark:bg-black dark:shadow-black rounded-md px-8 py-6 border border-primary/40 ${className}`} style={style}>
+        <a href={link} className={`shadow-md group overflow-hidden relative transition-all shadow-primary/5 bg-white dark:bg-black dark:shadow-black rounded-md px-8 py-6 border border-primary/20 ${className}`} style={style}>
             <div className='bg-primary dark:bg-white/15 -z-10 transition-all duration-500 w-0 h-0 top-0 left-0 rounded-full group-hover:w-[150%] group-hover:h-[400px] absolute group-hover:-top-[25%] group-hover:-left-[25%]'></div>
             <li className="flex flex-col items-center">
                 <figure>
@@ -320,7 +320,7 @@ function CardType4({ label = "CBC", value, subText, icon, className, style }: { 
     }, [value, isVisible]);
 
     return (
-        <div ref={ref} className={"inline-flex dark:bg-black dark:shadow-md w-full h-32 mr-3 mb-3 flex-col items-center justify-center rounded-lg border border-primary/40 dark:border-white/25 shadow-md shadow-primary/10 " + className} style={style}>
+        <div ref={ref} className={"inline-flex dark:bg-black w-full h-32 mr-3 mb-3 flex-col items-center justify-center rounded-lg border border-primary/20 dark:border-white/25 shadow-md shadow-primary/10 " + className} style={style}>
             {icon && <figure>
                 <Image
                     src={icon}

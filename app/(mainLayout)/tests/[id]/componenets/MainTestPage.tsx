@@ -124,8 +124,8 @@ function MainTestPage({ test }: Props) {
     }
 
     return (
-        <div className='bg-blue-50 dark:bg-white/0 p-1 md:py-9 md:px-10'>
-            <section className='bg-white dark:bg-black border-2 border-gray-300/50 dark:border-white/15 p-7 px-8 flex flex-col rounded-lg'>
+        <div className='bg-black/0 dark:bg-white/0 p-1 md:py-9 md:px-10'>
+            <section className='bg-white dark:bg-black border-2 border-gray-300/50 dark:border-white/15 shadow-md shadow-primary/5 p-7 px-8 flex flex-col rounded-lg'>
                 <h1 className='text-2xl font-bold text-primary dark:text-white'>{testDetails.name}</h1>
                 {(testDetails?.otherTerms || []).length > 0 && <div className='text-sm text-gray-500 pt-2'>
                     <strong className='font-normal'>Also known as:</strong> <span className='text-black font-medium'>{testDetails?.otherTerms?.join(', ')}</span>
@@ -180,7 +180,7 @@ function MainTestPage({ test }: Props) {
             <section className='mt-1 md:mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 md:gap-5 rounded-lg'>
                 {/* {loadingLabs === true && <LabLoader />} */}
                 {labs.length > 0 && labs.map((labObj, i) => (
-                    <div key={i} className='border-2 border-gray-300/50 dark:border-white/15 p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white dark:bg-black' onClick={() => onLabSelect(labObj)}>
+                    <div key={i} className='border-2 border-gray-300/50 dark:border-white/15 shadow-md shadow-primary/5 p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white dark:bg-black' onClick={() => onLabSelect(labObj)}>
                         <div className='flex items-center gap-3'>
                             <div className='w-14 h-14 bg-primary/20 dark:bg-white/30 rounded-md flex items-center justify-center'>
                                 {labObj.image && <Image src={labObj.image} width={56} height={56} alt="" />}
@@ -299,7 +299,7 @@ const DetailsSection = memo(({ labBaseDetails, testDetails }: {
     });
 
     return (
-        <section className='mt-1 md:mt-4 py-8 px-8 rounded-lg border-2 border-gray-300/50 dark:border-white/15 bg-white dark:bg-black'>
+        <section className='mt-1 md:mt-4 py-8 px-8 rounded-lg border-2 border-gray-300/50 dark:border-white/15 bg-white dark:bg-black shadow-md shadow-primary/5'>
             <div className='flex flex-col gap-5' style={{ padding: 0, border: 0 }}>
                 {labBaseDetails.packages.length > 0 && <div className='grid grid-flow-col justify-start gap-2'>
                     <PackageIcon />

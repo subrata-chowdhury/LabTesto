@@ -53,14 +53,14 @@ const NotificationPage = () => {
     }
 
     return (
-        <div className="flex-1 flex flex-col p-4 bg-gray-100 dark:bg-[#0A192F] min-h-screen">
+        <div className="flex-1 flex flex-col p-4 bg-transparent min-h-screen">
             <h1 className="text-2xl font-bold mb-4">Notifications</h1>
             <ul className="space-y-3 flex-1 overflow-y-scroll">
                 {notifications.map((notification, outerIndex) => (
                     <li
                         key={outerIndex}
                         onClick={() => notification.link?.href ? navigate.push(notification.link.href) : ''}
-                        className={`bg-white dark:bg-[#172A46] border ${notification.type === 'warning' ? 'border-orange-200' : (notification.type === 'success' ? 'border-green-400' : (notification.type === 'danger' ? 'border-red-400' : ''))} rounded-xl shadow-md shadow-indigo-100 dark:shadow-black ${notification.link?.href ? 'cursor-pointer' : ''} p-3 px-4 pr-5 flex justify-between items-center`}>
+                        className={`bg-white dark:bg-black border ${notification.type === 'warning' ? 'border-orange-200' : (notification.type === 'success' ? 'border-green-400' : (notification.type === 'danger' ? 'border-red-400' : ''))} rounded-xl shadow-md shadow-primary/5 dark:shadow-black ${notification.link?.href ? 'cursor-pointer' : ''} p-3 px-4 pr-5 flex justify-between items-center`}>
                         <div className='flex-1'>
                             <div className={`font-semibold ${notification.type === 'warning' ? 'text-orange-400' : (notification.type === 'success' ? 'text-green-400' : (notification.type === 'danger' ? 'text-red-400' : 'text-primary'))}`}>{notification.heading}</div>
                             <div className='text-sm font-medium text-gray-600 dark:text-gray-300'>{notification.subText}</div>

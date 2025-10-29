@@ -2,7 +2,7 @@ import React from 'react'
 
 const OrdersLoading = () => {
     return (
-        <div className="flex-1 flex flex-col p-4 bg-gray-100 dark:bg-white/0 min-h-screen">
+        <div className="flex-1 flex flex-col p-4 bg-white/0 dark:bg-white/0 min-h-screen">
             <h1 className="text-2xl font-bold mb-4">Ordered Items</h1>
             <div className='flex flex-wrap justify-center sm:justify-normal gap-2 mb-4 mt-3 opacity-80 animate-pulse'>
                 {['All', 'Ordered', 'Out for Sample Collection', 'Sample Collected', 'Report Delivered to Lab', 'Report Generated', 'Out for Report Delivery', 'Report Delivered', 'Canceled'].map((e, index) => (

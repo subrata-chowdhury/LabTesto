@@ -4,7 +4,7 @@ import Services from './components/Services';
 function AboutPage() {
     return (
         <>
-            <div className='w-full min-h-screen dark:bg-[#0A192F]'>
+            <div className='w-full min-h-screen dark:bg-black'>
                 <Services />
             </div>
         </>

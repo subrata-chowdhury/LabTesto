@@ -2,12 +2,12 @@ import React from 'react'
 
 const Loading = () => {
     return (
-        <div className='bg-blue-50 dark:bg-[#0A192F] p-1 md:py-9 md:px-10'>
+        <div className='bg-black/5 dark:bg-white/0 p-1 md:py-9 md:px-10'>
             <BasicTestDetailsLoader />
             <div className='mt-1 md:mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 md:gap-5 rounded-lg'>
                 <LabLoader />
             </div>
-            <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 border-gray-300/50 dark:border-[#172A46] bg-white dark:bg-[#172A46]'>
+            <div className='mt-1 md:mt-4 py-8 px-8 flex flex-col gap-5 rounded-lg border-2 border-gray-300/50 dark:border-black bg-white dark:bg-black'>
                 <DetailsLoader />
             </div>
         </div>
@@ -18,7 +18,7 @@ export default Loading
 
 export function BasicTestDetailsLoader() {
     return (
-        <div className='bg-white dark:bg-[#172A46] border-2 border-gray-300/50 dark:border-[#172A46] p-7 px-8 flex flex-col rounded-lg'>
+        <div className='bg-white dark:bg-black border-2 border-gray-300/50 dark:border-black p-7 px-8 flex flex-col rounded-lg'>
             <div className='animate-pulse pb-6'>
                 <div className='h-8 w-32 bg-gray-300 rounded'></div>
             </div>
@@ -74,9 +74,9 @@ export function BasicTestDetailsLoader() {
 
 export function LabLoader() {
     return Array(4).fill(0).map((_, i) => (
-        <div key={i} className='border-2 border-gray-300/50 dark:border-[#172A46] p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white dark:bg-[#172A46]'>
+        <div key={i} className='border-2 border-gray-300/50 dark:border-white/20 p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white dark:bg-black'>
             <div className='flex items-center gap-3'>
-                <div className='w-14 h-14 bg-primary bg-opacity-20 animate-pulse rounded-md flex items-center justify-center'>
+                <div className='w-14 h-14 bg-primary/20 animate-pulse rounded-md flex items-center justify-center'>
                     {/* <Image src='/download.png' alt='' width={115} height={50} /> */}
                 </div>
                 <div className='animate-pulse'>

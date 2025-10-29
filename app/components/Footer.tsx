@@ -14,7 +14,7 @@ const Footer = () => {
     const [ref, isVisible] = useIsVisible<HTMLDivElement>({ threshold: 0.1, once: true });
 
     return (
-        <footer ref={ref} className="bg-primary/10 dark:bg-black py-6 pt-12" role="contentinfo">
+        <footer ref={ref} className="bg-primary/5 dark:bg-black py-6 pt-12" role="contentinfo">
             <div className="mx-auto px-14">
                 <div className="flex flex-col lg:flex-row gap-8 lg:gap-24">
                     <div className='mr-4 max-w-md'>

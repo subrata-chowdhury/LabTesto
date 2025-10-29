@@ -98,7 +98,7 @@ export function SearchBar({ active = false, className = '', onSelect = () => { }
     const [showSearchBar, setShowSearchBar] = useState(active);
 
     return (
-        <div className={"relative text-sm z-10 dark:text-white flex gap-3 items-center justify-between px-4 py-2 bg-gray-500/5 border border-primary/50 dark:border-white/30 outline-none w-full rounded-full " + className}>
+        <div className={"relative text-sm z-10 dark:text-white flex gap-3 items-center justify-between px-4 py-2 bg-gray-500/5 border border-primary/20 dark:border-white/30 outline-none w-full rounded-full " + className}>
             {showSearchBar && <SelectTest
                 onSelect={onSelect}
                 optionElement={(option, index, onClick) => (
@@ -177,7 +177,7 @@ function MobileMenubar({ onClose = () => { }, isLoggedIn, userName = '', userEma
                 }}
                 aria-label="Log Out"
             >
-                <Image src={logout} alt='Logout Icon' width={18} height={18} style={{ width: 18, height: 18 }} />
+                <Image src={logout} alt='Logout Icon' className='filter brightness-0 dark:invert' width={18} height={18} style={{ width: 18, height: 18 }} />
                 <p>Log Out</p>
             </div>}
         </div>
@@ -192,14 +192,14 @@ function ProfilePopup({ onPopupClose, userName, userEmail, isLoggedIn }: { onPop
                 <div className="text-primary dark:text-white text-lg font-bold menu text-nowrap px-2">{userName ? userName : 'Profile'}</div>
                 <div className="text-primary dark:text-white text-xs mt-1 font-medium menu">{userEmail ? userEmail : ''}</div>
             </div>
-            <Link href='/profile' onClick={() => onPopupClose()} aria-label="View Account" className="flex justify-between bg-primary/10 dark:bg-white/15 hover:bg-white/25 px-5 rounded-xl text-primary dark:text-white menu py-2">
+            <Link href='/profile' onClick={() => onPopupClose()} aria-label="View Account" className="flex justify-between bg-primary/10 dark:bg-white/15 hover:bg-black/20 dark:hover:bg-white/20 px-5 rounded-xl text-primary dark:text-white menu py-2">
                 <span className='flex items-center gap-2'><UserIcon size={16} />Account</span> <span className='ml-10'>❯</span>
             </Link>
-            <Link href='/notifications' onClick={() => onPopupClose()} aria-label="View Notifications" className="flex justify-between bg-primary/10 dark:bg-white/15 hover:bg-white/25 px-5 rounded-xl text-primary dark:text-white menu py-2">
+            <Link href='/notifications' onClick={() => onPopupClose()} aria-label="View Notifications" className="flex justify-between bg-primary/10 dark:bg-white/15 hover:bg-black/20 dark:hover:bg-white/20 px-5 rounded-xl text-primary dark:text-white menu py-2">
                 <span className='flex items-center gap-2'><NotificationIcon size={16} />Notification</span> <span className='ml-10'>❯</span>
             </Link>
             {isLoggedIn && <div
-                className={`cursor-pointer flex justify-start gap-3 mt-4 bg-primary/10 dark:bg-white/15 hover:bg-white/25 px-4 rounded-xl p-2 items-center text-primary dark:text-white`}
+                className={`cursor-pointer flex justify-start gap-3 mt-4 bg-primary/10 dark:bg-white/15 hover:bg-black/20 dark:hover:bg-white/20 px-4 rounded-xl p-2 items-center text-primary dark:text-white`}
                 onClick={() => {
                     document.cookie = 'token=; Max-Age=0; path=/;';
                     localStorage.removeItem('isLoggedIn');
