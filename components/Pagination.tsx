@@ -106,13 +106,13 @@ const Pagination = ({ currentPage, totalPages, onChange, loading = false }: Prop
             <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={loading || (currentPage === 1)}
-                className={`mx-1 px-3 py-1 min-w-10 rounded text-sm transition ${currentPage === 1 ? 'cursor-not-allowed text-white/20 dark:text-white/20' : 'text-gray-600 dark:text-white/80 bg-white dark:bg-transparent hover:text-gray-800 hover:dark:text-gray-200 cursor-pointer'}`}
+                className={`mx-1 px-3 py-1 min-w-10 rounded text-sm transition ${currentPage === 1 ? 'cursor-not-allowed text-black/20 dark:text-white/20' : 'text-gray-600 dark:text-white/80 bg-white dark:bg-transparent hover:text-gray-800 hover:dark:text-gray-200 cursor-pointer'}`}
             >Prev</button>
             {renderPageNumbers()}
             <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={loading || (currentPage === totalPages)}
-                className={`mx-1 px-3 py-1 min-w-10 rounded text-sm transition ${currentPage === totalPages ? 'cursor-not-allowed text-white/20 dark:text-white/20' : 'text-gray-600 dark:text-white/80 bg-white dark:bg-transparent hover:text-gray-800 hover:dark:text-gray-200 cursor-pointer'}`}
+                className={`mx-1 px-3 py-1 min-w-10 rounded text-sm transition ${currentPage === totalPages ? 'cursor-not-allowed text-black/20 dark:text-white/20' : 'text-gray-600 dark:text-white/80 bg-white dark:bg-transparent hover:text-gray-800 hover:dark:text-gray-200 cursor-pointer'}`}
             >Next</button>
         </div>
     );

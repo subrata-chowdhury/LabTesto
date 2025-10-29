@@ -95,7 +95,7 @@ export function MainTable<T>({
             </thead>
             <tbody>
                 {!loading && data?.length > 0 && data.map((obj, index) => (
-                    <tr key={index} className='border-t border-white/30' style={{ height: 48 }}>
+                    <tr key={index} className='border-t border-black/15 dark:border-white/30' style={{ height: 48 }}>
                         {config.map((configObj, innerIndex) => (
                             // @ts-expect-error: Type 'keyof T' cannot be used as an index type.
                             <td key={innerIndex} className={`pl-4 min-h-12 items-center ${configObj.hideAble ? "hidden md:flex" : ""}`} >{configObj.component ? React.createElement(configObj.component, { data: obj, index }) : obj[configObj.selector || ""]}</td>

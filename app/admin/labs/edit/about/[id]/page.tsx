@@ -32,6 +32,7 @@ const Page = () => {
             if (res.status === 200 && res.body) {
                 const labDetails: LabAboutDetails = {
                     name: res.body.name,
+                    image: res.body.image,
                     description: res.body.description,
                     location: res.body.location,
                     certification: res.body.certification,
@@ -63,6 +64,7 @@ const Page = () => {
 type FetchedLabDetails = {
     name: string,
     description?: string,
+    image?: string,
     location: {
         address: {
             pin: string,

@@ -182,7 +182,9 @@ function MainTestPage({ test }: Props) {
                 {labs.length > 0 && labs.map((labObj, i) => (
                     <div key={i} className='border-2 border-gray-300/50 dark:border-white/15 p-5 py-4 rounded-lg cursor-pointer flex justify-between bg-white dark:bg-black' onClick={() => onLabSelect(labObj)}>
                         <div className='flex items-center gap-3'>
-                            <div className='w-14 h-14 bg-primary/50 dark:bg-white/15 rounded-md flex items-center justify-center'></div>
+                            <div className='w-14 h-14 bg-primary/20 dark:bg-white/30 rounded-md flex items-center justify-center'>
+                                {labObj.image && <Image src={labObj.image} width={56} height={56} alt="" />}
+                            </div>
                             <div>
                                 <div className='font-semibold text-primary dark:text-white'>{labObj.name}</div>
                                 <div className='flex items-center gap-2'>
@@ -254,6 +256,7 @@ export type TestDetails = {
 type LabDetails = {
     lab: string;
     name: string;
+    image?: string;
     price: number;
     offer?: number;
     expenses?: number;
@@ -265,6 +268,7 @@ type LabDetails = {
 type Lab = {
     _id: string,
     name: string,
+    image?: string,
     description: string,
     location?: {
         address: {
@@ -390,13 +394,14 @@ const LabDetailsSidePopup = memo(({ labId, onClose }: { labId: string, onClose: 
     }
 
     return (
-        <section className='fixed w-screen h-screen top-0 left-0 bg-black/20 z-50' onClick={() => onClose()}>
-            <div className='fixed left-0 top-0 w-[90vw] sm:w-[70vw] bg-white dark:bg-[#0A192F] shadow-2xl' onClick={e => e.stopPropagation()}>
-                <button className='flex justify-end p-2 absolute right-0 top-0 cursor-pointer translate-x-full bg-white dark:text-white dark:bg-[#0A192F] rounded-e-md border-2 border-gray-300/50 dark:border-gray-600' onClick={() => onClose()}>
+        <section className='fixed w-screen h-screen top-0 left-0 bg-black/20 dark:bg-white/20 backdrop-blur-sm z-50' onClick={() => onClose()}>
+            <div className='fixed left-0 top-0 w-[90vw] sm:w-[70vw] bg-white dark:bg-black shadow-2xl' onClick={e => e.stopPropagation()}>
+                <button className='flex justify-end p-2 absolute right-0 top-0 cursor-pointer translate-x-full bg-white dark:text-white dark:bg-black rounded-e-md border-2 border-transparent' onClick={() => onClose()}>
                     <CrossIcon />
                 </button>
                 <div className='overflow-y-scroll h-screen'>
-                    <div className='bg-blue-200 dark:bg-[#172A46] relative min-h-52 overflow-hidden p-4'>
+                    <div className='bg-primary/20 dark:bg-white/15 relative min-h-52 w-full overflow-hidden p-4'>
+                        {lab?.image && <Image src={lab.image} className='bg-white/80 z-20 relative rounded' alt="" width={80} height={80} />}
                         <h2 className='font-bold text-2xl bottom-16 absolute z-20 text-white'>{loading ? <div className='h-6 w-28 animate-pulse bg-gray-300 rounded'></div> : lab?.name}</h2>
                         <div className='font-medium flex gap-1 bottom-10 absolute z-20 text-white'>
                             {loading ? <div className='h-4 w-52 animate-pulse bg-gray-300 rounded'></div> : <>
@@ -412,7 +417,7 @@ const LabDetailsSidePopup = memo(({ labId, onClose }: { labId: string, onClose: 
                                 <Image key={i} src={star} alt='' width={20} height={20} />
                             ))}
                         </div>}
-                        <div className='absolute bottom-0 w-full h-full z-10 -translate-x-[10%] translate-y-1/2 bg-linear-to-t from-gray-400 dark:from-black to-transparent transform rotate-20'></div>
+                        <div className='absolute bottom-0 w-full h-full z-10 -translate-x-[10%] translate-y-1/2 bg-linear-to-t from-primary/30 dark:from-white/15 to-transparent transform rotate-20'></div>
                     </div>
                     {loading ? <div className='p-5 flex flex-col gap-2'>
                         <div className='h-4 w-full animate-pulse bg-gray-300 rounded'></div>

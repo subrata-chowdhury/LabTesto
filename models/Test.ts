@@ -13,6 +13,7 @@ export interface ITest extends Document {
     labsDetails?: {
         [key: string]: {
             name: string;
+            image?: string;
             lab: string;
             price: number;
             offer?: number;
@@ -50,6 +51,7 @@ const TestSchema: Schema = new Schema({
         to: {
             lab: { type: Schema.Types.ObjectId, ref: 'Lab', required: true },
             name: { type: String, required: true },
+            image: { type: String, required: false },
             price: { type: Number, required: true },
             offer: { type: Number, required: false, default: 0 },
             expenses: { type: Number, required: false, default: 0 },

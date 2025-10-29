@@ -1,3 +1,4 @@
+'use client';
 import fetcher from "@/lib/fetcher";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
@@ -9,7 +10,7 @@ import TrashBinIcon from "@/assets/reactIcon/TrashBin";
 const UploadToCloudinary = ({ imgUrl, apiPath, onUpload }: { imgUrl?: string, apiPath: string, onUpload: (url: string) => void }) => {
     const [loading, setLoading] = useState(false);
     const imageInput = useRef<HTMLInputElement>(null);
-
+    console.log(imgUrl)
     async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
         if (e.target.files) {
             const file = e.target.files[0];
@@ -64,6 +65,7 @@ const UploadToCloudinary = ({ imgUrl, apiPath, onUpload }: { imgUrl?: string, ap
             {!loading && (imgUrl && imgUrl.length > 0) && (
                 <button
                     onClick={() => window.open(imgUrl, "_blank")}
+                    className="cursor-pointer"
                 >
                     <Image src={eyeIcon} alt="" />
                 </button>

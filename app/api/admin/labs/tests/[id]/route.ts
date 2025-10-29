@@ -76,6 +76,7 @@ export async function POST(req: Request) {
             test.labsDetails.set(id, {
                 lab: lab._id,
                 name: lab.name,
+                image: lab.image,
                 price: detail.price,
                 offer: detail.offer || 0,
                 expenses: detail.expenses || 0,
