@@ -3,11 +3,6 @@ import React from 'react'
 import { Achivements } from '../page';
 import ContactDetails from '../contact/components/ContactDetails';
 import Services from '../services/components/Services';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-    title: 'About Us - LabTesto',
-}
 
 function AboutPage() {
     return (
