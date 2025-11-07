@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://labtesto.vercel.app/" || "http://localhost:3000";
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://labtesto.vercel.app" || "http://localhost:3000";
     const now = new Date();
 
     const staticPages = [
@@ -32,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const tests = (await res.json()).tests;
     tests.forEach((t: { _id: string, updatedAt: string }) => {
         sitemapEntries.push({
-            url: `${baseUrl}tests/${t._id}`,
+            url: `${baseUrl}/tests/${t._id}`,
             lastModified: new Date(t.updatedAt || Date.now()),
             changeFrequency: "weekly",
             priority: 0.8,

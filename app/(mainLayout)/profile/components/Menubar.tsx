@@ -7,7 +7,7 @@ const Menubar = () => {
     const currentPath = usePathname();
 
     return (
-        <div className='text-sm border-b-2 pb-2 sm:border-b-0 sm:pb-0 pr-1.5 sm:pr-5 lg:pr-12 sm:text-base flex sm:flex-col gap-2'>
+        <div className='text-sm border-b-2 pb-2 sm:border-b-0 border-gray-300/70 dark:border-white/20 sm:pb-0 pr-1.5 sm:pr-5 lg:pr-12 sm:text-base flex sm:flex-col gap-2'>
             {[
                 { label: 'Profile', href: '/profile' },
                 // { label: 'Account', href: '/profile/account' },

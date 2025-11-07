@@ -145,29 +145,29 @@ function MobileMenubar({ onClose = () => { }, isLoggedIn, userName = '', userEma
                     <div className="text-primary dark:text-white text-xs font-medium menu">{userEmail ? userEmail : ''}</div>
                 </div>
             </Link>
-            <Link href="/profile" className="flex justify-between bg-primary/10 dark:bg-white/15 hover:bg-white/25 px-5 rounded-xl text-primary dark:text-white py-2" onClick={() => onClose()}>
+            <Link href="/profile" className="flex justify-between bg-primary/10 dark:bg-white/15 hover:bg-black/20 dark:hover:bg-white/20 px-5 rounded-xl text-primary dark:text-white py-2" onClick={() => onClose()}>
                 <span className='flex items-center gap-2'><UserIcon size={18} />Account</span> <span className='ml-12'>❯</span>
             </Link>
-            <Link href="/tests" className="flex justify-between bg-primary/10 dark:bg-white/15 hover:bg-white/25 px-5 rounded-xl text-primary dark:text-white py-2" onClick={() => onClose()}>
+            <Link href="/tests" className="flex justify-between bg-primary/10 dark:bg-white/15 hover:bg-black/20 dark:hover:bg-white/20 px-5 rounded-xl text-primary dark:text-white py-2" onClick={() => onClose()}>
                 <span className='flex items-center gap-2'><LabIcon size={18} />Book a Test</span> <span className='ml-12'>❯</span>
             </Link>
-            <Link href="/cart" className="flex justify-between bg-primary/10 dark:bg-white/15 hover:bg-white/25 px-5 rounded-xl text-primary dark:text-white menu py-2" onClick={() => onClose()}>
+            <Link href="/cart" className="flex justify-between bg-primary/10 dark:bg-white/15 hover:bg-black/20 dark:hover:bg-white/20 px-5 rounded-xl text-primary dark:text-white menu py-2" onClick={() => onClose()}>
                 <span className='flex items-center gap-2'><FilledCartIcon size={20} />Cart</span> <span className='ml-12'>❯</span>
             </Link>
-            <Link href="/order" className="flex justify-between bg-primary/10 dark:bg-white/15 hover:bg-white/25 px-5 rounded-xl text-primary dark:text-white menu py-2" onClick={() => onClose()}>
+            <Link href="/order" className="flex justify-between bg-primary/10 dark:bg-white/15 hover:bg-black/20 dark:hover:bg-white/20 px-5 rounded-xl text-primary dark:text-white menu py-2" onClick={() => onClose()}>
                 <span className='flex items-center gap-2'><OrderIcon size={18} />Orders</span> <span className='ml-12'>❯</span>
             </Link>
-            <Link href="/notifications" className="flex justify-between bg-primary/10 dark:bg-white/15 hover:bg-white/25 px-5 rounded-xl text-primary dark:text-white menu py-2" onClick={() => onClose()}>
+            <Link href="/notifications" className="flex justify-between bg-primary/10 dark:bg-white/15 hover:bg-black/20 dark:hover:bg-white/20 px-5 rounded-xl text-primary dark:text-white menu py-2" onClick={() => onClose()}>
                 <span className='flex items-center gap-2'><NotificationIcon size={18} />Notification</span> <span className='ml-12'>❯</span>
             </Link>
-            <Link href="/contact" className="flex justify-between bg-primary/10 dark:bg-white/15 hover:bg-white/25 px-5 rounded-xl text-primary dark:text-white menu py-2" onClick={() => onClose()}>
+            <Link href="/contact" className="flex justify-between bg-primary/10 dark:bg-white/15 hover:bg-black/20 dark:hover:bg-white/20 px-5 rounded-xl text-primary dark:text-white menu py-2" onClick={() => onClose()}>
                 <span className='flex items-center gap-2'><ContactIcon size={16} />Contact Us</span> <span className='ml-12'>❯</span>
             </Link>
-            <Link href="/about" className="flex justify-between bg-primary/10 dark:bg-white/15 hover:bg-white/25 px-5 rounded-xl text-primary dark:text-white menu py-2" onClick={() => onClose()}>
+            <Link href="/about" className="flex justify-between bg-primary/10 dark:bg-white/15 hover:bg-black/20 dark:hover:bg-white/20 px-5 rounded-xl text-primary dark:text-white menu py-2" onClick={() => onClose()}>
                 <span className='flex items-center gap-2'><AboutIcon size={18} />About Us</span> <span className='ml-12'>❯</span>
             </Link>
             {isLoggedIn && <div
-                className={`cursor-pointer flex justify-start gap-3 bg-primary/10 dark:bg-white/15 hover:bg-white/25 px-4 rounded-xl p-3 mt-auto mb-9 items-center text-primary dark:text-white`}
+                className={`cursor-pointer flex justify-start gap-3 bg-primary/10 dark:bg-white/15 hover:bg-black/20 dark:hover:bg-white/20 px-4 rounded-xl p-3 mt-auto mb-9 items-center text-primary dark:text-white`}
                 onClick={() => {
                     document.cookie = 'token=; Max-Age=0; path=/;';
                     localStorage.removeItem('isLoggedIn');

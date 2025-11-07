@@ -15,7 +15,7 @@ const Footer = () => {
 
     return (
         <footer ref={ref} className="bg-primary/5 dark:bg-black py-6 pt-12" role="contentinfo">
-            <div className="mx-auto px-14">
+            <div className="mx-auto px-6 md:px-14">
                 <div className="flex flex-col lg:flex-row gap-8 lg:gap-24">
                     <div className='mr-4 max-w-md'>
                         <h1 className={"text-xl font-bold mb-2 " + (isVisible ? " opacity-100 translate-y-0" : " opacity-0 translate-y-6")} style={{ transition: `all 0.5s ease 0.2s` }}><span className="text-orange-500">Lab</span><span className="text-primary">Testo</span></h1>
