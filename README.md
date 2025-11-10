@@ -38,6 +38,7 @@ It is a full stack web app where user can book any medical test from any lab. It
 5. Can see some **basic details** like **Total Number of Order** that collector recieved, **Total Number of Completed Order**s etc.
 6. Can **view** every **details** related to the **assigned Order** to the collector.
 7. Can **edit only status and paid value of the Order** which are assigned to him/her also status can be updated in a specific order **(collector can't directly change from Order status to Report Delivered status)**.
+8. Has notification panel with **on time notification receiving in telegram** feature.
 
 ### Routes
 **`/admin`**: This route contains **all the admin pages** for the app where admins can add/edit/delete tests, labs make a order for users. <br/>
