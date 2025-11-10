@@ -21,6 +21,7 @@ It is a full stack web app where user can book any medical test from any lab. It
 15. User can choose to **provide the patient details at the collection time**.
 16. User can **contact** through contact form.
 17. UI has both **light and dark theme**.
+18. Can pay using **online payment gateway**.
 
 ### Admin Features:
 1. Admin User can **add, edit & delete** any **Tests, Labs, User, Collectors & Orders**.
