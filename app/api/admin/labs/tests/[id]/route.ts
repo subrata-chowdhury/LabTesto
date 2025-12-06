@@ -31,7 +31,7 @@ export async function GET(req: Request) {
         const details: TestsDetails[] = tests.map((test: ITest) => {
             const labDetails = (test.labsDetails || {})[lab._id];
             return {
-                test: (test._id as string).toString(),
+                test: test._id.toString(),
                 name: test.name,
                 price: labDetails.price,
                 offer: labDetails.offer,

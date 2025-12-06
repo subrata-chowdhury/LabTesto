@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: 'No collectors found for the given pin' }, { status: 404 });
     }
 
-    const collectorIds = collectors.map((collector) => (collector._id as string).toString());
+    const collectorIds = collectors.map((collector) => collector._id.toString());
     const totalCollectors = collectorIds.length;
 
     // Find orders with the specified conditions

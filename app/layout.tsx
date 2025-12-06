@@ -18,6 +18,7 @@ export const metadata: Metadata = {
         "LabTesto is a trusted diagnostic platform offering secure, convenient access to NABL-certified laboratories, professional home sample collection, and reliable medical test results.",
     keywords: [
         "LabTesto",
+        "Lab Testo",
         "Diagnostic Tests India",
         "NABL Certified Labs",
         "Home Sample Collection",
