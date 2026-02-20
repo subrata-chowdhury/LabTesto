@@ -2,7 +2,9 @@
 
 declare global {
   interface Window {
-    gtag: (...args: (string | { [key: string]: string | number | undefined })[]) => void;
+    gtag: (
+      ...args: (string | { [key: string]: string | number | undefined })[]
+    ) => void;
   }
 }
 

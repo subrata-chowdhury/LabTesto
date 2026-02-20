@@ -1,13 +1,22 @@
-import React from 'react'
+import React from "react";
 
 function FacebookIcon({ size = 25 }) {
-    return (
-        <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-            width={size} height={size} viewBox="0 0 512.000000 512.000000"
-            preserveAspectRatio="xMidYMid meet">
-            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-                fill="currentColor" stroke="none">
-                <path d="M560 5100 c-41 -11 -113 -39 -160 -62 -69 -34 -103 -60 -180 -138
+  return (
+    <svg
+      version="1.0"
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 512.000000 512.000000"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <g
+        transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+        fill="currentColor"
+        stroke="none"
+      >
+        <path
+          d="M560 5100 c-41 -11 -113 -39 -160 -62 -69 -34 -103 -60 -180 -138
 -78 -77 -104 -111 -138 -180 -23 -47 -51 -121 -62 -164 -20 -78 -20 -117 -20
 -1996 0 -1879 0 -1918 20 -1996 11 -43 39 -117 62 -164 34 -69 60 -103 138
 -180 77 -78 111 -104 180 -138 170 -85 136 -82 1052 -82 l808 0 0 905 0 905
@@ -18,10 +27,11 @@ function FacebookIcon({ size = 25 }) {
 104 111 138 180 23 47 51 121 62 164 20 78 20 117 20 1996 0 1879 0 1918 -20
 1996 -11 43 -39 117 -62 164 -34 69 -60 103 -138 180 -77 78 -111 104 -180
 138 -47 23 -121 51 -164 62 -78 20 -116 20 -2000 19 -1864 0 -1923 -1 -1996
--19z"/>
-            </g>
-        </svg>
-    )
+-19z"
+        />
+      </g>
+    </svg>
+  );
 }
 
-export default FacebookIcon
+export default FacebookIcon;

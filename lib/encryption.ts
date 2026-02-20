@@ -1,5 +1,4 @@
-import crypto from 'crypto';
-
+import crypto from "crypto";
 
 const publicKey = `-----BEGIN RSA PUBLIC KEY-----
 MIIBCgKCAQEAoeIVaJahKikDUrFH0DYFu+mGHp1VX3xDRPQvvgPeYVKxxXzBVc+P
@@ -11,6 +10,8 @@ DpYWKqG5v63XPjelrdUOkU6GrnrqshyuIQIDAQAB
 -----END RSA PUBLIC KEY-----`;
 
 export function encryptData(data: string) {
-    const encryptedData = crypto.publicEncrypt(publicKey, Buffer.from(data)).toString('base64');
-    return encryptedData;
+  const encryptedData = crypto
+    .publicEncrypt(publicKey, Buffer.from(data))
+    .toString("base64");
+  return encryptedData;
 }

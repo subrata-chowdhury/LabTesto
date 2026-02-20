@@ -1,13 +1,22 @@
-import React from 'react'
+import React from "react";
 
 function LinkedinIcon({ size = 25 }) {
-    return (
-        <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-            width={size} height={size} viewBox="0 0 512.000000 512.000000"
-            preserveAspectRatio="xMidYMid meet">
-            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-                fill="currentColor" stroke="none">
-                <path d="M512 5100 c-236 -62 -432 -259 -492 -496 -20 -76 -20 -119 -20 -2043
+  return (
+    <svg
+      version="1.0"
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 512.000000 512.000000"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <g
+        transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+        fill="currentColor"
+        stroke="none"
+      >
+        <path
+          d="M512 5100 c-236 -62 -432 -259 -492 -496 -20 -76 -20 -119 -20 -2043
 0 -2187 -5 -2022 70 -2176 66 -137 178 -249 315 -315 154 -75 -11 -70 2175
 -70 2186 0 2021 -5 2175 70 179 87 316 254 365 446 20 76 20 119 20 2044 0
 1925 0 1968 -20 2044 -61 239 -257 435 -496 496 -76 20 -118 20 -2048 19
@@ -21,10 +30,11 @@ function LinkedinIcon({ size = 25 }) {
 l1 -105 31 40 c84 106 198 189 312 225 115 37 324 50 456 30z m-1813 -53 l28
 -27 3 -998 c2 -975 2 -998 -17 -1029 -30 -49 -69 -55 -335 -51 -205 3 -235 5
 -260 21 -58 38 -56 1 -56 1044 0 642 4 971 11 996 7 25 21 45 42 58 30 18 48
-19 294 17 l263 -3 27 -28z"/>
-            </g>
-        </svg>
-    )
+19 294 17 l263 -3 27 -28z"
+        />
+      </g>
+    </svg>
+  );
 }
 
-export default LinkedinIcon
+export default LinkedinIcon;

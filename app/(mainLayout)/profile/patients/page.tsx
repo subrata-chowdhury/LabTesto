@@ -1,93 +1,111 @@
-'use client'
-import React, { useEffect, useState } from 'react'
-import { User } from '../page';
-import fetcher from '@/lib/fetcher';
-import { toast } from 'react-toastify';
-import PatientDetailsPopup from '@/app/components/popups/PatientDetailsPopup';
+"use client";
+import React, { useEffect, useState } from "react";
+import { User } from "../page";
+import fetcher from "@/lib/fetcher";
+import { toast } from "react-toastify";
+import PatientDetailsPopup from "@/app/components/popups/PatientDetailsPopup";
 
 const PatientsPage = () => {
-    const [user, setUser] = useState<User>({
-        name: '',
-        email: '',
-        password: '',
-        verified: false,
-        patientDetails: [],
-        address: [],
-        createdAt: new Date(),
-        updatedAt: new Date()
-    })
-    const [isDirty, setIsDirty] = useState(false);
-    const [showPatientPopup, setShowPatientPopup] = useState<{ patientIndex: number } | null>(null);
+  const [user, setUser] = useState<User>({
+    name: "",
+    email: "",
+    password: "",
+    verified: false,
+    patientDetails: [],
+    address: [],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  });
+  const [isDirty, setIsDirty] = useState(false);
+  const [showPatientPopup, setShowPatientPopup] = useState<{
+    patientIndex: number;
+  } | null>(null);
 
-    useEffect(() => {
-        fetchUser();
-    }, [])
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
-    async function fetchUser() {
-        const res = await fetcher.get<User>('/user');
-        if (res.status === 200 && res.body)
-            setUser(res.body)
+  async function fetchUser() {
+    const res = await fetcher.get<User>("/user");
+    if (res.status === 200 && res.body) setUser(res.body);
+  }
+
+  async function updateUser() {
+    const res = await fetcher.post<User, User>("/user", user);
+    if (res.status === 200 && res.body) {
+      setUser(res.body);
+      setIsDirty(false);
+      toast.success("User updated successfully");
     }
+  }
 
-    async function updateUser() {
-        const res = await fetcher.post<User, User>('/user', user);
-        if (res.status === 200 && res.body) {
-            setUser(res.body)
-            setIsDirty(false)
-            toast.success('User updated successfully')
-        }
-    }
+  return (
+    <>
+      <section className="w-full">
+        <div className="font-semibold text-lg mb-2">Patient Details</div>
+        <div
+          className="border-2 border-primary dark:bg-white/20 dark:border-transparent dark:text-white text-primary text-sm sm:text-base font-semibold w-fit bg-opacity-75 px-3.5 py-1.5 rounded-sm cursor-pointer"
+          onClick={() =>
+            setShowPatientPopup({
+              patientIndex: user.patientDetails?.length || 0,
+            })
+          }
+        >
+          Add +
+        </div>
+        <div className="flex flex-wrap gap-2 mt-2 text-sm text-white">
+          {user?.patientDetails?.map((patientDetail, i) => (
+            <div
+              key={i}
+              className="border-2 border-gray-300/70 bg-white dark:border-white/20 dark:bg-white/20 px-4 py-3.5 rounded-md cursor-pointer"
+              onClick={() => setShowPatientPopup({ patientIndex: i })}
+            >
+              <div className="font-semibold mb-1 text-black dark:text-white">
+                {patientDetail.name}
+              </div>
+              <div className="text-gray-800 dark:text-white/60">
+                {patientDetail.age} - {patientDetail.gender}
+              </div>
+            </div>
+          ))}
+        </div>
+        {isDirty && (
+          <div className="pt-8 pb-10 flex">
+            <button
+              className="bg-primary dark:bg-white/15 text-white py-2 px-4 rounded ms-auto"
+              onClick={async () => await updateUser()}
+            >
+              Save
+            </button>
+          </div>
+        )}
+      </section>
 
-    return (
-        <>
-            <section className='w-full'>
-                <div className='font-semibold text-lg mb-2'>Patient Details</div>
-                <div
-                    className='border-2 border-primary dark:bg-white/20 dark:border-transparent dark:text-white text-primary text-sm sm:text-base font-semibold w-fit bg-opacity-75 px-3.5 py-1.5 rounded-sm cursor-pointer'
-                    onClick={() =>
-                        setShowPatientPopup({ patientIndex: user.patientDetails?.length || 0 })}>
-                    Add +
-                </div>
-                <div className='flex flex-wrap gap-2 mt-2 text-sm text-white'>
-                    {user?.patientDetails?.map((patientDetail, i) => (
-                        <div
-                            key={i}
-                            className='border-2 border-gray-300/70 bg-white dark:border-white/20 dark:bg-white/20 px-4 py-3.5 rounded-md cursor-pointer'
-                            onClick={() =>
-                                setShowPatientPopup({ patientIndex: i })}>
-                            <div className='font-semibold mb-1 text-black dark:text-white'>{patientDetail.name}</div>
-                            <div className='text-gray-800 dark:text-white/60'>{patientDetail.age} - {patientDetail.gender}</div>
-                        </div>
-                    ))}
-                </div>
-                {isDirty && <div className='pt-8 pb-10 flex'>
-                    <button className='bg-primary dark:bg-white/15 text-white py-2 px-4 rounded ms-auto' onClick={async () => await updateUser()}>Save</button>
-                </div>}
-            </section>
+      {showPatientPopup?.patientIndex != null && (
+        <PatientDetailsPopup
+          patientDetails={user.patientDetails?.[showPatientPopup.patientIndex]}
+          onClose={() => setShowPatientPopup(null)}
+          onSave={async (values) => {
+            const updatedPatientDetails = [...(user.patientDetails || [])];
+            updatedPatientDetails[showPatientPopup.patientIndex] = values;
+            // console.log(updatedPatientDetails)
+            setUser({ ...user, patientDetails: updatedPatientDetails });
+            setIsDirty(true);
+            // await updateUser();
+            setShowPatientPopup(null);
+          }}
+          onRemove={() => {
+            const updatedPatientDetails = [...(user.patientDetails || [])];
+            updatedPatientDetails.splice(showPatientPopup.patientIndex, 1);
+            setUser({ ...user, patientDetails: updatedPatientDetails });
+            setIsDirty(true);
+            // await updateUser();
+            setShowPatientPopup(null);
+          }}
+        />
+      )}
+    </>
+  );
+};
 
-            {showPatientPopup?.patientIndex != null &&
-                <PatientDetailsPopup
-                    patientDetails={user.patientDetails?.[showPatientPopup.patientIndex]}
-                    onClose={() => setShowPatientPopup(null)}
-                    onSave={async values => {
-                        const updatedPatientDetails = [...(user.patientDetails || [])];
-                        updatedPatientDetails[showPatientPopup.patientIndex] = values;
-                        // console.log(updatedPatientDetails)
-                        setUser({ ...user, patientDetails: updatedPatientDetails });
-                        setIsDirty(true);
-                        // await updateUser();
-                        setShowPatientPopup(null);
-                    }}
-                    onRemove={() => {
-                        const updatedPatientDetails = [...(user.patientDetails || [])];
-                        updatedPatientDetails.splice(showPatientPopup.patientIndex, 1);
-                        setUser({ ...user, patientDetails: updatedPatientDetails });
-                        setIsDirty(true);
-                        // await updateUser();
-                        setShowPatientPopup(null);
-                    }} />}
-        </>
-    )
-}
-
-export default PatientsPage
+export default PatientsPage;

@@ -1,13 +1,22 @@
-import React from 'react'
+import React from "react";
 
 function InstagramIcon({ size = 25 }) {
-    return (
-        <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-            width={size} height={size} viewBox="0 0 294.000000 293.000000"
-            preserveAspectRatio="xMidYMid meet">
-            <g transform="translate(0.000000,293.000000) scale(0.100000,-0.100000)"
-                fill={'currentColor'} stroke="none">
-                <path d="M770 2889 c-124 -7 -261 -35 -316 -64 -16 -8 -34 -15 -40 -15 -15 0
+  return (
+    <svg
+      version="1.0"
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 294.000000 293.000000"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <g
+        transform="translate(0.000000,293.000000) scale(0.100000,-0.100000)"
+        fill={"currentColor"}
+        stroke="none"
+      >
+        <path
+          d="M770 2889 c-124 -7 -261 -35 -316 -64 -16 -8 -34 -15 -40 -15 -15 0
 -119 -74 -158 -113 -69 -68 -130 -186 -160 -307 -26 -108 -36 -358 -36 -915 0
 -598 10 -821 40 -940 31 -125 82 -218 161 -296 120 -118 263 -171 509 -189
 175 -13 1265 -13 1440 0 246 18 393 72 510 190 117 116 171 262 190 504 13
@@ -17,13 +26,16 @@ function InstagramIcon({ size = 25 }) {
 72 50 -2 71 -9 105 -32z m-942 -216 c190 -23 361 -104 501 -237 232 -220 333
 -532 269 -833 -11 -52 -25 -107 -32 -124 -15 -41 -70 -158 -80 -170 -164 -218
 -286 -313 -491 -380 -379 -123 -804 28 -1027 367 -99 150 -144 304 -143 493 1
-243 83 446 251 618 204 207 470 302 752 266z"/>
-                <path d="M1340 2030 c-234 -67 -393 -252 -422 -492 -16 -125 -1 -217 53 -327
+243 83 446 251 618 204 207 470 302 752 266z"
+        />
+        <path
+          d="M1340 2030 c-234 -67 -393 -252 -422 -492 -16 -125 -1 -217 53 -327
 97 -197 297 -321 519 -321 97 0 162 16 259 62 195 93 321 296 321 518 0 97
--16 162 -62 259 -116 244 -408 375 -668 301z"/>
-            </g>
-        </svg>
-    )
+-16 162 -62 259 -116 244 -408 375 -668 301z"
+        />
+      </g>
+    </svg>
+  );
 }
 
-export default InstagramIcon
+export default InstagramIcon;

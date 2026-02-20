@@ -1,29 +1,33 @@
 # LabTesto
+
 It is a full stack web app where user can book any medical test from any lab. It also comes with a powerful admin panel.
 
 ## Features:
+
 ### Main Features:
+
 1. User can **search any Tests** without logging in.
 2. User can **view test and lab details** wihout loggin in.
 3. Has **login, sign up** feature.
 4. **Passwords** that are send via API are **end to end encrypted** with server / backend.
-7. User can **reset there password**.
-4. User can **order** any tests.
-5. User can **select any lab** for the test.
-6. User can **store multiple patient and address** details.
-8. User can view **previously ordered** tests.
-9. User can **see** assign **collector details** for specific orders.
-10. User **can cancel the order** before Sample Collection.
-11. User can **view / change** his **profile details**.
-12. User data are **secure** and **no one can access** another user's data by other users.
-13. User can leave a **review** after all the order's procedure is completed.
-14. User can **put** there **tests in cart**.
-15. User can choose to **provide the patient details at the collection time**.
-16. User can **contact** through contact form.
-17. UI has both **light and dark theme**.
-18. Can pay using **online payment gateway**.
+5. User can **reset there password**.
+6. User can **order** any tests.
+7. User can **select any lab** for the test.
+8. User can **store multiple patient and address** details.
+9. User can view **previously ordered** tests.
+10. User can **see** assign **collector details** for specific orders.
+11. User **can cancel the order** before Sample Collection.
+12. User can **view / change** his **profile details**.
+13. User data are **secure** and **no one can access** another user's data by other users.
+14. User can leave a **review** after all the order's procedure is completed.
+15. User can **put** there **tests in cart**.
+16. User can choose to **provide the patient details at the collection time**.
+17. User can **contact** through contact form.
+18. UI has both **light and dark theme**.
+19. Can pay using **online payment gateway**.
 
 ### Admin Features:
+
 1. Admin User can **add, edit & delete** any **Tests, Labs, User, Collectors & Orders**.
 2. Admin User can see **statisctics related Tests, Labs, Orders Also Financial Details** like total income vs total expenses per month.
 3. Admin User can **monitor collectors**.
@@ -32,6 +36,7 @@ It is a full stack web app where user can book any medical test from any lab. It
 6. **Has a rich text editor** with many features like table, alignment, bold, italic, underline, fontsize, links and many more.
 
 ### Collector Account Features:
+
 1. Can see **notifications group by Status** like Orders that need to be **sample collected today / report delivery / sample delivery to lab** etc.
 2. Can see there **previously assigned orders**.
 3. Can add or change **reachable zones** (if order's location does not match with that collector then he/she will not be assign with that order).
@@ -42,6 +47,7 @@ It is a full stack web app where user can book any medical test from any lab. It
 8. Has notification panel with **on time notification receiving in telegram** feature.
 
 ### Routes
+
 **`/admin`**: This route contains **all the admin pages** for the app where admins can add/edit/delete tests, labs make a order for users. <br/>
 This has top level permissions.
 
@@ -50,6 +56,7 @@ This has top level permissions.
 **`/`**: Routes except `/admin` and `/collector` are for Users where user can search view Tests and order them.
 
 ### Environment Variables
+
 **`MONGODB_URI`**=mongodb+srv://USERNAME:PASSWORD@cluster0.men5q.mongodb.net/DATABASE?retryWrites=true&w=majority<br/>
 **`JWT_SECRET`**=YOUR_JWT_SECRET<br/>
 **`ADMIN_JWT_SECRET`**=YOUR_JWT_SECRET_ADMIN<br/>
