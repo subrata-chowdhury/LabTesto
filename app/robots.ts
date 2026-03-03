@@ -9,12 +9,30 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin", "/collector"],
+        disallow: [
+          // 1. Core API & System Routes
+          "/api",
+
+          // 2. Dashboard & Administrative Routes
+          "/admin",
+          "/collector",
+
+          // 3. Private User/Transactional Routes
+          "/cart",
+          "/order",
+          "/profile",
+          "/notifications",
+
+          // 4. Auth Routes (Optional but recommended for SEO)
+          // Prevents search engines from cluttering results with login/signup pages
+          // "/login",
+          // "/signup",
+        ],
       },
-      //   {
-      //     userAgent: "GPTBot", // blocking AI crawlers - uncomment if needed
-      //     disallow: "/",
-      //   },
+      // {
+      //   userAgent: ["GPTBot", "CCBot", "Google-Extended", "Anthropic-ai", "ClaudeBot"],
+      //   disallow: "/",
+      // },
     ],
     sitemap: `${BASE_URL}/sitemap.xml`,
     host: BASE_URL,
