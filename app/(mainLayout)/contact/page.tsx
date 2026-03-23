@@ -18,7 +18,6 @@ function ContactPage() {
   return (
     <>
       <div className="flex flex-col relative items-center pb-12 mb-6 bg-primary/80">
-        {/* <Image src={'/wave.svg'} width={960} height={540} alt="" className='w-full opacity-75 blur-sm object-cover h-screen absolute -z-10 top-0 rotate-180 bg-transparent' /> */}
         <div className="text-4xl md:text-6xl text-white text-center font-bold mt-18">
           We'd Love to Hear From You
         </div>
@@ -37,16 +36,16 @@ function ContactPage() {
           />
         </svg>
       </div>
+
       <ContactDetails />
+
       <div className="sm:w-fit mx-auto flex flex-col lg:flex-row gap-4 mb-8">
         <MainForm />
         <div className="flex flex-col">
-          <h2
-            className={"text-2xl font-bold text-primary dark:text-white mb-4"}
-          >
+          <h2 className="text-2xl font-bold text-primary dark:text-white mb-4">
             Find Us
           </h2>
-          <div className={"bg-gray-200 rounded-lg overflow-hidden mb-6"}>
+          <div className="bg-gray-200 rounded-lg overflow-hidden mb-6">
             <iframe
               src="https://www.google.com/maps?q=23.432055556,87.274694444&z=15&output=embed"
               width="400"
@@ -59,6 +58,24 @@ function ContactPage() {
           </div>
         </div>
       </div>
+
+      {/* Support and Bug Reporting Section */}
+      <footer className="w-full py-8 bg-gray-50 dark:bg-zinc-900/50 border-t border-gray-200 dark:border-zinc-800">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base">
+            Encountering a technical glitch or a platform issue?
+          </p>
+          <p className="mt-2 font-medium text-primary dark:text-blue-400">
+            Report bugs to:{" "}
+            <a
+              href="mailto:subratachowdhury7000@gmail.com"
+              className="hover:underline transition-all underline-offset-4"
+            >
+              subratachowdhury7000@gmail.com
+            </a>
+          </p>
+        </div>
+      </footer>
     </>
   );
 }
