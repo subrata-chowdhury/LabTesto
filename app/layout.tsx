@@ -263,7 +263,7 @@ export default function RootLayout({
           pauseOnFocusLoss
           draggable
           pauseOnHover
-          theme="light"
+          theme="colored"
           transition={Bounce}
         />
         <Suspense fallback={<div>Loading...</div>}>

@@ -3,12 +3,38 @@ import React from "react";
 
 const Loading = () => {
   return (
-    <div className="flex-1 flex justify-center bg-gray-50 dark:bg-black min-h-screen pb-32">
-      <div className="w-full max-w-4xl px-4 py-8 flex flex-col">
-        <div className="w-48 h-10 bg-gray-200 dark:bg-white/10 rounded-xl animate-pulse mb-6"></div>
-        <AddressLoader />
-        <div className="w-full h-14 bg-white dark:bg-white/5 rounded-2xl animate-pulse mb-6"></div>
-        <CartLoader />
+    <div className="flex-1 flex justify-center bg-gray-50 dark:bg-black min-h-screen pb-32 lg:pb-12">
+      <div className="w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col lg:flex-row gap-8 lg:gap-10">
+        {/* Left Side Skeletons */}
+        <div className="flex-1 flex flex-col min-w-0">
+          <div className="w-48 h-10 bg-gray-200 dark:bg-white/10 rounded-xl animate-pulse mb-6"></div>
+          <AddressLoader />
+          <div className="w-full h-14 bg-white dark:bg-white/5 rounded-2xl animate-pulse mb-6 shadow-sm border border-gray-200 dark:border-white/10"></div>
+          <CartLoader />
+        </div>
+
+        {/* Right Side Summary Skeleton (PC Only) */}
+        <div className="hidden lg:block w-full lg:w-[360px] xl:w-[400px] shrink-0">
+          <div className="sticky top-24 bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
+            <div className="w-1/2 h-6 bg-gray-200 dark:bg-white/10 rounded-md animate-pulse mb-6"></div>
+            <div className="space-y-4 mb-6">
+              <div className="flex justify-between">
+                <div className="w-24 h-4 bg-gray-200 dark:bg-white/10 rounded animate-pulse"></div>
+                <div className="w-16 h-4 bg-gray-200 dark:bg-white/10 rounded animate-pulse"></div>
+              </div>
+              <div className="flex justify-between">
+                <div className="w-32 h-4 bg-gray-200 dark:bg-white/10 rounded animate-pulse"></div>
+                <div className="w-12 h-4 bg-gray-200 dark:bg-white/10 rounded animate-pulse"></div>
+              </div>
+            </div>
+            <div className="w-full h-0.5 bg-gray-100 dark:bg-white/5 mb-6"></div>
+            <div className="flex justify-between mb-8">
+              <div className="w-28 h-6 bg-gray-200 dark:bg-white/10 rounded animate-pulse"></div>
+              <div className="w-20 h-6 bg-gray-200 dark:bg-white/10 rounded animate-pulse"></div>
+            </div>
+            <div className="w-full h-14 bg-gray-200 dark:bg-white/10 rounded-xl animate-pulse"></div>
+          </div>
+        </div>
       </div>
     </div>
   );

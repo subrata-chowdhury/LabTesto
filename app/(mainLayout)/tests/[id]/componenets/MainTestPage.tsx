@@ -15,16 +15,14 @@ import DescriptionIcon from "@/assets/reactIcon/test/Description";
 import PackageIcon from "@/assets/reactIcon/test/Package";
 import LabIcon from "@/assets/reactIcon/test/Lab";
 import { CrossIcon } from "@/assets/reactIcon/Cross";
-import { CartPage } from "../../../cart/component/CartPage";
 import { useItemCountContext } from "@/app/contexts/ItemCountContext";
 import CheckBox from "@/components/Inputs/CheckBox";
 import { MainTable } from "@/components/Table";
+import { CartPage } from "../../../cart/component/CartPage";
 
-import informationIcon from "@/assets/information.svg";
-import star from "@/assets/star.svg";
-import filledStar from "@/assets/star-fill.svg";
-import cross from "@/assets/cross.svg";
-import locationIcon from "@/assets/location.svg";
+// Replaced local SVGs with react-icons for better scaling and dark mode support
+import { FiInfo, FiX, FiMapPin } from "react-icons/fi";
+import { FaStar, FaRegStar } from "react-icons/fa";
 
 export type TestDetails = {
   name: string;
@@ -85,6 +83,20 @@ type Props = {
   test: TestDetails;
 };
 
+// Helper function to check if HTML string contains actual text/media, not just empty tags like <p></p>
+const hasValidContent = (html?: string) => {
+  if (!html) return false;
+  // Remove HTML tags and &nbsp;, then trim to check if any text remains
+  const stripped = html
+    .replace(/<[^>]*>?/gm, "")
+    .replace(/&nbsp;/g, "")
+    .trim();
+  if (stripped.length > 0) return true;
+  // Allow sections that might only contain an image, video, or iframe
+  if (/<(img|iframe|video|audio)[^>]+>/i.test(html)) return true;
+  return false;
+};
+
 export default function MainTestPage({ test }: Props) {
   const labs = Object.values(test.labsDetails || {});
   const [labBaseDetails, setLabBaseDetails] = useState<{
@@ -134,7 +146,6 @@ export default function MainTestPage({ test }: Props) {
     }
   };
 
-  // Fixed payload: The price is simply the 'offer' (which is the final selling price)
   const createCartItem = () => ({
     product: {
       test: id,
@@ -186,7 +197,6 @@ export default function MainTestPage({ test }: Props) {
     }
   };
 
-  // Fixed Dynamic Price Calculations
   const finalPrice = Number(labBaseDetails.offer || 0).toFixed(2);
   const originalPrice = Number(labBaseDetails.price || 0).toFixed(2);
   const discountPercentage =
@@ -255,20 +265,15 @@ export default function MainTestPage({ test }: Props) {
                         Selected Lab
                       </p>
                       <div className="flex items-center gap-2 mt-1">
-                        <p className="text-sm text-gray-600 dark:text-gray-400 truncate max-w-37.5">
+                        <p className="text-sm text-gray-600 dark:text-gray-400 truncate max-w-[150px]">
                           {lab.name}
                         </p>
                         <button
                           onClick={() => setShowLabDetails(true)}
-                          className="text-primary hover:bg-primary/10 dark:hover:bg-white/10 p-1 rounded-full transition-colors"
+                          className="text-gray-400 hover:text-primary dark:hover:text-white transition-colors"
                           aria-label="View Lab Details"
                         >
-                          <Image
-                            src={informationIcon}
-                            alt="Info"
-                            width={16}
-                            height={16}
-                          />
+                          <FiInfo size={16} />
                         </button>
                       </div>
                     </div>
@@ -278,7 +283,7 @@ export default function MainTestPage({ test }: Props) {
             </div>
 
             {/* Desktop Action Area */}
-            <div className="hidden md:flex flex-col items-end min-w-50 border-l border-gray-100 dark:border-white/10 pl-8">
+            <div className="hidden md:flex flex-col items-end min-w-[200px] border-l border-gray-100 dark:border-white/10 pl-8">
               {labs.length > 0 ? (
                 <>
                   <div className="flex flex-col items-end mb-6">
@@ -356,20 +361,19 @@ export default function MainTestPage({ test }: Props) {
                     key={labObj.lab}
                     whileHover={{ y: -2 }}
                     onClick={() => onLabSelect(labObj)}
-                    className={`relative cursor-pointer rounded-2xl border p-4 transition-all duration-300 flex items-center gap-4 ${
+                    className={`relative cursor-pointer rounded-2xl border p-4 transition-all duration-300 flex items-center gap-3 ${
                       isSelected
                         ? "border-primary bg-primary/5 dark:bg-primary/10 shadow-md shadow-primary/10"
                         : "border-gray-200 dark:border-white/10 bg-white dark:bg-[#111] hover:border-gray-300 dark:hover:border-white/20 shadow-sm"
                     }`}
                   >
-                    <div className="w-16 h-16 shrink-0 bg-white dark:bg-[#1a1a1a] rounded-xl border border-gray-100 dark:border-white/5 flex items-center justify-center p-2 shadow-inner">
+                    <div className="w-16 h-16 shrink-0 bg-white dark:bg-[#1a1a1a] rounded-xl border border-gray-100 dark:border-white/5 flex items-center justify-center p-2 shadow-inner relative overflow-hidden">
                       {labObj.image ? (
                         <Image
                           src={labObj.image}
-                          width={48}
-                          height={48}
+                          fill
                           alt={labObj.name}
-                          className="object-contain"
+                          className="object-contain p-1"
                         />
                       ) : (
                         <LabIcon />
@@ -487,15 +491,9 @@ export default function MainTestPage({ test }: Props) {
             <div className="flex justify-end p-4">
               <button
                 onClick={() => setShowOrderPopup(false)}
-                className="p-2 bg-white dark:bg-white/10 rounded-full shadow-sm"
+                className="p-2 bg-white dark:bg-white/10 text-gray-600 dark:text-gray-300 rounded-full shadow-sm hover:bg-gray-100 dark:hover:bg-white/20 transition-colors"
               >
-                <Image
-                  src={cross}
-                  alt="Close"
-                  width={20}
-                  height={20}
-                  className="dark:invert"
-                />
+                <FiX size={20} />
               </button>
             </div>
             <div className="flex-1 overflow-y-auto">
@@ -574,25 +572,27 @@ const DetailsSection = memo(
           </ExpandableSection>
         )}
 
-        {testDetails.overview && (
+        {hasValidContent(testDetails.overview) && (
           <ExpandableSection icon={<DescriptionIcon />} title="Overview">
             <div
               className="tiptap text-gray-600 dark:text-gray-400"
-              dangerouslySetInnerHTML={{ __html: testDetails.overview }}
+              dangerouslySetInnerHTML={{ __html: testDetails.overview || "" }}
             />
           </ExpandableSection>
         )}
 
-        {testDetails.description && (
+        {hasValidContent(testDetails.description) && (
           <ExpandableSection icon={<DescriptionIcon />} title="Description">
             <div
               className="tiptap text-gray-600 dark:text-gray-400"
-              dangerouslySetInnerHTML={{ __html: testDetails.description }}
+              dangerouslySetInnerHTML={{
+                __html: testDetails.description || "",
+              }}
             />
           </ExpandableSection>
         )}
 
-        {testDetails.testResultInterpretation && (
+        {hasValidContent(testDetails.testResultInterpretation) && (
           <ExpandableSection
             icon={<DescriptionIcon />}
             title="Test Result Interpretation"
@@ -600,17 +600,19 @@ const DetailsSection = memo(
             <div
               className="tiptap text-gray-600 dark:text-gray-400"
               dangerouslySetInnerHTML={{
-                __html: testDetails.testResultInterpretation,
+                __html: testDetails.testResultInterpretation || "",
               }}
             />
           </ExpandableSection>
         )}
 
-        {testDetails.riskAssesment && (
+        {hasValidContent(testDetails.riskAssesment) && (
           <ExpandableSection icon={<DescriptionIcon />} title="Risk Assessment">
             <div
               className="tiptap text-gray-600 dark:text-gray-400"
-              dangerouslySetInnerHTML={{ __html: testDetails.riskAssesment }}
+              dangerouslySetInnerHTML={{
+                __html: testDetails.riskAssesment || "",
+              }}
             />
           </ExpandableSection>
         )}
@@ -730,7 +732,7 @@ const LabDetailsSidePopup = memo(
             <CrossIcon />
           </button>
 
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto custom-scrollbar">
             <div className="relative h-64 w-full bg-primary/10 dark:bg-white/5">
               {lab?.image && (
                 <Image
@@ -751,13 +753,7 @@ const LabDetailsSidePopup = memo(
                   <div className="h-4 w-1/2 bg-white/20 rounded animate-pulse" />
                 ) : (
                   <div className="flex items-center gap-2 text-sm font-medium text-gray-200">
-                    <Image
-                      src={locationIcon}
-                      alt="Location"
-                      width={16}
-                      height={16}
-                      className="invert"
-                    />
+                    <FiMapPin size={16} />
                     {lab?.location?.address?.city},{" "}
                     {lab?.location?.address?.district}
                   </div>
@@ -765,13 +761,13 @@ const LabDetailsSidePopup = memo(
                 {!loading && lab && (
                   <div className="flex gap-1 mt-3">
                     {Array.from({ length: 5 }).map((_, i) => (
-                      <Image
-                        key={i}
-                        src={i < Math.floor(lab.rating) ? filledStar : star}
-                        alt="Star"
-                        width={16}
-                        height={16}
-                      />
+                      <span key={i} className="text-yellow-400">
+                        {i < Math.floor(lab.rating) ? (
+                          <FaStar size={16} />
+                        ) : (
+                          <FaRegStar size={16} />
+                        )}
+                      </span>
                     ))}
                   </div>
                 )}
@@ -792,10 +788,9 @@ const LabDetailsSidePopup = memo(
                 <div
                   className="prose dark:prose-invert prose-sm max-w-none text-gray-600 dark:text-gray-400"
                   dangerouslySetInnerHTML={{
-                    __html: (lab?.description || "").replace(
-                      /<\/?p>/g,
-                      "<br/>",
-                    ),
+                    __html: hasValidContent(lab?.description)
+                      ? (lab?.description || "").replace(/<\/?p>/g, "<br/>")
+                      : "No description provided.",
                   }}
                 />
               )}
