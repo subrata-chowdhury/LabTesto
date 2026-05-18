@@ -1,9 +1,21 @@
+// app/(mainLayout)/tests/page.tsx
 "use client";
+
 import fetcher from "@/lib/fetcher";
 import Link from "next/link";
 import React, { useCallback, useEffect, useState } from "react";
-import Loading from "./loading";
+import { motion, Variants } from "framer-motion";
 import debounce from "@/lib/debouncer";
+
+type SampleTypeOption =
+  | "All"
+  | "Blood"
+  | "Urine"
+  | "Semen"
+  | "Stool"
+  | "Sputum"
+  | "Other"
+  | "Other Body Fluid";
 
 type Test = {
   _id: string;
@@ -18,184 +30,313 @@ type Test = {
   riskAssesment: string;
 };
 
-const Tests = () => {
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.05 },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+};
+
+export default function Tests() {
   const [tests, setTests] = useState<Test[]>([]);
-  // const [testSearch, setTestSearch] = useState<string>('');
-  const [filter, setFilter] = useState({
+  const [filter, setFilter] = useState<{
+    name: string;
+    sampleType: SampleTypeOption;
+  }>({
     name: "",
     sampleType: "All",
   });
-  const [limit, setLimit] = useState(6);
-  const [loading, setLoading] = useState(false);
+  const [limit, setLimit] = useState(8);
+  const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
 
-  const onSeach = useCallback(
+  const onSearch = useCallback(
     debounce(async function (
-      filter: {
-        name: string;
-        sampleType?:
-          | "All"
-          | "Blood"
-          | "Urine"
-          | "Semen"
-          | "Stool"
-          | "Sputum"
-          | "Other"
-          | "Other Body Fluid";
-      },
-      limit: number,
+      searchFilter: { name: string; sampleType?: SampleTypeOption },
+      searchLimit: number,
+      isLoadMore: boolean = false,
     ) {
-      setLoading(true);
-      if (filter?.sampleType === "All") {
-        delete filter.sampleType;
+      if (isLoadMore) {
+        setLoadingMore(true);
+      } else {
+        setLoading(true);
       }
-      if (filter?.sampleType === "Other") {
-        filter.sampleType = "Other Body Fluid";
+
+      const apiFilter = { ...searchFilter };
+      if (apiFilter.sampleType === "All") {
+        delete apiFilter.sampleType;
       }
-      const res = await fetcher.get<{
-        tests: Test[];
-        pagination: {
-          totalTests: number;
-          currentPage: number;
-          pageSize: number;
-          totalPages: number;
-        };
-      }>(`/tests?filter=${JSON.stringify(filter)}&limit=${limit || 6}&page=1`);
-      if (res.status === 200 && res.body) {
-        setTests(res.body.tests);
-        setTotalPages(res.body.pagination.totalPages);
+      if (apiFilter.sampleType === "Other") {
+        apiFilter.sampleType = "Other Body Fluid";
       }
-      setLoading(false);
+
+      try {
+        const res = await fetcher.get<{
+          tests: Test[];
+          pagination: {
+            totalTests: number;
+            currentPage: number;
+            pageSize: number;
+            totalPages: number;
+          };
+        }>(
+          `/tests?filter=${JSON.stringify(apiFilter)}&limit=${searchLimit || 8}&page=1`,
+        );
+
+        if (res.status === 200 && res.body) {
+          setTests(res.body.tests);
+          setTotalPages(res.body.pagination.totalPages);
+        }
+      } catch (error) {
+        console.error("Failed to fetch tests:", error);
+      } finally {
+        setLoading(false);
+        setLoadingMore(false);
+      }
     }, 300),
     [],
   );
 
   useEffect(() => {
-    onSeach({ name: "" }, 6);
-  }, []);
+    onSearch({ name: "", sampleType: "All" }, 8, false);
+  }, [onSearch]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = e.target.value;
+    setFilter({ ...filter, name: newName });
+    onSearch({ name: newName, sampleType: filter.sampleType }, limit, false);
+  };
+
+  const handleFilterClick = (sampleType: SampleTypeOption) => {
+    setFilter({ ...filter, sampleType });
+    onSearch({ name: filter.name, sampleType }, limit, false);
+  };
+
+  const handleLoadMore = () => {
+    const newLimit = limit + 8;
+    setLimit(newLimit);
+    onSearch(filter, newLimit, true);
+  };
+
+  const filterOptions: SampleTypeOption[] = [
+    "All",
+    "Blood",
+    "Urine",
+    "Semen",
+    "Stool",
+    "Sputum",
+    "Other",
+  ];
 
   return (
-    <main id="main" className="p-5 pb-12 container max-w-7xl mx-auto w-full">
-      <h1 className="text-xl text-center sm:text-2xl md:text-3xl tracking-wide sm:text-left font-bold text-primary dark:text-white">
-        All Available Tests
-      </h1>
-      <div className="flex flex-col sm:flex-row gap-4 mt-4">
-        <div
-          className={
-            "px-4 py-2 flex gap-3 justify-between border-primary/20 border dark:border-white/30 bg-gray-500/5 rounded-full"
-          }
-        >
-          <input
-            className="flex-1 text-sm outline-none bg-transparent"
-            type="text"
-            value={filter.name}
-            placeholder="Search for tests"
-            onChange={async (e) => {
-              setFilter({ ...filter, name: e.target.value });
-              onSeach({ name: e.target.value }, limit);
-            }}
-          />
-          <button type="submit" className={"relative right-0 top-0"}>
-            <svg
-              className="h-4 w-4 fill-primary dark:fill-white"
-              xmlns="http://www.w3.org/2000/svg"
-              version="1.1"
-              id="Capa_1"
-              x="0px"
-              y="0px"
-              viewBox="0 0 56.966 56.966"
-              xmlSpace="preserve"
-              width="512px"
-              height="512px"
-            >
-              <path
-                d="M55.146,51.887L41.588,38.329c3.486-4.191,5.377-9.479,5.377-14.979C46.965,10.478,36.486,0,23.482,0
-                                C10.479,0,0,10.478,0,23.482c0,13.004,10.479,23.482,23.482,23.482c5.5,0,10.788-1.891,14.979-5.377l13.558,13.558
-                                c1.219,1.219,3.195,1.219,4.414,0C56.365,55.082,56.365,53.106,55.146,51.887z M23.482,41.965
-                                c-10.214,0-18.482-8.268-18.482-18.482S13.268,5,23.482,5s18.482,8.268,18.482,18.482S33.696,41.965,23.482,41.965z"
-              />
-            </svg>
-          </button>
+    <main
+      id="main"
+      className="px-4 py-12 md:py-16 min-h-screen bg-gray-50/50 dark:bg-black"
+    >
+      <div className="max-w-7xl mx-auto w-full">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3">
+              Explore Lab Tests
+            </h1>
+            <p className="text-gray-500 dark:text-gray-400 max-w-xl">
+              Browse our comprehensive directory of diagnostic tests. Filter by
+              sample type or search for specific requirements to find exactly
+              what you need.
+            </p>
+          </div>
+
+          {/* Search Bar */}
+          <div className="relative w-full md:max-w-xs lg:max-w-sm shrink-0">
+            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                ></path>
+              </svg>
+            </div>
+            <input
+              type="text"
+              value={filter.name}
+              placeholder="Search tests..."
+              onChange={handleSearchChange}
+              className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#111] text-gray-900 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all shadow-sm shadow-black/5"
+            />
+          </div>
         </div>
-      </div>
-      <div className="flex flex-wrap justify-center sm:justify-normal gap-3 mt-3.5 opacity-80">
-        {["All", "Blood", "Urine", "Semen", "Stool", "Sputum", "Other"].map(
-          (sampleType, index) => (
-            <button
-              key={index}
-              className={`px-3.5 py-1.5 rounded-lg cursor-pointer text-sm font-semibold ${filter.sampleType === sampleType ? "bg-primary text-white dark:bg-white dark:text-black" : "bg-primary/15 text-primary dark:bg-white/10 dark:text-white"}`}
-              onClick={async () => {
-                setFilter({ ...filter, sampleType });
-                await onSeach(
-                  {
-                    name: filter.name,
-                    sampleType: sampleType as
-                      | "All"
-                      | "Blood"
-                      | "Urine"
-                      | "Semen"
-                      | "Stool"
-                      | "Sputum"
-                      | "Other",
-                  },
-                  limit,
-                );
-              }}
-            >
-              {sampleType}
-            </button>
-          ),
+
+        {/* Filter Pills */}
+        <div className="flex overflow-x-auto hide-scrollbar gap-2 mb-8 pb-2">
+          {filterOptions.map((sampleType) => {
+            const isActive = filter.sampleType === sampleType;
+            return (
+              <button
+                key={sampleType}
+                onClick={() => handleFilterClick(sampleType)}
+                className={`relative px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${
+                  isActive
+                    ? "text-white"
+                    : "bg-white dark:bg-[#111] text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/5 shadow-sm"
+                }`}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="activeFilterPill"
+                    className="absolute inset-0 bg-primary rounded-full -z-10 shadow-md shadow-primary/30"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{sampleType}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Test Cards Grid */}
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {Array.from({ length: limit }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        ) : (
+          <>
+            {tests.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-20 text-center">
+                <div className="w-20 h-20 bg-gray-100 dark:bg-[#111] rounded-full flex items-center justify-center mb-4 border border-gray-200 dark:border-white/10">
+                  <svg
+                    className="w-10 h-10 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                  No tests found
+                </h3>
+                <p className="text-gray-500 dark:text-gray-400 max-w-sm">
+                  We couldn't find any tests matching your current search or
+                  filter criteria.
+                </p>
+              </div>
+            ) : (
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+              >
+                {tests.map((test) => (
+                  <Link
+                    href={`/tests/${test._id}`}
+                    key={test._id}
+                    className="outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-2xl block h-full"
+                  >
+                    <motion.div
+                      variants={itemVariants}
+                      whileHover={{ y: -4 }}
+                      className="flex flex-col h-full bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-2xl shadow-sm hover:shadow-xl dark:shadow-none dark:hover:shadow-white/5 transition-all duration-300 p-6"
+                    >
+                      <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 leading-snug group-hover:text-primary transition-colors">
+                        {test.name}
+                      </h2>
+
+                      <div className="mb-6 flex flex-wrap gap-2">
+                        <span className="px-3 py-1 bg-primary/10 dark:bg-primary/20 text-primary dark:text-blue-300 rounded-full text-xs font-semibold tracking-wide uppercase">
+                          {test.sampleType}
+                        </span>
+                      </div>
+
+                      <div className="mt-auto space-y-2 text-sm text-gray-600 dark:text-gray-400 border-t border-gray-100 dark:border-white/5 pt-4">
+                        <div className="flex justify-between items-center">
+                          <span className="font-medium text-gray-800 dark:text-gray-200">
+                            Fasting
+                          </span>
+                          <span className="truncate ml-2">
+                            {test.fastingRequired || "Not Required"}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="font-medium text-gray-800 dark:text-gray-200">
+                            Tube Type
+                          </span>
+                          <span className="truncate ml-2 text-right">
+                            {test.tubeType || "N/A"}
+                          </span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </Link>
+                ))}
+              </motion.div>
+            )}
+
+            {/* Load More Button */}
+            {totalPages !== 1 && tests.length >= limit && (
+              <div className="w-full flex justify-center mt-12">
+                <button
+                  disabled={loadingMore}
+                  className="px-8 py-3 rounded-full bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white font-semibold shadow-sm hover:shadow-md hover:bg-gray-50 dark:hover:bg-white/5 transition-all outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:opacity-70 disabled:cursor-not-allowed flex items-center gap-3"
+                  onClick={handleLoadMore}
+                >
+                  {loadingMore ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+                      Loading...
+                    </>
+                  ) : (
+                    "Load More Tests"
+                  )}
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-        {tests.map((test) => (
-          <Link
-            href={"/tests/" + test._id}
-            key={test._id}
-            className="flex flex-col bg-white dark:bg-black dark:border-white/30 rounded-md shadow-md shadow-primary/5 border border-primary/15 dark:border text-primary p-4 min-w-52"
-          >
-            <h1 className="text-xl font-semibold mb-1.5 dark:text-white">
-              {test.name}
-            </h1>
-            <p className="text-xs font-semibold text-white mb-2.5 bg-primary dark:bg-white/25 px-4 py-1.5 w-fit rounded-full">
-              {test.sampleType}
-            </p>
-            <p className="text-sm mt-auto opacity-60 dark:text-white text-black">
-              Fasting: {test.fastingRequired} | Tube Type: {test.tubeType}
-            </p>
-          </Link>
-        ))}
-      </div>
-      {loading && <Loading />}
-      {totalPages !== 1 && !loading && (
-        <div className="w-full flex justify-center mt-2">
-          <button
-            className="mt-2 px-5 py-2 rounded bg-primary dark:bg-white/30 cursor-pointer text-white font-medium"
-            onClick={async () => {
-              setLimit((prevLimit) => prevLimit + 6);
-              await onSeach(
-                {
-                  ...filter,
-                  sampleType: filter.sampleType as
-                    | "All"
-                    | "Blood"
-                    | "Urine"
-                    | "Semen"
-                    | "Stool"
-                    | "Sputum"
-                    | "Other"
-                    | "Other Body Fluid",
-                },
-                limit + 6,
-              );
-            }}
-          >
-            Load More
-          </button>
-        </div>
-      )}
     </main>
   );
-};
+}
 
-export default Tests;
+function SkeletonCard() {
+  return (
+    <div className="flex flex-col h-full bg-white dark:bg-[#111] border border-gray-100 dark:border-white/5 rounded-2xl shadow-sm p-6 animate-pulse">
+      <div className="h-6 bg-gray-200 dark:bg-white/10 rounded w-4/5 mb-2"></div>
+      <div className="h-6 bg-gray-200 dark:bg-white/10 rounded w-3/5 mb-4"></div>
+
+      <div className="w-20 h-6 bg-primary/10 dark:bg-white/5 rounded-full mb-8"></div>
+
+      <div className="mt-auto border-t border-gray-100 dark:border-white/5 pt-4 space-y-3">
+        <div className="flex justify-between">
+          <div className="h-4 bg-gray-200 dark:bg-white/10 rounded w-16"></div>
+          <div className="h-4 bg-gray-200 dark:bg-white/10 rounded w-24"></div>
+        </div>
+        <div className="flex justify-between">
+          <div className="h-4 bg-gray-200 dark:bg-white/10 rounded w-20"></div>
+          <div className="h-4 bg-gray-200 dark:bg-white/10 rounded w-28"></div>
+        </div>
+      </div>
+    </div>
+  );
+}

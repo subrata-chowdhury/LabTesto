@@ -1,7 +1,9 @@
+// app/(mainLayout)/contact/components/MainContactForm.tsx
 "use client";
 import React, { useState } from "react";
 import fetcher from "@/lib/fetcher";
 import { toast } from "react-toastify";
+import { motion } from "framer-motion";
 
 export default function MainForm() {
   const [formData, setFormData] = useState({
@@ -25,93 +27,119 @@ export default function MainForm() {
     }
 
     setLoading(true);
-    const res = await fetcher.post("/contact", formData);
-    if (res.status === 200) {
-      toast.success("Your message has been sent successfully.");
-      setFormData({
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
-      });
+    try {
+      const res = await fetcher.post("/contact", formData);
+      if (res.status === 200) {
+        toast.success("Your message has been sent successfully.");
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      toast.error("Failed to send message.");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
+  const inputStyles =
+    "w-full outline-none border border-gray-300 dark:border-white/20 rounded-lg mt-1.5 bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white text-sm p-3 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500";
+  const labelStyles =
+    "text-sm font-medium text-gray-700 dark:text-gray-300 ml-1";
+
   return (
-    <form
-      className="p-6 px-8 flex flex-col rounded-md border-2 border-primary/10 mb-6 lg:mb-24 bg-white dark:bg-black "
+    <motion.form
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.6 }}
+      className="p-6 md:p-8 flex flex-col rounded-2xl border border-gray-200 dark:border-white/10 shadow-lg shadow-black/5 dark:shadow-white/5 bg-white dark:bg-[#111] w-full"
       onSubmit={sendData}
     >
-      <h2 className="text-2xl mb-4 font-bold text-primary dark:text-white">
+      <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
         Send Us a Message
       </h2>
-      <div className="flex flex-col md:flex-row gap-6">
-        <div className="flex flex-col gap-0.5">
-          <label htmlFor="name" className="text-sm">
-            Name *
+      <p className="text-gray-500 dark:text-gray-400 text-sm mb-8">
+        Fill out the form below and we'll get back to you as soon as possible.
+      </p>
+
+      <div className="flex flex-col sm:flex-row gap-6 mb-6">
+        <div className="flex flex-col flex-1">
+          <label htmlFor="name" className={labelStyles}>
+            Name <span className="text-red-500">*</span>
           </label>
           <input
             id="name"
             name="name"
-            placeholder="Your Full Name"
+            placeholder="John Doe"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="outline-none border border-gray-400/80 rounded-xs border-opacity-60 mt-1 bg-transparent text-sm p-2 px-3"
+            className={inputStyles}
           />
         </div>
-        <div className="flex flex-col gap-0.5">
-          <label htmlFor="email" className="text-sm">
-            Email / Phone *
+        <div className="flex flex-col flex-1">
+          <label htmlFor="email" className={labelStyles}>
+            Email / Phone <span className="text-red-500">*</span>
           </label>
           <input
             id="email"
             name="email"
-            placeholder="Your Email or Phone"
+            placeholder="john@example.com"
             value={formData.email}
             onChange={(e) =>
               setFormData({ ...formData, email: e.target.value })
             }
-            className="outline-none border border-gray-400/80 rounded-xs border-opacity-60 mt-1 bg-transparent text-sm p-2 px-3"
+            className={inputStyles}
           />
         </div>
       </div>
-      <div className="mt-8 flex flex-col gap-0.5">
-        <label htmlFor="subject" className="text-sm">
-          Subject *
+
+      <div className="flex flex-col mb-6">
+        <label htmlFor="subject" className={labelStyles}>
+          Subject <span className="text-red-500">*</span>
         </label>
         <input
           id="subject"
           name="subject"
+          placeholder="How can we help you?"
           value={formData.subject}
           onChange={(e) =>
             setFormData({ ...formData, subject: e.target.value })
           }
-          className="outline-none border border-gray-400/80 rounded-xs border-opacity-60 mt-1 bg-transparent text-sm p-2 px-3"
+          className={inputStyles}
         />
       </div>
-      <div className="mt-8 flex flex-col gap-0.5">
-        <label htmlFor="message" className="text-sm">
-          Message *
+
+      <div className="flex flex-col mb-8">
+        <label htmlFor="message" className={labelStyles}>
+          Message <span className="text-red-500">*</span>
         </label>
         <textarea
           id="message"
           name="message"
+          placeholder="Write your message here..."
           value={formData.message}
           onChange={(e) =>
             setFormData({ ...formData, message: e.target.value })
           }
-          className="outline-none border border-gray-400/80 rounded-xs border-opacity-60 mt-1 bg-transparent text-sm p-2 px-3"
-          rows={3}
+          className={`${inputStyles} resize-y min-h-30`}
+          rows={4}
         ></textarea>
       </div>
+
       <button
         type="submit"
         disabled={loading}
-        className="px-7 py-2 cursor-pointer rounded-xs mt-4 mx-auto text-white bg-primary"
+        className="w-full sm:w-auto px-8 py-3.5 font-semibold cursor-pointer rounded-lg text-white bg-primary hover:bg-blue-600 transition-colors duration-300 disabled:opacity-70 disabled:cursor-not-allowed shadow-md shadow-primary/30 flex items-center justify-center gap-2"
       >
-        {loading ? "Sending.." : "Send Message"}
+        {loading ? (
+          <>
+            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            Sending...
+          </>
+        ) : (
+          "Send Message"
+        )}
       </button>
-    </form>
+    </motion.form>
   );
 }

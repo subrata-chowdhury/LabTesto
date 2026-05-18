@@ -66,7 +66,11 @@ export default function Signup() {
           user: { verified: boolean; name: string; email: string };
           token: string;
         }
-      >("/auth/signup", { name: name, email: email, password: await encryptData(password) })
+      >("/auth/signup", {
+        name: name,
+        email: email,
+        password: await encryptData(password),
+      })
       .then((res) => {
         if (res.status !== 200) {
           toast.error(res.error || "Error signing up");

@@ -9,7 +9,6 @@ import { Suspense } from "react";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "600", "700", "900"],
 });
 
 export const metadata: Metadata = {

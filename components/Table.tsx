@@ -164,11 +164,11 @@ export function MainTable<T>({
                 >
                   {configObj.component
                     ? React.createElement(configObj.component, {
-                      data: obj,
-                      index,
-                    })
-                    // @ts-expect-error: Type 'keyof T' cannot be used as an index type.
-                    : obj[configObj.selector || ""]}
+                        data: obj,
+                        index,
+                      })
+                    : // @ts-expect-error: Type 'keyof T' cannot be used as an index type.
+                      obj[configObj.selector || ""]}
                 </td>
               ))}
             </tr>
@@ -202,7 +202,7 @@ export function MainTable<T>({
 
 function TableTags({
   tags = [],
-  onActiveTagChange = () => { },
+  onActiveTagChange = () => {},
   loading = false,
 }: {
   tags: string[];
@@ -231,7 +231,7 @@ function TableTags({
 }
 
 function SearchBar({
-  onSearch = () => { },
+  onSearch = () => {},
 }: {
   onSearch?: (value: string) => void;
 }) {

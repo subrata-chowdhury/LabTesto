@@ -1,14 +1,12 @@
 import React from "react";
 import Services from "./components/Services";
 
-function AboutPage() {
+function ServicesPage() {
   return (
-    <>
-      <div className="w-full min-h-screen dark:bg-black">
-        <Services />
-      </div>
-    </>
+    <main className="w-full min-h-screen bg-gray-50 dark:bg-black">
+      <Services />
+    </main>
   );
 }
 
-export default AboutPage;
+export default ServicesPage;

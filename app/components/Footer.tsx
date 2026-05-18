@@ -1,6 +1,9 @@
+// app/components/Footer.tsx
 "use client";
+
 import React from "react";
 import Link from "next/link";
+import { motion, Variants } from "framer-motion";
 import FacebookIcon from "@/assets/reactIcon/footer/Facebook";
 import InstagramIcon from "@/assets/reactIcon/footer/Instagram";
 import LinkedinIcon from "@/assets/reactIcon/footer/Linkedin";
@@ -8,272 +11,195 @@ import YoutubeIcon from "@/assets/reactIcon/footer/Youtube";
 import { PhoneIcon } from "@/assets/reactIcon/contact/Phone";
 import { MailIcon } from "@/assets/reactIcon/contact/Mail";
 import { LocationIcon } from "@/assets/reactIcon/contact/Location";
-import useIsVisible from "@/lib/isVisibileHook";
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
 
 const Footer = () => {
-  const [ref, isVisible] = useIsVisible<HTMLDivElement>({
-    threshold: 0.1,
-    once: true,
-  });
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer
-      ref={ref}
-      className="bg-primary/5 dark:bg-black py-6 pt-12"
+      className="bg-gray-50 dark:bg-[#0a0a0a] border-t border-gray-200 dark:border-white/10 pt-16 pb-8"
       role="contentinfo"
     >
-      <div className="mx-auto px-6 md:px-14">
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-24">
-          <div className="mr-4 max-w-md">
-            <h1
-              className={
-                "text-xl font-bold mb-2 " +
-                (isVisible
-                  ? " opacity-100 translate-y-0"
-                  : " opacity-0 translate-y-6")
-              }
-              style={{ transition: `all 0.5s ease 0.2s` }}
-            >
-              <span className="text-orange-500">Lab</span>
-              <span className="text-primary">Testo</span>
-            </h1>
-            <p
-              className={
-                "text-sm mt-2" +
-                (isVisible
-                  ? " opacity-100 translate-y-0"
-                  : " opacity-0 translate-y-6")
-              }
-              style={{ transition: `all 0.5s ease 0.3s` }}
-            >
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        className="max-w-7xl mx-auto px-6 lg:px-8"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-12">
+          {/* Brand Info */}
+          <motion.div
+            variants={itemVariants}
+            className="lg:col-span-2 max-w-md"
+          >
+            <Link href="/" className="inline-block">
+              <h1 className="text-3xl font-extrabold tracking-tight mb-4">
+                <span className="text-orange-500">Lab</span>
+                <span className="text-primary dark:text-white">Testo</span>
+              </h1>
+            </Link>
+            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
               A trusted diagnostic platform offering seamless test bookings from
               accredited labs of your choice, with certified home sample
               collection and secure payment options.
             </p>
-            <div className="flex gap-5 mt-6">
-              <Link
+            <div className="flex gap-4">
+              <SocialLink
                 href="#"
-                className={
-                  isVisible
-                    ? " opacity-100 translate-y-0"
-                    : " opacity-0 translate-y-6"
-                }
-                style={{ transition: `all 0.5s ease 0.5s` }}
-                aria-label="Facebook"
-              >
-                <FacebookIcon size={20} />
-              </Link>
-              <Link
+                icon={<FacebookIcon size={20} />}
+                label="Facebook"
+              />
+              <SocialLink
                 href="#"
-                className={
-                  isVisible
-                    ? " opacity-100 translate-y-0"
-                    : " opacity-0 translate-y-6"
-                }
-                style={{ transition: `all 0.5s ease 0.7s` }}
-                aria-label="Instagram"
-              >
-                <InstagramIcon size={20} />
-              </Link>
-              <Link
+                icon={<InstagramIcon size={20} />}
+                label="Instagram"
+              />
+              <SocialLink
                 href="#"
-                className={
-                  isVisible
-                    ? " opacity-100 translate-y-0"
-                    : " opacity-0 translate-y-6"
-                }
-                style={{ transition: `all 0.5s ease 0.9s` }}
-                aria-label="LinkedIn"
-              >
-                <LinkedinIcon size={20} />
-              </Link>
-              <Link
+                icon={<LinkedinIcon size={20} />}
+                label="LinkedIn"
+              />
+              <SocialLink
                 href="#"
-                className={
-                  isVisible
-                    ? " opacity-100 translate-y-0"
-                    : " opacity-0 translate-y-6"
-                }
-                style={{ transition: `all 0.5s ease 1.1s` }}
-                aria-label="YouTube"
-              >
-                <YoutubeIcon size={20} />
-              </Link>
+                icon={<YoutubeIcon size={20} />}
+                label="YouTube"
+              />
             </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 sm:gap-4 flex-1">
-            <div className="inline-flex flex-col">
-              <h2
-                className={
-                  "text-base font-semibold mb-4 " +
-                  (isVisible
-                    ? " opacity-100 translate-y-0"
-                    : " opacity-0 translate-y-6")
-                }
-                style={{ transition: `all 0.5s ease 0.2s` }}
-              >
-                Platform Details
-              </h2>
-              <ul className="flex flex-col gap-1">
-                {[
-                  { label: "About Us", href: "/about" },
-                  { label: "Services", href: "/services" },
-                  { label: "FAQs", href: "/faq" },
-                  { label: "Testimonials", href: "/testimonials" },
-                  { label: "Privacy Policy", href: "/privacy-policy" },
-                  {
-                    label: "Terms & Conditions",
-                    href: "/terms-and-conditions",
-                  },
-                ].map((link, index) => (
-                  <li
-                    key={index}
-                    className={
-                      "mb-1 text-sm" +
-                      (isVisible
-                        ? " opacity-100 translate-y-0"
-                        : " opacity-0 translate-y-6")
-                    }
-                    style={{
-                      transition: `all 0.5s ease ${0.3 + index * 0.1}s`,
-                    }}
-                  >
-                    <Link
-                      href={link.href}
-                      className="text-gray-700 hover:text-gray-500 transition-all dark:text-white/75"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="inline-flex flex-col">
-              <h2
-                className={
-                  "text-base font-semibold mb-4 " +
-                  (isVisible
-                    ? " opacity-100 translate-y-0"
-                    : " opacity-0 translate-y-6")
-                }
-                style={{ transition: `all 0.5s ease 0.2s` }}
-              >
-                Popular Tests
-              </h2>
-              <ul className="flex flex-col gap-1">
-                {[
-                  {
-                    label: "Complete Blood Count",
-                    href: "/tests/67a38ddca80c243e83d518ed",
-                  },
-                  {
-                    label: "Fasting Blood Sugar",
-                    href: "/tests/67a44ab70daa8b678a7fa330",
-                  },
-                  {
-                    label: "Thyroid Stimulating Hormone",
-                    href: "/tests/67b9667ee39bde2a012634ca",
-                  },
-                  {
-                    label: "Random Blood Sugar",
-                    href: "/tests/67bd7997eb03aecfeb2f2331",
-                  },
-                  {
-                    label: "Urine Examination",
-                    href: "/tests/67bd6412266fe37d1fb4e7a8",
-                  },
-                ].map((link, index) => (
-                  <li
-                    key={index}
-                    className={
-                      "mb-1 text-sm" +
-                      (isVisible
-                        ? " opacity-100 translate-y-0"
-                        : " opacity-0 translate-y-6")
-                    }
-                    style={{
-                      transition: `all 0.5s ease ${0.3 + index * 0.1}s`,
-                    }}
-                  >
-                    <Link
-                      href={link.href}
-                      className="text-gray-700 hover:text-gray-500 transition-all dark:text-white/75"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="inline-flex flex-col">
-              <h2
-                className={
-                  "text-base font-semibold mb-4 " +
-                  (isVisible
-                    ? " opacity-100 translate-y-0"
-                    : " opacity-0 translate-y-6")
-                }
-                style={{ transition: `all 0.5s ease 0.2s` }}
-              >
-                Contact Us
-              </h2>
-              <ul className="text-sm text-gray-600d dark:text-gray-400 font-medium flex flex-col gap-1">
-                <li
-                  className={
-                    "mb-2 text-gray-700 hover:text-gray-500 transition-all dark:text-white/75 flex gap-2 items-center " +
-                    (isVisible
-                      ? " opacity-100 translate-y-0"
-                      : " opacity-0 translate-y-6")
-                  }
-                  style={{ transition: `all 0.5s ease 0.3s` }}
+          </motion.div>
+
+          {/* Quick Links */}
+          <motion.div variants={itemVariants} className="flex flex-col">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6">
+              Platform Details
+            </h2>
+            <ul className="flex flex-col gap-3">
+              <FooterLink href="/about" label="About Us" />
+              <FooterLink href="/services" label="Services" />
+              <FooterLink href="/faq" label="FAQs" />
+              <FooterLink href="/testimonials" label="Testimonials" />
+              <FooterLink href="/privacy-policy" label="Privacy Policy" />
+              <FooterLink
+                href="/terms-and-conditions"
+                label="Terms & Conditions"
+              />
+            </ul>
+          </motion.div>
+
+          {/* Contact Info */}
+          <motion.div variants={itemVariants} className="flex flex-col">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6">
+              Contact Us
+            </h2>
+            <ul className="flex flex-col gap-4 text-sm text-gray-600 dark:text-gray-400">
+              <li className="flex gap-3 items-center group">
+                <div className="text-primary dark:text-blue-400 group-hover:scale-110 transition-transform">
+                  <PhoneIcon size={18} />
+                </div>
+                <a
+                  href="tel:+918250711212"
+                  className="hover:text-primary dark:hover:text-white transition-colors"
                 >
-                  <PhoneIcon size={18} /> +91 82507 11212
-                </li>
-                <li
-                  className={
-                    "mb-2 text-gray-700 hover:text-gray-500 transition-all dark:text-white/75 flex gap-2 items-center " +
-                    (isVisible
-                      ? " opacity-100 translate-y-0"
-                      : " opacity-0 translate-y-6")
-                  }
-                  style={{ transition: `all 0.5s ease 0.4s` }}
+                  +91 82507 11212
+                </a>
+              </li>
+              <li className="flex gap-3 items-center group">
+                <div className="text-primary dark:text-blue-400 group-hover:scale-110 transition-transform">
+                  <MailIcon size={18} />
+                </div>
+                <a
+                  href="mailto:sayan825071das@gmail.com"
+                  className="hover:text-primary dark:hover:text-white transition-colors"
                 >
-                  <MailIcon size={18} /> sayan825071das@gmail.com
-                </li>
-                <li
-                  className={
-                    "mb-2 text-gray-700 hover:text-gray-500 transition-all dark:text-white/75 flex gap-2 items-center " +
-                    (isVisible
-                      ? " opacity-100 translate-y-0"
-                      : " opacity-0 translate-y-6")
-                  }
-                  style={{ transition: `all 0.5s ease 0.5s` }}
-                >
-                  <LocationIcon size={18} /> Kadasole more, Bankura, <br />
+                  sayan825071das@gmail.com
+                </a>
+              </li>
+              <li className="flex gap-3 items-start group">
+                <div className="text-primary dark:text-blue-400 mt-1 group-hover:scale-110 transition-transform">
+                  <LocationIcon size={18} />
+                </div>
+                <span className="leading-snug">
+                  Kadasole more, Bankura, <br />
                   Pin. 722202 - West Bengal
-                </li>
-              </ul>
-            </div>
-          </div>
+                </span>
+              </li>
+            </ul>
+          </motion.div>
         </div>
 
-        <div className="border-t border-primary/40 dark:border-white/30 mt-5 pt-4 text-center flex flex-col sm:flex-row justify-between text-xs">
-          <div className="flex gap-3 mx-auto mb-4 sm:mx-0 sm:mb-0">
-            <Link href="/privacy-policy" className="hover:text-gray-400">
+        {/* Bottom Bar */}
+        <motion.div
+          variants={itemVariants}
+          className="border-t border-gray-200 dark:border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500 dark:text-gray-400"
+        >
+          <div className="flex gap-4">
+            <Link
+              href="/privacy-policy"
+              className="hover:text-primary dark:hover:text-white transition-colors"
+            >
               Privacy Policy
-            </Link>{" "}
-            |{" "}
-            <Link href="/terms-and-conditions" className="hover:text-gray-400">
+            </Link>
+            <span>|</span>
+            <Link
+              href="/terms-and-conditions"
+              className="hover:text-primary dark:hover:text-white transition-colors"
+            >
               Terms of Service
             </Link>
           </div>
-          <p className="text-center sm:text-right">
-            &copy; 2023 Your Company. All rights reserved.
-          </p>
-        </div>
-      </div>
+          <p>&copy; {currentYear} LabTesto. All rights reserved.</p>
+        </motion.div>
+      </motion.div>
     </footer>
   );
 };
+
+function FooterLink({ href, label }: { href: string; label: string }) {
+  return (
+    <li>
+      <Link
+        href={href}
+        className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-white hover:translate-x-1 inline-block transition-all duration-300 font-medium"
+      >
+        {label}
+      </Link>
+    </li>
+  );
+}
+
+function SocialLink({
+  href,
+  icon,
+  label,
+}: {
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <motion.a
+      whileHover={{ y: -4, scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      href={href}
+      aria-label={label}
+      className="w-10 h-10 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-primary hover:border-primary dark:hover:text-white dark:hover:border-white shadow-sm transition-colors"
+    >
+      {icon}
+    </motion.a>
+  );
+}
 
 export default Footer;

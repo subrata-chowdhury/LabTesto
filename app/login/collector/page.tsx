@@ -36,7 +36,10 @@ export default function AdminLogin() {
           user: { verified: boolean; institution: string; type: string };
           token: string;
         }
-      >("/collector/auth/login", { email, password: await encryptData(password) })
+      >("/collector/auth/login", {
+        email,
+        password: await encryptData(password),
+      })
       .then(async (res) => {
         if (res.status !== 200) {
           toast.error(res.error || "Error signing up");
