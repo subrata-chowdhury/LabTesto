@@ -398,7 +398,7 @@ export function Achievements() {
         {/* Left Side Big Stat */}
         <motion.div
           variants={itemVariants}
-          className="flex flex-col justify-center items-center md:items-start md:border-r border-gray-200 dark:border-white/10 md:pr-16 lg:pr-24"
+          className="flex flex-col justify-center items-center md:ml-auto md:items-start md:border-r border-gray-200 dark:border-white/10 md:pr-16 lg:pr-24"
         >
           <div className="flex items-baseline">
             <AnimatedNumber

@@ -374,6 +374,7 @@ export default function MainTestPage({ test }: Props) {
                           fill
                           alt={labObj.name}
                           className="object-contain p-1"
+                          sizes="64px"
                         />
                       ) : (
                         <LabIcon />
