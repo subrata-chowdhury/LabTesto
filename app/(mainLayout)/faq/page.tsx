@@ -165,7 +165,7 @@ function DetailCardToggler({
         className="w-full flex items-start justify-between px-6 py-5 cursor-pointer text-left focus:outline-none"
         aria-expanded={isOpen}
       >
-        <span className="font-semibold text-lg text-gray-900 dark:text-gray-100 pr-8">
+        <span className="font-semibold md:text-lg text-gray-900 dark:text-gray-100 pr-8">
           <span className="text-primary dark:text-gray-400 mr-2">{index}.</span>
           {title}
         </span>
@@ -188,8 +188,8 @@ function DetailCardToggler({
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <div className="px-6 pb-6 pt-1 text-gray-600 dark:text-gray-400 leading-relaxed sm:text-base text-sm ml-5 sm:ml-6 border-t border-gray-50 dark:border-white/5">
-              <div className="mt-4">{description}</div>
+            <div className="px-6 pb-6 pt-1 text-gray-600 dark:text-gray-400 leading-relaxed sm:text-base text-sm border-t border-gray-50 dark:border-white/5">
+              <div className="mt-2">{description}</div>
             </div>
           </motion.div>
         )}

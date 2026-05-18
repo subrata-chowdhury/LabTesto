@@ -2,10 +2,11 @@
 "use client";
 
 import fetcher from "@/lib/fetcher";
-import Link from "next/link";
 import React, { useCallback, useEffect, useState } from "react";
 import { motion, Variants } from "framer-motion";
 import debounce from "@/lib/debouncer";
+import TestCard, { Test } from "./components/TestCard";
+import SkeletonCard from "./components/SkeletonCard";
 
 type SampleTypeOption =
   | "All"
@@ -16,19 +17,6 @@ type SampleTypeOption =
   | "Sputum"
   | "Other"
   | "Other Body Fluid";
-
-type Test = {
-  _id: string;
-  name: string;
-  otherTerms?: string[];
-  sampleType: string;
-  tubeType: string;
-  description: string;
-  fastingRequired: string;
-  overview: string;
-  testResultInterpretation: string;
-  riskAssesment: string;
-};
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -87,7 +75,9 @@ export default function Tests() {
             totalPages: number;
           };
         }>(
-          `/tests?filter=${JSON.stringify(apiFilter)}&limit=${searchLimit || 8}&page=1`,
+          `/tests?filter=${JSON.stringify(apiFilter)}&limit=${
+            searchLimit || 8
+          }&page=1`,
         );
 
         if (res.status === 200 && res.body) {
@@ -141,7 +131,7 @@ export default function Tests() {
       className="relative px-4 py-12 md:py-16 min-h-screen bg-white dark:bg-[#0a0a0a] overflow-hidden"
     >
       {/* Decorative Background Elements */}
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-orange-500/5 blur-[100px] rounded-full pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
+      <div className="absolute top-0 right-0 w-100 h-100 bg-orange-500/5 blur-[100px] rounded-full pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
         {/* Header Section */}
@@ -153,8 +143,7 @@ export default function Tests() {
               transition={{ duration: 0.5 }}
               className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-primary dark:text-white mb-4 leading-tight"
             >
-              Explore <br className="hidden lg:block" />
-              <span className="text-orange-500">Lab Tests</span>
+              Explore <span className="text-orange-500">Lab Tests</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -278,46 +267,11 @@ export default function Tests() {
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
               >
                 {tests.map((test) => (
-                  <Link
-                    href={`/tests/${test._id}`}
+                  <TestCard
                     key={test._id}
-                    className="group outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 rounded-2xl block h-full"
-                  >
-                    <motion.div
-                      variants={itemVariants}
-                      whileHover={{ y: -6, transition: { duration: 0.2 } }}
-                      className="flex flex-col h-full bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-2xl shadow-sm hover:shadow-lg hover:border-orange-500/30 transition-all duration-300 p-6"
-                    >
-                      <h2 className="text-lg font-bold text-primary dark:text-white mb-3 line-clamp-2 leading-snug group-hover:text-orange-500 transition-colors">
-                        {test.name}
-                      </h2>
-
-                      <div className="mb-6 flex flex-wrap gap-2">
-                        <span className="px-3 py-1 bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-100 dark:border-orange-500/20 rounded-full text-xs font-semibold tracking-wide uppercase">
-                          {test.sampleType}
-                        </span>
-                      </div>
-
-                      <div className="mt-auto space-y-2 text-sm text-gray-500 dark:text-gray-400 border-t border-gray-100 dark:border-white/5 pt-4">
-                        <div className="flex justify-between items-center">
-                          <span className="font-semibold text-gray-800 dark:text-gray-300">
-                            Fasting
-                          </span>
-                          <span className="truncate ml-2">
-                            {test.fastingRequired || "Not Required"}
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="font-semibold text-gray-800 dark:text-gray-300">
-                            Tube Type
-                          </span>
-                          <span className="truncate ml-2 text-right">
-                            {test.tubeType || "N/A"}
-                          </span>
-                        </div>
-                      </div>
-                    </motion.div>
-                  </Link>
+                    test={test}
+                    variants={itemVariants}
+                  />
                 ))}
               </motion.div>
             )}
@@ -345,27 +299,5 @@ export default function Tests() {
         )}
       </div>
     </main>
-  );
-}
-
-function SkeletonCard() {
-  return (
-    <div className="flex flex-col h-full bg-white dark:bg-[#111] border border-gray-100 dark:border-white/5 rounded-2xl shadow-sm p-6 animate-pulse">
-      <div className="h-6 bg-gray-100 dark:bg-white/5 rounded w-4/5 mb-3"></div>
-      <div className="h-6 bg-gray-100 dark:bg-white/5 rounded w-2/5 mb-5"></div>
-
-      <div className="w-20 h-6 bg-orange-50/50 dark:bg-orange-500/5 rounded-full mb-8 border border-orange-100/50 dark:border-orange-500/10"></div>
-
-      <div className="mt-auto border-t border-gray-100 dark:border-white/5 pt-4 space-y-3">
-        <div className="flex justify-between">
-          <div className="h-4 bg-gray-100 dark:bg-white/5 rounded w-16"></div>
-          <div className="h-4 bg-gray-100 dark:bg-white/5 rounded w-24"></div>
-        </div>
-        <div className="flex justify-between">
-          <div className="h-4 bg-gray-100 dark:bg-white/5 rounded w-20"></div>
-          <div className="h-4 bg-gray-100 dark:bg-white/5 rounded w-28"></div>
-        </div>
-      </div>
-    </div>
   );
 }

@@ -82,7 +82,7 @@ const Footer = () => {
                 label="YouTube"
               />
             </div>
-            <div className="flex flex-col gap-3 border-t border-black/5 pt-4 dark:border-white/5">
+            <div className="flex flex-col gap-3 pt-4 ">
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 Designed & Developed by{" "}
                 <span className="font-medium text-gray-900 dark:text-white">

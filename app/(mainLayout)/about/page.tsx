@@ -6,45 +6,16 @@ import React, { ReactNode } from "react";
 import { motion } from "framer-motion";
 import ContactDetails from "../contact/components/ContactDetails";
 import Services from "../services/components/Services";
-import { Achievements } from "../page";
-
-// Reusable Section Header for consistency
-function SectionHeader({
-  title,
-  highlight,
-  description,
-}: {
-  title: ReactNode;
-  highlight?: string;
-  description?: string;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.8 }}
-      transition={{ duration: 0.6 }}
-      className="z-10 flex flex-col items-center px-4 mb-16"
-    >
-      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center text-primary dark:text-white leading-tight">
-        {title}{" "}
-        {highlight && <span className="text-orange-500">{highlight}</span>}
-      </h1>
-      {description && (
-        <p className="mt-6 text-gray-500 dark:text-gray-400 text-center max-w-2xl text-sm sm:text-base">
-          {description}
-        </p>
-      )}
-    </motion.div>
-  );
-}
+import { Achievements } from "../_components/Achievements";
+import SectionHeader from "../_components/SectionHeader";
+import Image from "next/image";
 
 export default function AboutPage() {
   return (
     <main className="flex-1 overflow-hidden bg-white dark:bg-[#0a0a0a]">
       <section className="min-h-[calc(100vh-120px)] flex items-center py-20 md:py-32 overflow-hidden relative">
         {/* Decorative Background Elements */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border-[40px] border-orange-50/50 dark:border-white/[0.02] rounded-full pointer-events-none"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 border-40 border-orange-50/50 dark:border-white/2 rounded-full pointer-events-none"></div>
         <div className="absolute -top-20 -left-20 w-96 h-96 bg-orange-500/5 dark:bg-orange-500/10 blur-3xl rounded-full pointer-events-none"></div>
 
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full flex flex-col lg:flex-row gap-16 lg:gap-8 items-center justify-between z-10">
@@ -63,7 +34,7 @@ export default function AboutPage() {
 
             <div className="mt-10 flex justify-center lg:justify-start">
               <Link href="/signup">
-                <button className="px-8 py-4 text-lg font-bold bg-orange-500 text-white rounded-full shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 group">
+                <button className="px-6 py-3 md:px-7 md:py-3 md:text-lg font-semibold bg-orange-500 text-white rounded-full shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 group">
                   Get Started
                   <svg
                     width="18"
@@ -88,12 +59,22 @@ export default function AboutPage() {
 
           {/* Right Visual Graphic */}
           <div className="flex-1 relative flex justify-center items-center w-full max-w-md lg:max-w-none mx-auto">
-            <div className="w-64 h-64 sm:w-80 sm:h-80 lg:w-[420px] lg:h-[420px] relative flex justify-center items-center rounded-full shadow-2xl bg-white dark:bg-[#111] border border-gray-100 dark:border-white/10 text-4xl sm:text-5xl font-black z-0">
-              <div className="absolute inset-0 rounded-full border-[10px] border-gray-50 dark:border-white/5 pointer-events-none"></div>
-              <div className="flex flex-col items-center z-10">
-                <span className="text-orange-500">Lab</span>
-                <span className="text-primary dark:text-white">Testo</span>
-              </div>
+            <div className="w-64 h-64 sm:w-80 sm:h-80 lg:w-105 lg:h-105 relative flex justify-center items-center rounded-full shadow-2xl bg-white dark:bg-[#111] border border-gray-100 dark:border-white/10 text-4xl sm:text-5xl font-black z-0">
+              <div className="absolute inset-0 rounded-full border-10 border-gray-50 dark:border-white/5 pointer-events-none"></div>
+              <Image
+                src="/logo-light.png"
+                alt="LabTesto Logo"
+                width={160}
+                height={160}
+                className="z-10 block dark:hidden"
+              />
+              <Image
+                src="/logo-dark.png"
+                alt="LabTesto Logo"
+                width={160}
+                height={160}
+                className="z-10 hidden dark:block"
+              />
 
               {/* Top Left Badge */}
               <motion.div
@@ -134,7 +115,7 @@ export default function AboutPage() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.4, type: "spring" }}
-                className="absolute -bottom-6 -right-4 sm:-bottom-10 sm:-right-8 lg:bottom-12 lg:-right-12 bg-white dark:bg-[#1a1a1a] border border-gray-100 dark:border-white/10 shadow-xl dark:shadow-black/50 px-5 py-4 sm:px-6 sm:py-5 rounded-3xl z-20 max-w-[220px] sm:max-w-[260px]"
+                className="absolute -bottom-6 -right-4 sm:-bottom-10 sm:-right-8 lg:bottom-8 lg:-right-12 bg-white dark:bg-[#1a1a1a] border border-gray-100 dark:border-white/10 shadow-xl dark:shadow-black/50 px-5 py-4 sm:px-6 sm:py-5 rounded-3xl z-20 max-w-55 sm:max-w-65"
               >
                 <div className="flex items-start gap-3">
                   <div className="h-8 w-8 shrink-0 rounded-full bg-green-100 dark:bg-green-500/10 flex items-center justify-center text-green-600 dark:text-green-500 mt-0.5">
@@ -167,22 +148,18 @@ export default function AboutPage() {
       </section>
 
       {/* Services Section */}
-      <section className="py-20 md:py-32 bg-gray-50 dark:bg-[#111] border-y border-gray-100 dark:border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <Services />
-        </div>
-      </section>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <Services />
+      </div>
 
       {/* Achievements Section */}
-      <section className="py-20 md:py-32 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <Achievements />
-        </div>
-      </section>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <Achievements />
+      </div>
 
       {/* Contact Details Section */}
       <section className="py-20 md:py-32 bg-gray-50 dark:bg-[#111] border-t border-gray-100 dark:border-white/5 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-orange-50/50 to-transparent dark:from-orange-500/5 pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-linear-to-l from-orange-50/50 to-transparent dark:from-orange-500/5 pointer-events-none"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col items-center relative z-10">
           <SectionHeader
             title="Our Contact"

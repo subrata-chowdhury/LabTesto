@@ -57,7 +57,7 @@ export const metadata: Metadata = {
       {
         url:
           (process.env.NEXT_PUBLIC_APP_URL || "https://labtesto.vercel.app") +
-          "/og-image.jpg",
+          "/og-image.png",
         width: 1200,
         height: 630,
         alt: "LabTesto - Trusted Diagnostic Platform",
@@ -71,9 +71,9 @@ export const metadata: Metadata = {
       "LabTesto offers secure and convenient diagnostic testing from NABL-certified labs with professional home sample collection and reliable test reports.",
     images: [
       (process.env.NEXT_PUBLIC_APP_URL || "https://labtesto.vercel.app") +
-        "/og-image.jpg",
+        "/og-image.png",
     ],
-    creator: "@LabTesto", // replace later when Twitter/X account is created
+    creator: "@LabTesto",
   },
   alternates: {
     canonical: process.env.NEXT_PUBLIC_APP_URL || "https://labtesto.vercel.app",
@@ -93,6 +93,20 @@ export const metadata: Metadata = {
     google: "googleae68989b3f48845d.html",
   },
   category: "healthcare",
+  icons: {
+    icon: [
+      {
+        media: "(prefers-color-scheme: light)",
+        url: "/logo-light.png",
+        type: "image/png", // Explicitly defining type helps browsers process it faster
+      },
+      {
+        media: "(prefers-color-scheme: dark)",
+        url: "/logo-dark.png",
+        type: "image/png",
+      },
+    ],
+  },
 };
 
 const BASE_URL =
@@ -182,14 +196,7 @@ export const organizationSchema = {
     addressRegion: "West Bengal",
     addressCountry: "IN",
   },
-  sameAs: [
-    "https://labtesto.vercel.app",
-    // Add these when available:
-    // "https://www.linkedin.com/company/labtesto",
-    // "https://www.facebook.com/labtesto",
-    // "https://twitter.com/LabTesto",
-    // "https://www.instagram.com/labtesto",
-  ],
+  sameAs: ["https://labtesto.vercel.app"],
   foundingDate: "2023-01-01",
   founders: [
     {
@@ -269,15 +276,16 @@ export default function RootLayout({
         <Suspense fallback={<div>Loading...</div>}>
           <GoogleAnalyticsProvider />
         </Suspense>
-        {/* Skip to content link for accessibility */}
+
+        {/* Improved Accessibility: Now visually hidden until focused via Tab key */}
         <a
           href="#main"
-          className="skip-to-content h-0"
+          className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white focus:text-black focus:font-bold focus:shadow-lg"
           aria-label="Skip to main content"
-          style={{ color: "transparent" }}
         >
           Skip to main content
         </a>
+
         {children}
       </body>
     </html>

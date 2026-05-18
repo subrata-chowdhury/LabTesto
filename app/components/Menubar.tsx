@@ -23,6 +23,7 @@ import {
   FiLogOut,
 } from "react-icons/fi";
 import { MdOutlineScience } from "react-icons/md";
+import Image from "next/image";
 
 const Menubar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -94,15 +95,27 @@ const Menubar = () => {
 
           {/* Logo - Hidden when search is active on smaller desktop viewports */}
           <div
-            className={`text-xl sm:text-2xl ml-4 font-extrabold mr-auto shrink-0 transition-opacity duration-300 ${
+            className={`text-xl sm:text-2xl ml-2 font-extrabold mr-auto shrink-0 transition-opacity duration-300 ${
               isSearchActive
                 ? "hidden md:block opacity-0 md:opacity-100"
                 : "block opacity-100"
             }`}
           >
             <Link href="/" onClick={() => setIsOpen(false)}>
-              <span className="text-orange-500">Lab</span>
-              <span className="text-primary dark:text-white">Testo</span>
+              <Image
+                src="/logo-light-horizental.png"
+                alt="LabTesto Logo"
+                className="block dark:hidden"
+                width={100}
+                height={50}
+              />
+              <Image
+                src="/logo-dark-horizental.png"
+                alt="LabTesto Logo"
+                className="hidden dark:block"
+                width={100}
+                height={50}
+              />
             </Link>
           </div>
 
@@ -332,10 +345,22 @@ function MobileMenubar({
         className="relative w-[85%] max-w-sm h-full bg-white dark:bg-[#111] shadow-2xl flex flex-col overflow-y-auto"
       >
         <div className="flex items-center justify-between p-5 border-b border-gray-100 dark:border-white/10">
-          <div className="text-xl font-extrabold">
-            <span className="text-orange-500">Lab</span>
-            <span className="text-primary dark:text-white">Testo</span>
-          </div>
+          <Link href="/">
+            <Image
+              src="/logo-light-horizental.png"
+              alt="LabTesto Logo"
+              className="block dark:hidden"
+              width={150}
+              height={60}
+            />
+            <Image
+              src="/logo-dark-horizental.png"
+              alt="LabTesto Logo"
+              className="hidden dark:block"
+              width={150}
+              height={60}
+            />
+          </Link>
           <button
             onClick={onClose}
             className="p-2 text-gray-500 hover:text-gray-900 dark:hover:text-white rounded-full bg-gray-50 dark:bg-white/5"

@@ -265,7 +265,7 @@ export default function MainTestPage({ test }: Props) {
                         Selected Lab
                       </p>
                       <div className="flex items-center gap-2 mt-1">
-                        <p className="text-sm text-gray-600 dark:text-gray-400 truncate max-w-[150px]">
+                        <p className="text-sm text-gray-600 dark:text-gray-400 truncate max-w-37.5">
                           {lab.name}
                         </p>
                         <button
@@ -283,7 +283,7 @@ export default function MainTestPage({ test }: Props) {
             </div>
 
             {/* Desktop Action Area */}
-            <div className="hidden md:flex flex-col items-end min-w-[200px] border-l border-gray-100 dark:border-white/10 pl-8">
+            <div className="hidden md:flex flex-col items-end min-w-50 border-l border-gray-100 dark:border-white/10 pl-8">
               {labs.length > 0 ? (
                 <>
                   <div className="flex flex-col items-end mb-6">
@@ -562,7 +562,7 @@ const DetailsSection = memo(
     testDetails: TestDetails;
   }) => {
     return (
-      <section className="bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 shadow-sm rounded-2xl p-6 md:p-8 space-y-10">
+      <section className="bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 shadow-sm rounded-2xl p-4 sm:p-6 md:p-8 space-y-10">
         {labBaseDetails.packages.length > 0 && (
           <ExpandableSection icon={<PackageIcon />} title="Packages Include">
             <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-400">
@@ -665,19 +665,23 @@ function ExpandableSection({
   }, [children]);
 
   return (
-    <div className="flex gap-4">
-      <div className="text-primary dark:text-blue-400 mt-1 shrink-0">
-        {icon}
-      </div>
-      <div className="flex-1 min-w-0">
+    <div className="flex flex-col">
+      <div className="flex gap-4">
+        <div className="text-primary dark:text-blue-400 mt-1 shrink-0">
+          {icon}
+        </div>
         <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
           {title}
         </h2>
+      </div>
+      <div className="flex-1 min-w-0">
         <motion.div
           animate={{ height: expanded || !needsExpansion ? "auto" : "100px" }}
           className="relative overflow-hidden"
         >
-          <div ref={contentRef}>{children}</div>
+          <div ref={contentRef} className="text-sm">
+            {children}
+          </div>
           {!expanded && needsExpansion && (
             <div className="absolute bottom-0 left-0 w-full h-12 bg-linear-to-t from-white dark:from-[#111] to-transparent pointer-events-none" />
           )}
