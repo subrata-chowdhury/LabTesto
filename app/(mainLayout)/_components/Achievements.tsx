@@ -1,14 +1,8 @@
+// app/(mainLayout)/_components/Achievements.tsx
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 import { motion, useInView, Variants } from "framer-motion";
 import SectionHeader from "./SectionHeader";
-
-import apolloLogo from "@/assets/HomePage/achievements/apollo-diagnostics.png";
-import drLalLogo from "@/assets/HomePage/achievements/dr-lal.png";
-import metropolisLogo from "@/assets/HomePage/achievements/metropolis.png";
-import srlLogo from "@/assets/HomePage/achievements/srl-diagnostics.png";
-import thyrocareLogo from "@/assets/HomePage/achievements/thyrocare.png";
-import Image, { StaticImageData } from "next/image";
 
 // Shared Animation Variants for staggered lists
 const containerVariants: Variants = {
@@ -125,22 +119,22 @@ export function Achievements() {
         className="z-10 mt-24 pt-10 border-t border-gray-200 dark:border-white/10 max-w-6xl mx-auto w-full px-6"
       >
         <div className="flex flex-wrap md:flex-nowrap items-center justify-center md:justify-between gap-8 md:gap-4 lg:gap-8">
-          <LabLogo name="Dr. Lal PathLabs" img={drLalLogo} />
+          <LabLogo name="Dr. Lal PathLabs" />
           <div className="w-px h-8 bg-gray-200 dark:bg-white/10 hidden md:block"></div>
-          <LabLogo name="Thyrocare" img={thyrocareLogo} />
+          <LabLogo name="Thyrocare" />
           <div className="w-px h-8 bg-gray-200 dark:bg-white/10 hidden md:block"></div>
-          <LabLogo name="SRL Diagnostics" img={srlLogo} />
+          <LabLogo name="SRL Diagnostics" />
           <div className="w-px h-8 bg-gray-200 dark:bg-white/10 hidden md:block"></div>
-          <LabLogo name="Metropolis" img={metropolisLogo} />
+          <LabLogo name="Metropolis" />
           <div className="w-px h-8 bg-gray-200 dark:bg-white/10 hidden md:block"></div>
-          <LabLogo name="Apollo Diagnostics" img={apolloLogo} />
+          <LabLogo name="Apollo Diagnostics" />
         </div>
       </motion.div>
     </section>
   );
 }
 
-// Extracted logic for animated numbers
+// SEO-Optimized Animated Number Logic
 function AnimatedNumber({
   value,
   className = "",
@@ -148,7 +142,8 @@ function AnimatedNumber({
   value: number;
   className?: string;
 }) {
-  const [realValue, setRealValue] = useState(0);
+  // Initialize with 'value' so the server renders the final number for SEO crawlers
+  const [realValue, setRealValue] = useState(value);
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.5 });
 
@@ -157,14 +152,17 @@ function AnimatedNumber({
       const duration = 2000; // 2 seconds
       const steps = 60;
       const increment = value / steps;
+
+      // Start counting from 0 on the client side when the element is in view
       let currentValue = 0;
+      setRealValue(0);
 
       const interval = setInterval(() => {
+        currentValue += increment;
         if (currentValue >= value) {
           clearInterval(interval);
           setRealValue(value);
         } else {
-          currentValue += increment;
           setRealValue(currentValue);
         }
       }, duration / steps);
@@ -181,10 +179,12 @@ function AnimatedNumber({
 }
 
 // Extracted UI wrapper for standard text logos
-function LabLogo({ name, img }: { name: string; img: StaticImageData }) {
+function LabLogo({ name }: { name: string }) {
   return (
-    <div className="flex items-center justify-center opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer">
-      <Image src={img} alt={name} width={140} height={50} />
+    <div className="flex items-center justify-center grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer">
+      <span className="text-sm sm:text-base lg:text-lg font-black tracking-widest text-primary dark:text-gray-300 uppercase text-center">
+        {name}
+      </span>
     </div>
   );
 }
