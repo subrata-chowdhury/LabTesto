@@ -1,15 +1,16 @@
+// components/Inputs/Input.tsx
 "use client";
 import React from "react";
 
 type Props = {
-  label: string;
+  label?: string;
   value: string;
   min?: number;
   max?: number;
   onChange: (val: string) => void;
   name?: string;
   placeholder?: string;
-  type?: "text" | "number";
+  type?: "text" | "number" | "email" | "tel" | "url";
   error?: string;
   inputStyle?: React.CSSProperties;
   containerClass?: string;
@@ -33,9 +34,16 @@ const Input = ({
   ref,
 }: Props) => {
   return (
-    <label className={"flex flex-col gap-1 " + containerClass}>
-      <div className={labelClass}>{label}</div>
+    <label className={`flex flex-col gap-1.5 ${containerClass}`}>
+      {label && (
+        <span
+          className={`text-sm font-semibold text-gray-700 dark:text-gray-300 ${labelClass}`}
+        >
+          {label}
+        </span>
+      )}
       <input
+        ref={ref}
         type={type}
         placeholder={placeholder}
         min={min}
@@ -43,12 +51,15 @@ const Input = ({
         name={name}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="px-3 py-2 border-2 border-gray-300/60 dark:border-white/20 rounded outline-none bg-transparent"
         style={inputStyle}
-        ref={ref}
+        className={`px-4 py-2.5 w-full bg-white dark:bg-[#111] border ${
+          error && error.length > 0
+            ? "border-red-500 focus:ring-red-500/20"
+            : "border-gray-300 dark:border-white/20 focus:border-primary focus:ring-primary/20 dark:focus:border-primary dark:focus:ring-primary/30"
+        } rounded-xl outline-none transition-all duration-200 focus:ring-4 text-gray-900 dark:text-white placeholder:text-gray-400`}
       />
-      {error && error?.length > 0 && (
-        <p className="text-red-500 text-xs font-medium">{error}</p>
+      {error && error.length > 0 && (
+        <p className="text-red-500 text-xs font-medium mt-0.5">{error}</p>
       )}
     </label>
   );

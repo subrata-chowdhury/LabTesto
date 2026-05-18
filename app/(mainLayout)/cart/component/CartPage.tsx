@@ -1,3 +1,4 @@
+// app/(mainLayout)/cart/component/CartPage.tsx
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import fetcher from "@/lib/fetcher";
@@ -15,6 +16,8 @@ import { User } from "../../profile/page";
 import CheckBox from "@/components/Inputs/CheckBox";
 import { useItemCountContext } from "@/app/contexts/ItemCountContext";
 import SpinLoader from "@/components/loader/SpinLoader";
+import { AnimatePresence, motion } from "framer-motion";
+import { FaShoppingBag } from "react-icons/fa";
 
 export type CartItem = {
   product: {
@@ -41,6 +44,13 @@ type PageProps = {
   filterCartFunc?: (item: CartItem) => boolean;
   onFetchedCart?: () => void;
   showRemoveBtn?: boolean;
+};
+
+type UpdateCartPayload = {
+  product: { test: string; lab: string };
+  patientDetails?: PatientDetails[];
+  address?: { pin: number; city: string; district: string; other?: string };
+  quantity: number;
 };
 
 export const CartPage = ({
@@ -73,7 +83,6 @@ export const CartPage = ({
   const orderItems = useRef<TempOrderDetails>(null);
 
   const { setItemCount } = useItemCountContext();
-
   const navigate = useRouter();
 
   useEffect(() => {
@@ -104,22 +113,20 @@ export const CartPage = ({
         );
         response.body.items.forEach((item) => {
           const labPrice =
-            item.product.test.labsDetails[item.product.lab._id].offer;
+            item.product.test.labsDetails[item.product.lab._id]?.offer;
           if (labPrice) {
             item.product.price = labPrice;
           }
         });
         setItemCount(response.body.items.length || 0);
-        setCart(response.body); // Assuming you want the first cart
+        setCart(response.body);
         if (onFetchedCart) onFetchedCart();
       }
     } catch (err) {
       console.log(err);
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("An unknown error occurred");
-      }
+      setError(
+        err instanceof Error ? err.message : "An unknown error occurred",
+      );
     } finally {
       setLoading(false);
     }
@@ -138,28 +145,10 @@ export const CartPage = ({
     }
   }
 
-  async function updateCart(
-    item: {
-      product: { test: string; lab: string };
-      patientDetails?: PatientDetails[];
-      address?: { pin: number; city: string; district: string; other?: string };
-      quantity: number;
-    },
-    onSuccess: () => void,
-  ) {
+  async function updateCart(item: UpdateCartPayload, onSuccess: () => void) {
     try {
       const response = await fetcher.put<
-        {
-          product: { test: string; lab: string };
-          patientDetails?: PatientDetails[];
-          address?: {
-            pin: number;
-            city: string;
-            district: string;
-            other?: string;
-          };
-          quantity: number;
-        },
+        UpdateCartPayload,
         { message: string }
       >("/cart", item);
       if (response.status === 200 && response.body) onSuccess();
@@ -170,12 +159,9 @@ export const CartPage = ({
   }
 
   async function changeQuantity(test: string, lab: string, quantity: number) {
-    const updatedItem = {
-      product: {
-        test: test,
-        lab: lab,
-      },
-      quantity: quantity,
+    const updatedItem: UpdateCartPayload = {
+      product: { test, lab },
+      quantity,
     };
     await updateCart(updatedItem, fetchCart);
   }
@@ -187,8 +173,6 @@ export const CartPage = ({
       { message: string; id: string }
     >(`/orders`, orderDetails);
     if (res.status === 200) {
-      // await fetcher.delete('/cart');
-      // fetchCart();
       toast.success("Your orders has been placed");
       await fetcher.get<{ items: number }>("/cart/count").then((res) => {
         if (res.status === 200 && res.body) {
@@ -203,11 +187,8 @@ export const CartPage = ({
   }
 
   function verify(): boolean {
-    if (!selectedAddress) {
-      toast.warning("Please select a valid address");
-      return false;
-    }
     if (
+      !selectedAddress ||
       !selectedAddress.pin ||
       !selectedAddress.city ||
       !selectedAddress.district ||
@@ -223,110 +204,133 @@ export const CartPage = ({
   if (showLoading) return <SpinLoader />;
   if (error)
     return (
-      <div className="flex justify-center items-center h-screen text-red-500">
-        Please Reload Your Page Or Click &nbsp;
-        <button onClick={() => window.location.reload()}>Reload</button>
-      </div>
-    );
-  if (!cart)
-    return (
-      <div className="flex justify-center items-center h-screen">
-        No items in the cart
+      <div className="flex flex-col justify-center items-center h-[70vh] text-center">
+        <p className="text-red-500 mb-4">{error}</p>
+        <button
+          className="bg-primary text-white px-6 py-2 rounded-lg"
+          onClick={() => window.location.reload()}
+        >
+          Reload Page
+        </button>
       </div>
     );
 
+  const cartTotal =
+    cart?.items?.reduce(
+      (total, item) => total + (item.product.price || 0) * item.quantity,
+      0,
+    ) || 0;
+
   return (
-    <div className="flex-1 flex flex-col p-4 bg-gray-100 dark:bg-white/0 min-h-screen">
-      <SelectLocation
-        selectedAddress={selectedAddress}
-        onChange={(address) => setSelectedAddress(address)}
-      />
-      <div className="w-full flex gap-4 justify-between items-center py-3 px-4 bg-white dark:bg-black rounded shadow mb-5 font-medium">
-        <CheckBox
-          label="Take the details at my location"
-          value={!isPatientDetailsRequired}
-          onChange={() => setIsPatientDetailsRequired((val) => !val)}
+    <div className="flex-1 flex justify-center bg-gray-50 dark:bg-black min-h-screen pb-32">
+      <div className="w-full max-w-4xl px-4 py-8 flex flex-col">
+        <h1 className="text-3xl font-extrabold mb-6 text-gray-900 dark:text-white tracking-tight">
+          Your Cart
+        </h1>
+
+        <SelectLocation
+          selectedAddress={selectedAddress}
+          onChange={(address) => setSelectedAddress(address)}
         />
-      </div>
-      {/* <div className='w-full flex gap-4 justify-between items-center py-3 px-4 bg-white rounded shadow mb-5 text-sm'>
-                {sampleTakenDateTime && <div>
-                    <div className='font-medium'><span className='font-normal'>Start:</span> {sampleTakenDateTime.start.toDateString()}, {sampleTakenDateTime.start.toTimeString().split(' ')[0]}</div>
-                    <div className='font-medium'><span className='font-normal'>End:</span> {sampleTakenDateTime.end.toDateString()}, {sampleTakenDateTime.end.toTimeString().split(' ')[0]}</div> */}
-      {/* <div className='text-sm text-gray-600'>{selectedAddress.other} | {selectedAddress.phone}</div> */}
-      {/* </div>}
-                {!sampleTakenDateTime && <div className='font-medium text-base'><span className='font-normal'>Sample Taken Time:</span> Not Scheduled</div>}
-                <div className='px-3 py-1 rounded cursor-pointer text-primary font-medium border-2 border-primary text-base' onClick={() => setShowScheduleOrderTimesModel(true)}>Schedule</div>
-            </div> */}
-      {loading && <CartLoader />}
-      {!loading && cart.items?.length > 0 ? (
-        <>
-          <h1 className="text-2xl font-bold mb-4">Cart Items</h1>
-          <ul className="space-y-4 flex-1 pb-32">
-            {cart.items.map((item, index) => (
-              <CartItemCard
-                key={index}
-                item={item}
-                isPatientDetailsRequired={isPatientDetailsRequired}
-                onRemove={showRemoveBtn ? () => fetchCart() : undefined}
-                onQuantityChange={(quantity) =>
-                  changeQuantity(
-                    item.product.test._id,
-                    item.product.lab._id,
-                    quantity,
-                  )
-                }
-                onOrder={() => {
-                  if (!verify()) return;
-                  setShowConfirmPopup({ item, index });
-                }}
-                onPatientClick={(i) =>
-                  setShowPatientPopup({ cartIndex: index, patientIndex: i })
-                }
-              />
-            ))}
+
+        <div className="w-full flex gap-4 justify-between items-center py-4 px-5 bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-2xl shadow-sm mb-6">
+          <CheckBox
+            label="Take the details at my location"
+            value={!isPatientDetailsRequired}
+            onChange={() => setIsPatientDetailsRequired((val) => !val)}
+          />
+        </div>
+
+        {cart?.items?.length ? (
+          <ul className="space-y-4 flex-1">
+            <AnimatePresence>
+              {cart.items.map((item, index) => (
+                <CartItemCard
+                  key={`${item.product.test._id}-${item.product.lab._id}`}
+                  item={item}
+                  isPatientDetailsRequired={isPatientDetailsRequired}
+                  onRemove={showRemoveBtn ? () => fetchCart() : undefined}
+                  onQuantityChange={(quantity) =>
+                    changeQuantity(
+                      item.product.test._id,
+                      item.product.lab._id,
+                      quantity,
+                    )
+                  }
+                  onOrder={() => {
+                    if (!verify()) return;
+                    setShowConfirmPopup({ item, index });
+                  }}
+                  onPatientClick={(i) =>
+                    setShowPatientPopup({ cartIndex: index, patientIndex: i })
+                  }
+                />
+              ))}
+            </AnimatePresence>
           </ul>
-          <div className="p-4 fixed bottom-0 left-0 w-screen flex justify-between items-center bg-white dark:bg-black">
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex flex-col justify-center items-center h-64 bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-2xl shadow-sm"
+          >
+            <div className="w-20 h-20 bg-gray-100 dark:bg-white/5 text-gray-400 rounded-full flex items-center justify-center mb-4">
+              <FaShoppingBag size={32} />
+            </div>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              Your Cart is Empty
+            </h2>
+            <p className="text-gray-500 mt-2 text-center max-w-sm">
+              Looks like you haven't added any tests to your cart yet.
+            </p>
+          </motion.div>
+        )}
+      </div>
+
+      {/* Fixed Bottom Bar */}
+      {cart?.items?.length && (cart?.items?.length || 0) > 0 && (
+        <div className="fixed bottom-0 left-0 w-full bg-white dark:bg-[#1a1a1a] border-t border-gray-200 dark:border-white/10 p-4 px-6 md:px-10 shadow-[0_-10px_30px_-15px_rgba(0,0,0,0.1)] flex justify-between items-center">
+          <div className="max-w-4xl mx-auto w-full flex justify-between items-center">
             <div>
-              Total:{" "}
-              <div className="text-2xl font-semibold">
-                ₹
-                {cart.items
-                  .reduce(
-                    (total, item) =>
-                      total + (item.product.price || 0) * item.quantity,
-                    0,
-                  )
-                  .toFixed(2)}
-              </div>{" "}
-              <div className="text-gray-500 dark:text-gray-300">
-                + ₹0 Delivery Charges
+              <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">
+                Total Amount
+              </p>
+              <div className="text-2xl sm:text-3xl font-extrabold text-primary dark:text-white">
+                ₹{cartTotal.toFixed(2)}
+              </div>
+              <div className="text-xs text-green-600 dark:text-green-400 font-medium mt-0.5">
+                + Free Delivery
               </div>
             </div>
             <button
-              className="bg-primary dark:bg-white/20 text-white px-5 py-2 rounded-xs"
+              className="bg-primary hover:bg-blue-700 dark:bg-primary/90 dark:hover:bg-primary text-white font-bold px-8 py-3.5 rounded-xl transition-all shadow-md active:scale-95 text-lg tracking-wide"
               onClick={async () => {
-                // verification
-                if (cart?.items?.length <= 0) toast.warning("Cart is empty");
+                if ((cart?.items?.length || 0) <= 0)
+                  return toast.warning("Cart is empty");
 
-                if (isPatientDetailsRequired)
-                  for (let index = 0; index < cart.items.length; index++) {
+                if (isPatientDetailsRequired) {
+                  for (
+                    let index = 0;
+                    index < (cart?.items?.length || 0);
+                    index++
+                  ) {
                     if (
-                      cart.items[index].patientDetails.length <
-                      cart.items[index].quantity
+                      cart?.items[index].patientDetails.length <
+                      cart?.items[index].quantity
                     ) {
                       setShowPatientPopup({
                         cartIndex: index,
-                        patientIndex: cart.items[index].patientDetails.length,
+                        patientIndex: cart?.items[index].patientDetails.length,
                       });
                       return;
                     }
                   }
+                }
 
                 if (!verify()) return;
-                if (!selectedAddress) {
-                  toast.warning("Please select a valid address");
-                  return;
-                }
+                if (!selectedAddress)
+                  return toast.warning("Please select a valid address");
+
                 orderItems.current = {
                   items: cart.items.map((item) => ({
                     product: {
@@ -340,86 +344,69 @@ export const CartPage = ({
                 setShowScheduleOrderTimesModel(true);
               }}
             >
-              Order All
+              Checkout All
             </button>
           </div>
-        </>
-      ) : (
-        <div className="flex justify-center items-center h-screen">
-          Cart is Empty
         </div>
       )}
-      {showPatientPopup?.cartIndex != null && (
+
+      {showPatientPopup?.cartIndex != null && cart && (
         <PatientDetailsPopup
           patients={patientDetails}
           patientDetails={
-            cart.items[showPatientPopup?.cartIndex || 0].patientDetails[
+            cart.items[showPatientPopup.cartIndex].patientDetails[
               showPatientPopup.patientIndex
             ]
           }
           onClose={() => setShowPatientPopup(null)}
           onSave={async (values) => {
-            cart.items[showPatientPopup?.cartIndex || 0].patientDetails[
+            cart.items[showPatientPopup.cartIndex].patientDetails[
               showPatientPopup.patientIndex
             ] = values;
             updateCart(
               {
                 product: {
-                  test: cart.items[showPatientPopup?.cartIndex || 0].product
-                    .test._id,
-                  lab: cart.items[showPatientPopup?.cartIndex || 0].product.lab
-                    ._id,
+                  test: cart.items[showPatientPopup.cartIndex].product.test._id,
+                  lab: cart.items[showPatientPopup.cartIndex].product.lab._id,
                 },
                 patientDetails:
-                  cart.items[showPatientPopup?.cartIndex || 0].patientDetails,
-                quantity: cart.items[showPatientPopup?.cartIndex || 0].quantity,
+                  cart.items[showPatientPopup.cartIndex].patientDetails,
+                quantity: cart.items[showPatientPopup.cartIndex].quantity,
               },
-              () => {
-                fetchCart();
-                // setCart({ ...cart });
-              },
+              () => fetchCart(),
             );
             setShowPatientPopup(null);
           }}
           onRemove={() => {
-            cart.items[showPatientPopup?.cartIndex || 0].patientDetails.splice(
+            cart.items[showPatientPopup.cartIndex].patientDetails.splice(
               showPatientPopup.patientIndex,
               1,
             );
             updateCart(
               {
                 product: {
-                  test: cart.items[showPatientPopup?.cartIndex || 0].product
-                    .test._id,
-                  lab: cart.items[showPatientPopup?.cartIndex || 0].product.lab
-                    ._id,
+                  test: cart.items[showPatientPopup.cartIndex].product.test._id,
+                  lab: cart.items[showPatientPopup.cartIndex].product.lab._id,
                 },
                 patientDetails:
-                  cart.items[showPatientPopup?.cartIndex || 0].patientDetails,
-                quantity: cart.items[showPatientPopup?.cartIndex || 0].quantity,
+                  cart.items[showPatientPopup.cartIndex].patientDetails,
+                quantity: cart.items[showPatientPopup.cartIndex].quantity,
               },
-              () => {
-                fetchCart();
-                // setCart({ ...cart });
-              },
+              () => fetchCart(),
             );
             setShowPatientPopup(null);
           }}
         />
       )}
+
       {showScheduleOrderTimesModel && (
         <OrderTimeSelector
           excludeTimes={allocatedTimes}
           onClose={() => setShowScheduleOrderTimesModel(false)}
           onChange={async (dateTime) => {
             if (!verify()) return;
-            if (
-              dateTime === null ||
-              dateTime.start === null ||
-              dateTime.end === null
-            ) {
+            if (!dateTime || !dateTime.start || !dateTime.end) {
               toast.warning("Please select sample taken date and time");
-              setShowScheduleOrderTimesModel(true);
               return false;
             }
             if (dateTime.start > dateTime.end) {
@@ -440,25 +427,29 @@ export const CartPage = ({
           }}
         />
       )}
+
       {showConfirmPopup && (
         <ConfirmationModel
           msg={
-            <div className="px-6 pt-6">
-              Are you sure you want to order only this test?
-              <br />
-              <div className="font-semibold">
+            <div className="px-6 pt-6 text-center">
+              <h3 className="text-xl font-bold mb-2">Order Single Test?</h3>
+              <p className="text-gray-600 dark:text-gray-400">
+                Are you sure you want to order only this test:
+              </p>
+              <div className="font-bold text-lg text-primary dark:text-blue-400 my-3 bg-gray-50 dark:bg-white/5 p-3 rounded-lg border border-gray-100 dark:border-white/10">
                 {showConfirmPopup.item.product.test.name}
               </div>
-              from{" "}
-              <span className="text-gray-500">
-                {showConfirmPopup.item.product.lab.name}
-              </span>
+              <p className="text-sm">
+                from{" "}
+                <span className="font-semibold">
+                  {showConfirmPopup.item.product.lab.name}
+                </span>
+              </p>
             </div>
           }
           onDecline={() => setShowConfirmPopup(null)}
           onApprove={async () => {
-            // verify patient details
-            if (isPatientDetailsRequired)
+            if (isPatientDetailsRequired) {
               if (
                 showConfirmPopup.item.patientDetails.length <
                 showConfirmPopup.item.quantity
@@ -469,12 +460,11 @@ export const CartPage = ({
                 });
                 return;
               }
-
-            if (!verify()) return;
-            if (!selectedAddress) {
-              toast.warning("Please select a valid address");
-              return;
             }
+            if (!verify()) return;
+            if (!selectedAddress)
+              return toast.warning("Please select a valid address");
+
             orderItems.current = {
               items: [
                 {
@@ -504,39 +494,15 @@ type Address = {
 };
 
 type TempOrderDetails = {
-  items: {
-    product: {
-      test: string;
-      lab: string;
-    };
-    quantity: number;
-  }[];
+  items: { product: { test: string; lab: string }; quantity: number }[];
   address: Address;
-  sampleTakenDateTime?: {
-    start: Date;
-    end: Date;
-  };
-  reportDeliverTime?: {
-    start: Date;
-    end: Date;
-  };
+  sampleTakenDateTime?: { start: Date; end: Date };
+  reportDeliverTime?: { start: Date; end: Date };
 };
 
 type OrderDetails = {
-  items: {
-    product: {
-      test: string;
-      lab: string;
-    };
-    quantity: number;
-  }[];
+  items: { product: { test: string; lab: string }; quantity: number }[];
   address: Address;
-  sampleTakenDateTime: {
-    start: Date;
-    end: Date;
-  };
-  reportDeliverTime?: {
-    start: Date;
-    end: Date;
-  };
+  sampleTakenDateTime: { start: Date; end: Date };
+  reportDeliverTime?: { start: Date; end: Date };
 };

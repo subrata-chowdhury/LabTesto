@@ -1,4 +1,7 @@
+// components/Inputs/CheckBox.tsx
+"use client";
 import React from "react";
+import { FiCheck } from "react-icons/fi";
 
 type Props = {
   label?: string;
@@ -13,75 +16,43 @@ const CheckBox = ({
   value = true,
   onChange = () => {},
   disabled,
-  size = 24,
+  size = 20, // Reduced default size for modern aesthetics
 }: Props) => {
   return (
-    <div
-      className={`flex items-center gap-2 ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+    <button
+      type="button"
+      role="checkbox"
+      aria-checked={value}
+      disabled={disabled}
+      className={`group flex items-center gap-3 outline-none ${
+        disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+      }`}
       onClick={() => {
         if (!disabled) onChange(!value);
       }}
     >
-      {!value && (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width={size}
-          height={size}
-          viewBox="0 0 25 24"
-          fill="none"
-        >
-          <path
-            d="M19.25 3H5.75C4.50736 3 3.5 4.00736 3.5 5.25V18.75C3.5 19.9926 4.50736 21 5.75 21H19.25C20.4926 21 21.5 19.9926 21.5 18.75V5.25C21.5 4.00736 20.4926 3 19.25 3Z"
-            stroke="#CED4DA"
-            strokeWidth="1.5"
-            strokeLinejoin="round"
-          />
-        </svg>
+      <div
+        className={`flex items-center justify-center rounded-md border-2 transition-all duration-200 ease-in-out group-focus-visible:ring-4 group-focus-visible:ring-primary/30 ${
+          value
+            ? "bg-primary border-primary text-white"
+            : "bg-transparent border-gray-300 dark:border-gray-500 group-hover:border-primary dark:group-hover:border-primary"
+        }`}
+        style={{ width: size, height: size }}
+      >
+        <FiCheck
+          strokeWidth={3}
+          size={size * 0.7}
+          className={`transition-transform duration-200 ${
+            value ? "scale-100 opacity-100" : "scale-50 opacity-0"
+          }`}
+        />
+      </div>
+      {label && (
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-300 select-none">
+          {label}
+        </span>
       )}
-      {value && (
-        <div className="relative text-primary dark:text-white/20">
-          <svg
-            className="m-[3px]"
-            width="18"
-            height="18"
-            viewBox="0 0 19 18"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              id="Vector"
-              d="M16.25 0H2.75C1.50736 0 0.5 1.00736 0.5 2.25V15.75C0.5 16.9926 1.50736 18 2.75 18H16.25C17.4926 18 18.5 16.9926 18.5 15.75V2.25C18.5 1.00736 17.4926 0 16.25 0Z"
-              fill="currentColor"
-            />
-          </svg>
-
-          <svg
-            className="absolute top-0 m-1"
-            width="16"
-            height="16"
-            viewBox="0 0 17 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g id="Interface, Essential/Done, Check">
-              <g id="Group">
-                <g id="Group_2">
-                  <path
-                    id="Path"
-                    d="M13.8357 4.33203L6.50237 11.6654L3.16904 8.33203"
-                    stroke="white"
-                    strokeWidth="1.71429"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </g>
-              </g>
-            </g>
-          </svg>
-        </div>
-      )}
-      {label}
-    </div>
+    </button>
   );
 };
 

@@ -1,11 +1,13 @@
+// app/(mainLayout)/cart/component/SelectLocation.tsx
+import { useEffect, useState } from "react";
 import CheckBox from "@/components/Inputs/CheckBox";
 import Model from "@/components/Model";
 import fetcher from "@/lib/fetcher";
-import { useEffect, useState } from "react";
 import { User } from "../../profile/page";
 import { AddressLoader } from "../loading";
 import AddressDetailsPopup from "@/app/components/popups/AddressDetailsPopup";
 import { toast } from "react-toastify";
+import { FaMapMarkerAlt, FaEdit, FaPlus, FaPen } from "react-icons/fa";
 
 export function SelectLocation({
   selectedAddress,
@@ -14,16 +16,7 @@ export function SelectLocation({
   selectedAddress?: Address;
   onChange: (address: Address) => void;
 }) {
-  const [user, setUser] = useState<User>({
-    name: "",
-    email: "",
-    password: "",
-    verified: false,
-    patientDetails: [],
-    address: [],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  });
+  const [user, setUser] = useState<User | null>(null);
   const [showAddressesPopup, setShowAddressesPopup] = useState(false);
   const [showAddAddressDetailsPopup, setShowAddAddressDetailsPopup] = useState<{
     index: number;
@@ -38,108 +31,128 @@ export function SelectLocation({
     const res = await fetcher.get<User>("/user");
     if (res.status === 200 && res.body) {
       setUser(res.body);
-      onChange(res.body.address[0]);
+      if (res.body.address?.length > 0 && !selectedAddress) {
+        onChange(res.body.address[0]);
+      }
       setLoadingAddress(false);
     }
   }
 
-  async function updateUser(user: User) {
-    const res = await fetcher.post<User, User>("/user", user);
+  async function updateUser(updatedUser: User) {
+    const res = await fetcher.post<User, User>("/user", updatedUser);
     if (res.status === 200 && res.body) {
       setUser(res.body);
       toast.success("Address updated successfully");
     }
   }
 
-  if (loadingAddress) return <AddressLoader />;
+  if (loadingAddress || !user) return <AddressLoader />;
 
   return (
     <>
-      <div className="w-full flex justify-between items-center py-3 px-4 bg-white dark:bg-black rounded shadow mb-5">
-        {user.address.length <= 0 && (
-          <div className="text-sm text-gray-600">Add Address</div>
-        )}
-        {selectedAddress && (
-          <div>
-            <div className="font-medium">
-              <span className="font-normal">Deliver to:</span>{" "}
-              {selectedAddress.city}, {selectedAddress.pin}
-            </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">
-              {selectedAddress.other} | {selectedAddress.phone}
-            </div>
+      <div className="w-full flex justify-between items-center py-4 px-5 bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-2xl shadow-sm mb-5 transition-all">
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-500/20 text-orange-500 flex items-center justify-center shrink-0">
+            <FaMapMarkerAlt size={18} />
           </div>
-        )}
-        <div>
-          {user.address.length > 0 && (
-            <div
-              className="px-3 py-1 rounded cursor-pointer text-primary dark:text-white font-medium border-2 border-primary dark:border-white"
-              onClick={() => setShowAddressesPopup(true)}
-            >
-              Change
+          {user.address.length <= 0 ? (
+            <div className="text-gray-600 dark:text-gray-400 font-medium">
+              No Address Found
             </div>
-          )}
-          {user.address.length <= 0 && (
-            <div
-              className="px-3 py-1 rounded cursor-pointer text-primary dark:text-white font-medium border-2 border-primary dark:border-white"
-              onClick={() => setShowAddressesPopup(true)}
-            >
-              Add
+          ) : selectedAddress ? (
+            <div>
+              <div className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                <span className="text-sm text-gray-500 font-normal">
+                  Deliver to:
+                </span>
+                {selectedAddress.city}, {selectedAddress.pin}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400 mt-0.5 line-clamp-1">
+                {selectedAddress.other} • {selectedAddress.phone}
+              </div>
+            </div>
+          ) : (
+            <div className="text-gray-600 dark:text-gray-400 font-medium">
+              Select an address
             </div>
           )}
         </div>
+
+        <button
+          className="shrink-0 px-4 py-2 rounded-lg text-sm font-semibold transition-colors border-2 border-primary text-primary hover:bg-primary hover:text-white dark:border-white/20 dark:text-white dark:hover:bg-white dark:hover:text-black"
+          onClick={() => setShowAddressesPopup(true)}
+        >
+          {user.address.length > 0 ? "Change" : "Add Address"}
+        </button>
       </div>
+
       {showAddressesPopup && (
-        <Model heading="Addresses" onClose={() => setShowAddressesPopup(false)}>
-          <div className="px-7 py-4 pt-6 min-w-80">
-            <div className="grid grid-cols-1 gap-2 sm:gap-4 text-sm pb-4">
-              {user.address.map((address, index) => (
-                <div
-                  key={index}
-                  className="bg-white dark:bg-white/10 p-3 flex gap-3 rounded-md border-2 border-gray-200 dark:border-white/15 cursor-pointer"
-                  onClick={() => {
-                    onChange(address);
-                    setShowAddressesPopup(false);
-                  }}
-                >
-                  <CheckBox
-                    value={
-                      address.pin === selectedAddress?.pin &&
-                      address.city === selectedAddress.city &&
-                      address.district === selectedAddress.district &&
-                      address.other === selectedAddress.other &&
-                      address.phone === selectedAddress.phone
-                    }
-                    onChange={() => {}}
-                  />
-                  <div>
-                    <div className="font-medium">
-                      {address.city}, {address.pin}
-                    </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
-                      {address.other} | {address.phone}
-                    </div>
-                  </div>
+        <Model
+          heading="Select Address"
+          onClose={() => setShowAddressesPopup(false)}
+        >
+          <div className="px-6 py-4 min-w-[320px] max-w-md w-full max-h-[70vh] overflow-y-auto custom-scrollbar">
+            <div className="grid grid-cols-1 gap-3 pb-4">
+              {user.address.map((address, index) => {
+                const isSelected =
+                  address.pin === selectedAddress?.pin &&
+                  address.city === selectedAddress.city &&
+                  address.other === selectedAddress?.other;
+
+                return (
                   <div
-                    className="px-2 py-1 my-auto ms-auto rounded cursor-pointer text-primary dark:text-white font-medium border-2 border-primary dark:border-white/15"
-                    onClick={() => setShowAddAddressDetailsPopup({ index })}
+                    key={index}
+                    className={`p-4 flex gap-4 rounded-xl border-2 items-center transition-colors cursor-pointer ${
+                      isSelected
+                        ? "border-primary bg-primary/5 dark:border-primary/50 dark:bg-primary/10"
+                        : "border-gray-200 dark:border-white/10 hover:border-primary/30 dark:hover:border-white/20 bg-white dark:bg-white/5"
+                    }`}
+                    onClick={() => {
+                      onChange(address);
+                      setShowAddressesPopup(false);
+                    }}
                   >
-                    Edit
+                    <div className="mt-1">
+                      <CheckBox value={isSelected} onChange={() => {}} />
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-semibold text-gray-900 dark:text-white">
+                        {address.city}, {address.pin}
+                      </div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">
+                        {address.other}
+                      </div>
+                      <div className="text-sm font-medium text-gray-500 mt-1">
+                        Phone: {address.phone}
+                      </div>
+                    </div>
+                    <button
+                      className="p-2 h-fit text-gray-400 hover:text-primary dark:hover:text-white transition-colors rounded-md hover:bg-gray-100 dark:hover:bg-white/10"
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent row click
+                        setShowAddAddressDetailsPopup({ index });
+                      }}
+                      aria-label="Edit address"
+                    >
+                      <FaPen size={16} />
+                    </button>
                   </div>
-                </div>
-              ))}
-              <div
-                className="bg-primary dark:bg-white/20 p-2 px-3 flex gap-3 rounded-md text-white cursor-pointer ms-auto"
+                );
+              })}
+
+              <button
+                className="w-full mt-2 py-3 flex items-center justify-center gap-2 rounded-xl text-primary font-semibold border-2 border-dashed border-primary/30 hover:border-primary hover:bg-primary/5 dark:border-white/30 dark:text-white dark:hover:border-white dark:hover:bg-white/10 transition-colors"
                 onClick={() =>
                   setShowAddAddressDetailsPopup({ index: user.address.length })
                 }
               >
-                Add new Address
-              </div>
+                <FaPlus /> Add New Address
+              </button>
             </div>
           </div>
         </Model>
       )}
+
       {showAddAddressDetailsPopup && (
         <AddressDetailsPopup
           addressDetails={user.address?.[showAddAddressDetailsPopup.index]}
@@ -156,7 +169,6 @@ export function SelectLocation({
             updatedAddressDetails[showAddAddressDetailsPopup.index] = values;
             setUser({ ...user, address: updatedAddressDetails });
             await updateUser({ ...user, address: updatedAddressDetails });
-            await fetchUser();
             setShowAddAddressDetailsPopup(null);
           }}
         />

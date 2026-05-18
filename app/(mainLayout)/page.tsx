@@ -60,7 +60,7 @@ export default function Home() {
         </div>
         <section className="mx-4 mb-8">
           <Slide
-            className="lg:h-[75vh] flex flex-col justify-center rounded-xl overflow-hidden shadow-lg"
+            className="lg:h-[75vh] flex flex-col justify-center rounded-xl overflow-hidden"
             slides={3}
             slideElement={({ slide }) => {
               if (slide === 1)
@@ -364,51 +364,121 @@ export function Packages() {
 
 export function Achievements() {
   return (
-    <section className="mx-auto md:w-[95%] flex flex-col py-16 md:py-24">
+    <section className="relative mx-auto flex flex-col py-20 md:py-32 overflow-hidden bg-white dark:bg-[#111] border-y border-gray-100 dark:border-white/5">
+      {/* Decorative Circles matching the UI */}
+      <div className="absolute -top-40 -left-40 w-125 h-125 border-50 border-orange-50 dark:border-orange-500/5 rounded-full pointer-events-none"></div>
+      <div className="absolute -bottom-40 -right-40 w-125 h-125 border-50 border-orange-50 dark:border-orange-500/5 rounded-full pointer-events-none"></div>
+
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.8 }}
         transition={{ duration: 0.6 }}
-        className="flex flex-col items-center"
+        className="z-10 flex flex-col items-center px-4"
       >
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mx-auto px-4">
-          Our Achievements
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center text-primary dark:text-white leading-tight">
+          Building real-world health impact <br className="hidden md:block" />
+          with reliable <span className="text-orange-500">Labs and Tests</span>
         </h1>
-        <div className="w-24 h-1.5 rounded-full bg-primary/40 dark:bg-primary/80 my-5"></div>
+        <p className="mt-6 text-gray-500 dark:text-gray-400 text-center max-w-2xl text-sm sm:text-base">
+          We design, build, and scale high-performance health diagnostics—from
+          routine checkups to specialized pathology profiles—focused on accurate
+          outcomes.
+        </p>
       </motion.div>
 
+      {/* Stats Container */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
-        className="mt-8 px-4 w-full grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto"
+        className="z-10 mt-20 max-w-6xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-0 px-6"
       >
-        <CardType4
+        {/* Left Side Big Stat */}
+        <motion.div
           variants={itemVariants}
-          label="100+"
-          value={100}
-          subText="Labs"
-        />
-        <CardType4
+          className="flex flex-col justify-center items-center md:items-start md:border-r border-gray-200 dark:border-white/10 md:pr-16 lg:pr-24"
+        >
+          <div className="flex items-baseline">
+            <AnimatedNumber
+              value={8000}
+              className="text-6xl sm:text-7xl lg:text-8xl font-extrabold text-orange-500 tracking-tighter"
+            />
+            <span className="text-5xl sm:text-6xl font-black text-orange-500">
+              +
+            </span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-primary dark:text-white mt-2">
+            Tests Delivered
+          </h3>
+          <p className="text-gray-500 dark:text-gray-400 mt-2 text-center md:text-left text-sm sm:text-base">
+            From basic profiles to enterprise systems
+          </p>
+        </motion.div>
+
+        {/* Right Side Smaller Stats */}
+        <motion.div
           variants={itemVariants}
-          label="8000+"
-          value={8000}
-          subText="Tests"
-        />
-        <CardType4
-          variants={itemVariants}
-          label="2000+"
-          value={2000}
-          subText="Clients"
-        />
-        <CardType4
-          variants={itemVariants}
-          label="97%"
-          value={97}
-          subText="Happy Customers"
-        />
+          className="flex flex-col justify-center items-center md:items-start gap-12 md:pl-16 lg:pl-24"
+        >
+          <div className="flex flex-col items-center md:items-start">
+            <div className="flex items-baseline gap-2">
+              <AnimatedNumber
+                value={100}
+                className="text-4xl sm:text-5xl font-black text-orange-500 tracking-tighter"
+              />
+              <span className="text-3xl sm:text-4xl font-black text-orange-500">
+                +
+              </span>
+              <h3 className="text-lg sm:text-xl font-bold text-primary dark:text-white ml-2">
+                Lab Partners
+              </h3>
+            </div>
+            <p className="text-gray-500 dark:text-gray-400 mt-1 text-center md:text-left text-sm sm:text-base">
+              NABL certified, top-rated pathology engines
+            </p>
+          </div>
+
+          <div className="flex flex-col items-center md:items-start">
+            <div className="flex items-baseline gap-2">
+              <AnimatedNumber
+                value={97}
+                className="text-4xl sm:text-5xl font-black text-orange-500 tracking-tighter"
+              />
+              <span className="text-3xl sm:text-4xl font-black text-orange-500">
+                %
+              </span>
+              <h3 className="text-lg sm:text-xl font-bold text-primary dark:text-white ml-2">
+                Happy Customers
+              </h3>
+            </div>
+            <p className="text-gray-500 dark:text-gray-400 mt-1 text-center md:text-left text-sm sm:text-base">
+              Across routine, specialized, and preventive care
+            </p>
+          </div>
+        </motion.div>
+      </motion.div>
+
+      {/* Logos Strip */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+        className="z-10 mt-24 pt-10 border-t border-gray-200 dark:border-white/10 max-w-6xl mx-auto w-full px-6"
+      >
+        <div className="flex flex-wrap md:flex-nowrap items-center justify-center md:justify-between gap-8 md:gap-4 lg:gap-8">
+          <LabLogo name="Dr. Lal PathLabs" />
+          <div className="w-px h-8 bg-gray-200 dark:bg-white/10 hidden md:block"></div>
+          <LabLogo name="Thyrocare" />
+          <div className="w-px h-8 bg-gray-200 dark:bg-white/10 hidden md:block"></div>
+          <LabLogo name="SRL Diagnostics" />
+          <div className="w-px h-8 bg-gray-200 dark:bg-white/10 hidden md:block"></div>
+          <LabLogo name="Metropolis" />
+          <div className="w-px h-8 bg-gray-200 dark:bg-white/10 hidden md:block"></div>
+          <LabLogo name="Apollo Diagnostics" />
+        </div>
       </motion.div>
     </section>
   );
@@ -568,29 +638,21 @@ function CardType3({
   );
 }
 
-interface CardType4Props extends HTMLMotionProps<"div"> {
-  label: string;
-  value: number;
-  subText?: string;
-  description?: string;
-  icon?: StaticImageData;
-}
-
-function CardType4({
-  label,
+// Extracted logic for animated numbers
+function AnimatedNumber({
   value,
-  subText,
-  icon,
   className = "",
-  ...props
-}: CardType4Props) {
+}: {
+  value: number;
+  className?: string;
+}) {
   const [realValue, setRealValue] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.5 });
 
   useEffect(() => {
     if (isInView) {
-      const duration = 2000;
+      const duration = 2000; // 2 seconds
       const steps = 60;
       const increment = value / steps;
       let currentValue = 0;
@@ -601,7 +663,7 @@ function CardType4({
           setRealValue(value);
         } else {
           currentValue += increment;
-          setRealValue(Math.floor(currentValue));
+          setRealValue(currentValue);
         }
       }, duration / steps);
 
@@ -610,29 +672,19 @@ function CardType4({
   }, [value, isInView]);
 
   return (
-    <motion.div
-      ref={ref}
-      whileHover={{ scale: 1.02 }}
-      className={`flex flex-col items-center justify-center p-8 bg-white dark:bg-[#111] rounded-2xl border border-gray-100 dark:border-white/10 shadow-lg shadow-black/5 dark:shadow-white/5 h-40 ${className}`}
-      {...props}
-    >
-      {icon && (
-        <figure className="mb-3">
-          <Image
-            src={icon}
-            alt=""
-            className="opacity-80"
-            width={40}
-            height={40}
-          />
-        </figure>
-      )}
-      <span className="text-primary dark:text-white text-4xl sm:text-5xl font-extrabold tracking-tight">
-        {realValue >= value ? label : realValue === 0 ? label : realValue}
+    <span ref={ref} className={className}>
+      {Math.floor(realValue)}
+    </span>
+  );
+}
+
+// Extracted UI wrapper for standard text logos
+function LabLogo({ name }: { name: string }) {
+  return (
+    <div className="flex items-center justify-center grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-pointer">
+      <span className="text-sm sm:text-base lg:text-lg font-extrabold tracking-widest text-primary dark:text-gray-200 uppercase text-center">
+        {name}
       </span>
-      <span className="text-gray-500 dark:text-gray-400 font-medium mt-2 text-sm sm:text-base uppercase tracking-wider">
-        {subText}
-      </span>
-    </motion.div>
+    </div>
   );
 }

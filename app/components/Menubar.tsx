@@ -1,7 +1,6 @@
 // app/components/Menubar.tsx
 "use client";
 
-import Image from "next/image";
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -10,15 +9,20 @@ import fetcher from "@/lib/fetcher";
 
 import SelectTest from "./SelectTest";
 import { useItemCountContext } from "../contexts/ItemCountContext";
-import logout from "@/assets/Menubar/logout.svg";
-import { CartIcon } from "@/assets/reactIcon/Cart";
-import LabIcon from "@/assets/reactIcon/test/Lab";
-import { FilledCartIcon } from "@/assets/reactIcon/menubar/FilledCart";
-import { OrderIcon } from "@/assets/reactIcon/menubar/Orders";
-import { AboutIcon } from "@/assets/reactIcon/menubar/About";
-import { ContactIcon } from "@/assets/reactIcon/menubar/Contact";
-import { NotificationIcon } from "@/assets/reactIcon/menubar/Notification";
-import UserIcon from "@/assets/reactIcon/User";
+
+import {
+  FiShoppingCart,
+  FiUser,
+  FiMenu,
+  FiX,
+  FiSearch,
+  FiPackage,
+  FiBell,
+  FiInfo,
+  FiPhoneCall,
+  FiLogOut,
+} from "react-icons/fi";
+import { MdOutlineScience } from "react-icons/md";
 
 const Menubar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +40,8 @@ const Menubar = () => {
     function handleClickOutside(event: MouseEvent) {
       if (
         profileRef.current &&
-        !profileRef.current.contains(event.target as Node)
+        event.target instanceof Node &&
+        !profileRef.current.contains(event.target)
       ) {
         setShowProfilePopup(false);
       }
@@ -81,19 +86,7 @@ const Menubar = () => {
               className="text-gray-900 dark:text-white p-2 rounded-md hover:bg-gray-100 dark:hover:bg-white/10 transition-colors focus:outline-none"
               aria-label="Open Menu"
             >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16m-7 6h7"
-                ></path>
-              </svg>
+              <FiMenu className="w-6 h-6" />
             </button>
           </div>
 
@@ -147,7 +140,7 @@ const Menubar = () => {
                       {(itemCount || 0) > 9 ? "9+" : itemCount}
                     </span>
                   )}
-                  <CartIcon size={24} />
+                  <FiShoppingCart size={24} />
                 </Link>
 
                 <div className="hidden md:block relative" ref={profileRef}>
@@ -157,7 +150,7 @@ const Menubar = () => {
                     aria-expanded={showProfilePopup}
                     aria-label="User Profile"
                   >
-                    <UserIcon size={20} />
+                    <FiUser size={20} />
                   </button>
 
                   <AnimatePresence>
@@ -280,27 +273,9 @@ export function SearchBar({
         aria-label="Toggle Search"
       >
         {showSearchBar ? (
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M6 18L18 6M6 6l12 12"
-            ></path>
-          </svg>
+          <FiX className="w-4 h-4" />
         ) : (
-          <svg
-            className="w-4 h-4"
-            fill="currentColor"
-            viewBox="0 0 56.966 56.966"
-          >
-            <path d="M55.146,51.887L41.588,38.329c3.486-4.191,5.377-9.479,5.377-14.979C46.965,10.478,36.486,0,23.482,0 C10.479,0,0,10.478,0,23.482c0,13.004,10.479,23.482,23.482,23.482c5.5,0,10.788-1.891,14.979-5.377l13.558,13.558 c1.219,1.219,3.195,1.219,4.414,0C56.365,55.082,56.365,53.106,55.146,51.887z M23.482,41.965 c-10.214,0-18.482-8.268-18.482-18.482S13.268,5,23.482,5s18.482,8.268,18.482,18.482S33.696,41.965,23.482,41.965z" />
-          </svg>
+          <FiSearch className="w-4 h-4" />
         )}
       </button>
     </div>
@@ -347,19 +322,7 @@ function MobileMenubar({
             onClick={onClose}
             className="p-2 text-gray-500 hover:text-gray-900 dark:hover:text-white rounded-full bg-gray-50 dark:bg-white/5"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
-            </svg>
+            <FiX className="w-5 h-5" />
           </button>
         </div>
 
@@ -371,7 +334,7 @@ function MobileMenubar({
               className="flex items-center gap-4 mb-8 bg-gray-50 dark:bg-white/5 p-4 rounded-2xl"
             >
               <div className="w-14 h-14 rounded-full bg-primary/10 dark:bg-white/10 flex items-center justify-center text-primary dark:text-white">
-                <UserIcon size={28} />
+                <FiUser size={28} />
               </div>
               <div className="flex-1 overflow-hidden">
                 <div className="font-bold text-gray-900 dark:text-white truncate">
@@ -397,38 +360,38 @@ function MobileMenubar({
           <div className="flex flex-col gap-2">
             <MobileMenuLink
               href="/tests"
-              icon={<LabIcon size={20} />}
+              icon={<MdOutlineScience size={20} />}
               label="Book a Test"
               onClose={onClose}
             />
             <MobileMenuLink
               href="/cart"
-              icon={<FilledCartIcon size={20} />}
+              icon={<FiShoppingCart size={20} />}
               label="Cart"
               onClose={onClose}
             />
             <MobileMenuLink
               href="/order"
-              icon={<OrderIcon size={20} />}
+              icon={<FiPackage size={20} />}
               label="Orders"
               onClose={onClose}
             />
             <MobileMenuLink
               href="/notifications"
-              icon={<NotificationIcon size={20} />}
+              icon={<FiBell size={20} />}
               label="Notifications"
               onClose={onClose}
             />
             <div className="h-px bg-gray-100 dark:bg-white/10 my-2"></div>
             <MobileMenuLink
               href="/about"
-              icon={<AboutIcon size={20} />}
+              icon={<FiInfo size={20} />}
               label="About Us"
               onClose={onClose}
             />
             <MobileMenuLink
               href="/contact"
-              icon={<ContactIcon size={20} />}
+              icon={<FiPhoneCall size={20} />}
               label="Contact Us"
               onClose={onClose}
             />
@@ -445,13 +408,7 @@ function MobileMenubar({
               }}
               className="mt-auto mb-4 flex items-center justify-center gap-3 w-full py-3.5 bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400 font-semibold rounded-xl transition-colors hover:bg-red-100 dark:hover:bg-red-500/20"
             >
-              <Image
-                src={logout}
-                alt="Logout"
-                className="w-5 h-5 filter invert-[30%] sepia-[90%] saturate-[2000%] hue-rotate-[340deg] dark:invert-0 dark:brightness-200"
-                width={20}
-                height={20}
-              />
+              <FiLogOut size={20} />
               Log Out
             </button>
           )}
@@ -508,7 +465,7 @@ function ProfilePopup({
     >
       <div className="flex flex-col items-center p-4 pb-2">
         <div className="w-16 h-16 rounded-full bg-primary/10 dark:bg-white/10 flex items-center justify-center text-primary dark:text-white mb-3">
-          <UserIcon size={32} />
+          <FiUser size={32} />
         </div>
         <div className="text-center w-full">
           <div className="font-bold text-gray-900 dark:text-white truncate">
@@ -523,13 +480,13 @@ function ProfilePopup({
       <div className="mt-3 border-t border-gray-100 dark:border-white/10 pt-2 flex flex-col gap-1">
         <PopupLink
           href="/profile"
-          icon={<UserIcon size={16} />}
+          icon={<FiUser size={16} />}
           label="Account"
           onClick={onPopupClose}
         />
         <PopupLink
           href="/notifications"
-          icon={<NotificationIcon size={16} />}
+          icon={<FiBell size={16} />}
           label="Notifications"
           onClick={onPopupClose}
         />
@@ -547,13 +504,7 @@ function ProfilePopup({
               window.location.href = "/";
             }}
           >
-            <Image
-              src={logout}
-              alt="Logout"
-              className="w-4 h-4 filter invert-[30%] sepia-[90%] saturate-[2000%] hue-rotate-[340deg] dark:invert-0 dark:brightness-200"
-              width={16}
-              height={16}
-            />
+            <FiLogOut size={16} />
             Log Out
           </button>
         </div>

@@ -1,9 +1,11 @@
+// app/(mainLayout)/profile/patients/page.tsx
 "use client";
 import React, { useEffect, useState } from "react";
 import { User } from "../page";
 import fetcher from "@/lib/fetcher";
 import { toast } from "react-toastify";
 import PatientDetailsPopup from "@/app/components/popups/PatientDetailsPopup";
+import { FiUsers, FiPlus, FiEdit2 } from "react-icons/fi";
 
 const PatientsPage = () => {
   const [user, setUser] = useState<User>({
@@ -35,51 +37,74 @@ const PatientsPage = () => {
     if (res.status === 200 && res.body) {
       setUser(res.body);
       setIsDirty(false);
-      toast.success("User updated successfully");
+      toast.success("Patients updated successfully");
     }
   }
 
   return (
-    <>
-      <section className="w-full">
-        <div className="font-semibold text-lg mb-2">Patient Details</div>
-        <div
-          className="border-2 border-primary dark:bg-white/20 dark:border-transparent dark:text-white text-primary text-sm sm:text-base font-semibold w-fit bg-opacity-75 px-3.5 py-1.5 rounded-sm cursor-pointer"
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          Patient Profiles
+        </h2>
+        {isDirty && (
+          <button
+            className="bg-primary hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-xl transition-all shadow-sm text-sm"
+            onClick={updateUser}
+          >
+            Save Changes
+          </button>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Add New Patient Card */}
+        <button
+          className="min-h-[120px] flex flex-col items-center justify-center gap-2 border-2 border-dashed border-gray-300 dark:border-white/20 rounded-2xl bg-gray-50/50 hover:bg-primary/5 hover:border-primary/50 dark:bg-white/5 dark:hover:border-white/40 dark:hover:bg-white/10 transition-all text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-white"
           onClick={() =>
             setShowPatientPopup({
               patientIndex: user.patientDetails?.length || 0,
             })
           }
         >
-          Add +
-        </div>
-        <div className="flex flex-wrap gap-2 mt-2 text-sm text-white">
-          {user?.patientDetails?.map((patientDetail, i) => (
-            <div
-              key={i}
-              className="border-2 border-gray-300/70 bg-white dark:border-white/20 dark:bg-white/20 px-4 py-3.5 rounded-md cursor-pointer"
-              onClick={() => setShowPatientPopup({ patientIndex: i })}
-            >
-              <div className="font-semibold mb-1 text-black dark:text-white">
-                {patientDetail.name}
+          <FiPlus size={24} />
+          <span className="font-semibold text-sm">Add New Patient</span>
+        </button>
+
+        {/* Existing Patients */}
+        {user?.patientDetails?.map((patientDetail, i) => (
+          <div
+            key={i}
+            className="relative p-5 border border-gray-200 dark:border-white/10 bg-white dark:bg-[#111] rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col justify-center min-h-[120px]"
+          >
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-primary/10 dark:bg-white/5 text-primary dark:text-gray-300 flex items-center justify-center shrink-0">
+                  <FiUsers size={18} />
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-900 dark:text-white leading-tight">
+                    {patientDetail.name}
+                  </h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+                    {patientDetail.age} yrs • {patientDetail.gender}
+                  </p>
+                </div>
               </div>
-              <div className="text-gray-800 dark:text-white/60">
-                {patientDetail.age} - {patientDetail.gender}
-              </div>
+              <button
+                className="p-2 -mr-2 -mt-2 text-gray-400 hover:text-primary dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 rounded-lg transition-colors"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowPatientPopup({ patientIndex: i });
+                }}
+                aria-label="Edit patient"
+              >
+                <FiEdit2 size={16} />
+              </button>
             </div>
-          ))}
-        </div>
-        {isDirty && (
-          <div className="pt-8 pb-10 flex">
-            <button
-              className="bg-primary dark:bg-white/15 text-white py-2 px-4 rounded ms-auto"
-              onClick={async () => await updateUser()}
-            >
-              Save
-            </button>
           </div>
-        )}
-      </section>
+        ))}
+      </div>
 
       {showPatientPopup?.patientIndex != null && (
         <PatientDetailsPopup
@@ -88,10 +113,8 @@ const PatientsPage = () => {
           onSave={async (values) => {
             const updatedPatientDetails = [...(user.patientDetails || [])];
             updatedPatientDetails[showPatientPopup.patientIndex] = values;
-            // console.log(updatedPatientDetails)
             setUser({ ...user, patientDetails: updatedPatientDetails });
             setIsDirty(true);
-            // await updateUser();
             setShowPatientPopup(null);
           }}
           onRemove={() => {
@@ -99,12 +122,11 @@ const PatientsPage = () => {
             updatedPatientDetails.splice(showPatientPopup.patientIndex, 1);
             setUser({ ...user, patientDetails: updatedPatientDetails });
             setIsDirty(true);
-            // await updateUser();
             setShowPatientPopup(null);
           }}
         />
       )}
-    </>
+    </div>
   );
 };
 

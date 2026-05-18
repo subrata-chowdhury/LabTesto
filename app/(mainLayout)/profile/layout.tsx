@@ -9,20 +9,26 @@ const Layout = async ({ children }: { children: ReactNode }) => {
   const isValid = await verifyToken<{ id: string }>(token, "user");
 
   if (!isValid) {
-    redirect("/login?redirect=/profile"); // Redirect to login if the token is invalid
+    redirect("/login?redirect=/profile");
   }
 
   return (
-    isValid && (
-      <>
-        <div className="flex flex-col sm:flex-row gap-2 px-4 h-screen sm:px-10 lg:px-28 py-3 pt-4 bg-gray-50 dark:bg-black">
-          <Menubar />
-          <div className="sm:border-l-2 border-gray-300/70 dark:border-white/20 w-full flex justify-center pl-2.5 sm:pl-5 lg:pl-12">
-            {children}
+    <div className="flex justify-center bg-gray-50 dark:bg-black min-h-screen">
+      <div className="w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row gap-8">
+        {/* Sidebar Menu */}
+        <div className="w-full md:w-64 shrink-0">
+          <div className="md:sticky md:top-24">
+            <h1 className="text-2xl font-extrabold text-gray-900 dark:text-white mb-6 hidden md:block tracking-tight">
+              My Account
+            </h1>
+            <Menubar />
           </div>
         </div>
-      </>
-    )
+
+        {/* Main Content Area */}
+        <div className="flex-1 min-w-0">{children}</div>
+      </div>
+    </div>
   );
 };
 

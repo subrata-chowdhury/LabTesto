@@ -4,13 +4,16 @@
 import React from "react";
 import Link from "next/link";
 import { motion, Variants } from "framer-motion";
-import FacebookIcon from "@/assets/reactIcon/footer/Facebook";
-import InstagramIcon from "@/assets/reactIcon/footer/Instagram";
-import LinkedinIcon from "@/assets/reactIcon/footer/Linkedin";
-import YoutubeIcon from "@/assets/reactIcon/footer/Youtube";
-import { PhoneIcon } from "@/assets/reactIcon/contact/Phone";
-import { MailIcon } from "@/assets/reactIcon/contact/Mail";
-import { LocationIcon } from "@/assets/reactIcon/contact/Location";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaLinkedin,
+  FaYoutube,
+  FaPhoneAlt,
+  FaEnvelope,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
+import { FiGlobe } from "react-icons/fi";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -60,24 +63,54 @@ const Footer = () => {
             <div className="flex gap-4">
               <SocialLink
                 href="#"
-                icon={<FacebookIcon size={20} />}
+                icon={<FaFacebook size={20} />}
                 label="Facebook"
               />
               <SocialLink
                 href="#"
-                icon={<InstagramIcon size={20} />}
+                icon={<FaInstagram size={20} />}
                 label="Instagram"
               />
               <SocialLink
                 href="#"
-                icon={<LinkedinIcon size={20} />}
+                icon={<FaLinkedin size={20} />}
                 label="LinkedIn"
               />
               <SocialLink
                 href="#"
-                icon={<YoutubeIcon size={20} />}
+                icon={<FaYoutube size={20} />}
                 label="YouTube"
               />
+            </div>
+            <div className="flex flex-col gap-3 border-t border-black/5 pt-4 dark:border-white/5">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Designed & Developed by{" "}
+                <span className="font-medium text-gray-900 dark:text-white">
+                  Subrata Chowdhury
+                </span>
+              </p>
+              <div className="flex items-center gap-4">
+                <a
+                  href="https://subratachowdhuryportfolio.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-sm text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                  title="View Portfolio"
+                >
+                  <FiGlobe className="h-4 w-4" />
+                  Portfolio
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/subrata7000/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-sm text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                  title="Connect on LinkedIn"
+                >
+                  <FaLinkedin className="h-4 w-4" />
+                  LinkedIn
+                </a>
+              </div>
             </div>
           </motion.div>
 
@@ -107,7 +140,7 @@ const Footer = () => {
             <ul className="flex flex-col gap-4 text-sm text-gray-600 dark:text-gray-400">
               <li className="flex gap-3 items-center group">
                 <div className="text-primary dark:text-blue-400 group-hover:scale-110 transition-transform">
-                  <PhoneIcon size={18} />
+                  <FaPhoneAlt size={18} />
                 </div>
                 <a
                   href="tel:+918250711212"
@@ -118,7 +151,7 @@ const Footer = () => {
               </li>
               <li className="flex gap-3 items-center group">
                 <div className="text-primary dark:text-blue-400 group-hover:scale-110 transition-transform">
-                  <MailIcon size={18} />
+                  <FaEnvelope size={18} />
                 </div>
                 <a
                   href="mailto:sayan825071das@gmail.com"
@@ -129,7 +162,7 @@ const Footer = () => {
               </li>
               <li className="flex gap-3 items-start group">
                 <div className="text-primary dark:text-blue-400 mt-1 group-hover:scale-110 transition-transform">
-                  <LocationIcon size={18} />
+                  <FaMapMarkerAlt size={18} />
                 </div>
                 <span className="leading-snug">
                   Kadasole more, Bankura, <br />

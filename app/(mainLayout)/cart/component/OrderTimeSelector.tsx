@@ -1,3 +1,4 @@
+// app/(mainLayout)/cart/component/OrderTimeSelector.tsx
 import Dropdown from "@/components/Dropdown";
 import Model from "@/components/Model";
 import { useRef, useState } from "react";
@@ -21,19 +22,27 @@ export default function OrderTimeSelector({
 
   return (
     <Model heading="Schedule Order Times" onClose={onClose}>
-      <div className="px-7 py-4 pt-6 pb-5 min-w-80 text-sm">
-        <div className="font-medium text-base mb-2">Pick Date</div>
-        <div>
+      <div className="px-6 py-6 min-w-[320px] w-full">
+        <div className="mb-5">
+          <label className="block font-semibold text-gray-900 dark:text-white mb-2 text-sm">
+            Pick Date
+          </label>
           <input
             type="date"
-            className="px-3 py-2 text-primary dark:text-white dark:fill-white border-2 border-black/10 dark:border-white/30 rounded"
+            className="w-full px-4 py-2.5 text-gray-900 dark:text-white bg-gray-50 dark:bg-[#111] border border-gray-300 dark:border-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all cursor-pointer"
             min={new Date().toISOString().split("T")[0]}
             value={date}
-            onChange={(e) => setDate(e.target.value)}
+            onChange={(e) => {
+              setDate(e.target.value);
+              setDuration(""); // Reset duration when date changes
+            }}
           />
         </div>
-        <div className="font-medium text-base mb-2 mt-4">Duration</div>
-        <div className="flex gap-2 justify-between">
+
+        <div className="mb-2">
+          <label className="block font-semibold text-gray-900 dark:text-white mb-2 text-sm">
+            Duration Slot
+          </label>
           <Dropdown
             width="100%"
             value={duration}
@@ -78,9 +87,10 @@ export default function OrderTimeSelector({
           />
         </div>
       </div>
-      <div className="flex justify-end pb-8 px-7">
+
+      <div className="flex justify-end pb-6 px-6 pt-2 border-t border-gray-100 dark:border-white/5 mt-2">
         <button
-          className="bg-primary dark:bg-white/20 text-white px-5 py-2 rounded"
+          className="w-full bg-primary hover:bg-blue-700 dark:bg-primary/90 dark:hover:bg-primary text-white font-medium px-5 py-2.5 rounded-xl transition-colors shadow-sm"
           onClick={() => {
             if (
               sampleStartTime.current &&
@@ -93,13 +103,11 @@ export default function OrderTimeSelector({
               });
               onClose();
             } else {
-              toast.error(
-                "Please ensure the start time is before the end time for both sample taken and report delivery.",
-              );
+              toast.error("Please select a valid time slot before scheduling.");
             }
           }}
         >
-          Schedule
+          Confirm Schedule
         </button>
       </div>
     </Model>
