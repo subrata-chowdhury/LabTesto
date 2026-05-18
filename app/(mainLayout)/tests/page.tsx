@@ -138,24 +138,44 @@ export default function Tests() {
   return (
     <main
       id="main"
-      className="px-4 py-12 md:py-16 min-h-screen bg-gray-50/50 dark:bg-black"
+      className="relative px-4 py-12 md:py-16 min-h-screen bg-white dark:bg-[#0a0a0a] overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto w-full">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-          <div>
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3">
-              Explore Lab Tests
-            </h1>
-            <p className="text-gray-500 dark:text-gray-400 max-w-xl">
+      {/* Decorative Background Elements */}
+      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-orange-500/5 blur-[100px] rounded-full pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
+
+      <div className="max-w-7xl mx-auto w-full relative z-10">
+        {/* Header Section */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
+          <div className="flex-1">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-primary dark:text-white mb-4 leading-tight"
+            >
+              Explore <br className="hidden lg:block" />
+              <span className="text-orange-500">Lab Tests</span>
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-gray-500 dark:text-gray-400 max-w-xl text-base leading-relaxed"
+            >
               Browse our comprehensive directory of diagnostic tests. Filter by
               sample type or search for specific requirements to find exactly
               what you need.
-            </p>
+            </motion.p>
           </div>
 
           {/* Search Bar */}
-          <div className="relative w-full md:max-w-xs lg:max-w-sm shrink-0">
-            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="relative w-full lg:max-w-md shrink-0"
+          >
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
               <svg
                 className="w-5 h-5"
                 fill="none"
@@ -173,31 +193,36 @@ export default function Tests() {
             <input
               type="text"
               value={filter.name}
-              placeholder="Search tests..."
+              placeholder="Search specific tests..."
               onChange={handleSearchChange}
-              className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#111] text-gray-900 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all shadow-sm shadow-black/5"
+              className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-[#1a1a1a] text-primary dark:text-white placeholder:text-gray-400 focus:bg-white dark:focus:bg-[#222] focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 outline-none transition-all shadow-inner text-sm md:text-base font-medium"
             />
-          </div>
+          </motion.div>
         </div>
 
         {/* Filter Pills */}
-        <div className="flex overflow-x-auto hide-scrollbar gap-2 mb-8 pb-2">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="flex overflow-x-auto hide-scrollbar gap-2 mb-8 pb-2"
+        >
           {filterOptions.map((sampleType) => {
             const isActive = filter.sampleType === sampleType;
             return (
               <button
                 key={sampleType}
                 onClick={() => handleFilterClick(sampleType)}
-                className={`relative px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${
+                className={`relative px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 ${
                   isActive
                     ? "text-white"
-                    : "bg-white dark:bg-[#111] text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/5 shadow-sm"
+                    : "bg-white dark:bg-[#111] text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/5 shadow-sm"
                 }`}
               >
                 {isActive && (
                   <motion.div
                     layoutId="activeFilterPill"
-                    className="absolute inset-0 bg-primary rounded-full -z-10 shadow-md shadow-primary/30"
+                    className="absolute inset-0 bg-orange-500 rounded-full -z-10 shadow-md shadow-orange-500/20"
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
                 )}
@@ -205,7 +230,7 @@ export default function Tests() {
               </button>
             );
           })}
-        </div>
+        </motion.div>
 
         {/* Test Cards Grid */}
         {loading ? (
@@ -217,10 +242,14 @@ export default function Tests() {
         ) : (
           <>
             {tests.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-20 text-center">
-                <div className="w-20 h-20 bg-gray-100 dark:bg-[#111] rounded-full flex items-center justify-center mb-4 border border-gray-200 dark:border-white/10">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex flex-col items-center justify-center py-20 text-center bg-gray-50 dark:bg-[#111] border border-gray-100 dark:border-white/5 rounded-2xl mt-4"
+              >
+                <div className="w-20 h-20 bg-white dark:bg-[#1a1a1a] rounded-full flex items-center justify-center mb-4 border border-gray-100 dark:border-white/5 shadow-md shadow-black/5">
                   <svg
-                    className="w-10 h-10 text-gray-400"
+                    className="w-10 h-10 text-gray-300 dark:text-gray-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -233,14 +262,14 @@ export default function Tests() {
                     ></path>
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-xl font-bold text-primary dark:text-white mb-2">
                   No tests found
                 </h3>
-                <p className="text-gray-500 dark:text-gray-400 max-w-sm">
+                <p className="text-gray-500 dark:text-gray-400 max-w-sm text-sm md:text-base">
                   We couldn't find any tests matching your current search or
-                  filter criteria.
+                  filter criteria. Try adjusting your keywords.
                 </p>
-              </div>
+              </motion.div>
             ) : (
               <motion.div
                 variants={containerVariants}
@@ -252,26 +281,26 @@ export default function Tests() {
                   <Link
                     href={`/tests/${test._id}`}
                     key={test._id}
-                    className="outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-2xl block h-full"
+                    className="group outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 rounded-2xl block h-full"
                   >
                     <motion.div
                       variants={itemVariants}
-                      whileHover={{ y: -4 }}
-                      className="flex flex-col h-full bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-2xl shadow-sm hover:shadow-xl dark:shadow-none dark:hover:shadow-white/5 transition-all duration-300 p-6"
+                      whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                      className="flex flex-col h-full bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-2xl shadow-sm hover:shadow-lg hover:border-orange-500/30 transition-all duration-300 p-6"
                     >
-                      <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 leading-snug group-hover:text-primary transition-colors">
+                      <h2 className="text-lg font-bold text-primary dark:text-white mb-3 line-clamp-2 leading-snug group-hover:text-orange-500 transition-colors">
                         {test.name}
                       </h2>
 
                       <div className="mb-6 flex flex-wrap gap-2">
-                        <span className="px-3 py-1 bg-primary/10 dark:bg-primary/20 text-primary dark:text-blue-300 rounded-full text-xs font-semibold tracking-wide uppercase">
+                        <span className="px-3 py-1 bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-100 dark:border-orange-500/20 rounded-full text-xs font-semibold tracking-wide uppercase">
                           {test.sampleType}
                         </span>
                       </div>
 
-                      <div className="mt-auto space-y-2 text-sm text-gray-600 dark:text-gray-400 border-t border-gray-100 dark:border-white/5 pt-4">
+                      <div className="mt-auto space-y-2 text-sm text-gray-500 dark:text-gray-400 border-t border-gray-100 dark:border-white/5 pt-4">
                         <div className="flex justify-between items-center">
-                          <span className="font-medium text-gray-800 dark:text-gray-200">
+                          <span className="font-semibold text-gray-800 dark:text-gray-300">
                             Fasting
                           </span>
                           <span className="truncate ml-2">
@@ -279,7 +308,7 @@ export default function Tests() {
                           </span>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="font-medium text-gray-800 dark:text-gray-200">
+                          <span className="font-semibold text-gray-800 dark:text-gray-300">
                             Tube Type
                           </span>
                           <span className="truncate ml-2 text-right">
@@ -295,15 +324,15 @@ export default function Tests() {
 
             {/* Load More Button */}
             {totalPages !== 1 && tests.length >= limit && (
-              <div className="w-full flex justify-center mt-12">
+              <div className="w-full flex justify-center mt-10">
                 <button
                   disabled={loadingMore}
-                  className="px-8 py-3 rounded-full bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white font-semibold shadow-sm hover:shadow-md hover:bg-gray-50 dark:hover:bg-white/5 transition-all outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:opacity-70 disabled:cursor-not-allowed flex items-center gap-3"
+                  className="px-8 py-3 rounded-full bg-orange-500 text-white font-semibold shadow-md shadow-orange-500/20 hover:shadow-orange-500/40 hover:-translate-y-0.5 transition-all outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 flex items-center gap-2"
                   onClick={handleLoadMore}
                 >
                   {loadingMore ? (
                     <>
-                      <div className="w-5 h-5 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                       Loading...
                     </>
                   ) : (
@@ -322,19 +351,19 @@ export default function Tests() {
 function SkeletonCard() {
   return (
     <div className="flex flex-col h-full bg-white dark:bg-[#111] border border-gray-100 dark:border-white/5 rounded-2xl shadow-sm p-6 animate-pulse">
-      <div className="h-6 bg-gray-200 dark:bg-white/10 rounded w-4/5 mb-2"></div>
-      <div className="h-6 bg-gray-200 dark:bg-white/10 rounded w-3/5 mb-4"></div>
+      <div className="h-6 bg-gray-100 dark:bg-white/5 rounded w-4/5 mb-3"></div>
+      <div className="h-6 bg-gray-100 dark:bg-white/5 rounded w-2/5 mb-5"></div>
 
-      <div className="w-20 h-6 bg-primary/10 dark:bg-white/5 rounded-full mb-8"></div>
+      <div className="w-20 h-6 bg-orange-50/50 dark:bg-orange-500/5 rounded-full mb-8 border border-orange-100/50 dark:border-orange-500/10"></div>
 
       <div className="mt-auto border-t border-gray-100 dark:border-white/5 pt-4 space-y-3">
         <div className="flex justify-between">
-          <div className="h-4 bg-gray-200 dark:bg-white/10 rounded w-16"></div>
-          <div className="h-4 bg-gray-200 dark:bg-white/10 rounded w-24"></div>
+          <div className="h-4 bg-gray-100 dark:bg-white/5 rounded w-16"></div>
+          <div className="h-4 bg-gray-100 dark:bg-white/5 rounded w-24"></div>
         </div>
         <div className="flex justify-between">
-          <div className="h-4 bg-gray-200 dark:bg-white/10 rounded w-20"></div>
-          <div className="h-4 bg-gray-200 dark:bg-white/10 rounded w-28"></div>
+          <div className="h-4 bg-gray-100 dark:bg-white/5 rounded w-20"></div>
+          <div className="h-4 bg-gray-100 dark:bg-white/5 rounded w-28"></div>
         </div>
       </div>
     </div>

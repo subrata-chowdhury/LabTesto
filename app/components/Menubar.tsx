@@ -30,6 +30,8 @@ const Menubar = () => {
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [showProfilePopup, setShowProfilePopup] = useState(false);
+  const [isSearchActive, setIsSearchActive] = useState(false); // Track search state
+
   const { itemCount, setItemCount } = useItemCountContext();
 
   const profileRef = useRef<HTMLDivElement>(null);
@@ -90,16 +92,24 @@ const Menubar = () => {
             </button>
           </div>
 
-          {/* Logo */}
-          <div className="text-xl sm:text-2xl font-extrabold flex-shrink-0">
+          {/* Logo - Hidden when search is active on smaller desktop viewports */}
+          <div
+            className={`text-xl sm:text-2xl ml-4 font-extrabold mr-auto shrink-0 transition-opacity duration-300 ${
+              isSearchActive
+                ? "hidden md:block opacity-0 md:opacity-100"
+                : "block opacity-100"
+            }`}
+          >
             <Link href="/" onClick={() => setIsOpen(false)}>
               <span className="text-orange-500">Lab</span>
               <span className="text-primary dark:text-white">Testo</span>
             </Link>
           </div>
 
-          {/* Desktop Nav Links */}
-          <div className="hidden md:flex flex-1 justify-center space-x-1 lg:space-x-4">
+          {/* Desktop Nav Links - Hidden on MD screens when search expands to prevent overlap */}
+          <div
+            className={`flex-1 justify-center space-x-1 lg:space-x-4 ${isSearchActive ? "hidden lg:flex" : "hidden md:flex"}`}
+          >
             <DesktopNavLink
               href="/tests"
               label="Book a Test"
@@ -124,9 +134,10 @@ const Menubar = () => {
 
           {/* Right Side Actions */}
           <div className="flex items-center space-x-3 sm:space-x-5">
-            <div className="hidden md:block">
-              <SearchBar active={false} />
-            </div>
+            <SearchBar
+              active={false}
+              onToggle={(active) => setIsSearchActive(active)}
+            />
 
             {isLoggedIn ? (
               <>
@@ -220,10 +231,12 @@ export function SearchBar({
   active = false,
   className = "",
   onSelect = () => {},
+  onToggle,
 }: {
   active?: boolean;
   className?: string;
   onSelect?: (value: { name: string; _id: string }) => void;
+  onToggle?: (isActive: boolean) => void;
 }) {
   const [showSearchBar, setShowSearchBar] = useState(active);
 
@@ -246,6 +259,7 @@ export function SearchBar({
                   onClick();
                   onSelect(option);
                   setShowSearchBar(false);
+                  if (onToggle) onToggle(false);
                 }}
               >
                 <div className="text-sm font-semibold text-gray-900 dark:text-white">
@@ -269,7 +283,11 @@ export function SearchBar({
             ? "w-8 h-8 text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-white"
             : "w-10 h-10 bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/20"
         }`}
-        onClick={() => setShowSearchBar(!showSearchBar)}
+        onClick={() => {
+          const newVal = !showSearchBar;
+          setShowSearchBar(newVal);
+          if (onToggle) onToggle(newVal);
+        }}
         aria-label="Toggle Search"
       >
         {showSearchBar ? (

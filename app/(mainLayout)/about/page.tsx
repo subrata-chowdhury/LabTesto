@@ -2,30 +2,60 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { ReactNode } from "react";
+import { motion } from "framer-motion";
 import ContactDetails from "../contact/components/ContactDetails";
 import Services from "../services/components/Services";
 import { Achievements } from "../page";
 
+// Reusable Section Header for consistency
+function SectionHeader({
+  title,
+  highlight,
+  description,
+}: {
+  title: ReactNode;
+  highlight?: string;
+  description?: string;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.8 }}
+      transition={{ duration: 0.6 }}
+      className="z-10 flex flex-col items-center px-4 mb-16"
+    >
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center text-primary dark:text-white leading-tight">
+        {title}{" "}
+        {highlight && <span className="text-orange-500">{highlight}</span>}
+      </h1>
+      {description && (
+        <p className="mt-6 text-gray-500 dark:text-gray-400 text-center max-w-2xl text-sm sm:text-base">
+          {description}
+        </p>
+      )}
+    </motion.div>
+  );
+}
+
 export default function AboutPage() {
   return (
-    <>
-      <section className="min-h-[calc(100vh-120px)] flex items-center pt-12 pb-24 overflow-hidden relative">
-        {/* Subtle Background Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 bg-primary/5 dark:bg-primary/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+    <main className="flex-1 overflow-hidden bg-white dark:bg-[#0a0a0a]">
+      <section className="min-h-[calc(100vh-120px)] flex items-center py-20 md:py-32 overflow-hidden relative">
+        {/* Decorative Background Elements */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border-[40px] border-orange-50/50 dark:border-white/[0.02] rounded-full pointer-events-none"></div>
+        <div className="absolute -top-20 -left-20 w-96 h-96 bg-orange-500/5 dark:bg-orange-500/10 blur-3xl rounded-full pointer-events-none"></div>
 
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full flex flex-col lg:flex-row gap-16 lg:gap-8 items-center justify-between z-10">
           {/* Left Text Content */}
           <div className="flex-1 flex flex-col justify-center max-w-2xl mx-auto lg:mx-0 text-center lg:text-left">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-light tracking-tight text-gray-900 dark:text-white leading-tight">
-              Get Quick
-              <br />
-              <span className="font-extrabold text-transparent bg-clip-text bg-linear-to-r from-primary to-blue-600 dark:from-primary dark:to-blue-400">
-                Tests Done
-              </span>
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-primary dark:text-white leading-tight">
+              Get Quick <br />
+              <span className="text-orange-500">Tests Done</span>
             </h1>
 
-            <p className="mt-6 text-base sm:text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-lg mx-auto lg:mx-0">
+            <p className="mt-6 text-base sm:text-lg text-gray-500 dark:text-gray-400 leading-relaxed max-w-lg mx-auto lg:mx-0">
               A trusted diagnostic platform offering secure, convenient access
               to accredited labs and professional sample collection right at
               your doorstep.
@@ -33,7 +63,7 @@ export default function AboutPage() {
 
             <div className="mt-10 flex justify-center lg:justify-start">
               <Link href="/signup">
-                <button className="px-8 py-3.5 text-lg font-medium bg-primary text-white rounded-full shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2">
+                <button className="px-8 py-4 text-lg font-bold bg-orange-500 text-white rounded-full shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 group">
                   Get Started
                   <svg
                     width="18"
@@ -41,12 +71,12 @@ export default function AboutPage() {
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="ml-1"
+                    className="ml-1 group-hover:translate-x-1 transition-transform"
                   >
                     <path
                       d="M5 12H19M19 12L12 5M19 12L12 19"
                       stroke="currentColor"
-                      strokeWidth="2"
+                      strokeWidth="3"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
@@ -58,24 +88,28 @@ export default function AboutPage() {
 
           {/* Right Visual Graphic */}
           <div className="flex-1 relative flex justify-center items-center w-full max-w-md lg:max-w-none mx-auto">
-            <div className="w-64 h-64 sm:w-80 sm:h-80 lg:w-[420px] lg:h-[420px] relative flex justify-center items-center rounded-full shadow-2xl bg-linear-to-br from-primary/20 to-transparent dark:from-white/10 dark:to-white/5 border border-white/50 dark:border-white/10 backdrop-blur-sm text-4xl sm:text-5xl font-bold z-0">
-              <div className="flex flex-col items-center">
-                <span className="text-orange-500 drop-shadow-md">Lab</span>
-                <span className="text-gray-900 dark:text-white drop-shadow-md">
-                  Testo
-                </span>
+            <div className="w-64 h-64 sm:w-80 sm:h-80 lg:w-[420px] lg:h-[420px] relative flex justify-center items-center rounded-full shadow-2xl bg-white dark:bg-[#111] border border-gray-100 dark:border-white/10 text-4xl sm:text-5xl font-black z-0">
+              <div className="absolute inset-0 rounded-full border-[10px] border-gray-50 dark:border-white/5 pointer-events-none"></div>
+              <div className="flex flex-col items-center z-10">
+                <span className="text-orange-500">Lab</span>
+                <span className="text-primary dark:text-white">Testo</span>
               </div>
 
               {/* Top Left Badge */}
-              <div className="absolute top-4 -left-6 sm:top-8 sm:-left-12 lg:top-12 lg:-left-8 flex gap-3 sm:gap-4 items-center bg-white/80 dark:bg-[#111]/80 backdrop-blur-xl border border-gray-200 dark:border-white/10 shadow-xl dark:shadow-black/50 px-4 py-3 sm:px-5 sm:py-4 rounded-2xl z-20">
-                <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, type: "spring" }}
+                className="absolute top-4 -left-6 sm:top-8 sm:-left-12 lg:top-12 lg:-left-8 flex gap-3 sm:gap-4 items-center bg-white dark:bg-[#1a1a1a] border border-gray-100 dark:border-white/10 shadow-xl dark:shadow-black/50 px-4 py-3 sm:px-5 sm:py-4 rounded-3xl z-20"
+              >
+                <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center text-orange-500">
                   <svg
                     width="24"
                     height="24"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="2"
+                    strokeWidth="2.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   >
@@ -86,19 +120,24 @@ export default function AboutPage() {
                   </svg>
                 </div>
                 <div>
-                  <div className="font-bold text-gray-900 dark:text-white text-lg sm:text-xl leading-tight">
+                  <div className="font-black text-primary dark:text-white text-lg sm:text-xl leading-tight">
                     1820+
                   </div>
-                  <div className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
+                  <div className="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wider">
                     Active Users
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Bottom Right Badge */}
-              <div className="absolute -bottom-6 -right-4 sm:-bottom-10 sm:-right-8 lg:bottom-12 lg:-right-12 bg-white/80 dark:bg-[#111]/80 backdrop-blur-xl border border-gray-200 dark:border-white/10 shadow-xl dark:shadow-black/50 px-5 py-4 sm:px-6 sm:py-5 rounded-2xl z-20 max-w-[220px] sm:max-w-[260px]">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4, type: "spring" }}
+                className="absolute -bottom-6 -right-4 sm:-bottom-10 sm:-right-8 lg:bottom-12 lg:-right-12 bg-white dark:bg-[#1a1a1a] border border-gray-100 dark:border-white/10 shadow-xl dark:shadow-black/50 px-5 py-4 sm:px-6 sm:py-5 rounded-3xl z-20 max-w-[220px] sm:max-w-[260px]"
+              >
                 <div className="flex items-start gap-3">
-                  <div className="h-8 w-8 shrink-0 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 mt-0.5">
+                  <div className="h-8 w-8 shrink-0 rounded-full bg-green-100 dark:bg-green-500/10 flex items-center justify-center text-green-600 dark:text-green-500 mt-0.5">
                     <svg
                       width="16"
                       height="16"
@@ -113,52 +152,49 @@ export default function AboutPage() {
                     </svg>
                   </div>
                   <ul className="flex flex-col gap-2">
-                    <li className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 leading-snug">
+                    <li className="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 leading-snug">
                       Sample collection at your home
                     </li>
-                    <li className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 leading-snug">
+                    <li className="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 leading-snug">
                       Online reports delivered fast
                     </li>
                   </ul>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Services Section */}
-      <section className="py-16 md:py-24 bg-gray-50/50 dark:bg-white/[0.02] border-y border-gray-100 dark:border-white/5">
+      <section className="py-20 md:py-32 bg-gray-50 dark:bg-[#111] border-y border-gray-100 dark:border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <Services />
         </div>
       </section>
 
       {/* Achievements Section */}
-      <section className="py-16 md:py-24">
+      <section className="py-20 md:py-32 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <Achievements />
         </div>
       </section>
 
       {/* Contact Details Section */}
-      <section className="py-16 md:py-24 bg-gray-50/50 dark:bg-white/[0.02] border-t border-gray-100 dark:border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col items-center">
-          <div className="flex flex-col items-center mb-12">
-            <h1 className="text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white">
-              Our Contact Details
-            </h1>
-            <div className="w-24 h-1.5 rounded-full bg-primary/40 dark:bg-primary/80 mt-5 mb-2"></div>
-          </div>
+      <section className="py-20 md:py-32 bg-gray-50 dark:bg-[#111] border-t border-gray-100 dark:border-white/5 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-orange-50/50 to-transparent dark:from-orange-500/5 pointer-events-none"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col items-center relative z-10">
+          <SectionHeader
+            title="Our Contact"
+            highlight="Details"
+            description="Reach out to us for support, inquiries, or to book a specialized test."
+          />
 
           <div className="w-full">
-            <ContactDetails
-              className="flex-wrap justify-center gap-8 lg:gap-16"
-              iconClassName="border border-gray-200 dark:border-white/10 shadow-lg dark:shadow-black/20 bg-white dark:bg-[#111]"
-            />
+            <ContactDetails />
           </div>
         </div>
       </section>
-    </>
+    </main>
   );
 }

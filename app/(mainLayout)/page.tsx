@@ -54,13 +54,17 @@ const itemVariants: Variants = {
 export default function Home() {
   return (
     <>
-      <main id="main" className="flex-1 overflow-hidden">
-        <div className="md:hidden px-4 mt-4">
-          <SearchBar className="px-5 py-3 shadow-sm" active={true} />
-        </div>
-        <section className="mx-4 mb-8">
+      <main
+        id="main"
+        className="flex-1 overflow-hidden bg-white dark:bg-[#0a0a0a]"
+      >
+        <section className="relative mx-4 mb-12 mt-4">
+          {/* Decorative Elements matching the theme */}
+          <div className="absolute -top-20 -left-20 w-96 h-96 bg-orange-500/5 dark:bg-orange-500/10 blur-3xl rounded-full pointer-events-none"></div>
+          <div className="absolute top-40 -right-20 w-96 h-96 bg-blue-500/5 dark:bg-blue-500/10 blur-3xl rounded-full pointer-events-none"></div>
+
           <Slide
-            className="lg:h-[75vh] flex flex-col justify-center rounded-xl overflow-hidden"
+            className="lg:h-[75vh] flex flex-col justify-center rounded-2xl overflow-hidden shadow-2xl shadow-black/5 dark:shadow-white/5 border border-gray-100 dark:border-white/5 relative z-10"
             slides={3}
             slideElement={({ slide }) => {
               if (slide === 1)
@@ -78,6 +82,7 @@ export default function Home() {
             }}
           />
         </section>
+
         <FrequentRequiredTests />
         <Promises />
         <Packages />
@@ -88,23 +93,47 @@ export default function Home() {
   );
 }
 
+// Reusable Section Header to maintain the "Achievements" design language
+function SectionHeader({
+  title,
+  highlight,
+  description,
+}: {
+  title: ReactNode;
+  highlight?: string;
+  description?: string;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.8 }}
+      transition={{ duration: 0.6 }}
+      className="z-10 flex flex-col items-center px-4"
+    >
+      <h1 className="text-3xl sm:text-4xl max-w-5xl md:text-5xl font-bold text-center text-primary dark:text-white leading-tight">
+        {title}{" "}
+        {highlight && <span className="text-orange-500">{highlight}</span>}
+      </h1>
+      {description && (
+        <p className="mt-6 text-gray-500 dark:text-gray-400 text-center max-w-2xl text-sm sm:text-base">
+          {description}
+        </p>
+      )}
+    </motion.div>
+  );
+}
+
 function FrequentRequiredTests() {
   return (
-    <section className="mx-auto flex flex-col py-16 md:py-24">
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.8 }}
-        transition={{ duration: 0.6 }}
-        className="flex flex-col items-center"
-      >
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center px-4">
-          Frequently Required Tests
-        </h1>
-        <div className="w-24 h-1.5 rounded-full bg-primary/40 dark:bg-primary/80 my-5"></div>
-      </motion.div>
+    <section className="relative mx-auto flex flex-col py-20 md:py-32 overflow-hidden border-t border-gray-100 dark:border-white/5">
+      <SectionHeader
+        title="Frequently Required"
+        highlight="Tests"
+        description="Comprehensive diagnostic profiles essential for routine health monitoring and early disease detection."
+      />
 
-      <div className="mt-8 w-full">
+      <div className="mt-16 w-full z-10">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -116,7 +145,7 @@ function FrequentRequiredTests() {
             variants={itemVariants}
             label="Complete Blood Count (CBC)"
             tag="Blood"
-            description="It measures red and white blood cells, hemoglobin, hematocrit, and platelets to assess overall health. It helps diagnose infections, anemia, and other blood disorders."
+            description="Measures red and white blood cells, hemoglobin, hematocrit, and platelets to assess overall health. Helps diagnose infections, anemia, and other blood disorders."
             link={{
               label: "Book Now",
               href: "/tests/67a38ddca80c243e83d518ed",
@@ -126,7 +155,7 @@ function FrequentRequiredTests() {
             variants={itemVariants}
             label="Fasting Blood Sugar (FBS)"
             tag="Blood"
-            description="It's a blood test that measures glucose levels after an overnight fast. It helps diagnose diabetes, prediabetes, and monitor blood sugar control in diabetic patients."
+            description="A blood test that measures glucose levels after an overnight fast. Helps diagnose diabetes, prediabetes, and monitor blood sugar control."
             link={{
               label: "Book Now",
               href: "/tests/67a44ab70daa8b678a7fa330",
@@ -136,7 +165,7 @@ function FrequentRequiredTests() {
             variants={itemVariants}
             label="Thyroid Stimulating Hormone (TSH)"
             tag="Blood"
-            description="It's a blood test that measures TSH levels to evaluate thyroid function. It helps diagnose hypothyroidism, hyperthyroidism, and monitor thyroid disorders."
+            description="A blood test that measures TSH levels to evaluate thyroid function. Helps diagnose hypothyroidism, hyperthyroidism, and monitor thyroid disorders."
             link={{
               label: "Book Now",
               href: "/tests/67b9667ee39bde2a012634ca",
@@ -146,7 +175,7 @@ function FrequentRequiredTests() {
             variants={itemVariants}
             label="Urine Examination (Routine)"
             tag="Urine"
-            description="It analyzes urine for physical, chemical, and microscopic properties. It helps detect infections, kidney diseases, diabetes, and metabolic disorders."
+            description="Analyzes urine for physical, chemical, and microscopic properties. Helps detect infections, kidney diseases, diabetes, and metabolic disorders."
             link={{
               label: "Book Now",
               href: "/tests/67bd6412266fe37d1fb4e7a8",
@@ -156,7 +185,7 @@ function FrequentRequiredTests() {
             variants={itemVariants}
             label="Random Blood Sugar (RBS)"
             tag="Blood"
-            description="It's a blood test that measures glucose levels at any time of the day, regardless of when you last ate. It helps assess blood sugar control and detect diabetes."
+            description="A blood test that measures glucose levels at any time of the day, regardless of when you last ate. Helps assess blood sugar control."
             link={{
               label: "Book Now",
               href: "/tests/67bd7997eb03aecfeb2f2331",
@@ -166,7 +195,7 @@ function FrequentRequiredTests() {
             variants={itemVariants}
             label="Bilirubin, Total"
             tag="Blood"
-            description="It's a blood test that measures bilirubin levels. It helps evaluate liver function and diagnose jaundice, liver disease, and hemolytic anemia."
+            description="A blood test that measures bilirubin levels. Helps evaluate liver function and diagnose jaundice, liver disease, and hemolytic anemia."
             link={{
               label: "Book Now",
               href: "/tests/67bc6495e0dc0a8cb0b61dc5",
@@ -205,26 +234,22 @@ function SlideImage({
 
 export function Promises({ heading }: { heading?: string }) {
   return (
-    <section className="mx-auto md:w-[95%] flex flex-col py-16 md:py-24 bg-gray-50/50 dark:bg-white/2 rounded-3xl">
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.8 }}
-        transition={{ duration: 0.6 }}
-        className="flex flex-col items-center"
-      >
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mx-auto px-4">
-          {heading ? heading : "Our Promise"}
-        </h1>
-        <div className="w-24 h-1.5 rounded-full bg-primary/40 dark:bg-primary/80 my-5"></div>
-      </motion.div>
+    <section className="relative mx-auto flex flex-col py-20 md:py-32 bg-gray-50 dark:bg-[#111] border-y border-gray-100 dark:border-white/5">
+      {/* Decorative Elements */}
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-orange-50/50 to-transparent dark:from-orange-500/5 pointer-events-none"></div>
+
+      <SectionHeader
+        title={heading ? heading : "Our core"}
+        highlight="Promises"
+        description="We are committed to delivering precise, timely, and convenient diagnostic services directly to your doorstep."
+      />
 
       <motion.div
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        className="w-full max-w-6xl mx-auto my-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 px-4"
+        className="z-10 w-full max-w-6xl mx-auto mt-16 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 px-4"
       >
         <CardType2
           variants={itemVariants}
@@ -235,7 +260,7 @@ export function Promises({ heading }: { heading?: string }) {
             </span>
           }
           icon={nablcertiIcon}
-          bgColor="rgba(245, 182, 66, 0.2)"
+          bgColor="rgba(245, 182, 66, 0.1)"
         />
         <CardType2
           variants={itemVariants}
@@ -248,7 +273,7 @@ export function Promises({ heading }: { heading?: string }) {
             </span>
           }
           icon={ontimeIcon}
-          bgColor="rgba(245, 96, 66, 0.15)"
+          bgColor="rgba(245, 96, 66, 0.08)"
         />
         <CardType2
           variants={itemVariants}
@@ -261,7 +286,7 @@ export function Promises({ heading }: { heading?: string }) {
             </span>
           }
           icon={accuratelabtest}
-          bgColor="rgba(3, 24, 255, 0.15)"
+          bgColor="rgba(3, 24, 255, 0.08)"
         />
         <CardType2
           variants={itemVariants}
@@ -274,7 +299,7 @@ export function Promises({ heading }: { heading?: string }) {
             </span>
           }
           icon={flexdateandtime}
-          bgColor="rgba(8, 145, 178, 0.15)"
+          bgColor="rgba(8, 145, 178, 0.08)"
         />
         <CardType2
           variants={itemVariants}
@@ -285,7 +310,7 @@ export function Promises({ heading }: { heading?: string }) {
             </span>
           }
           icon={deliveryIcon}
-          bgColor="rgba(245, 96, 66, 0.15)"
+          bgColor="rgba(245, 96, 66, 0.08)"
         />
         <CardType2
           variants={itemVariants}
@@ -297,7 +322,7 @@ export function Promises({ heading }: { heading?: string }) {
             </span>
           }
           icon={cod}
-          bgColor="rgba(15, 176, 4, 0.15)"
+          bgColor="rgba(15, 176, 4, 0.08)"
         />
       </motion.div>
     </section>
@@ -306,26 +331,21 @@ export function Promises({ heading }: { heading?: string }) {
 
 export function Packages() {
   return (
-    <section className="mx-auto md:w-[95%] flex flex-col py-16 md:py-24">
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.8 }}
-        transition={{ duration: 0.6 }}
-        className="flex flex-col items-center"
-      >
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mx-auto px-4">
-          Our Popular Packages
-        </h1>
-        <div className="w-24 h-1.5 rounded-full bg-primary/40 dark:bg-primary/80 my-5"></div>
-      </motion.div>
+    <section className="relative mx-auto flex flex-col py-20 md:py-32 overflow-hidden border-b border-gray-100 dark:border-white/5">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border-[40px] border-gray-50 dark:border-white/[0.02] rounded-full pointer-events-none"></div>
+
+      <SectionHeader
+        title="Our Popular"
+        highlight="Packages"
+        description="Curated health packages designed to give you a complete overview of your well-being at competitive prices."
+      />
 
       <motion.div
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        className="mt-8 px-4 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-w-6xl mx-auto w-full"
+        className="z-10 mt-16 px-4 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 max-w-7xl mx-auto w-full"
       >
         <CardType3
           variants={itemVariants}
@@ -335,13 +355,13 @@ export function Packages() {
         />
         <CardType3
           variants={itemVariants}
-          label="Premium Full Body Test"
+          label="Premium Full Body"
           link="/tests/67fa8ded144234ebc4c6fe14"
           icon={premiumFullBodyTestIcon}
         />
         <CardType3
           variants={itemVariants}
-          label="Full Gastroenterology Test"
+          label="Full Gastroenterology"
           link="/tests/67fa8e33144234ebc4c6fe1d"
           icon={fullGastroenterologyTestIcon}
         />
@@ -364,28 +384,16 @@ export function Packages() {
 
 export function Achievements() {
   return (
-    <section className="relative mx-auto flex flex-col py-20 md:py-32 overflow-hidden bg-white dark:bg-[#111] border-y border-gray-100 dark:border-white/5">
+    <section className="relative mx-auto flex flex-col py-20 md:py-32 overflow-hidden bg-white dark:bg-[#111]">
       {/* Decorative Circles matching the UI */}
       <div className="absolute -top-40 -left-40 w-125 h-125 border-50 border-orange-50 dark:border-orange-500/5 rounded-full pointer-events-none"></div>
       <div className="absolute -bottom-40 -right-40 w-125 h-125 border-50 border-orange-50 dark:border-orange-500/5 rounded-full pointer-events-none"></div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.8 }}
-        transition={{ duration: 0.6 }}
-        className="z-10 flex flex-col items-center px-4"
-      >
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center text-primary dark:text-white leading-tight">
-          Building real-world health impact <br className="hidden md:block" />
-          with reliable <span className="text-orange-500">Labs and Tests</span>
-        </h1>
-        <p className="mt-6 text-gray-500 dark:text-gray-400 text-center max-w-2xl text-sm sm:text-base">
-          We design, build, and scale high-performance health diagnostics—from
-          routine checkups to specialized pathology profiles—focused on accurate
-          outcomes.
-        </p>
-      </motion.div>
+      <SectionHeader
+        title="Building real-world health impact with reliable"
+        highlight="Labs and Tests"
+        description="We design, build, and scale high-performance health diagnostics—from routine checkups to specialized pathology profiles—focused on accurate outcomes."
+      />
 
       {/* Stats Container */}
       <motion.div
@@ -503,25 +511,25 @@ function Card({
 }: CardProps) {
   return (
     <motion.div
-      whileHover={{ y: -6, transition: { duration: 0.2 } }}
-      className={`group flex flex-col p-6 bg-white dark:bg-[#111] rounded-2xl shadow-lg shadow-black/5 dark:shadow-white/5 border border-gray-100 dark:border-white/10 min-w-52 h-full transition-shadow hover:shadow-xl ${className}`}
+      whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      className={`group flex flex-col p-8 bg-white dark:bg-[#111] rounded-3xl shadow-xl shadow-black/5 dark:shadow-white/[0.02] border border-gray-100 dark:border-white/5 min-w-52 h-full transition-all hover:shadow-2xl hover:border-orange-500/30 ${className}`}
       {...props}
     >
-      <h1 className="text-xl font-bold mb-3 text-primary dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+      <h1 className="text-2xl font-bold mb-4 text-primary dark:text-white group-hover:text-orange-500 transition-colors">
         {label}
       </h1>
       {tag && (
-        <p className="text-xs font-semibold text-white mb-4 bg-primary dark:bg-white/20 px-3 py-1 w-fit rounded-full uppercase tracking-wider">
+        <p className="text-xs font-bold text-orange-600 dark:text-orange-400 mb-5 bg-orange-50 dark:bg-orange-500/10 border border-orange-100 dark:border-orange-500/20 px-4 py-1.5 w-fit rounded-full uppercase tracking-widest">
           {tag}
         </p>
       )}
       {description && (
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-6 flex-1 leading-relaxed">
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-8 flex-1 leading-relaxed">
           {description}
         </p>
       )}
       {icon && (
-        <div className="mb-4 flex justify-center">
+        <div className="mb-6 flex justify-center">
           <Image
             src={icon}
             alt={label}
@@ -531,10 +539,11 @@ function Card({
       )}
       <Link
         href={link?.href || "#"}
-        className="border-t border-gray-100 dark:border-white/10 pt-4 text-primary dark:text-gray-200 text-sm font-semibold flex items-center justify-between hover:text-blue-600 dark:hover:text-blue-400 transition-colors mt-auto"
+        className="border-t border-gray-100 dark:border-white/10 pt-5 text-primary dark:text-gray-200 text-sm font-bold flex items-center justify-between hover:text-orange-500 transition-colors mt-auto group/link"
       >
         {link?.label}
         <motion.span
+          className="bg-gray-50 dark:bg-white/5 p-2 rounded-full group-hover/link:bg-orange-500 group-hover/link:text-white transition-colors"
           whileHover={{ x: 4 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
@@ -564,34 +573,34 @@ function CardType2({
 }: CardType2Props) {
   return (
     <motion.div
-      whileHover={{ scale: 1.05 }}
-      className={`rounded-xl p-2 sm:p-4 flex flex-col items-center group cursor-default ${className}`}
+      whileHover={{ y: -5 }}
+      className={`rounded-2xl p-4 sm:p-6 flex flex-col items-center group cursor-default transition-all ${className}`}
       {...props}
     >
       <div
         style={{ backgroundColor: bgColor }}
-        className="w-20 h-20 sm:w-24 sm:h-24 p-5 mx-auto rounded-3xl flex items-center justify-center transition-transform group-hover:rotate-3 shadow-sm"
+        className="w-20 h-20 sm:w-24 sm:h-24 p-5 mx-auto rounded-3xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-sm border border-black/5 dark:border-white/5"
       >
         {icon && (
           <Image
             src={icon}
             alt=""
-            className="mx-auto drop-shadow-sm"
+            className="mx-auto drop-shadow-sm transition-transform duration-500 group-hover:rotate-6"
             width={80}
             height={80}
           />
         )}
       </div>
-      <h1 className="sm:text-lg font-medium text-center mt-4 leading-snug">
+      <h1 className="sm:text-lg font-semibold text-center mt-6 text-primary dark:text-gray-200 leading-snug">
         {label}
       </h1>
       {subText && (
-        <p className="text-sm text-primary text-opacity-60 mt-1 text-center">
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center">
           {subText}
         </p>
       )}
       {description && (
-        <p className="text-sm text-center mt-2 text-gray-600 dark:text-gray-400">
+        <p className="text-sm text-center mt-3 text-gray-500 dark:text-gray-400">
           {description}
         </p>
       )}
@@ -615,23 +624,23 @@ function CardType3({
   return (
     <motion.a
       href={link}
-      whileHover={{ y: -4 }}
-      className={`group relative overflow-hidden flex flex-col items-center justify-center bg-white dark:bg-[#111] rounded-2xl px-6 py-8 border border-gray-100 dark:border-white/10 shadow-lg shadow-black/5 dark:shadow-white/5 hover:shadow-xl transition-all ${className}`}
+      whileHover={{ y: -8 }}
+      className={`group relative overflow-hidden flex flex-col items-center justify-center bg-white dark:bg-[#111] rounded-3xl px-6 py-10 border border-gray-100 dark:border-white/5 shadow-xl shadow-black/5 dark:shadow-white/[0.02] hover:shadow-2xl transition-all ${className}`}
       {...props}
     >
-      <div className="bg-primary dark:bg-white/10 -z-10 transition-all duration-500 w-0 h-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full group-hover:w-[150%] group-hover:h-100 absolute"></div>
-      <figure className="mb-4 z-10">
+      <div className="bg-orange-500 dark:bg-orange-600 -z-10 transition-all duration-500 w-0 h-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full group-hover:w-[200%] group-hover:h-120 absolute"></div>
+      <figure className="mb-6 z-10">
         {icon && (
           <Image
             src={icon}
             alt={label}
-            className="filter brightness-0 opacity-80 dark:opacity-100 dark:invert group-hover:invert transition-all duration-300 group-hover:scale-110"
+            className="filter brightness-0 opacity-80 dark:opacity-100 dark:invert group-hover:invert transition-all duration-300 group-hover:scale-110 group-hover:brightness-0 group-hover:opacity-100"
             width={72}
             height={72}
           />
         )}
       </figure>
-      <span className="text-primary font-semibold dark:text-white text-center group-hover:text-white transition-all duration-300 z-10">
+      <span className="text-primary text-lg font-bold dark:text-white text-center group-hover:text-white transition-all duration-300 z-10">
         {label}
       </span>
     </motion.a>
@@ -681,8 +690,8 @@ function AnimatedNumber({
 // Extracted UI wrapper for standard text logos
 function LabLogo({ name }: { name: string }) {
   return (
-    <div className="flex items-center justify-center grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-pointer">
-      <span className="text-sm sm:text-base lg:text-lg font-extrabold tracking-widest text-primary dark:text-gray-200 uppercase text-center">
+    <div className="flex items-center justify-center grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer">
+      <span className="text-sm sm:text-base lg:text-lg font-black tracking-widest text-primary dark:text-gray-300 uppercase text-center">
         {name}
       </span>
     </div>
