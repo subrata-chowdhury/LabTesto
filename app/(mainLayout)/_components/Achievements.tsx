@@ -4,6 +4,13 @@ import React, { useEffect, useState, useRef } from "react";
 import { motion, useInView, Variants } from "framer-motion";
 import SectionHeader from "./SectionHeader";
 
+import apolloLogo from "@/assets/HomePage/achievements/apollo-diagnostics.png";
+import drLalLogo from "@/assets/HomePage/achievements/dr-lal.png";
+import metropolisLogo from "@/assets/HomePage/achievements/metropolis.png";
+import srlLogo from "@/assets/HomePage/achievements/srl-diagnostics.png";
+import thyrocareLogo from "@/assets/HomePage/achievements/thyrocare.png";
+import Image, { StaticImageData } from "next/image";
+
 // Shared Animation Variants for staggered lists
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -119,15 +126,15 @@ export function Achievements() {
         className="z-10 mt-24 pt-10 border-t border-gray-200 dark:border-white/10 max-w-6xl mx-auto w-full px-6"
       >
         <div className="flex flex-wrap md:flex-nowrap items-center justify-center md:justify-between gap-8 md:gap-4 lg:gap-8">
-          <LabLogo name="Dr. Lal PathLabs" />
+          <LabLogo name="Dr. Lal PathLabs" img={drLalLogo} />
           <div className="w-px h-8 bg-gray-200 dark:bg-white/10 hidden md:block"></div>
-          <LabLogo name="Thyrocare" />
+          <LabLogo name="Thyrocare" img={thyrocareLogo} />
           <div className="w-px h-8 bg-gray-200 dark:bg-white/10 hidden md:block"></div>
-          <LabLogo name="SRL Diagnostics" />
+          <LabLogo name="SRL Diagnostics" img={srlLogo} />
           <div className="w-px h-8 bg-gray-200 dark:bg-white/10 hidden md:block"></div>
-          <LabLogo name="Metropolis" />
+          <LabLogo name="Metropolis" img={metropolisLogo} />
           <div className="w-px h-8 bg-gray-200 dark:bg-white/10 hidden md:block"></div>
-          <LabLogo name="Apollo Diagnostics" />
+          <LabLogo name="Apollo Diagnostics" img={apolloLogo} />
         </div>
       </motion.div>
     </section>
@@ -179,12 +186,10 @@ function AnimatedNumber({
 }
 
 // Extracted UI wrapper for standard text logos
-function LabLogo({ name }: { name: string }) {
+function LabLogo({ name, img }: { name: string; img: StaticImageData }) {
   return (
-    <div className="flex items-center justify-center grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer">
-      <span className="text-sm sm:text-base lg:text-lg font-black tracking-widest text-primary dark:text-gray-300 uppercase text-center">
-        {name}
-      </span>
+    <div className="flex items-center justify-center opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer">
+      <Image src={img} alt={name} width={140} height={50} />
     </div>
   );
 }
