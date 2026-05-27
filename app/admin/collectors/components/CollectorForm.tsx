@@ -1,16 +1,21 @@
+// app/admin/collectors/components/CollectorForm.tsx
 "use client";
-// import Dropdown from '@/components/Dropdown'
 import Input from "@/components/Inputs/Input";
 import React, { useState } from "react";
-import Image from "next/image";
-// import CheckBox from '@/components/Inputs/CheckBox'
 import Title from "@/components/Title";
-import informationIcon from "@/assets/information.svg";
 import { MainTable } from "@/components/Table";
-import plusIcon from "@/assets/blue-plus.svg";
 import Model from "@/components/Model";
-import TrashBinIcon from "@/assets/reactIcon/TrashBin";
 import TagInput from "@/components/Inputs/TagInput";
+import {
+  FiPlus,
+  FiTrash2,
+  FiEdit2,
+  FiInfo,
+  FiUser,
+  FiBriefcase,
+  FiAward,
+} from "react-icons/fi";
+import { useRouter } from "next/navigation";
 
 type Props = {
   collectorDetails: CollectorDetails;
@@ -30,154 +35,211 @@ const CollectorForm = ({
   const [showQualificationPopup, setShowQualificationPopup] = useState<{
     index: number;
   } | null>(null);
+  const navigate = useRouter();
 
   return (
-    <div className="bg-white dark:bg-black mt-4 p-8 px-10">
-      <div className="text-xl flex gap-3 items-center font-bold pb-6">
-        Collector Form
-        <Title
-          title={
-            <p className="text-nowrap font-medium">
-              Fill in the details for the collector
-            </p>
-          }
-        >
-          <Image src={informationIcon} alt="" width={20} height={20} />
-        </Title>
+    <div className="max-w-5xl mt-6 mx-auto flex flex-col gap-6 pb-12 w-full">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 bg-orange-100 dark:bg-orange-500/20 rounded-2xl flex items-center justify-center text-orange-600 dark:text-orange-400">
+            <FiUser className="w-6 h-6" />
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              {collectorDetails.name
+                ? "Edit Collector Profile"
+                : "Register New Collector"}
+            </h2>
+            <div className="flex items-center gap-2 mt-1">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Manage phlebotomist identity and professional credentials
+              </p>
+              <Title
+                title={
+                  <p className="text-nowrap font-medium text-sm">
+                    Fill in the accurate details to create a valid collector
+                    profile.
+                  </p>
+                }
+              >
+                <FiInfo className="w-4 h-4 text-gray-400 cursor-pointer hover:text-orange-500 transition-colors" />
+              </Title>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="pb-4 font-semibold">Collector Information</div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 pb-5 gap-4 text-sm">
-        <Input
-          label="Name *"
-          name="name"
-          placeholder="Enter name"
-          value={collectorDetails.name}
-          onChange={(val) =>
-            onChange.collectorDetails({ ...collectorDetails, name: val })
-          }
-          labelClass="font-medium"
-          containerClass="flex-1"
-          error={error?.field === "name" ? error.msg : ""}
-        />
-        <Input
-          label="Email *"
-          name="email"
-          placeholder="Enter email"
-          value={collectorDetails.email}
-          onChange={(val) =>
-            onChange.collectorDetails({ ...collectorDetails, email: val })
-          }
-          labelClass="font-medium"
-          containerClass="flex-1"
-          error={error?.field === "email" ? error.msg : ""}
-        />
-        <Input
-          label="Password *"
-          name="password"
-          placeholder="Enter password"
-          value={collectorDetails.password}
-          onChange={(val) =>
-            onChange.collectorDetails({ ...collectorDetails, password: val })
-          }
-          labelClass="font-medium"
-          containerClass="flex-1"
-          error={error?.field === "password" ? error.msg : ""}
-        />
-        <Input
-          label="Phone"
-          name="phone"
-          placeholder="Enter phone number"
-          value={collectorDetails.phone || ""}
-          onChange={(val) =>
-            onChange.collectorDetails({ ...collectorDetails, phone: val })
-          }
-          labelClass="font-medium"
-          containerClass="flex-1"
-          error={error?.field === "phone" ? error.msg : ""}
-        />
-        <Input
-          label="Adhaar"
-          name="adhaar"
-          placeholder="Enter adhaar number"
-          value={collectorDetails.adhaar || ""}
-          onChange={(val) =>
-            onChange.collectorDetails({ ...collectorDetails, adhaar: val })
-          }
-          labelClass="font-medium"
-          containerClass="flex-1"
-          error={error?.field === "adhaar" ? error.msg : ""}
-        />
-        <Input
-          label="Experience"
-          name="experience"
-          type="number"
-          placeholder="Enter experience in years"
-          value={collectorDetails.experience?.toString() || ""}
-          onChange={(val) =>
-            onChange.collectorDetails({
-              ...collectorDetails,
-              experience: parseInt(val || "0"),
-            })
-          }
-          labelClass="font-medium"
-          containerClass="flex-1"
-          error={error?.field === "experience" ? error.msg : ""}
-        />
-      </div>
-      <div className="pb-4 flex flex-col gap-1 justify-between">
-        <div className="font-medium text-sm">Reachable Areas</div>
-        <TagInput
-          className="w-full"
-          values={collectorDetails.reachableAreas}
-          onChange={(vals) =>
-            onChange.collectorDetails({
-              ...collectorDetails,
-              reachableAreas: vals,
-            })
-          }
-        />
-      </div>
-      <div className="pb-4 flex justify-between font-semibold pt-5 border-t-2 border-gray-300/50">
-        Qualification
-        <div
-          className="ms-auto flex gap-2 font-semibold text-sm text-primary dark:text-white border-2 border-primary dark:border-white/60 px-4 py-2 rounded cursor-pointer"
-          onClick={() =>
-            setShowQualificationPopup({
-              index: collectorDetails.qualification?.length || 0,
-            })
-          }
-        >
-          <div>New Entry</div>
-          <Image
-            src={plusIcon}
-            className="filter brightness-0 dark:invert"
-            alt=""
-            width={20}
-            height={20}
+
+      {/* Account & Personal Information */}
+      <div className="bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-2xl shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-gray-100 dark:border-white/10 bg-gray-50/50 dark:bg-white/2 flex items-center gap-2">
+          <FiUser className="text-gray-500" />
+          <h3 className="font-semibold text-gray-800 dark:text-gray-200">
+            Personal & Account Information
+          </h3>
+        </div>
+        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Input
+            label="Full Name *"
+            name="name"
+            placeholder="e.g., John Doe"
+            value={collectorDetails.name}
+            onChange={(val) =>
+              onChange.collectorDetails({ ...collectorDetails, name: val })
+            }
+            labelClass="font-semibold text-sm text-gray-700 dark:text-gray-300"
+            containerClass="flex-1"
+            error={error?.field === "name" ? error.msg : ""}
+          />
+          <Input
+            label="Email Address *"
+            name="email"
+            type="email"
+            placeholder="e.g., john@example.com"
+            value={collectorDetails.email}
+            onChange={(val) =>
+              onChange.collectorDetails({ ...collectorDetails, email: val })
+            }
+            labelClass="font-semibold text-sm text-gray-700 dark:text-gray-300"
+            containerClass="flex-1"
+            error={error?.field === "email" ? error.msg : ""}
+          />
+          <Input
+            label="Password *"
+            name="password"
+            placeholder="Secure password for login"
+            value={collectorDetails.password}
+            onChange={(val) =>
+              onChange.collectorDetails({ ...collectorDetails, password: val })
+            }
+            labelClass="font-semibold text-sm text-gray-700 dark:text-gray-300"
+            containerClass="flex-1"
+            error={error?.field === "password" ? error.msg : ""}
+          />
+          <Input
+            label="Phone Number"
+            name="phone"
+            type="tel"
+            placeholder="e.g., +91 9876543210"
+            value={collectorDetails.phone || ""}
+            onChange={(val) =>
+              onChange.collectorDetails({ ...collectorDetails, phone: val })
+            }
+            labelClass="font-semibold text-sm text-gray-700 dark:text-gray-300"
+            containerClass="flex-1"
+            error={error?.field === "phone" ? error.msg : ""}
           />
         </div>
       </div>
-      <div className="flex flex-col gap-1">
-        <div className="border-2 border-gray-300/50 border-t-0 rounded">
+
+      {/* Professional Details */}
+      <div className="bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-2xl shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-gray-100 dark:border-white/10 bg-gray-50/50 dark:bg-white/2 flex items-center gap-2">
+          <FiBriefcase className="text-gray-500" />
+          <h3 className="font-semibold text-gray-800 dark:text-gray-200">
+            Professional Identity
+          </h3>
+        </div>
+        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Input
+            label="Aadhaar Number"
+            name="adhaar"
+            placeholder="12-digit Aadhaar"
+            value={collectorDetails.adhaar || ""}
+            onChange={(val) =>
+              onChange.collectorDetails({ ...collectorDetails, adhaar: val })
+            }
+            labelClass="font-semibold text-sm text-gray-700 dark:text-gray-300"
+            containerClass="flex-1"
+            error={error?.field === "adhaar" ? error.msg : ""}
+          />
+          <Input
+            label="Years of Experience"
+            name="experience"
+            type="number"
+            placeholder="e.g., 3"
+            value={collectorDetails.experience?.toString() || ""}
+            onChange={(val) =>
+              onChange.collectorDetails({
+                ...collectorDetails,
+                experience: parseInt(val || "0"),
+              })
+            }
+            labelClass="font-semibold text-sm text-gray-700 dark:text-gray-300"
+            containerClass="flex-1"
+            error={error?.field === "experience" ? error.msg : ""}
+          />
+          <div className="md:col-span-2 flex flex-col gap-2">
+            <label className="font-semibold text-sm text-gray-700 dark:text-gray-300">
+              Serviceable Areas (Pincodes/Cities)
+            </label>
+            <TagInput
+              className="w-full"
+              values={collectorDetails.reachableAreas || []}
+              onChange={(vals) =>
+                onChange.collectorDetails({
+                  ...collectorDetails,
+                  reachableAreas: vals,
+                })
+              }
+            />
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Press enter or comma to add a location
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Qualifications */}
+      <div className="bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-2xl shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-gray-100 dark:border-white/10 bg-gray-50/50 dark:bg-white/2 flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <FiAward className="text-gray-500" />
+            <h3 className="font-semibold text-gray-800 dark:text-gray-200">
+              Qualifications & Degrees
+            </h3>
+          </div>
+          <button
+            type="button"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold text-orange-600 bg-orange-50 hover:bg-orange-100 dark:bg-orange-500/10 dark:text-orange-400 dark:hover:bg-orange-500/20 rounded-lg transition-colors"
+            onClick={() =>
+              setShowQualificationPopup({
+                index: collectorDetails.qualification?.length || 0,
+              })
+            }
+          >
+            <FiPlus className="w-4 h-4" />
+            <span>Add Credential</span>
+          </button>
+        </div>
+        <div className="p-0">
           <MainTable<Qualification>
             config={[
-              { heading: "Degree", selector: "degree" },
-              { heading: "College", selector: "college" },
-              { heading: "Year", selector: "year" },
+              {
+                heading: "Degree/Certificate",
+                selector: "degree",
+                component: ({ data }) => (
+                  <span className="font-medium text-gray-900 dark:text-white">
+                    {data.degree}
+                  </span>
+                ),
+              },
+              { heading: "Institution", selector: "college" },
+              { heading: "Completion Year", selector: "year" },
               {
                 heading: "Actions",
                 component: ({ index }) => (
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-3">
                     <button
-                      className="text-blue-500"
-                      onClick={() => {
-                        setShowQualificationPopup({ index });
-                      }}
+                      className="p-1.5 text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded-md transition-colors"
+                      title="Edit"
+                      onClick={() => setShowQualificationPopup({ index })}
                     >
-                      Edit
+                      <FiEdit2 className="w-4 h-4" />
                     </button>
-                    |
                     <button
+                      className="p-1.5 text-gray-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-md transition-colors"
+                      title="Delete"
                       onClick={() => {
                         const newQualifications = [
                           ...(collectorDetails.qualification || []),
@@ -189,52 +251,56 @@ const CollectorForm = ({
                         });
                       }}
                     >
-                      <TrashBinIcon />
+                      <FiTrash2 className="w-4 h-4" />
                     </button>
                   </div>
                 ),
               },
             ]}
             data={collectorDetails?.qualification || []}
-            className="rounded text-sm border-0"
+            className="border-0"
           />
         </div>
-        {showQualificationPopup && (
-          <QualificationPopup
-            qualification={
-              collectorDetails.qualification?.[showQualificationPopup.index]
-            }
-            onClose={() => setShowQualificationPopup(null)}
-            onSave={(qualification) => {
-              const newQualifications = [
-                ...(collectorDetails.qualification || []),
-              ];
-              newQualifications[showQualificationPopup.index] = qualification;
-              onChange.collectorDetails({
-                ...collectorDetails,
-                qualification: newQualifications,
-              });
-              setShowQualificationPopup(null);
-            }}
-          />
-        )}
       </div>
-      <div className="p-5 px-0 ms-auto justify-end items-end flex gap-4">
-        <div
-          className="font-medium text-primary dark:text-white h-10 flex justify-center items-center px-4 border-2 border-primary dark:border-white/60 rounded cursor-pointer"
-          onClick={() => {}}
+
+      {/* Action Buttons */}
+      <div className="flex justify-end gap-4 mt-2">
+        <button
+          type="button"
+          className="px-6 py-2.5 font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/20 rounded-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
+          onClick={() => navigate.back()}
         >
           Cancel
-        </div>
-        <div
-          className="bg-primary dark:bg-white/25 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer"
-          onClick={async () => {
-            await onSave();
-          }}
+        </button>
+        <button
+          type="button"
+          className="px-8 py-2.5 font-semibold text-white bg-orange-500 hover:bg-orange-600 rounded-xl shadow-lg shadow-orange-500/20 active:scale-95 transition-all flex items-center justify-center min-w-30"
+          onClick={onSave}
         >
-          Save
-        </div>
+          Save Profile
+        </button>
       </div>
+
+      {/* Modal */}
+      {showQualificationPopup && (
+        <QualificationPopup
+          qualification={
+            collectorDetails.qualification?.[showQualificationPopup.index]
+          }
+          onClose={() => setShowQualificationPopup(null)}
+          onSave={(qualification) => {
+            const newQualifications = [
+              ...(collectorDetails.qualification || []),
+            ];
+            newQualifications[showQualificationPopup.index] = qualification;
+            onChange.collectorDetails({
+              ...collectorDetails,
+              qualification: newQualifications,
+            });
+            setShowQualificationPopup(null);
+          }}
+        />
+      )}
     </div>
   );
 };
@@ -271,68 +337,64 @@ const QualificationPopup = ({
     qualification || {
       degree: "",
       college: "",
-      year: 0,
+      year: new Date().getFullYear(),
     },
   );
 
   return (
-    <Model heading="Add Qualification" onClose={onClose}>
-      <div className="bg-white dark:bg-black p-6 pb-3 px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+    <Model heading="Credential Details" onClose={onClose} className="max-w-xl">
+      <div className="flex flex-col gap-6 p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <Input
-            label="Degree *"
+            label="Degree / Certificate *"
             name="degree"
-            placeholder="Enter degree"
+            placeholder="e.g., B.Sc DMLT"
             value={qualificationData?.degree || ""}
             onChange={(val) =>
               setQualificationData((prevVal) => ({ ...prevVal, degree: val }))
             }
-            labelClass="font-medium"
-            containerClass="flex-1"
+            labelClass="font-semibold text-sm text-gray-700 dark:text-gray-300"
+            containerClass="sm:col-span-2"
           />
           <Input
-            label="College *"
+            label="College / Institution *"
             name="college"
-            placeholder="Enter college"
+            placeholder="e.g., Medical College Name"
             value={qualificationData?.college || ""}
             onChange={(val) =>
               setQualificationData((prevVal) => ({ ...prevVal, college: val }))
             }
-            labelClass="font-medium"
-            containerClass="flex-1"
+            labelClass="font-semibold text-sm text-gray-700 dark:text-gray-300"
           />
           <Input
-            label="Year *"
+            label="Passing Year *"
             name="year"
             type="number"
-            placeholder="Enter year"
+            placeholder="e.g., 2021"
             value={qualificationData?.year?.toString() || ""}
             onChange={(val) =>
               setQualificationData((prevVal) => ({
                 ...prevVal,
-                year: parseInt(val),
+                year: parseInt(val || "0"),
               }))
             }
-            labelClass="font-medium"
-            containerClass="flex-1"
+            labelClass="font-semibold text-sm text-gray-700 dark:text-gray-300"
           />
         </div>
-        <div className="p-5 px-0 ms-auto justify-end items-end flex gap-4">
-          <div
-            className="font-medium text-primary dark:text-white h-10 flex justify-center items-center px-4 border-2 border-primary dark:border-white/60 rounded cursor-pointer"
-            onClick={onClose}
-          >
-            Cancel
-          </div>
-          <div
-            className="bg-primary dark:bg-white/25 font-medium text-white h-10 flex justify-center items-center px-4 rounded cursor-pointer"
-            onClick={async () => {
-              await onSave(qualificationData);
-            }}
-          >
-            Save
-          </div>
-        </div>
+      </div>
+      <div className="p-6 flex justify-end gap-3 border-t border-gray-100 dark:border-white/10 mt-4 pt-4">
+        <button
+          className="px-5 py-2 font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-white/10 rounded-xl transition-colors"
+          onClick={onClose}
+        >
+          Cancel
+        </button>
+        <button
+          className="px-5 py-2 font-semibold text-white bg-orange-500 hover:bg-orange-600 rounded-xl transition-colors shadow-md shadow-orange-500/20"
+          onClick={() => onSave(qualificationData)}
+        >
+          Save Credential
+        </button>
       </div>
     </Model>
   );

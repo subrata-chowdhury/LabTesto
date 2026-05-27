@@ -81,7 +81,7 @@ const Carts = () => {
   return (
     <>
       <div className="flex flex-col">
-        <div className="mb-4 justify-start">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           <Card
             label="Total Carts"
             value={analytics.totalCarts}

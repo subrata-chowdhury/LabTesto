@@ -1,3 +1,4 @@
+// app/components/RichTextEditor.tsx
 import { Color } from "@tiptap/extension-color";
 import ListItem from "@tiptap/extension-list-item";
 import { TextStyle } from "@tiptap/extension-text-style";
@@ -12,6 +13,15 @@ import TableRow from "@tiptap/extension-table-row";
 import TextAlign from "@tiptap/extension-text-align";
 import Link from "@tiptap/extension-link";
 import Image from "next/image";
+import {
+  FiUnderline,
+  FiLink,
+  FiCornerUpLeft,
+  FiCornerUpRight,
+  FiTrash2,
+  FiMinus,
+  FiDroplet,
+} from "react-icons/fi";
 import "@/styles/tiptap.css";
 
 //icons
@@ -36,266 +46,304 @@ import codeIcon from "@/assets/TextEditor/code.svg";
 import columnDeleteIcon from "@/assets/TextEditor/column-delete.svg";
 import insertTableIcon from "@/assets/TextEditor/insert-table.svg";
 
+const MenuButton = ({
+  onClick,
+  disabled = false,
+  isActive = false,
+  title,
+  children,
+}: {
+  onClick: () => void;
+  disabled?: boolean;
+  isActive?: boolean;
+  title: string;
+  children: React.ReactNode;
+}) => (
+  <button
+    type="button"
+    onClick={onClick}
+    disabled={disabled}
+    title={title}
+    className={`p-1.5 rounded-lg flex items-center justify-center transition-all duration-200 min-w-[32px] h-[32px]
+      ${
+        isActive
+          ? "bg-orange-100 text-orange-600 dark:bg-orange-500/20 dark:text-orange-400"
+          : "text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/10"
+      }
+      ${disabled ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}
+    `}
+  >
+    {children}
+  </button>
+);
+
+const Divider = () => (
+  <div className="w-px h-6 bg-gray-300 dark:bg-white/10 mx-1 flex-shrink-0" />
+);
+
 const MenuBar = ({ editor }: { editor: Editor | null }) => {
   if (!editor) {
     return null;
   }
 
+  const setLink = () => {
+    const previousUrl = editor.getAttributes("link").href;
+    const url = window.prompt("Enter the URL", previousUrl);
+    if (url === null) return; // cancelled
+    if (url === "") {
+      editor.chain().focus().extendMarkRange("link").unsetLink().run();
+      return;
+    }
+    editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+  };
+
   return (
-    <div className="control-group">
-      <div className="button-group">
-        <button
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          disabled={!editor.can().chain().focus().toggleBold().run()}
-          className={editor.isActive("bold") ? "is-active" : ""}
-          title="Bold"
-        >
-          <Image width={18} height={18} src={boldIcon} alt="Bold" />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          disabled={!editor.can().chain().focus().toggleItalic().run()}
-          className={editor.isActive("italic") ? "is-active" : ""}
-          title="Italic"
-        >
-          <Image width={18} height={18} src={italicIcon} alt="Italic" />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
-          disabled={!editor.can().chain().focus().toggleUnderline().run()}
-          className={editor.isActive("underline") ? "is-active" : ""}
-          title="Underline"
-        >
-          U
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          disabled={!editor.can().chain().focus().toggleStrike().run()}
-          className={editor.isActive("strike") ? "is-active" : ""}
-          title="Strikethrough"
-        >
-          <Image width={18} height={18} src={strikethroughIcon} alt="Strike" />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleCode().run()}
-          disabled={!editor.can().chain().focus().toggleCode().run()}
-          className={editor.isActive("code") ? "is-active" : ""}
-          title="Code"
-        >
-          <Image width={18} height={18} src={codeIcon} alt="Code" />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().unsetAllMarks().run()}
-          title="Clear marks"
-        >
-          Clear marks
-        </button>
-        <button
-          onClick={() => editor.chain().focus().clearNodes().run()}
-          title="Clear nodes"
-        >
-          Clear nodes
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setParagraph().run()}
-          className={editor.isActive("paragraph") ? "is-active" : ""}
-          title="Paragraph"
-        >
-          <Image width={18} height={18} src={paragraphIcon} alt="Paragraph" />
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 1 }).run()
-          }
-          className={
-            editor.isActive("heading", { level: 1 }) ? "is-active" : ""
-          }
-          title="Heading 1"
-        >
-          H1
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 2 }).run()
-          }
-          className={
-            editor.isActive("heading", { level: 2 }) ? "is-active" : ""
-          }
-          title="Heading 2"
-        >
-          H2
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 3 }).run()
-          }
-          className={
-            editor.isActive("heading", { level: 3 }) ? "is-active" : ""
-          }
-          title="Heading 3"
-        >
-          H3
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 4 }).run()
-          }
-          className={
-            editor.isActive("heading", { level: 4 }) ? "is-active" : ""
-          }
-          title="Heading 4"
-        >
-          H4
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 5 }).run()
-          }
-          className={
-            editor.isActive("heading", { level: 5 }) ? "is-active" : ""
-          }
-          title="Heading 5"
-        >
-          H5
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 6 }).run()
-          }
-          className={
-            editor.isActive("heading", { level: 6 }) ? "is-active" : ""
-          }
-          title="Heading 6"
-        >
-          H6
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={editor.isActive("bulletList") ? "is-active" : ""}
-          title="Bullet List"
-        >
-          <Image
-            width={18}
-            height={18}
-            src={bulletListIcon}
-            alt="Bullet list"
-          />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={editor.isActive("orderedList") ? "is-active" : ""}
-          title="Ordered List"
-        >
-          <Image
-            width={18}
-            height={18}
-            src={bulletListRomanIcon}
-            alt="Ordered list"
-          />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-          className={editor.isActive("codeBlock") ? "is-active" : ""}
-          title="Code Block"
-        >
-          Code block
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className={editor.isActive("blockquote") ? "is-active" : ""}
-          title="Blockquote"
-        >
-          Blockquote
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setHorizontalRule().run()}
-          title="Horizontal Rule"
-        >
-          Horizontal rule
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setHardBreak().run()}
-          title="Hard Break"
-        >
-          Hard break
-        </button>
-        <button
+    <div className="flex flex-wrap items-center gap-y-2 gap-x-1 p-2 bg-gray-50 dark:bg-[#1a1a1a] border-b border-gray-200 dark:border-white/10 rounded-t-xl">
+      {/* History Group */}
+      <div className="flex items-center gap-1">
+        <MenuButton
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editor.can().chain().focus().undo().run()}
           title="Undo"
         >
-          Undo
-        </button>
-        <button
+          <FiCornerUpLeft size={16} />
+        </MenuButton>
+        <MenuButton
           onClick={() => editor.chain().focus().redo().run()}
           disabled={!editor.can().chain().focus().redo().run()}
           title="Redo"
         >
-          Redo
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setColor("#958DF1").run()}
-          className={
-            editor.isActive("textStyle", { color: "#958DF1" })
-              ? "is-active"
-              : ""
-          }
-          title="Purple"
+          <FiCornerUpRight size={16} />
+        </MenuButton>
+      </div>
+
+      <Divider />
+
+      {/* Typography Group */}
+      <div className="flex items-center gap-1">
+        <MenuButton
+          onClick={() => editor.chain().focus().setParagraph().run()}
+          isActive={editor.isActive("paragraph")}
+          title="Paragraph"
         >
-          Purple
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setTextAlign("center").run()}
-          className={
-            editor.isActive({ textAlign: "center" }) ? "is-active" : ""
-          }
-          title="Align Center"
-        >
-          <Image width={18} height={18} src={alignCenterIcon} alt="Center" />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setTextAlign("left").run()}
-          className={editor.isActive({ textAlign: "left" }) ? "is-active" : ""}
-          title="Align Left"
-        >
-          <Image width={18} height={18} src={alignLeftIcon} alt="Left" />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setTextAlign("right").run()}
-          className={editor.isActive({ textAlign: "right" }) ? "is-active" : ""}
-          title="Align Right"
-        >
-          <Image width={18} height={18} src={alignRightIcon} alt="Right" />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setTextAlign("justify").run()}
-          className={
-            editor.isActive({ textAlign: "justify" }) ? "is-active" : ""
-          }
-          title="Align Justify"
-        >
-          Justify
-        </button>
-        <button
-          onClick={() => {
-            const url = prompt("Enter the URL");
-            if (url) {
+          <Image
+            width={16}
+            height={16}
+            src={paragraphIcon}
+            alt="P"
+            className="dark:invert"
+          />
+        </MenuButton>
+        {[1, 2, 3, 4, 5, 6].map((level) => (
+          <MenuButton
+            key={level}
+            onClick={() =>
               editor
                 .chain()
                 .focus()
-                .extendMarkRange("link")
-                .setLink({ href: url })
-                .run();
+                .toggleHeading({ level: level as any })
+                .run()
             }
-          }}
-          className={editor.isActive("link") ? "is-active" : ""}
+            isActive={editor.isActive("heading", { level })}
+            title={`Heading ${level}`}
+          >
+            <span className="font-bold text-xs">H{level}</span>
+          </MenuButton>
+        ))}
+      </div>
+
+      <Divider />
+
+      {/* Formatting Group */}
+      <div className="flex items-center gap-1">
+        <MenuButton
+          onClick={() => editor.chain().focus().toggleBold().run()}
+          disabled={!editor.can().chain().focus().toggleBold().run()}
+          isActive={editor.isActive("bold")}
+          title="Bold"
+        >
+          <Image
+            width={16}
+            height={16}
+            src={boldIcon}
+            alt="B"
+            className="dark:invert"
+          />
+        </MenuButton>
+        <MenuButton
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+          disabled={!editor.can().chain().focus().toggleItalic().run()}
+          isActive={editor.isActive("italic")}
+          title="Italic"
+        >
+          <Image
+            width={16}
+            height={16}
+            src={italicIcon}
+            alt="I"
+            className="dark:invert"
+          />
+        </MenuButton>
+        <MenuButton
+          onClick={() => editor.chain().focus().toggleUnderline().run()}
+          disabled={!editor.can().chain().focus().toggleUnderline().run()}
+          isActive={editor.isActive("underline")}
+          title="Underline"
+        >
+          <FiUnderline size={16} />
+        </MenuButton>
+        <MenuButton
+          onClick={() => editor.chain().focus().toggleStrike().run()}
+          disabled={!editor.can().chain().focus().toggleStrike().run()}
+          isActive={editor.isActive("strike")}
+          title="Strikethrough"
+        >
+          <Image
+            width={16}
+            height={16}
+            src={strikethroughIcon}
+            alt="S"
+            className="dark:invert"
+          />
+        </MenuButton>
+        <MenuButton
+          onClick={() => editor.chain().focus().toggleCode().run()}
+          disabled={!editor.can().chain().focus().toggleCode().run()}
+          isActive={editor.isActive("code")}
+          title="Code"
+        >
+          <Image
+            width={16}
+            height={16}
+            src={codeIcon}
+            alt="Code"
+            className="dark:invert"
+          />
+        </MenuButton>
+        <MenuButton
+          onClick={() => editor.chain().focus().unsetAllMarks().run()}
+          title="Clear marks"
+        >
+          <FiTrash2 size={16} />
+        </MenuButton>
+      </div>
+
+      <Divider />
+
+      {/* Alignment Group */}
+      <div className="flex items-center gap-1">
+        <MenuButton
+          onClick={() => editor.chain().focus().setTextAlign("left").run()}
+          isActive={editor.isActive({ textAlign: "left" })}
+          title="Align Left"
+        >
+          <Image
+            width={16}
+            height={16}
+            src={alignLeftIcon}
+            alt="L"
+            className="dark:invert"
+          />
+        </MenuButton>
+        <MenuButton
+          onClick={() => editor.chain().focus().setTextAlign("center").run()}
+          isActive={editor.isActive({ textAlign: "center" })}
+          title="Align Center"
+        >
+          <Image
+            width={16}
+            height={16}
+            src={alignCenterIcon}
+            alt="C"
+            className="dark:invert"
+          />
+        </MenuButton>
+        <MenuButton
+          onClick={() => editor.chain().focus().setTextAlign("right").run()}
+          isActive={editor.isActive({ textAlign: "right" })}
+          title="Align Right"
+        >
+          <Image
+            width={16}
+            height={16}
+            src={alignRightIcon}
+            alt="R"
+            className="dark:invert"
+          />
+        </MenuButton>
+        <MenuButton
+          onClick={() => editor.chain().focus().setTextAlign("justify").run()}
+          isActive={editor.isActive({ textAlign: "justify" })}
+          title="Justify"
+        >
+          <span className="font-bold text-xs tracking-widest">|||</span>
+        </MenuButton>
+      </div>
+
+      <Divider />
+
+      {/* Lists & Objects Group */}
+      <div className="flex items-center gap-1">
+        <MenuButton
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          isActive={editor.isActive("bulletList")}
+          title="Bullet List"
+        >
+          <Image
+            width={16}
+            height={16}
+            src={bulletListIcon}
+            alt="UL"
+            className="dark:invert"
+          />
+        </MenuButton>
+        <MenuButton
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          isActive={editor.isActive("orderedList")}
+          title="Ordered List"
+        >
+          <Image
+            width={16}
+            height={16}
+            src={bulletListRomanIcon}
+            alt="OL"
+            className="dark:invert"
+          />
+        </MenuButton>
+        <MenuButton
+          onClick={() => editor.chain().focus().toggleBlockquote().run()}
+          isActive={editor.isActive("blockquote")}
+          title="Blockquote"
+        >
+          <span className="font-serif font-bold text-lg">"</span>
+        </MenuButton>
+        <MenuButton
+          onClick={setLink}
+          isActive={editor.isActive("link")}
           title="Hyperlink"
         >
-          Link
-        </button>
+          <FiLink size={16} />
+        </MenuButton>
+        <MenuButton
+          onClick={() => editor.chain().focus().setHorizontalRule().run()}
+          title="Horizontal Rule"
+        >
+          <FiMinus size={16} />
+        </MenuButton>
+        <MenuButton
+          onClick={() => editor.chain().focus().setColor("#f97316").run()}
+          isActive={editor.isActive("textStyle", { color: "#f97316" })}
+          title="Highlight Orange"
+        >
+          <FiDroplet size={16} className="text-orange-500" />
+        </MenuButton>
       </div>
-      <div className="button-group">
-        <button
+
+      <Divider />
+
+      {/* Table Group */}
+      <div className="flex items-center gap-1">
+        <MenuButton
           onClick={() =>
             editor
               .chain()
@@ -306,196 +354,134 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
           title="Insert Table"
         >
           <Image
-            width={18}
-            height={18}
+            width={16}
+            height={16}
             src={insertTableIcon}
-            alt="Insert table"
+            alt="Table"
+            className="dark:invert"
           />
-        </button>
-        <button
-          disabled
-          onClick={() =>
-            editor
-              .chain()
-              .focus()
-              .insertContent("", {
-                parseOptions: {
-                  preserveWhitespace: false,
-                },
-              })
-              .run()
-          }
-          title="Insert HTML Table"
-        >
-          Insert HTML table
-        </button>
-        <button
-          onClick={() => editor.chain().focus().addColumnBefore().run()}
-          disabled={!editor.can().addColumnBefore()}
-          title="Add Column Before"
-        >
-          <Image
-            width={18}
-            height={18}
-            src={tableAddColumnLeftIcon}
-            alt="Add column before"
-          />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().addColumnAfter().run()}
-          disabled={!editor.can().addColumnAfter()}
-          title="Add Column After"
-        >
-          <Image
-            width={18}
-            height={18}
-            src={tableAddColumnRightIcon}
-            alt="Add column after"
-          />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().deleteColumn().run()}
-          disabled={!editor.can().deleteColumn()}
-          title="Delete Column"
-        >
-          <Image
-            width={18}
-            height={18}
-            src={columnDeleteIcon}
-            alt="Delete column"
-          />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().addRowBefore().run()}
-          disabled={!editor.can().addRowBefore()}
-          title="Add Row Before"
-        >
-          <Image
-            width={18}
-            height={18}
-            src={tableAddRowAboveIcon}
-            alt="Add row before"
-          />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().addRowAfter().run()}
-          disabled={!editor.can().addRowAfter()}
-          title="Add Row After"
-        >
-          <Image
-            width={18}
-            height={18}
-            src={tableAddRowBelowIcon}
-            alt="Add row after"
-          />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().deleteRow().run()}
-          disabled={!editor.can().deleteRow()}
-          title="Delete Row"
-        >
-          <Image width={18} height={18} src={rowDeleteIcon} alt="Delete row" />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().deleteTable().run()}
-          disabled={!editor.can().deleteTable()}
-          title="Delete Table"
-        >
-          <Image
-            width={18}
-            height={18}
-            src={tableDeleteIcon}
-            alt="Delete table"
-          />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().mergeCells().run()}
-          disabled={!editor.can().mergeCells()}
-          title="Merge Cells"
-        >
-          <Image
-            width={18}
-            height={18}
-            src={tableCellMergeIcon}
-            alt="Merge cells"
-          />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().splitCell().run()}
-          disabled={!editor.can().splitCell()}
-          title="Split Cell"
-        >
-          <Image
-            width={18}
-            height={18}
-            src={splitCellsHorizontalIcon}
-            alt="Split cell"
-          />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleHeaderColumn().run()}
-          disabled={!editor.can().toggleHeaderColumn()}
-          title="Toggle Header Column"
-        >
-          ToggleHeaderColumn
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleHeaderRow().run()}
-          disabled={!editor.can().toggleHeaderRow()}
-          title="Toggle Header Row"
-        >
-          Toggle header row
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleHeaderCell().run()}
-          disabled={!editor.can().toggleHeaderCell()}
-          title="Toggle Header Cell"
-        >
-          Toggle header cell
-        </button>
-        <button
-          onClick={() => editor.chain().focus().mergeOrSplit().run()}
-          disabled={!editor.can().mergeOrSplit()}
-          title="Merge or Split"
-        >
-          Merge or split
-        </button>
-        <button
-          onClick={() =>
-            editor
-              .chain()
-              .focus()
-              .setCellAttribute("backgroundColor", "#FAF594")
-              .run()
-          }
-          disabled={
-            !editor.can().setCellAttribute("backgroundColor", "#FAF594")
-          }
-          title="Set Cell Attribute"
-        >
-          Set cell attribute
-        </button>
-        <button
-          onClick={() => editor.chain().focus().fixTables().run()}
-          disabled={!editor.can().fixTables()}
-          title="Fix Tables"
-        >
-          Fix tables
-        </button>
-        <button
-          onClick={() => editor.chain().focus().goToNextCell().run()}
-          disabled={!editor.can().goToNextCell()}
-          title="Go to Next Cell"
-        >
-          Go to next cell
-        </button>
-        <button
-          onClick={() => editor.chain().focus().goToPreviousCell().run()}
-          disabled={!editor.can().goToPreviousCell()}
-          title="Go to Previous Cell"
-        >
-          Go to previous cell
-        </button>
+        </MenuButton>
+        {editor.isActive("table") && (
+          <>
+            <MenuButton
+              onClick={() => editor.chain().focus().addColumnBefore().run()}
+              disabled={!editor.can().addColumnBefore()}
+              title="Add Column Before"
+            >
+              <Image
+                width={16}
+                height={16}
+                src={tableAddColumnLeftIcon}
+                alt="+Col L"
+                className="dark:invert"
+              />
+            </MenuButton>
+            <MenuButton
+              onClick={() => editor.chain().focus().addColumnAfter().run()}
+              disabled={!editor.can().addColumnAfter()}
+              title="Add Column After"
+            >
+              <Image
+                width={16}
+                height={16}
+                src={tableAddColumnRightIcon}
+                alt="+Col R"
+                className="dark:invert"
+              />
+            </MenuButton>
+            <MenuButton
+              onClick={() => editor.chain().focus().deleteColumn().run()}
+              disabled={!editor.can().deleteColumn()}
+              title="Delete Column"
+            >
+              <Image
+                width={16}
+                height={16}
+                src={columnDeleteIcon}
+                alt="-Col"
+                className="dark:invert"
+              />
+            </MenuButton>
+            <MenuButton
+              onClick={() => editor.chain().focus().addRowBefore().run()}
+              disabled={!editor.can().addRowBefore()}
+              title="Add Row Before"
+            >
+              <Image
+                width={16}
+                height={16}
+                src={tableAddRowAboveIcon}
+                alt="+Row U"
+                className="dark:invert"
+              />
+            </MenuButton>
+            <MenuButton
+              onClick={() => editor.chain().focus().addRowAfter().run()}
+              disabled={!editor.can().addRowAfter()}
+              title="Add Row After"
+            >
+              <Image
+                width={16}
+                height={16}
+                src={tableAddRowBelowIcon}
+                alt="+Row D"
+                className="dark:invert"
+              />
+            </MenuButton>
+            <MenuButton
+              onClick={() => editor.chain().focus().deleteRow().run()}
+              disabled={!editor.can().deleteRow()}
+              title="Delete Row"
+            >
+              <Image
+                width={16}
+                height={16}
+                src={rowDeleteIcon}
+                alt="-Row"
+                className="dark:invert"
+              />
+            </MenuButton>
+            <MenuButton
+              onClick={() => editor.chain().focus().mergeCells().run()}
+              disabled={!editor.can().mergeCells()}
+              title="Merge Cells"
+            >
+              <Image
+                width={16}
+                height={16}
+                src={tableCellMergeIcon}
+                alt="Merge"
+                className="dark:invert"
+              />
+            </MenuButton>
+            <MenuButton
+              onClick={() => editor.chain().focus().splitCell().run()}
+              disabled={!editor.can().splitCell()}
+              title="Split Cell"
+            >
+              <Image
+                width={16}
+                height={16}
+                src={splitCellsHorizontalIcon}
+                alt="Split"
+                className="dark:invert"
+              />
+            </MenuButton>
+            <MenuButton
+              onClick={() => editor.chain().focus().deleteTable().run()}
+              disabled={!editor.can().deleteTable()}
+              title="Delete Table"
+            >
+              <Image
+                width={16}
+                height={16}
+                src={tableDeleteIcon}
+                alt="Del Table"
+                className="dark:invert"
+              />
+            </MenuButton>
+          </>
+        )}
       </div>
     </div>
   );
@@ -504,14 +490,14 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
 const CustomTableCell = TableCell.extend({
   addAttributes() {
     return {
-      // extend the existing attributes …
       ...this.parent?.(),
-
-      // and add a new one …
       backgroundColor: {
         default: null,
         parseHTML: (element) => element.getAttribute("data-background-color"),
         renderHTML: (attributes) => {
+          if (!attributes.backgroundColor) {
+            return {};
+          }
           return {
             "data-background-color": attributes.backgroundColor,
             style: `background-color: ${attributes.backgroundColor}`,
@@ -523,34 +509,52 @@ const CustomTableCell = TableCell.extend({
 });
 
 const extensions = [
-  Link,
+  Link.configure({
+    openOnClick: false,
+    HTMLAttributes: {
+      class:
+        "text-blue-500 underline hover:text-blue-700 transition-colors cursor-pointer",
+    },
+  }),
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
   TextStyle,
   Underline,
-  TextStyle,
   StarterKit.configure({
     bulletList: {
       keepMarks: true,
-      keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+      keepAttributes: false,
     },
     orderedList: {
       keepMarks: true,
-      keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+      keepAttributes: false,
     },
   }),
   TextAlign.configure({
     types: ["heading", "paragraph"],
   }),
-  // StarterKit,
   Table.configure({
     resizable: true,
+    HTMLAttributes: {
+      class:
+        "min-w-full border-collapse border border-gray-300 dark:border-gray-700 my-4",
+    },
   }),
-  TableRow,
-  TableHeader,
-  // Default TableCell
-  // TableCell,
-  // Custom TableCell with backgroundColor attribute
-  CustomTableCell,
+  TableRow.configure({
+    HTMLAttributes: {
+      class: "border-b border-gray-300 dark:border-gray-700",
+    },
+  }),
+  TableHeader.configure({
+    HTMLAttributes: {
+      class:
+        "bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 px-4 py-2 font-bold text-left",
+    },
+  }),
+  CustomTableCell.configure({
+    HTMLAttributes: {
+      class: "border border-gray-300 dark:border-gray-700 px-4 py-2",
+    },
+  }),
 ];
 
 const RichTextEditor = ({
@@ -564,10 +568,16 @@ const RichTextEditor = ({
     extensions: extensions,
     content: value,
     immediatelyRender: false,
+    editorProps: {
+      attributes: {
+        class:
+          "prose prose-sm sm:prose-base dark:prose-invert max-w-none focus:outline-none min-h-[200px] px-4 py-3",
+      },
+    },
   });
 
   useEffect(() => {
-    if (editor) {
+    if (editor && editor.getHTML() !== value) {
       editor.commands.setContent(value);
     }
   }, [value, editor]);
@@ -586,9 +596,11 @@ const RichTextEditor = ({
   }, [editor, onChange]);
 
   return (
-    <div>
+    <div className="flex flex-col bg-white dark:bg-[#111] rounded-xl w-full">
       <MenuBar editor={editor} />
-      <EditorContent editor={editor} />
+      <div className="bg-white dark:bg-[#111] rounded-b-xl overflow-hidden cursor-text">
+        <EditorContent editor={editor} />
+      </div>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+// components/Card.tsx
 import React from "react";
 
 type Props = {
@@ -10,43 +11,40 @@ type Props = {
   };
 };
 
-function Card({
+export default function Card({
   label = "",
   value = 0,
   className = "",
-  colors = { lineColor: "#274E63", iconBgColor: "rgba(219, 234, 254, 1)" },
+  colors = { lineColor: "#f97316", iconBgColor: "rgba(249, 115, 22, 0.1)" }, // Defaulting to the orange brand theme
 }: Props) {
   return (
     <div
-      className={`inline-flex border-2 border-gray-300/50 rounded pl-4 pr-6 py-5 w-full md:w-fit h-fit gap-3 bg-white dark:bg-black dark:border-white/20 ${className}`}
+      className={`group relative overflow-hidden flex flex-col justify-between border border-gray-100 dark:border-white/5 rounded-3xl shadow-lg shadow-black/5 hover:shadow-xl dark:shadow-none dark:hover:shadow-white/2 bg-white dark:bg-[#111] p-6 transition-all duration-300 w-full min-h-[140px] ${className}`}
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="2"
-        height="58"
-        viewBox="0 0 2 58"
-        fill="none"
-      >
-        <path
-          d="M1 1L1 57"
-          stroke={colors.lineColor}
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-      </svg>
-      <div className="flex flex-1 justify-between items-center gap-6">
-        <div className="flex flex-col justify-between">
-          <div className="text-nowrap">{label}</div>
-          <div className="text-3xl font-semibold">{formatValue(value)}</div>
+      {/* Background reveal effect */}
+      <div
+        className="transition-all duration-700 w-0 aspect-square top-0 left-0 rounded-full group-hover:w-[250%] absolute group-hover:top-[-50%] group-hover:left-[-50%] -z-10"
+        style={{ backgroundColor: colors.iconBgColor, opacity: 0.3 }}
+      ></div>
+
+      <div className="flex justify-between items-start z-10 gap-4">
+        <div className="flex flex-col justify-between h-full">
+          <div className="text-gray-500 dark:text-gray-400 text-sm font-medium tracking-wide">
+            {label}
+          </div>
+          <div className="text-3xl sm:text-4xl font-extrabold text-primary dark:text-white mt-2 group-hover:text-primary transition-colors">
+            {formatValue(value)}
+          </div>
         </div>
+
         <div
-          className="w-12 h-12 rounded-full flex justify-center items-center"
+          className="w-14 h-14 shrink-0 rounded-2xl flex justify-center items-center group-hover:scale-110 transition-transform duration-300 shadow-sm border border-black/5 dark:border-white/5"
           style={{ backgroundColor: colors.iconBgColor }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
+            width="28"
+            height="28"
             viewBox="0 0 24 24"
             fill="none"
           >
@@ -61,11 +59,15 @@ function Card({
           </svg>
         </div>
       </div>
+
+      {/* Accent Bottom Line */}
+      <div
+        className="absolute bottom-0 left-0 h-1 w-full opacity-50 group-hover:opacity-100 transition-opacity"
+        style={{ backgroundColor: colors.lineColor }}
+      ></div>
     </div>
   );
 }
-
-export default Card;
 
 function formatValue(value: number): string {
   if (value >= 10000000) {
