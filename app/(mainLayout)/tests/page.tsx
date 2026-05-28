@@ -7,6 +7,7 @@ import { motion, Variants } from "framer-motion";
 import debounce from "@/lib/debouncer";
 import TestCard, { Test } from "./components/TestCard";
 import SkeletonCard from "./components/SkeletonCard";
+import Pagination from "@/components/Pagination";
 
 type SampleTypeOption =
   | "All"
@@ -40,79 +41,87 @@ export default function Tests() {
     name: "",
     sampleType: "All",
   });
-  const [limit, setLimit] = useState(8);
-  const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [totalPages, setTotalPages] = useState(1);
 
-  const onSearch = useCallback(
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const limit = 8;
+
+  const fetchTests = async (
+    searchFilter: { name: string; sampleType?: SampleTypeOption },
+    page: number,
+  ) => {
+    setLoading(true);
+    const apiFilter = { ...searchFilter };
+
+    if (apiFilter.sampleType === "All") {
+      delete apiFilter.sampleType;
+    }
+    if (apiFilter.sampleType === "Other") {
+      apiFilter.sampleType = "Other Body Fluid";
+    }
+
+    try {
+      const res = await fetcher.get<{
+        tests: Test[];
+        pagination: {
+          totalTests: number;
+          currentPage: number;
+          pageSize: number;
+          totalPages: number;
+        };
+      }>(
+        `/tests?filter=${JSON.stringify(apiFilter)}&limit=${limit}&page=${page}`,
+      );
+
+      if (res.status === 200 && res.body) {
+        setTests(res.body.tests);
+        setTotalPages(res.body.pagination.totalPages);
+      }
+    } catch (error) {
+      console.error("Failed to fetch tests:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const debouncedSearch = useCallback(
     debounce(async function (
       searchFilter: { name: string; sampleType?: SampleTypeOption },
-      searchLimit: number,
-      isLoadMore: boolean = false,
+      page: number,
     ) {
-      if (isLoadMore) {
-        setLoadingMore(true);
-      } else {
-        setLoading(true);
-      }
-
-      const apiFilter = { ...searchFilter };
-      if (apiFilter.sampleType === "All") {
-        delete apiFilter.sampleType;
-      }
-      if (apiFilter.sampleType === "Other") {
-        apiFilter.sampleType = "Other Body Fluid";
-      }
-
-      try {
-        const res = await fetcher.get<{
-          tests: Test[];
-          pagination: {
-            totalTests: number;
-            currentPage: number;
-            pageSize: number;
-            totalPages: number;
-          };
-        }>(
-          `/tests?filter=${JSON.stringify(apiFilter)}&limit=${
-            searchLimit || 8
-          }&page=1`,
-        );
-
-        if (res.status === 200 && res.body) {
-          setTests(res.body.tests);
-          setTotalPages(res.body.pagination.totalPages);
-        }
-      } catch (error) {
-        console.error("Failed to fetch tests:", error);
-      } finally {
-        setLoading(false);
-        setLoadingMore(false);
-      }
+      await fetchTests(searchFilter, page);
     }, 300),
     [],
   );
 
   useEffect(() => {
-    onSearch({ name: "", sampleType: "All" }, 8, false);
-  }, [onSearch]);
+    debouncedSearch({ name: "", sampleType: "All" }, 1);
+  }, [debouncedSearch]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newName = e.target.value;
     setFilter({ ...filter, name: newName });
-    onSearch({ name: newName, sampleType: filter.sampleType }, limit, false);
+    setCurrentPage(1);
+    debouncedSearch({ name: newName, sampleType: filter.sampleType }, 1);
   };
 
   const handleFilterClick = (sampleType: SampleTypeOption) => {
     setFilter({ ...filter, sampleType });
-    onSearch({ name: filter.name, sampleType }, limit, false);
+    setCurrentPage(1);
+    debouncedSearch({ name: filter.name, sampleType }, 1);
   };
 
-  const handleLoadMore = () => {
-    const newLimit = limit + 8;
-    setLimit(newLimit);
-    onSearch(filter, newLimit, true);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // Directly fetch without debouncing for pagination to ensure immediate response
+    fetchTests(filter, page);
+
+    // Smooth scroll to top of the list when page changes
+    const mainElement = document.getElementById("main");
+    if (mainElement) {
+      mainElement.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const filterOptions: SampleTypeOption[] = [
@@ -141,7 +150,7 @@ export default function Tests() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-primary dark:text-white mb-4 leading-tight"
+              className="text-xl md:text-2xl lg:text-3xl font-bold tracking-tight text-primary dark:text-white mb-2 leading-tight"
             >
               Explore <span className="text-orange-500">Lab Tests</span>
             </motion.h1>
@@ -149,7 +158,7 @@ export default function Tests() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-gray-500 dark:text-gray-400 max-w-xl text-base leading-relaxed"
+              className="text-gray-500 dark:text-gray-400 max-w-xl text-sm leading-relaxed"
             >
               Browse our comprehensive directory of diagnostic tests. Filter by
               sample type or search for specific requirements to find exactly
@@ -264,7 +273,7 @@ export default function Tests() {
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 min-h-100"
               >
                 {tests.map((test) => (
                   <TestCard
@@ -276,23 +285,15 @@ export default function Tests() {
               </motion.div>
             )}
 
-            {/* Load More Button */}
-            {totalPages !== 1 && tests.length >= limit && (
-              <div className="w-full flex justify-center mt-10">
-                <button
-                  disabled={loadingMore}
-                  className="px-8 py-3 rounded-full bg-orange-500 text-white font-semibold shadow-md shadow-orange-500/20 hover:shadow-orange-500/40 hover:-translate-y-0.5 transition-all outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 flex items-center gap-2"
-                  onClick={handleLoadMore}
-                >
-                  {loadingMore ? (
-                    <>
-                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                      Loading...
-                    </>
-                  ) : (
-                    "Load More Tests"
-                  )}
-                </button>
+            {/* Pagination Component */}
+            {totalPages > 1 && (
+              <div className="w-full flex justify-center mt-12 pt-8 border-t border-gray-100 dark:border-white/10">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onChange={handlePageChange}
+                  loading={loading}
+                />
               </div>
             )}
           </>

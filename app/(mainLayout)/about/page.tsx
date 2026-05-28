@@ -167,7 +167,7 @@ export default function AboutPage() {
             description="Reach out to us for support, inquiries, or to book a specialized test."
           />
 
-          <div className="w-full">
+          <div className="w-full mt-12">
             <ContactDetails />
           </div>
         </div>

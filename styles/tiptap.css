@@ -1,29 +1,43 @@
-/* Basic editor container */
+/* styles/tiptap.css */
+
+/* Base typography for BOTH read-only and editor states */
 .tiptap {
+  font-family: inherit;
+  line-height: 1.7;
+  color: rgb(55, 65, 81); /* text-gray-700 */
+  padding: 0 0.2em;
+}
+
+@media (prefers-color-scheme: dark) {
+  .tiptap {
+    color: rgb(209, 213, 219); /* text-gray-300 */
+  }
+}
+
+/* Box styling applied ONLY when editing */
+.tiptap[contenteditable="true"] {
   padding: 1rem 1.25rem;
   outline: none;
   border-radius: 8px;
   min-height: 200px;
   border: 1px solid rgb(229, 231, 235);
-  font-family: inherit;
-  line-height: 1.7;
-  color: rgb(55, 65, 81); /* text-gray-700 */
   background-color: transparent;
-  transition: border-color 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.tiptap:focus-within {
+.tiptap[contenteditable="true"]:focus-within {
   border-color: rgb(59, 130, 246); /* Tailwind Blue-500 */
   box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.1);
 }
 
 @media (prefers-color-scheme: dark) {
-  .tiptap {
+  .tiptap[contenteditable="true"] {
     border: 1px solid rgba(255, 255, 255, 0.15);
-    color: rgb(209, 213, 219); /* text-gray-300 */
   }
 
-  .tiptap:focus-within {
+  .tiptap[contenteditable="true"]:focus-within {
     border-color: rgb(96, 165, 250); /* Tailwind Blue-400 */
     box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.1);
   }
@@ -178,7 +192,7 @@
 }
 
 .tiptap li {
-  margin-bottom: 0.25em;
+  margin-bottom: 0.35em;
 }
 
 .tiptap li > ul,
@@ -196,7 +210,7 @@
   overflow: hidden;
   font-size: 0.9rem;
   line-height: 1.4;
-  box-shadow: 0 0 0 1px rgb(229, 231, 235); /* Replaces border to allow border-radius */
+  box-shadow: 0 0 0 1px rgb(229, 231, 235);
 }
 
 .tiptap table tr {
@@ -246,7 +260,7 @@
   }
 }
 
-/* Toolbar Control Group (if used in UI outside the main editor area) */
+/* Toolbar Control Group (UI outside the main editor area) */
 .control-group .button-group {
   display: flex;
   flex-wrap: wrap;
