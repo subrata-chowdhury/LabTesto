@@ -7,6 +7,7 @@ import PasswordInput from "@/components/Inputs/PasswordInput";
 import Input from "@/components/Inputs/Input";
 import { toast } from "react-toastify";
 import { encryptData } from "@/lib/encryption";
+import Image from "next/image";
 
 export default function Signup() {
   const [loading, setLoading] = useState(false);
@@ -93,15 +94,41 @@ export default function Signup() {
     <div className="flex flex-col md:flex-row h-screen gap-0">
       <div className="md:w-1/2 hidden md:flex flex-col gap-4 justify-center items-center bg-gray-200 dark:bg-[#0A192F] w-full h-full">
         <h1 className="text-2xl font-semibold">
-          Welcome to <span className="text-orange-500">Lab</span>
-          <span className="text-primary dark:text-white">Testo</span>
+          Welcome to{" "}
+          <Image
+            src="/logo-light-horizental.png"
+            alt="LabTesto Logo"
+            className="dark:hidden inline w-34 h-auto"
+            width={400}
+            height={200}
+          />
+          <Image
+            src="/logo-dark-horizental.png"
+            alt="LabTesto Logo"
+            className="hidden dark:inline w-34 h-auto"
+            width={400}
+            height={200}
+          />
         </h1>
         <div>Your wellness which makes us Happy</div>
       </div>
       <div className="md:w-1/2 md:h-auto flex flex-col justify-center absolute md:relative items-center w-full h-full">
         <h1 className="md:pl-6 ps-0 pb-3 md:pb-0 w-11/12 md:w-9/12 max-w-[450px] text-center md:text-start text-2xl font-semibold">
-          Sign Up to <span className="text-orange-500">Lab</span>
-          <span className="text-primary dark:text-white">Testo</span>
+          Sign Up to{" "}
+          <Image
+            src="/logo-light-horizental.png"
+            alt="LabTesto Logo"
+            className="dark:hidden inline w-34 h-auto"
+            width={400}
+            height={200}
+          />
+          <Image
+            src="/logo-dark-horizental.png"
+            alt="LabTesto Logo"
+            className="hidden dark:inline w-34 h-auto"
+            width={400}
+            height={200}
+          />
         </h1>
         <form
           className="flex flex-col gap-4 bg-transparent p-6 rounded-md w-11/12 md:w-9/12 max-w-[450px]"

@@ -105,16 +105,16 @@ const Menubar = () => {
               <Image
                 src="/logo-light-horizental.png"
                 alt="LabTesto Logo"
-                className="block dark:hidden"
-                width={100}
-                height={50}
+                className="block dark:hidden w-30 h-auto"
+                width={400}
+                height={200}
               />
               <Image
                 src="/logo-dark-horizental.png"
                 alt="LabTesto Logo"
-                className="hidden dark:block"
-                width={100}
-                height={50}
+                className="hidden dark:block w-30 h-auto"
+                width={400}
+                height={200}
               />
             </Link>
           </div>

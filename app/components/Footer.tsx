@@ -14,6 +14,7 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 import { FiGlobe } from "react-icons/fi";
+import Image from "next/image";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -49,11 +50,21 @@ const Footer = () => {
             variants={itemVariants}
             className="lg:col-span-2 max-w-md"
           >
-            <Link href="/" className="inline-block">
-              <h1 className="text-3xl font-extrabold tracking-tight mb-4">
-                <span className="text-orange-500">Lab</span>
-                <span className="text-primary dark:text-white">Testo</span>
-              </h1>
+            <Link href="/" className="inline-block mb-4">
+              <Image
+                src="/logo-light-horizental.png"
+                alt="LabTesto Logo"
+                className="block dark:hidden w-35 h-auto"
+                width={400}
+                height={200}
+              />
+              <Image
+                src="/logo-dark-horizental.png"
+                alt="LabTesto Logo"
+                className="hidden dark:block w-35 h-auto"
+                width={400}
+                height={200}
+              />
             </Link>
             <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
               A trusted diagnostic platform offering seamless test bookings from
