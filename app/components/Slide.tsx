@@ -59,7 +59,7 @@ export default function Slide({
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Slides Container */}
-      <div className="relative w-full h-full overflow-hidden rounded-2xl bg-gray-50 dark:bg-[#111]">
+      <div className="relative w-full h-full overflow-hidden rounded-2xl">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={slideIndex}

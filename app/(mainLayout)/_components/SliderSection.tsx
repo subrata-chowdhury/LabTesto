@@ -18,7 +18,7 @@ const SliderSection = () => {
       <div className="absolute top-40 -right-20 w-96 h-96 bg-blue-500/5 dark:bg-blue-500/10 blur-3xl rounded-full pointer-events-none"></div>
 
       <Slide
-        className="h-[35vh] sm:h-[50vh] lg:h-[75vh] min-h-62.5 flex flex-col justify-center rounded-2xl overflow-hidden shadow-2xl shadow-black/5 dark:shadow-white/5 border border-gray-100 dark:border-white/5 relative z-10"
+        className="h-[35vh] sm:h-[50vh] lg:h-[75vh] min-h-62.5 flex flex-col justify-center rounded-2xl overflow-hidden border border-gray-100 dark:border-white/5 relative z-10"
         slides={3}
         slideElement={({ slide }) => {
           if (slide === 1)
