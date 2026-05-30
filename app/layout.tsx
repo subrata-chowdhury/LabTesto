@@ -3,14 +3,14 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Bounce, ToastContainer } from "react-toastify";
 import Script from "next/script";
-import { GoogleAnalyticsProvider } from "@/components/analytics/GoogleAnalyticsProvider";
-import { Suspense } from "react";
+import { GoogleAnalytics } from "@next/third-parties/google"; // 1. Official Next.js GA
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
 });
 
+// --- METADATA (Unchanged) ---
 export const metadata: Metadata = {
   title:
     "LabTesto - Trusted Diagnostic Platform - Accredited Labs & Home Sample Collection",
@@ -98,7 +98,7 @@ export const metadata: Metadata = {
       {
         media: "(prefers-color-scheme: light)",
         url: "/logo-light.png",
-        type: "image/png", // Explicitly defining type helps browsers process it faster
+        type: "image/png",
       },
       {
         media: "(prefers-color-scheme: dark)",
@@ -112,16 +112,12 @@ export const metadata: Metadata = {
 const BASE_URL =
   process.env.NEXT_PUBLIC_APP_URL || "https://labtesto.vercel.app";
 
+// --- STRUCTURED DATA (Unchanged) ---
 export const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Home",
-      item: BASE_URL,
-    },
+    { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
     {
       "@type": "ListItem",
       position: 2,
@@ -140,12 +136,7 @@ export const breadcrumbSchema = {
       name: "Tests",
       item: BASE_URL + "/tests",
     },
-    {
-      "@type": "ListItem",
-      position: 5,
-      name: "FAQs",
-      item: BASE_URL + "/faq",
-    },
+    { "@type": "ListItem", position: 5, name: "FAQs", item: BASE_URL + "/faq" },
     {
       "@type": "ListItem",
       position: 6,
@@ -225,24 +216,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        {/* Google tag (gtag.js) */}
-        <Script
-          async
-          id="google-analytics-script"
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-          strategy="afterInteractive"
-        ></Script>
-        <Script id="google-analytics">
-          {`
-                        window.dataLayer = window.dataLayer || [];
-                        function gtag(){dataLayer.push(arguments);}
-                        gtag('js', new Date());
-
-                        gtag('config', '${GA_ID}');
-                    `}
-        </Script>
-
+      <body
+        className={`${inter.variable} antialiased font-inter flex flex-col min-h-screen scroll-smooth`}
+      >
         {/* JSON-LD Structured Data for SEO */}
         <Script
           id="organization-schema"
@@ -256,10 +232,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
         />
-      </head>
-      <body
-        className={`${inter.variable} antialiased font-inter flex flex-col min-h-screen scroll-smooth`}
-      >
+
         <ToastContainer
           position="top-right"
           autoClose={5000}
@@ -273,11 +246,8 @@ export default function RootLayout({
           theme="colored"
           transition={Bounce}
         />
-        <Suspense fallback={<div>Loading...</div>}>
-          <GoogleAnalyticsProvider />
-        </Suspense>
 
-        {/* Improved Accessibility: Now visually hidden until focused via Tab key */}
+        {/* Accessibility: Visually hidden until focused via Tab key */}
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white focus:text-black focus:font-bold focus:shadow-lg"
@@ -286,7 +256,13 @@ export default function RootLayout({
           Skip to main content
         </a>
 
-        {children}
+        {/* Ensure the main content wrapper has id="main" to match the a11y link above */}
+        <main id="main" className="flex-grow flex flex-col">
+          {children}
+        </main>
+
+        {/* Official Next.js Google Analytics Component */}
+        {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
       </body>
     </html>
   );
